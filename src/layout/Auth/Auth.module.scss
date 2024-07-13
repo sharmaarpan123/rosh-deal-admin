@@ -1,0 +1,44 @@
+.authLayout {
+  .link {
+    transition: 0.4s;
+    &:hover {
+      color: #860000 !important;
+    }
+  }
+  .logo{
+    img {
+      height: 150px;
+      object-fit: contain;
+    }
+  }
+  .formWrpper {
+      border-radius: 10px;
+      box-shadow: 1px 1px 3.8px 2px rgba(0, 0, 0, 0.15);
+      border: 4px solid #1c58d3;
+      overflow: auto;
+      scrollbar-width: none;
+      &::-webkit-scrollbar{
+        display: none;
+      }
+      .form {
+        .formControl {
+          height: 50px;
+          font-weight: 500;
+          background: #EEEEEE;
+          border-color: #EEEEEE;
+          &::placeholder{
+            color: #B6B3B3;
+          }
+        }
+      }
+  }
+}
+
+@media (max-width: 992px){
+  .authLayout {
+    height: 100vh;
+    .formWrpper {
+     height: auto !important;
+    }
+  }
+}

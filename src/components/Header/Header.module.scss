@@ -1,0 +1,65 @@
+header.siteHeader {
+  h5 {
+    color: #343c6a;
+  }
+  .logo {
+    img {
+      height: 23px;
+      object-fit: contain;
+    }
+  }
+  .searchForm {
+    input {
+      height: 40px;
+      background-color: #f4f4f4;
+      border-color: #f4f4f4;
+      min-width: 200px;
+      font-size: 12px;
+      color: #c4c4c4;
+      padding-left: 35px;
+      &::placeholder {
+        color: #c4c4c4;
+      }
+    }
+  }
+  .notificationDropdown {
+    .count {
+      background-color: #5f86b6;
+      height: 16px;
+      width: 16px;
+      right: -2px;
+      top: 1px;
+      font-size: 9px;
+      line-height: 12px;
+    }
+    .menu {
+      left: unset !important;
+      right: 0;
+      min-width: 500px;
+      .top {
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        h4 {
+          font-size: 18px;
+          .count {
+            background-color: #0085ff;
+            height: 25px;
+            width: 25px;
+            font-size: 14px;
+          }
+        }
+      }
+      .notificationList {
+        > li:not(:last-child) {
+          border-bottom: 1px solid #dcdee4;
+        }
+        p {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  .profileLink {
+    font-size: 10px;
+    line-height: 14px;
+  }
+}
