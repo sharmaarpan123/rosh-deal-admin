@@ -33,6 +33,17 @@ export default {
   UPDATE_BRAND: "/admin/brand/edit",
   DELETE_BRAND: "/admin/brand/delete",
 
+  // deal
+
+  ADD_DEAL: "/admin/deal/add",
+  EDIT_DEAL: "/admin/deal/edit",
+  GET_DEAL_VIEW: "/deal/detail/",
+  DEALS_LIST: "/admin/deal/all/withFilters",
+
+  // orders
+
+  ORDER_LIST : "/admin/orders/all",
+
   ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 
   // ADD USER

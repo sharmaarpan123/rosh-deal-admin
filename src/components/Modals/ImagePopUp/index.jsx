@@ -6,18 +6,19 @@ import styles from "./SetCommissionPop.module.scss";
 
 // img
 
-const SetCommissionPop = ({ newCommission, setNewCommission }) => {
-  const handleCommission = () => setNewCommission(!newCommission);
+const ImagePopUp = ({ popUpImage, SetPopUpImage }) => {
+  const handleCommission = () => SetPopUpImage(!popUpImage);
 
   return (
     <>
       <Modal
-        show={newCommission}
+        show={popUpImage}
         className={`${styles.SetCommissionPop}  SetCommissionPop`}
         onHide={handleCommission}
-        backdrop="static"
+        backdrop={true}
         keyboard={false}
         centered
+        onBackdropClick={handleCommission}
       >
         <Modal.Body className={`${styles.modalBody} position-relative rounded`}>
           <Button
@@ -56,38 +57,7 @@ const SetCommissionPop = ({ newCommission, setNewCommission }) => {
             </svg>
           </Button>
           <div className=" text-center mx-auto text-white">
-            <ul className="list-unstyled ps-0 mb-0">
-              <li className="py-2 d-flex align-items-center gap-10 justify-content-center">
-                <p className="m-0">Commission:</p>
-                <p className="m-0 fw-bold">10%</p>
-              </li>
-              <li className="py-2 d-flex align-items-center gap-10 justify-content-center">
-                <p className="m-0" style={{ whiteSpace: "nowrap " }}>
-                  New Commission:
-                </p>
-                <div className="iconWithText position-relative">
-                  <span
-                    style={{ right: 10 }}
-                    className="icn position-absolute fw-sbold text-muted"
-                  >
-                    %
-                  </span>
-                  <input type="text" className="form-control" />
-                </div>
-              </li>
-              <li className="py-2 d-flex align-items-center gap-10 justify-content-center">
-                <Button
-                  onClick={handleCommission}
-                  style={{
-                    height: 40,
-                    fontSize: 12,
-                  }}
-                  className="d-flex align-items-center justify-content-center commonBtn GreyBtn mt-4"
-                >
-                  Submit
-                </Button>
-              </li>
-            </ul>
+            <img src={popUpImage} className="w-100 object-fit-content" alt="" />
           </div>
         </Modal.Body>
       </Modal>
@@ -95,4 +65,4 @@ const SetCommissionPop = ({ newCommission, setNewCommission }) => {
   );
 };
 
-export default SetCommissionPop;
+export default ImagePopUp;

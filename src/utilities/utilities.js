@@ -147,3 +147,9 @@ export function getLast7Days() {
 
   return dates.reverse();
 }
+
+export function textAreaAdjust(element) {
+  console.log(element.target.style);
+  element.target.style.height = "1px";
+  element.target.style.height = 25 + element.target.scrollHeight + "px";
+}

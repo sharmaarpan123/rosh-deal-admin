@@ -7,7 +7,7 @@ import u1 from "../../../Assets/images/authBg.png";
 import { Link } from "react-router-dom";
 import { CstmPagination } from "../../../components/Common/Common";
 import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
-import SetCommissionPop from "../../../components/Modals/SetcommissionPop";
+import SetCommissionPop from "../../../components/Modals/ImagePopUp";
 
 const ManageCommssions = () => {
   const column = [

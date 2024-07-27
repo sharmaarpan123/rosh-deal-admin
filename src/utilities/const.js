@@ -23,6 +23,27 @@ export const activeInactiveOptions = [
   },
 ];
 
+export const OrderFromStatusOptionArr = [
+  { label: "All", value: "" },
+  { label: "Pending", value: "pending" },
+  { label: "Accepted", value: "accepted" },
+  { label: "Rejected", value: "rejected" },
+  { label: "ReviewFormSubmitted", value: "reviewFormSubmitted" },
+];
+
+export const paymentStatusOptions = [
+  { label: "All", value: "" },
+  { label: "Pending", value: "pending" },
+  { label: "Received", value: "received" },
+  { label: "Paid", value: "paid" },
+];
+
+export const slotCompletedStatusOptions = [
+  { label: "All", value: "" },
+  { label: "Completed", value: "completed" },
+  { label: "UnCompleted", value: "uncompleted" },
+];
+
 export const csvImportEnum = {
   customers: {
     title: "Customers",

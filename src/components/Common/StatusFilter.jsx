@@ -1,17 +1,17 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 
-const StatusFilter = ({ body, setBody, statusFilterOptionArr }) => {
+const StatusFilter = ({ body, setBody, statusFilterOptionArr, statusKey }) => {
   return (
     <Form.Select
       className="select text-muted"
       aria-label="Default select example"
-      defaultValue={body.status}
-      value={body.status}
+      defaultValue={body[statusKey]}
+      value={body[statusKey]}
       onChange={(e) =>
         setBody((p) => ({
           ...p,
-          status: e.target.value,
+          [statusKey]: e.target.value,
         }))
       }
     >

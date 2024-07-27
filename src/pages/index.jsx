@@ -22,8 +22,6 @@ import ServiceProviderDetail from "./SideTabPages/ManageServiceProvider/detail";
 import ManageUser from "./SideTabPages/ManageUser";
 import AddEditUser from "./SideTabPages/ManageUser/Add";
 import UserDetail from "./SideTabPages/ManageUser/detail";
-import OrderManagement from "./SideTabPages/OrderManagement";
-import OrderDetail from "./SideTabPages/OrderManagement/Detail";
 import Promocode from "./SideTabPages/Promocode";
 import AddPromoCode from "./SideTabPages/Promocode/add";
 import PromoCodeDetail from "./SideTabPages/Promocode/detail";
@@ -41,6 +39,11 @@ import DealCategoryDetails from "./SideTabPages/DealCategory/detail";
 import Brand from "./SideTabPages/Brand";
 import AddEditBrand from "./SideTabPages/Brand/add";
 import BrandDetails from "./SideTabPages/Brand/detail";
+import DealManagement from "./SideTabPages/DealManagement";
+import AddEditDeal from "./SideTabPages/DealManagement/add";
+import DealDetails from "./SideTabPages/DealManagement/detail";
+import OrderManagement from "./SideTabPages/OrderMangement";
+import OrderDetails from "./SideTabPages/OrderMangement/detail";
 
 export const routes = [
   { path: "/login", component: <Login /> },
@@ -99,6 +102,31 @@ export const privateRoutes = [
     path: "/brand/details/:id",
     component: <BrandDetails />,
   },
+  {
+    path: "/deal",
+    component: <DealManagement />,
+  },
+  {
+    path: "/deal/add",
+    component: <AddEditDeal />,
+  },
+  {
+    path: "/deal/edit/:id",
+    component: <AddEditDeal />,
+  },
+  {
+    path: "/deal/details/:id",
+    component: <DealDetails />,
+  },
+
+  {
+    path: "/orders",
+    component: <OrderManagement />,
+  },
+  {
+    path: "/orders/details/:id",
+    component: <OrderDetails />,
+  },
 
   // not used yet this
   { path: "/manage-user", component: <ManageUser /> },
@@ -130,14 +158,6 @@ export const privateRoutes = [
     component: <ServiceProviderRequest />,
   },
 
-  {
-    path: "/order-management",
-    component: <OrderManagement />,
-  },
-  {
-    path: "/order-management/detail",
-    component: <OrderDetail />,
-  },
   {
     path: "/manage-service-category",
     component: <ManageServiceCategory />,

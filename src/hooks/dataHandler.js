@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react";
 import {
   catchAsync,
@@ -21,6 +22,8 @@ const dataHandler = ({ api, extraBody }) => {
     limit: 10,
     orderBy: "createdAt",
     sortOrder: -1,
+    paymentStatus: "",
+    isSlotCompleted: "",
     ...extraBody,
   });
 
@@ -95,7 +98,7 @@ const dataHandler = ({ api, extraBody }) => {
   useEffect(() => {
     if (!isMounted) return;
     refetch();
-  }, [body.status, body.limit]);
+  }, [body.status, body.limit, body.paymentStatus, body.isSlotCompleted]);
 
   return {
     data,
