@@ -48,18 +48,22 @@ const dataHandler = ({ api, extraBody }) => {
     setData((p) => oldData);
   };
   const statusChangeHandler = catchAsync(
-    async (api, key) => {
+    async (api, ind, key, value) => {
       oldData = JSON.parse(JSON.stringify(data));
 
       setData((p) => {
         const newArr = JSON.parse(JSON.stringify(p));
-        newArr[key].status =
-          newArr[key].status === "active" ? "inactive" : "active";
+        newArr[ind][key] = value;
         return newArr;
       });
 
       const res = await api();
-      checkResponse({ res, showSuccess: true });
+      const success = checkResponse({ res, showSuccess: true });
+      if (!success) {
+        statusChangeCallBack();
+      } else {
+        return true;
+      }
     },
     null,
     statusChangeCallBack

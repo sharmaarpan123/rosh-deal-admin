@@ -43,6 +43,7 @@ export default {
   // orders
 
   ORDER_LIST : "/admin/orders/all",
+  ACCEPT_REJECT_ORDER: "admin/order/acceptRejectOrder",
 
   ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 

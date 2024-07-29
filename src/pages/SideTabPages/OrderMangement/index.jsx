@@ -12,6 +12,7 @@ import noImg from "../../../components/Common/noImg";
 import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
 import dataHandler from "../../../hooks/dataHandler";
 import {
+  ACCEPT_REJECT_ORDER,
   BRAND_LIST,
   DEALS_LIST,
   DELETE_BRAND,
@@ -19,10 +20,16 @@ import {
 } from "../../../services/ApiCalls";
 import {
   activeInactiveOptions,
+  defaultDeleteModelState,
   OrderFromStatusOptionArr,
 } from "../../../utilities/const";
-import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
+import {
+  capitalizedFirstAlphaBet,
+  catchAsync,
+  checkResponse,
+} from "../../../utilities/utilities";
 import ImagePopUp from "../../../components/Modals/ImagePopUp";
+import SetReasonModel from "../../../components/Modals/SetReasonModel";
 
 const OrderManagement = () => {
   const {
@@ -35,13 +42,41 @@ const OrderManagement = () => {
     paginationHandler,
     searchHandler,
     total,
-    deleteHandler,
     statusChangeHandler,
   } = dataHandler({
     api: ORDER_LIST,
   });
-
+  const [rejectReason, setRejectedReason] = useState("");
+  const [rejectedModel, setRejectedModel] = useState({
+    ...defaultDeleteModelState,
+    status: "",
+  });
   const [popUpImage, SetPopUpImage] = useState("");
+
+  const acceptRejectHandler = (_id, ind, status) => {
+    statusChangeHandler(
+      () => {
+        const body = {
+          orderId: _id,
+          status,
+          ...((status === "rejected" || status === "reviewFormRejected") && {
+            rejectReason,
+          }),
+        };
+
+        console.log(rejectReason, "body");
+
+        return ACCEPT_REJECT_ORDER(body);
+      },
+      ind,
+      "orderFormStatus",
+      status
+    );
+    setRejectedModel((p) => ({
+      ...defaultDeleteModelState,
+      status: "",
+    }));
+  };
 
   const column = [
     {
@@ -196,12 +231,27 @@ const OrderManagement = () => {
     {
       head: "Action",
       accessor: "Action",
-      component: (item) => (
+      component: (item, ind) => (
         <TableActions
-          editUrl={`/deal/edit/${item._id}`}
-          viewLink={`/deal/details/${item._id}`}
-          setDeleteModel={() =>
-            setDeleteModel({ dumpId: item._id, show: true })
+          acceptHandler={() => acceptRejectHandler(item._id, ind, "accepted")}
+          rejectHandler={() =>
+            setRejectedModel({
+              show: true,
+              dumpId: item?._id,
+              ind: ind,
+              status: "rejected",
+            })
+          }
+          reviewAcceptHandler={() =>
+            acceptRejectHandler(item._id, ind, "reviewFormAccepted")
+          }
+          reviewRejectHandler={() =>
+            setRejectedModel({
+              show: true,
+              dumpId: item?._id,
+              ind: ind,
+              status: "reviewFormRejected",
+            })
           }
         />
       ),
@@ -210,16 +260,20 @@ const OrderManagement = () => {
 
   return (
     <>
-      <ConfirmationPop
-        type={"delete"}
-        // confirmHandler={() =>
-        //   deleteHandler(() => DELETE_BRAND({ brandId: deleteModel.dumpId }))
-        // }
-        confirmation={deleteModel.show}
-        setConfirmation={() => setDeleteModel({ dumpId: "", show: false })}
-      />
-
       <ImagePopUp SetPopUpImage={SetPopUpImage} popUpImage={popUpImage} />
+      <SetReasonModel
+        hide={() => setRejectedModel({ show: false, dumpId: "", status: "" })}
+        show={rejectedModel.show}
+        rejectReason={rejectReason}
+        setRejectedReason={setRejectedReason}
+        confirmHandler={() =>
+          acceptRejectHandler(
+            rejectedModel.dumpId,
+            rejectedModel.ind,
+            rejectedModel.status
+          )
+        }
+      />
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>

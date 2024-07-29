@@ -50,6 +50,8 @@ export const GET_DEAL_VIEW = (data) => Axios.get(API_URL.GET_DEAL_VIEW + data);
 // ORDERS
 
 export const ORDER_LIST = (data) => Axios.post(API_URL.ORDER_LIST, data);
+export const ACCEPT_REJECT_ORDER = (data) =>
+  Axios.post(API_URL.ACCEPT_REJECT_ORDER, data);
 
 ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 

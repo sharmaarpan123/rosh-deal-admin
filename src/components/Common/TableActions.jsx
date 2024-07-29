@@ -2,9 +2,17 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const TableActions = ({ editUrl, setDeleteModel, viewLink }) => {
+const TableActions = ({
+  editUrl,
+  setDeleteModel,
+  viewLink,
+  acceptHandler,
+  rejectHandler,
+  reviewAcceptHandler,
+  reviewRejectHandler,
+}) => {
   return (
-    <div className="actionBtn d-flex align-items-center gap-10">
+    <div className="actionBtn d-flex align-items-center gap-10 flex-wrap">
       {editUrl && (
         <Link to={editUrl} className="border-0 p-0">
           <svg
@@ -35,7 +43,7 @@ const TableActions = ({ editUrl, setDeleteModel, viewLink }) => {
           </svg>
         </Link>
       )}
-      
+
       {viewLink && (
         <Link to={viewLink} className="border-0 p-0" variant="transparent">
           <svg
@@ -89,6 +97,43 @@ const TableActions = ({ editUrl, setDeleteModel, viewLink }) => {
             </defs>
           </svg>
         </Button>
+      )}
+      {acceptHandler && (
+        <p
+          onClick={acceptHandler}
+          className="text-success mb-0 px-3"
+          role="button"
+        >
+          accept
+        </p>
+      )}
+      {rejectHandler && (
+        <p
+          onClick={rejectHandler}
+          className="text-danger mb-0 px-3"
+          role="button"
+        >
+          reject
+        </p>
+      )}
+
+      {reviewAcceptHandler && (
+        <p
+          onClick={reviewAcceptHandler}
+          className="text-success mb-0 px-3"
+          role="button"
+        >
+          accept review
+        </p>
+      )}
+      {reviewRejectHandler && (
+        <p
+          onClick={reviewRejectHandler}
+          className="text-danger mb-0 px-3"
+          role="button"
+        >
+          reject review
+        </p>
       )}
     </div>
   );
