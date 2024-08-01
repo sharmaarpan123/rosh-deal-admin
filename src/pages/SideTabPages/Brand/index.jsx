@@ -45,6 +45,11 @@ const Brand = () => {
       },
     },
     {
+      head: "_id",
+      accessor: "_id",
+     
+    },
+    {
       head: "Name",
       accessor: "name",
       component: (item, key, arr) => (

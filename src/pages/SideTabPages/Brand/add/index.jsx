@@ -93,7 +93,7 @@ const AddEditBrand = () => {
             <Col lg="12">
               <div className="d-flex align-items-center gap-10">
                 <Link
-                  to="/platform"
+                  to="/brand"
                   className="border d-flex align-items-center p-2 rounded"
                 >
                   <svg
@@ -112,7 +112,7 @@ const AddEditBrand = () => {
                   </svg>
                 </Link>
                 <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                  Add Sub Admin
+                Add Brand
                 </h4>
               </div>
             </Col>

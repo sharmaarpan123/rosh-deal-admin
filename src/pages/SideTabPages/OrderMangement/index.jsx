@@ -4,32 +4,20 @@ import TableLayout from "../../../components/TableLayout";
 
 // img
 import moment from "moment";
-import { Link } from "react-router-dom";
+
 import CustomPagination from "../../../components/Common/CustomPagination";
-import Filter from "../../../components/Common/Filter";
 import TableActions from "../../../components/Common/TableActions";
 import noImg from "../../../components/Common/noImg";
-import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
+import ImagePopUp from "../../../components/Modals/ImagePopUp";
+import SetReasonModel from "../../../components/Modals/SetReasonModel";
 import dataHandler from "../../../hooks/dataHandler";
+import { ACCEPT_REJECT_ORDER, ORDER_LIST } from "../../../services/ApiCalls";
 import {
-  ACCEPT_REJECT_ORDER,
-  BRAND_LIST,
-  DEALS_LIST,
-  DELETE_BRAND,
-  ORDER_LIST,
-} from "../../../services/ApiCalls";
-import {
-  activeInactiveOptions,
   defaultDeleteModelState,
   OrderFromStatusOptionArr,
 } from "../../../utilities/const";
-import {
-  capitalizedFirstAlphaBet,
-  catchAsync,
-  checkResponse,
-} from "../../../utilities/utilities";
-import ImagePopUp from "../../../components/Modals/ImagePopUp";
-import SetReasonModel from "../../../components/Modals/SetReasonModel";
+import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
+import Filter from "./Filter/Filter";
 
 const OrderManagement = () => {
   const {
@@ -45,6 +33,11 @@ const OrderManagement = () => {
     statusChangeHandler,
   } = dataHandler({
     api: ORDER_LIST,
+    extraBody: {
+      brandId: "",
+      dealId: [],
+    },
+    dependencies: ["brandId", "dealId"],
   });
   const [rejectReason, setRejectedReason] = useState("");
   const [rejectedModel, setRejectedModel] = useState({
@@ -287,11 +280,9 @@ const OrderManagement = () => {
                 <div className="left">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
                     <Filter
-                      body={body}
-                      searchHandler={searchHandler}
-                      setBody={setBody}
                       statusFilterOptionArr={OrderFromStatusOptionArr}
-                      showSearch={false}
+                      body={body}
+                      setBody={setBody}
                     />
                   </ul>
                 </div>

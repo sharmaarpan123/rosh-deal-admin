@@ -177,14 +177,14 @@ const DealManagement = () => {
 
   return (
     <>
-      <ConfirmationPop
+      {/* <ConfirmationPop
         type={"delete"}
         // confirmHandler={() =>
         //   deleteHandler(() => DELETE_BRAND({ brandId: deleteModel.dumpId }))
         // }
         confirmation={deleteModel.show}
         setConfirmation={() => setDeleteModel({ dumpId: "", show: false })}
-      />
+      /> */}
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
@@ -205,6 +205,7 @@ const DealManagement = () => {
                       ShowPaymentStatus={true}
                       ShowSlotStatus={true}
                     />
+         
                   </ul>
                 </div>
                 <div className="right">

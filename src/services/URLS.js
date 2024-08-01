@@ -39,10 +39,11 @@ export default {
   EDIT_DEAL: "/admin/deal/edit",
   GET_DEAL_VIEW: "/deal/detail/",
   DEALS_LIST: "/admin/deal/all/withFilters",
+  DEAL_BY_BRAND_ID: "/admin/deal/getDealWithBrandId/",
 
   // orders
 
-  ORDER_LIST : "/admin/orders/all",
+  ORDER_LIST: "/admin/orders/all",
   ACCEPT_REJECT_ORDER: "admin/order/acceptRejectOrder",
 
   ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors

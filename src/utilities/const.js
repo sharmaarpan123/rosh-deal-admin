@@ -29,6 +29,8 @@ export const OrderFromStatusOptionArr = [
   { label: "Accepted", value: "accepted" },
   { label: "Rejected", value: "rejected" },
   { label: "ReviewFormSubmitted", value: "reviewFormSubmitted" },
+  { label: "ReviewForm  Rejected", value: "reviewFormRejected" },
+  { label: "ReviewFormAccepted", value: "reviewFormAccepted" },
 ];
 
 export const paymentStatusOptions = [

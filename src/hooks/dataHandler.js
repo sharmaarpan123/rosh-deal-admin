@@ -8,7 +8,7 @@ import {
 import { defaultDeleteModelState } from "../utilities/const";
 import { toast } from "react-toastify";
 
-const dataHandler = ({ api, extraBody }) => {
+const dataHandler = ({ api, extraBody, dependencies }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [data, setData] = useState();
   const [loader, setLoader] = useState(false);
@@ -99,10 +99,22 @@ const dataHandler = ({ api, extraBody }) => {
     }
   }, [body.search]);
 
+  const depArr = [
+    body.status,
+    body.limit,
+    body.paymentStatus,
+    body.isSlotCompleted,
+  ];
+  if (dependencies && dependencies.length > 0) {
+    dependencies.forEach((item) => {
+      depArr.push(body[item]);
+    });
+  }
   useEffect(() => {
     if (!isMounted) return;
+    console.log("log");
     refetch();
-  }, [body.status, body.limit, body.paymentStatus, body.isSlotCompleted]);
+  }, depArr);
 
   return {
     data,

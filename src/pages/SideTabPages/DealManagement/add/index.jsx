@@ -215,7 +215,7 @@ const AddEditDeal = () => {
             <Col lg="12">
               <div className="d-flex align-items-center gap-10">
                 <Link
-                  to="/platform"
+                  to="/deal"
                   className="border d-flex align-items-center p-2 rounded"
                 >
                   <svg
@@ -234,7 +234,7 @@ const AddEditDeal = () => {
                   </svg>
                 </Link>
                 <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                  {id ? "Edit" : "Add"} Sub Admin
+                  {id ? "Edit" : "Add"} Deal
                 </h4>
               </div>
             </Col>
