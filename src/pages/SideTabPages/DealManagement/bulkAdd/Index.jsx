@@ -167,7 +167,7 @@ const AddBulkDeal = () => {
       res,
       showSuccess: true,
       navigate: navigate,
-      //   navigateUrl: "/deal",
+      navigateUrl: "/deal",
     });
   });
 
