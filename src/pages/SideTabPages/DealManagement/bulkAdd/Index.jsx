@@ -274,7 +274,12 @@ const AddBulkDeal = () => {
                     {id ? "Edit" : "Add"} Deal
                   </h4>
                 </div>
-                <div className="right">
+                <div className="right d-flex gap-10">
+                  <a target="_blank" href="/sampleBulk.csv">
+                    <Button className="d-block align-items-center justify-content-center commonBtn  rounded text-white">
+                      Download Sample csv
+                    </Button>
+                  </a>
                   <Button className="d-flex align-items-center justify-content-center commonBtn position-relative">
                     Import Csv
                     <input
