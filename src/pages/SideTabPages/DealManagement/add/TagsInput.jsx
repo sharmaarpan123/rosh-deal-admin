@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const TagsInput = ({ setValue, watch }) => {
+const TagsInput = ({ setValue, watch, fieldName }) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
@@ -10,39 +10,44 @@ const TagsInput = ({ setValue, watch }) => {
   };
 
   const AddTagHandler = () => {
+    console.log("hit", watch(fieldName));
     if (!inputValue.trim()) {
       toast.dismiss();
       toast.warning("abe chutiye kuch likh to sahi!");
     }
-    setValue("productCategories", [
-      ...watch("productCategories"),
-      inputValue.trim(),
-    ]);
+
+    let arr = [];
+
+    if (watch(fieldName)) {
+      arr = [...watch(fieldName)];
+    }
+
+    arr.push(inputValue.trim());
+
+    setValue(fieldName, arr);
     setInputValue("");
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter" && event.ctrlKey && inputValue.trim() !== "") {
-      setValue("productCategories", [
-        ...watch("productCategories"),
-        inputValue.trim(),
-      ]);
-      setInputValue("");
-    } else if (
-      event.key === "Enter" &&
-      event.ctrlKey &&
-      inputValue.trim() === ""
-    ) {
-      // just fun
-      toast.dismiss();
-      toast.warning("abe chutiye kuch likh to sahi!");
-    }
-  };
+  // const handleKeyDown = (event) => {
+  //   if (event.key === "Enter" && event.ctrlKey && inputValue.trim() !== "") {
+  //     setValue(fieldName, [...watch(fieldName), inputValue.trim()]);
+  //     setInputValue("");
+  //   } else if (
+  //     event.key === "Enter" &&
+  //     event.ctrlKey &&
+  //     inputValue.trim() === ""
+  //   ) {
+  //     // just fun
+  //     toast.dismiss();
+  //     toast.warning("abe chutiye kuch likh to sahi!");
+  //     return;
+  //   }
+  // };
 
   const handleRemoveTag = (indexToRemove) => {
     setValue(
-      "productCategories",
-      watch("productCategories").filter((_, index) => index !== indexToRemove)
+      fieldName,
+      watch(fieldName).filter((_, index) => index !== indexToRemove)
     );
   };
 
@@ -54,7 +59,7 @@ const TagsInput = ({ setValue, watch }) => {
       }}
     >
       <ul className="d-flex flex-wrap p-0 list-unstyled d-flex w-100 h-100 mb-0 ">
-        {watch("productCategories")?.map((item, ind) => (
+        {watch(fieldName)?.map((item, ind) => (
           <li
             key={ind}
             className="d-flex align-items-center  px-2 border border-danger rounded mx-2"
@@ -65,6 +70,7 @@ const TagsInput = ({ setValue, watch }) => {
                 width: 15,
                 height: 20,
                 fontSize: 10,
+                cursor: "pointer",
               }}
               onClick={() => handleRemoveTag(ind)}
               className="ms-1  bg-black text-white rounded d-flex justify-content-center  d-flex align-items-center"
@@ -80,14 +86,16 @@ const TagsInput = ({ setValue, watch }) => {
             className="form-control border-white focus-border-none"
             value={inputValue}
             onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
+            // onKeyDown={handleKeyDown}
             style={{
               height: 30,
             }}
           />
         </li>
       </ul>
-      <button onClick={AddTagHandler}>Add</button>
+      <button onClick={AddTagHandler} type="button">
+        Add
+      </button>
     </div>
   );
 };

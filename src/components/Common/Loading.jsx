@@ -5,6 +5,7 @@ const Loading = ({ fullSize }) => {
   return (
     <img
       alt="Loader"
+      className="object-contain"
       style={{
         width: "3%",
         ...(fullSize && { width: "100%", height: "100%" }),

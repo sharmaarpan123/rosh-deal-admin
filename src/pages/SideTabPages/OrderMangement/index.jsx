@@ -18,6 +18,7 @@ import {
 } from "../../../utilities/const";
 import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
 import Filter from "./Filter/Filter";
+import ExportExcel from "./exportExcel/ExportExcel";
 
 const OrderManagement = () => {
   const {
@@ -80,13 +81,6 @@ const OrderManagement = () => {
       },
     },
     {
-      head: "_id",
-      accessor: "",
-      component: (item, key) => {
-        return <>{item._id}</>;
-      },
-    },
-    {
       head: "Order id",
       accessor: "orderIdOfPlatForm",
     },
@@ -142,28 +136,7 @@ const OrderManagement = () => {
         <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
       ),
     },
-    {
-      head: "Order Status",
-      accessor: "orderFormStatus",
-      component: (item) => (
-        <p
-          className={`${
-            item.orderFormStatus === "reviewFormSubmitted"
-              ? "bg-success "
-              : item.orderFormStatus === "accepted"
-              ? "bg-primary "
-              : item.orderFormStatus === "rejected"
-              ? "bg-danger"
-              : "bg-warning"
-          } d-flex justify-content-start pb-0 rounded px-2 text-white `}
-          style={{
-            width: "fit-content",
-          }}
-        >
-          {item.orderFormStatus}
-        </p>
-      ),
-    },
+
     {
       head: "Payment Status",
       accessor: "payment Status",
@@ -220,31 +193,71 @@ const OrderManagement = () => {
         />
       ),
     },
-
+    {
+      head: "Order Status",
+      accessor: "orderFormStatus",
+      component: (item) => (
+        <p
+          className={`${
+            item.orderFormStatus === "reviewFormSubmitted"
+              ? "bg-success "
+              : item.orderFormStatus === "accepted"
+              ? "bg-primary "
+              : item.orderFormStatus === "rejected"
+              ? "bg-danger"
+              : "bg-warning"
+          } d-flex justify-content-start pb-0 rounded px-2 text-white `}
+          style={{
+            width: "fit-content",
+          }}
+        >
+          {item.orderFormStatus}
+        </p>
+      ),
+    },
     {
       head: "Action",
       accessor: "Action",
       component: (item, ind) => (
         <TableActions
-          acceptHandler={() => acceptRejectHandler(item._id, ind, "accepted")}
-          rejectHandler={() =>
-            setRejectedModel({
-              show: true,
-              dumpId: item?._id,
-              ind: ind,
-              status: "rejected",
-            })
+          acceptHandler={
+            ["pending", "rejected", "accepted"].includes(
+              item?.orderFormStatus
+            ) && (() => acceptRejectHandler(item._id, ind, "accepted"))
           }
-          reviewAcceptHandler={() =>
-            acceptRejectHandler(item._id, ind, "reviewFormAccepted")
+          rejectHandler={
+            ["pending", "rejected", "accepted"].includes(
+              item?.orderFormStatus
+            ) &&
+            (() =>
+              setRejectedModel({
+                show: true,
+                dumpId: item?._id,
+                ind: ind,
+                status: "rejected",
+              }))
           }
-          reviewRejectHandler={() =>
-            setRejectedModel({
-              show: true,
-              dumpId: item?._id,
-              ind: ind,
-              status: "reviewFormRejected",
-            })
+          reviewAcceptHandler={
+            [
+              "reviewFormSubmitted",
+              "reviewFormRejected",
+              "reviewFormAccepted",
+            ].includes(item.orderFormStatus) &&
+            (() => acceptRejectHandler(item._id, ind, "reviewFormAccepted"))
+          }
+          reviewRejectHandler={
+            [
+              "reviewFormSubmitted",
+              "reviewFormRejected",
+              "reviewFormAccepted",
+            ].includes(item.orderFormStatus) &&
+            (() =>
+              setRejectedModel({
+                show: true,
+                dumpId: item?._id,
+                ind: ind,
+                status: "reviewFormRejected",
+              }))
           }
         />
       ),
@@ -285,6 +298,9 @@ const OrderManagement = () => {
                       setBody={setBody}
                     />
                   </ul>
+                </div>
+                <div className="right">
+                  <ExportExcel body={body} />
                 </div>
               </div>
             </Col>

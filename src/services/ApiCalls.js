@@ -45,6 +45,7 @@ export const DELETE_BRAND = (data) => Axios.post(API_URL.DELETE_BRAND, data);
 // DEAL
 
 export const ADD_DEAL = (data) => Axios.post(API_URL.ADD_DEAL, data);
+export const BULK_ADD_DEAL = (data) => Axios.post(API_URL.BULK_ADD_DEAL, data);
 export const EDIT_DEAL = (data) => Axios.post(API_URL.EDIT_DEAL, data);
 export const DEALS_LIST = (data) => Axios.post(API_URL.DEALS_LIST, data);
 export const GET_DEAL_VIEW = (data) => Axios.get(API_URL.GET_DEAL_VIEW + data);

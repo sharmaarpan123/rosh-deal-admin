@@ -213,7 +213,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
             </NavLink>
           </li>
 
-          <li className="py-1">
+          {/* <li className="py-1">
             <NavLink
               to="/manage-user"
               className={`${styles.link} ${
@@ -574,7 +574,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
               </span>
               Settings
             </NavLink>
-          </li>
+          </li> */}
         </ul>
       </Accordion>
     </div>

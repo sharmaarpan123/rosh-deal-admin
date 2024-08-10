@@ -36,6 +36,7 @@ export default {
   // deal
 
   ADD_DEAL: "/admin/deal/add",
+  BULK_ADD_DEAL: "admin/deal/bulk-add",
   EDIT_DEAL: "/admin/deal/edit",
   GET_DEAL_VIEW: "/deal/detail/",
   DEALS_LIST: "/admin/deal/all/withFilters",

@@ -205,11 +205,19 @@ const DealManagement = () => {
                       ShowPaymentStatus={true}
                       ShowSlotStatus={true}
                     />
-         
                   </ul>
                 </div>
                 <div className="right">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
+                    <li className="">
+                      <Link
+                        to={"/deal/bulk-add"}
+                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
+                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
+                      >
+                        Bulk Add
+                      </Link>
+                    </li>
                     <li className="">
                       <Link
                         to={"/deal/add"}

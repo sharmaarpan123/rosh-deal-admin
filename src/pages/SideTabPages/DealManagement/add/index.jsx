@@ -349,7 +349,11 @@ const AddEditDeal = () => {
                         >
                           Product Categories
                         </label>
-                        <TagsInput setValue={setValue} watch={watch} />
+                        <TagsInput
+                          setValue={setValue}
+                          watch={watch}
+                          fieldName={"productCategories"}
+                        />
                         {errors?.productCategories && (
                           <p className="text-danger m-0">
                             {errors.productCategories.message}

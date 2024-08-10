@@ -153,3 +153,5 @@ export function textAreaAdjust(element) {
   element.target.style.height = "1px";
   element.target.style.height = 25 + element.target.scrollHeight + "px";
 }
+
+export const isStringOnlyContainSpaces = (str) => /^\s*$/.test(str);

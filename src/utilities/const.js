@@ -57,3 +57,15 @@ export const csvImportEnum = {
 export const activeInActiveArr = ["active", "inactive"];
 
 export const accountType = ["single", "enterprise"];
+
+export const orderStatusArr = [
+  "pending",
+  "rejected",
+  "accepted",
+  "reviewFormSubmitted",
+  "reviewFormRejected",
+  "reviewFormAccepted",
+];
+
+
+

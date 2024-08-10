@@ -21,7 +21,7 @@ const CustomPagination = ({ total, pageChangeHandler, body, setBody }) => {
           <Form.Select
             className="fw-bold text-dark"
             aria-label="Default select example"
-            defaultValue={body?.limit}
+            value={body?.limit}
             onChange={(e) => {
               setBody((p) => ({
                 ...p,

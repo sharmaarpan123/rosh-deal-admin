@@ -39,7 +39,7 @@ const Otp = ({ email, setScreen }) => {
       email,
       OTP: data.otp,
     });
-    const success = checkResponse({ res  , showSuccess : true});
+    const success = checkResponse({ res, showSuccess: true });
     if (success) {
       setScreen(forgetPasswordScreenEnum.resetPassword);
     }
@@ -52,9 +52,10 @@ const Otp = ({ email, setScreen }) => {
           <div className="top py-2">
             <div className="d-flex align-items-center gap-10">
               <span
-role="button"
-              onClick={() => setScreen(forgetPasswordScreenEnum.forgetPassword)}
-                
+                role="button"
+                onClick={() =>
+                  setScreen(forgetPasswordScreenEnum.forgetPassword)
+                }
                 className="d-inline-flex align-items-center justify-content-center border py-2  broder-light btn "
               >
                 <svg

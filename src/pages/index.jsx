@@ -44,6 +44,7 @@ import AddEditDeal from "./SideTabPages/DealManagement/add";
 import DealDetails from "./SideTabPages/DealManagement/detail";
 import OrderManagement from "./SideTabPages/OrderMangement";
 import OrderDetails from "./SideTabPages/OrderMangement/detail";
+import AddBulkDeal from "./SideTabPages/DealManagement/bulkAdd/Index";
 
 export const routes = [
   { path: "/login", component: <Login /> },
@@ -111,6 +112,10 @@ export const privateRoutes = [
     component: <AddEditDeal />,
   },
   {
+    path: "/deal/bulk-add",
+    component: <AddBulkDeal />,
+  },
+  {
     path: "/deal/edit/:id",
     component: <AddEditDeal />,
   },
@@ -128,7 +133,7 @@ export const privateRoutes = [
     component: <OrderDetails />,
   },
 
-  // not used yet this
+  // not used yet this /////////////////******************* */
   { path: "/manage-user", component: <ManageUser /> },
   { path: "/manage-user/add", component: <AddEditUser /> },
   { path: "/manage-user/edit/:id", component: <AddEditUser /> },
