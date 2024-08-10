@@ -152,12 +152,11 @@ const AddBulkDeal = () => {
   });
 
   const submitHandler = catchAsync(async (data) => {
-    console.log(data, "Data");
     const res = await BULK_ADD_DEAL(
       data?.csvData?.map((item, index) => ({
         dealCategory: data.dealCategory.value,
         platForm: data.platForm.value,
-        brand: index === 2 ? "data.brand.value" : data.brand.value,
+        brand: data.brand.value,
         ...item,
         slotAlloted: +item.slotAlloted,
       }))
