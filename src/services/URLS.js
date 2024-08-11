@@ -46,6 +46,8 @@ export default {
 
   ORDER_LIST: "/admin/orders/all",
   ACCEPT_REJECT_ORDER: "admin/order/acceptRejectOrder",
+  PAYMENT_STATUS_CHANGE : "admin/order/paymentStatusUpdate",
+  BULK_PAYMENT_STATUS_CHANGE : "admin/order/bulkPaymentStatusUpdate",
 
   ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 

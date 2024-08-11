@@ -213,7 +213,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
             </NavLink>
           </li>
 
-          {/* <li className="py-1">
+          <li className="py-1">
             <NavLink
               to="/manage-user"
               className={`${styles.link} ${
@@ -237,7 +237,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
               Manage User
             </NavLink>
           </li>
-          <li className="py-1">
+          {/* <li className="py-1">
             <Accordion.Item
               className={`${styles.accordionWrp} border-0 bg-transparent`}
               eventKey="0"

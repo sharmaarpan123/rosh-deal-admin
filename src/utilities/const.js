@@ -36,7 +36,6 @@ export const OrderFromStatusOptionArr = [
 export const paymentStatusOptions = [
   { label: "All", value: "" },
   { label: "Pending", value: "pending" },
-  { label: "Received", value: "received" },
   { label: "Paid", value: "paid" },
 ];
 

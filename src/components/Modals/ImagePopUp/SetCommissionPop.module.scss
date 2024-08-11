@@ -1,5 +1,10 @@
 .SetCommissionPop {
   .modalBody {
     background-color: #005fd9;
+    img {
+
+      height: 90vh;
+      object-fit: contain;
+    }
   }
 }

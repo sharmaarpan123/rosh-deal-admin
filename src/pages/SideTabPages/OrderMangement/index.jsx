@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import TableLayout from "../../../components/TableLayout";
 
 // img
@@ -11,12 +11,20 @@ import noImg from "../../../components/Common/noImg";
 import ImagePopUp from "../../../components/Modals/ImagePopUp";
 import SetReasonModel from "../../../components/Modals/SetReasonModel";
 import dataHandler from "../../../hooks/dataHandler";
-import { ACCEPT_REJECT_ORDER, ORDER_LIST } from "../../../services/ApiCalls";
+import {
+  ACCEPT_REJECT_ORDER,
+  ORDER_LIST,
+  PAYMENT_STATUS_CHANGE,
+} from "../../../services/ApiCalls";
 import {
   defaultDeleteModelState,
   OrderFromStatusOptionArr,
+  paymentStatusOptions,
 } from "../../../utilities/const";
-import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
+import {
+  capitalizedFirstAlphaBet,
+  catchAsync,
+} from "../../../utilities/utilities";
 import Filter from "./Filter/Filter";
 import ExportExcel from "./exportExcel/ExportExcel";
 
@@ -71,6 +79,10 @@ const OrderManagement = () => {
       status: "",
     }));
   };
+
+  const paymentStatusChangeHandler = catchAsync(async (orderId, status) => {
+    const res = await PAYMENT_STATUS_CHANGE({ orderId, status });
+  });
 
   const column = [
     {
@@ -141,20 +153,25 @@ const OrderManagement = () => {
       head: "Payment Status",
       accessor: "payment Status",
       component: (item) => (
-        <p
-          className={`${
-            item?.dealId?.paymentStatus === "pending"
-              ? "bg-danger text-white"
-              : item?.dealId?.paymentStatus === "received"
-              ? "bg-warning text-white"
-              : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
+        <div
+          className={`p-1 rounded  ${
+            item.paymentStatus === "paid" ? "bg-success" : "bg-warning"
+          }`}
           style={{
-            width: "fit-content",
+            width: "130px",
           }}
         >
-          {item?.dealId?.paymentStatus}
-        </p>
+          <Form.Select
+            onChange={(e) => {
+              paymentStatusChangeHandler(item._id, e.target.value);
+            }}
+            value={item.paymentStatus}
+          >
+            {paymentStatusOptions?.slice(1).map((item) => (
+              <option value={item.value}>{item.label} </option>
+            ))}
+          </Form.Select>
+        </div>
       ),
     },
 
@@ -181,7 +198,6 @@ const OrderManagement = () => {
         />
       ),
     },
-
     {
       head: "Review ScreenShot",
       accessor: "image",
@@ -215,6 +231,7 @@ const OrderManagement = () => {
         </p>
       ),
     },
+
     {
       head: "Action",
       accessor: "Action",

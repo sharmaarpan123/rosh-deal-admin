@@ -57,7 +57,7 @@ const ImagePopUp = ({ popUpImage, SetPopUpImage }) => {
             </svg>
           </Button>
           <div className=" text-center mx-auto text-white">
-            <img src={popUpImage} className="w-100 object-fit-content" alt="" />
+            <img src={popUpImage} className="w-100 object-fit-content "   alt="" />
           </div>
         </Modal.Body>
       </Modal>

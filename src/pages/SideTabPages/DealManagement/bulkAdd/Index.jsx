@@ -127,18 +127,7 @@ const AddBulkDeal = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      csvData: [
-        // {
-        //   productName: "",
-        //   postUrl: "",
-        //   actualPrice: "",
-        //   cashBack: "",
-        //   adminCommission: "",
-        //   slotAlloted: "",
-        //   productCategories: [],
-        //   termsAndCondition: "",
-        // },
-      ],
+      csvData: [],
     },
     resolver: zodResolver(schema),
     mode: "onChange",

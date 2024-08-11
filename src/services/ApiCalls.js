@@ -57,6 +57,10 @@ export const DEAL_BY_BRAND_ID = (body) =>
 export const ORDER_LIST = (data) => Axios.post(API_URL.ORDER_LIST, data);
 export const ACCEPT_REJECT_ORDER = (data) =>
   Axios.post(API_URL.ACCEPT_REJECT_ORDER, data);
+export const PAYMENT_STATUS_CHANGE = (data) =>
+  Axios.post(API_URL.PAYMENT_STATUS_CHANGE, data);
+export const BULK_PAYMENT_STATUS_CHANGE = (data) =>
+  Axios.post(API_URL.BULK_PAYMENT_STATUS_CHANGE, data);
 
 ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 
