@@ -41,6 +41,7 @@ export default {
   GET_DEAL_VIEW: "/deal/detail/",
   DEALS_LIST: "/admin/deal/all/withFilters",
   DEAL_BY_BRAND_ID: "/admin/deal/getDealWithBrandId/",
+  DEAL_UPDATE_PAYMENT_STATUS : "/admin/deal/updatePaymentStatus",
 
   // orders
 

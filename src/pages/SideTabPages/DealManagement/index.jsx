@@ -13,11 +13,16 @@ import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
 import dataHandler from "../../../hooks/dataHandler";
 import {
   BRAND_LIST,
+  DEAL_UPDATE_PAYMENT_STATUS,
   DEALS_LIST,
   DELETE_BRAND,
 } from "../../../services/ApiCalls";
-import { activeInactiveOptions } from "../../../utilities/const";
+import {
+  activeInactiveOptions,
+  paymentStatusOptions,
+} from "../../../utilities/const";
 import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
+import TableToggle from "../../../components/Common/TableToggle";
 
 const DealManagement = () => {
   const {
@@ -125,21 +130,41 @@ const DealManagement = () => {
     {
       head: "Payment Status",
       accessor: "payment Status",
-      component: (item) => (
-        <p
-          className={`${
-            item.paymentStatus === "pending"
-              ? "bg-danger text-white"
-              : item.paymentStatus === "received"
-              ? "bg-warning text-white"
-              : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
-          style={{
-            width: "fit-content",
-          }}
-        >
-          {item.paymentStatus}
-        </p>
+      component: (item, index) => (
+        // <p
+        //   className={`${
+        //     item.paymentStatus === "pending"
+        //       ? "bg-danger text-white"
+        //       : item.paymentStatus === "received"
+        //       ? "bg-warning text-white"
+        //       : "bg-success text-white"
+        //   } d-flex justify-content-start pb-0 rounded px-2 `}
+        //   style={{
+        //     width: "fit-content",
+        //   }}
+        // >
+        //   {item.paymentStatus}
+        // </p>
+
+        <TableToggle
+          Options={paymentStatusOptions.slice(1)}
+          value={item.paymentStatus}
+          classNames={
+            item.paymentStatus === "pending" ? "bg-danger" : "bg-success"
+          }
+          onChange={(e) =>
+            statusChangeHandler(
+              () =>
+                DEAL_UPDATE_PAYMENT_STATUS({
+                  dealId: item._id,
+                  status: e.target.value,
+                }),
+              index,
+              "paymentStatus",
+              item.paymentStatus === "pending" ? "paid" : "pending"
+            )
+          }
+        />
       ),
     },
     {

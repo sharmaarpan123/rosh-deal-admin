@@ -1,40 +1,30 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
 //img
-import { useNavigate } from "react-router-dom";
 import Papa from "papaparse";
+import { useNavigate } from "react-router-dom";
 // css
-
-import noImg from "../../../../Assets/images/no-img.png";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { array, z } from "zod";
+import Select from "react-select";
+import { toast } from "react-toastify";
+import { z } from "zod";
 import {
-  ADD_BRAND,
-  ADD_DEAL,
-  BRAND_BY_ID,
   BRAND_LIST,
   BULK_ADD_DEAL,
   DEAL_CATEGORY_LIST,
-  EDIT_DEAL,
-  GET_DEAL_VIEW,
   PLATFORM_LIST,
-  UPDATE_BRAND,
 } from "../../../../services/ApiCalls";
-import fileUploader from "../../../../utilities/fileUploader";
 import {
   catchAsync,
   checkResponse,
   isStringOnlyContainSpaces,
-  textAreaAdjust,
 } from "../../../../utilities/utilities";
-import Select from "react-select";
-import { toast } from "react-toastify";
-import styles from "./BulkAdd.module.scss";
 import TagsInput from "../add/TagsInput";
+import styles from "./BulkAdd.module.scss";
 
 const makeOptions = (data) => {
   return data?.map((item) => ({ label: item.name, value: item._id }));
@@ -134,7 +124,7 @@ const AddBulkDeal = () => {
     reValidateMode: "onChange",
   });
 
-  const { fields, append, remove, prepend, replace } = useFieldArray({
+  const { fields, remove, prepend } = useFieldArray({
     control,
     name: "csvData",
     shouldUnregister: false,

@@ -44,6 +44,7 @@ const ExportExcel = ({ body }) => {
 
     sheet.columns = [
       // reviewerName
+      { header: "_id", key: "_id", width: 32 },
       { header: "name", key: "userName", width: 32 },
       { header: "Reviewer Name", key: "reviewerName", width: 32 },
       {
@@ -63,6 +64,7 @@ const ExportExcel = ({ body }) => {
       const rowNumber = index + 1;
 
       const row = sheet.addRow({
+        _id: item?._id,
         userName: item?.userId.name,
         reviewerName: item?.reviewerName,
         cashbackAmount: item?.dealId?.cashBack,
@@ -113,7 +115,7 @@ const ExportExcel = ({ body }) => {
   return (
     <div>
       <h6 className="text-muted">Export to Excel</h6>
-      <Button onClick={handleExport} className="commonBtn">
+      <Button onClick={handleExport} className="commonBtn" >
         {loader ? <ButtonLoader /> : "Download Excel"}
       </Button>
     </div>

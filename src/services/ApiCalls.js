@@ -51,6 +51,8 @@ export const DEALS_LIST = (data) => Axios.post(API_URL.DEALS_LIST, data);
 export const GET_DEAL_VIEW = (data) => Axios.get(API_URL.GET_DEAL_VIEW + data);
 export const DEAL_BY_BRAND_ID = (body) =>
   Axios.get(API_URL.DEAL_BY_BRAND_ID + body);
+export const DEAL_UPDATE_PAYMENT_STATUS = (data) =>
+  Axios.post(API_URL.DEAL_UPDATE_PAYMENT_STATUS, data);
 
 // ORDERS
 
