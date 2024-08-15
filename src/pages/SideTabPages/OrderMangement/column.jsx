@@ -16,7 +16,7 @@ import {
   capitalizedFirstAlphaBet
 } from "../../../utilities/utilities";
 
-export const getColumn = (body, statusChangeHandler) => [
+export const getColumn = (body, statusChangeHandler , SetPopUpImage , acceptRejectHandler  , setRejectedModel) => [
   {
     head: "#",
     accessor: "#",

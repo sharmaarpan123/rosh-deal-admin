@@ -45,6 +45,9 @@ import DealDetails from "./SideTabPages/DealManagement/detail";
 import OrderManagement from "./SideTabPages/OrderMangement";
 import OrderDetails from "./SideTabPages/OrderMangement/detail";
 import AddBulkDeal from "./SideTabPages/DealManagement/bulkAdd/Index";
+import Poster from "./SideTabPages/Poster";
+import AddEditPoster from "./SideTabPages/Poster/add";
+import PosterDetails from "./SideTabPages/Poster/detail";
 
 export const routes = [
   { path: "/login", component: <Login /> },
@@ -102,6 +105,22 @@ export const privateRoutes = [
   {
     path: "/brand/details/:id",
     component: <BrandDetails />,
+  },
+  {
+    path: "/poster",
+    component: <Poster />,
+  },
+  {
+    path: "/poster/add",
+    component: <AddEditPoster />,
+  },
+  {
+    path: "/poster/edit/:id",
+    component: <AddEditPoster />,
+  },
+  {
+    path: "/poster/details/:id",
+    component: <PosterDetails />,
   },
   {
     path: "/deal",

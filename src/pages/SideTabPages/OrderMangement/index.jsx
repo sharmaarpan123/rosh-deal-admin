@@ -8,13 +8,10 @@ import CustomPagination from "../../../components/Common/CustomPagination";
 import ImagePopUp from "../../../components/Modals/ImagePopUp";
 import SetReasonModel from "../../../components/Modals/SetReasonModel";
 import dataHandler from "../../../hooks/dataHandler";
-import {
-  ACCEPT_REJECT_ORDER,
-  ORDER_LIST
-} from "../../../services/ApiCalls";
+import { ACCEPT_REJECT_ORDER, ORDER_LIST } from "../../../services/ApiCalls";
 import {
   defaultDeleteModelState,
-  OrderFromStatusOptionArr
+  OrderFromStatusOptionArr,
 } from "../../../utilities/const";
 import BulkPaymentStatusChange from "./BulkPaymentStatusChange";
 import Filter from "./Filter/Filter";
@@ -72,7 +69,13 @@ const OrderManagement = () => {
     }));
   };
 
-  const column = getColumn(body, statusChangeHandler);
+  const column = getColumn(
+    body,
+    statusChangeHandler,
+    SetPopUpImage,
+    acceptRejectHandler,
+    setRejectedModel
+  );
 
   return (
     <>
@@ -111,9 +114,8 @@ const OrderManagement = () => {
                 </div>
                 <div className="right">
                   <div className="d-flex gap-10">
-                    
-                  <ExportExcel body={body} />
-                  <BulkPaymentStatusChange refetch={refetch} />
+                    <ExportExcel body={body} />
+                    <BulkPaymentStatusChange refetch={refetch} />
                   </div>
                 </div>
               </div>

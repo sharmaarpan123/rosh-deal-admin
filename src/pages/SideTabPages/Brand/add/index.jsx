@@ -112,7 +112,7 @@ const AddEditBrand = () => {
                   </svg>
                 </Link>
                 <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                Add Brand
+                  {id ? "Edit" : "Add"} Poster
                 </h4>
               </div>
             </Col>
@@ -168,7 +168,7 @@ const AddEditBrand = () => {
                         </div>
                       </div>
                     </Col>
-                    <Col lg="8" md="6" className="my-2">
+                    <Col lg="6" md="12" className="my-2">
                       <div className="py-2">
                         <label
                           htmlFor=""

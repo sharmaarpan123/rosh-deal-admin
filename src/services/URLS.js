@@ -41,14 +41,24 @@ export default {
   GET_DEAL_VIEW: "/deal/detail/",
   DEALS_LIST: "/admin/deal/all/withFilters",
   DEAL_BY_BRAND_ID: "/admin/deal/getDealWithBrandId/",
-  DEAL_UPDATE_PAYMENT_STATUS : "/admin/deal/updatePaymentStatus",
+  DEAL_UPDATE_PAYMENT_STATUS: "/admin/deal/updatePaymentStatus",
+  DEAL_UPDATE_STATUS: "/admin/deal/updateStatus",
+  ALL_DEALS: "/admin/deal/all/allDeals",
 
   // orders
 
   ORDER_LIST: "/admin/orders/all",
   ACCEPT_REJECT_ORDER: "admin/order/acceptRejectOrder",
-  PAYMENT_STATUS_CHANGE : "admin/order/paymentStatusUpdate",
-  BULK_PAYMENT_STATUS_CHANGE : "admin/order/bulkPaymentStatusUpdate",
+  PAYMENT_STATUS_CHANGE: "admin/order/paymentStatusUpdate",
+  BULK_PAYMENT_STATUS_CHANGE: "admin/order/bulkPaymentStatusUpdate",
+
+  // poster
+  POSTER_LIST: "/admin/poster/getAllPosters",
+  POSTER_ADD: "/admin/poster/add",
+  POSTER_EDIT: "/admin/poster/edit",
+  POSTER_STATUS_CHANGE: "/admin/poster/statusChange",
+  POSTER_DELETE: "/admin/poster/delete",
+  POSTER_GET_BY_ID: "/admin/poster/getById/",
 
   ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 

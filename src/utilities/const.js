@@ -57,6 +57,14 @@ export const activeInActiveArr = ["active", "inactive"];
 
 export const accountType = ["single", "enterprise"];
 
+export const POSTER_ENUM = {
+  REDIRECT: "redirect",
+  BRAND: "brand",
+  DEALCATEGORY: "dealCategory",
+  DEAL: "deal",
+};
+
+
 export const orderStatusArr = [
   "pending",
   "rejected",

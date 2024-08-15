@@ -34,6 +34,7 @@ export const UPDATE_DEAL_CATEGORY = (data) =>
   Axios.post(API_URL.UPDATE_DEAL_CATEGORY, data);
 export const DELETE_DEAL_CATEGORY = (data) =>
   Axios.post(API_URL.DELETE_DEAL_CATEGORY, data);
+export const ALL_DEALS = (data) => Axios.get(API_URL.ALL_DEALS);
 
 // DEAL CATEGORY
 export const ADD_BRAND = (data) => Axios.post(API_URL.ADD_BRAND, data);
@@ -53,7 +54,8 @@ export const DEAL_BY_BRAND_ID = (body) =>
   Axios.get(API_URL.DEAL_BY_BRAND_ID + body);
 export const DEAL_UPDATE_PAYMENT_STATUS = (data) =>
   Axios.post(API_URL.DEAL_UPDATE_PAYMENT_STATUS, data);
-
+export const DEAL_UPDATE_STATUS = (data) =>
+  Axios.post(API_URL.DEAL_UPDATE_STATUS, data);
 // ORDERS
 
 export const ORDER_LIST = (data) => Axios.post(API_URL.ORDER_LIST, data);
@@ -63,6 +65,18 @@ export const PAYMENT_STATUS_CHANGE = (data) =>
   Axios.post(API_URL.PAYMENT_STATUS_CHANGE, data);
 export const BULK_PAYMENT_STATUS_CHANGE = (data) =>
   Axios.post(API_URL.BULK_PAYMENT_STATUS_CHANGE, data);
+
+// poster /////////
+
+export const POSTER_LIST = (data) => Axios.get(API_URL.POSTER_LIST, data);
+export const POSTER_ADD = (data) => Axios.post(API_URL.POSTER_ADD, data);
+export const POSTER_EDIT = (data) => Axios.post(API_URL.POSTER_EDIT, data);
+export const POSTER_STATUS_CHANGE = (data) =>
+  Axios.post(API_URL.POSTER_STATUS_CHANGE, data);
+export const POSTER_DELETE = (data) =>
+  Axios.post(API_URL.POSTER_DELETE, data);
+export const POSTER_GET_BY_ID = (data) =>
+  Axios.get(API_URL.POSTER_GET_BY_ID+ data, );
 
 ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 

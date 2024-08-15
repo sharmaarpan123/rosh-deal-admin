@@ -12,23 +12,18 @@ import noImg from "../../../components/Common/noImg";
 import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
 import dataHandler from "../../../hooks/dataHandler";
 import {
-  BRAND_LIST,
-  DEAL_UPDATE_PAYMENT_STATUS,
-  DEAL_UPDATE_STATUS,
-  DEALS_LIST,
-  DELETE_BRAND,
+  POSTER_DELETE,
+  POSTER_LIST,
+  POSTER_STATUS_CHANGE,
 } from "../../../services/ApiCalls";
-import {
-  activeInactiveOptions,
-  paymentStatusOptions,
-} from "../../../utilities/const";
+import { activeInactiveOptions } from "../../../utilities/const";
 import {
   activeInActiveOptions,
   capitalizedFirstAlphaBet,
 } from "../../../utilities/utilities";
 import TableToggle from "../../../components/Common/TableToggle";
 
-const DealManagement = () => {
+const Poster = () => {
   const {
     setBody,
     body,
@@ -42,7 +37,7 @@ const DealManagement = () => {
     deleteHandler,
     statusChangeHandler,
   } = dataHandler({
-    api: DEALS_LIST,
+    api: POSTER_LIST,
   });
 
   const column = [
@@ -54,60 +49,69 @@ const DealManagement = () => {
       },
     },
     {
-      head: "_id",
-      accessor: "",
-      component: (item, key) => {
-        return <>{item._id}</>;
-      },
-    },
-    {
       head: "Name",
-      accessor: "productName",
+      accessor: "name",
       component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
-          {capitalizedFirstAlphaBet(item.productName)}
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(item.name)}
         </p>
       ),
     },
+    {
+      head: "Title",
+      accessor: "title",
+    },
+    {
+      head: "Poster Type",
+      accessor: "posterType",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(item.posterType)}
+        </p>
+      ),
+    },
+    {
+      head: "Image",
+      accessor: "image",
+      component: (item, key, arr) => (
+        <img
+          src={item.image || noImg}
+          style={{ width: 100, height: 80, objectFit: "contain" }}
+        />
+      ),
+    },
+
     {
       head: "Brand",
       accessor: "brand",
-      component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item.brand.name)}
-        </p>
-      ),
+      component: (item, key, arr) => <>{item?.brand?.name || "-"}</>,
     },
     {
-      head: "Platform",
-      accessor: "platForm",
-      component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item.platForm.name)}
-        </p>
-      ),
+      head: "Deal",
+      accessor: "deal",
+      component: (item, key, arr) => <>{item?.deal?.productName || "-"}</>,
     },
     {
       head: "Deal Category",
       accessor: "dealCategory",
+      component: (item, key, arr) => <>{item?.dealCategory?.name || "-"}</>,
+    },
+    {
+      head: "Redirect url",
+      accessor: "redirectUrl",
       component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item.dealCategory.name)}
-        </p>
+        <>
+          {item?.redirectUrl ? (
+            <a href={item?.redirectUrl} target="_blank">
+              Redirect url
+            </a>
+          ) : (
+            "-"
+          )}
+        </>
       ),
     },
-    {
-      head: "Commission",
-      accessor: "adminCommission",
-    },
-    {
-      head: "cashback",
-      accessor: "cashBack",
-    },
-    {
-      head: "actualPrice",
-      accessor: "actualPrice",
-    },
+
     {
       head: "Created At",
       accessor: "createdAt",
@@ -115,21 +119,24 @@ const DealManagement = () => {
         <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
       ),
     },
+
+    {
+      head: "isDeleted",
+      accessor: "",
+      component: (item) => (
+        <p
+          className={`text-white rounded  text-center ${
+            item.isDeleted ? "bg-danger " : "bg-success"
+          } `}
+        >
+          {item.isDeleted ? "Deleted" : "active"}
+        </p>
+      ),
+    },
     {
       head: "Status",
       accessor: "isDeleted",
-      component: (item, index) => (
-        // <p
-        //   className={`mb-0 ${
-        //     !item.isActive ? "bg-danger text-white" : "bg-success text-white"
-        //   } d-flex justify-content-start pb-0 rounded px-2 `}
-        //   style={{
-        //     width: "fit-content",
-        //   }}
-        // >
-        //   {item.isActive ? "Active" : "InActive"}
-        // </p>
-
+      component: (item , index) => (
         <TableToggle
           Options={activeInActiveOptions}
           value={item.isActive ? "active" : "inactive"}
@@ -141,8 +148,8 @@ const DealManagement = () => {
           onChange={(e) =>
             statusChangeHandler(
               () =>
-                DEAL_UPDATE_STATUS({
-                  dealId: item._id,
+                POSTER_STATUS_CHANGE({
+                  posterId: item._id,
                   status: e.target.value === "active",
                 }),
               index,
@@ -154,59 +161,12 @@ const DealManagement = () => {
       ),
     },
     {
-      head: "Payment Status",
-      accessor: "payment Status",
-      component: (item, index) => (
-        <TableToggle
-          Options={paymentStatusOptions.slice(1)}
-          value={item.paymentStatus}
-          classNames={
-            item.paymentStatus === "pending" ? "bg-danger" : "bg-success"
-          }
-          style={{
-            color: item.paymentStatus === "pending" ? "red" : "pending",
-            width: 120,
-          }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                DEAL_UPDATE_PAYMENT_STATUS({
-                  dealId: item._id,
-                  status: e.target.value,
-                }),
-              index,
-              "paymentStatus",
-              item.paymentStatus === "pending" ? "paid" : "pending"
-            )
-          }
-        />
-      ),
-    },
-    {
-      head: "Is slot Completed",
-      accessor: "isSlotCompleted",
-      component: (item) => (
-        <p
-          className={`mb-0 ${
-            !item.isSlotCompleted
-              ? "bg-danger text-white"
-              : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
-          style={{
-            width: "fit-content",
-          }}
-        >
-          {item.isSlotCompleted ? "Completed" : "UnCompleted"}
-        </p>
-      ),
-    },
-    {
       head: "Action",
       accessor: "Action",
       component: (item) => (
         <TableActions
-          editUrl={`/deal/edit/${item._id}`}
-          viewLink={`/deal/details/${item._id}`}
+          editUrl={`/poster/edit/${item._id}`}
+          // viewLink={`/poster/details/${item._id}`}
           setDeleteModel={() =>
             setDeleteModel({ dumpId: item._id, show: true })
           }
@@ -217,20 +177,20 @@ const DealManagement = () => {
 
   return (
     <>
-      {/* <ConfirmationPop
+      <ConfirmationPop
         type={"delete"}
-        // confirmHandler={() =>
-        //   deleteHandler(() => DELETE_BRAND({ brandId: deleteModel.dumpId }))
-        // }
+        confirmHandler={() =>
+          deleteHandler(() => POSTER_DELETE({ posterId: deleteModel.dumpId }))
+        }
         confirmation={deleteModel.show}
         setConfirmation={() => setDeleteModel({ dumpId: "", show: false })}
-      /> */}
+      />
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
             <Col lg="12">
               <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                Deal Management
+                Poster Management
               </h4>
             </Col>
             <Col lg="12" className="my-2">
@@ -242,8 +202,7 @@ const DealManagement = () => {
                       searchHandler={searchHandler}
                       setBody={setBody}
                       statusFilterOptionArr={activeInactiveOptions}
-                      ShowPaymentStatus={true}
-                      ShowSlotStatus={true}
+                      showSearch={false}
                     />
                   </ul>
                 </div>
@@ -251,16 +210,7 @@ const DealManagement = () => {
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
                     <li className="">
                       <Link
-                        to={"/deal/bulk-add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Bulk Add
-                      </Link>
-                    </li>
-                    <li className="">
-                      <Link
-                        to={"/deal/add"}
+                        to={"/poster/add"}
                         className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
                         style={{ height: 40, minWidth: 100, fontSize: 12 }}
                       >
@@ -287,4 +237,4 @@ const DealManagement = () => {
   );
 };
 
-export default DealManagement;
+export default Poster;

@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import { activeInActiveArr, POSTER_ENUM } from "./const";
 
 export const changePageToOne = (body, setBody) => {
   const newBody = { ...body, page: 1, offset: 0 };
@@ -51,6 +52,12 @@ export const removeUnderScore = (message) => {
   return message.split("_").join(" ");
 };
 
+export const activeInActiveOptions = makingOptionsFromArr(activeInActiveArr);
+
+export const posterEnumOptions = makingOptionsFromArr(
+  Object.values(POSTER_ENUM)
+);
+
 export function createObjectURL(object) {
   return window.URL
     ? window.URL.createObjectURL(object)
@@ -82,6 +89,11 @@ export const exportCsvHandler = async (data) => {
     toast.error("something went wrong");
   }
 };
+
+export const isUrlValid = (data) =>
+  /[(http(s)?)://(www.)?a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/gi.test(
+    data
+  );
 
 export const catchAsync = (fn, setLoader, callBack) => {
   return (...arg) =>
