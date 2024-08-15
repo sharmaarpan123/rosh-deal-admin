@@ -60,7 +60,7 @@ const ManageUser = () => {
       ),
     },
     { head: "Email", accessor: "email" },
-    { head: "Phone Number", accessor: "mobileNumber" },
+    { head: "Phone Number", accessor: "phoneNumber" },
     {
       head: "Created At",
       accessor: "createdAt",
@@ -70,10 +70,10 @@ const ManageUser = () => {
     },
     {
       head: "Account Type",
-      accessor: "accountType",
+      accessor: "roles",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
-          {removeUnderScoreAndCapitalizeFirstLetter(item.accountType)}
+          {item?.roles[0].toUpperCase()}
         </p>
       ),
     },
@@ -82,15 +82,17 @@ const ManageUser = () => {
       accessor: "status",
       component: (item, key, arr) => (
         <Toggle
-          isChecked={item.status === "active"}
+          isChecked={item.isVerified}
           onChange={() =>
             statusChangeHandler(
               () =>
                 USER_STATUS_CHANGE({
-                  _id: item._id,
-                  status: item.status === "active" ? "inactive" : "active",
+                  userId: item?._id,
+                  isVerified: !item?.isVerified
                 }),
-              key
+              key,
+              "isVerified",
+              !item?.isVerified
             )
           }
         />

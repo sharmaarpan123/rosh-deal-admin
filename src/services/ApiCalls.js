@@ -82,7 +82,7 @@ export const POSTER_GET_BY_ID = (data) =>
 
 // user
 export const ADD_USER = (data) => Axios.post(API_URL.ADD_USER, data);
-export const USER_LIST = (data) => Axios.post(API_URL.USER_LIST, data);
+export const USER_LIST = (data) => Axios.get(API_URL.USER_LIST, data);
 export const GET_USER_BY_ID = (data) =>
   Axios.get(API_URL.GET_USER_BY_ID + data);
 export const UPDATE_USER = (data) => Axios.post(API_URL.UPDATE_USER, data);

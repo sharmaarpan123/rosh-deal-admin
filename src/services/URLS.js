@@ -64,11 +64,11 @@ export default {
 
   // ADD USER
   ADD_USER: "/store/adduser",
-  USER_LIST: "/store/users",
+  USER_LIST: "/user/get-users",
   GET_USER_BY_ID: "/store/user/",
   UPDATE_USER: "/store/updateuser",
   DELETE_USER: "/store/removeuser",
-  USER_STATUS_CHANGE: "/store/user/updatestatus/all",
+  USER_STATUS_CHANGE: "/user/users/verify/",
 
   // service provider
   SERVICE_PROVIDERS_LIST: "/store/vendors",
