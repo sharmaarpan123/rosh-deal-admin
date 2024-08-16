@@ -39,7 +39,10 @@ const Sidebar = ({ sidebar, setSidebar }) => {
       </Button>
       <div className={`${styles.top} top text-center px-3 py-2`}>
         <Link to="/" className={`${styles.logo} logo`}>
-          <img src={logo} alt="" className="img-fluid" />
+          <img src={logo} alt=""   className="w-100" style={{
+            width : 100
+          }}
+          />
         </Link>
       </div>
       <Accordion className={`${styles.linkWrpper} linkWrpper pt-2 px-2`}>

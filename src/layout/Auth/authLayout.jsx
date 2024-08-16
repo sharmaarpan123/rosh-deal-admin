@@ -30,8 +30,8 @@ const AuthLayout = () => {
                 style={{ height: "85vh" }}
               >
                 <img src={g1} alt="" className="img-fluid object-contain position-absolute" style={{right: 0, bottom: 0, height: 200, opacity: .4}} />
-                <div className="logo text-center pb-lg-5 pb-4">
-                  <img src={logo} alt="" className="img-fluid object-fit-contain" style={{height: 35}} />
+                <div className="logo text-center">
+                  <img src={logo} alt="" className="img-fluid object-fit-contain" style={{height: 100}} />
                 </div>
                 <Outlet />
               </div>

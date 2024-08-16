@@ -88,7 +88,7 @@ const Header = ({ sidebar, setSidebar }) => {
               <Form
                 className={`${styles.searchForm} mx-lg-2 position-relative`}
               >
-                <div className="iconWithText position-relative">
+                {/* <div className="iconWithText position-relative">
                   <Form.Control
                     type="search"
                     placeholder="Search"
@@ -125,169 +125,10 @@ const Header = ({ sidebar, setSidebar }) => {
                       </defs>
                     </svg>
                   </Button>
-                </div>
+                </div> */}
               </Form>
               <Nav className=" my-2 my-lg-0 align-items-center">
-                <Dropdown className={`${styles.notificationDropdown} noAfter`}>
-                  <div
-                    className="position-fixed h-100 w-100 bg-dark d-none"
-                    style={{ left: 0, top: 0, opacity: 0.5 }}
-                  ></div>
-                  <Dropdown.Toggle
-                    className={`border-0 p-0 position-relative`}
-                    variant="transparent"
-                    id="dropdown-basic"
-                  >
-                    <span
-                      className={`${styles.count} count rounded-circle d-flex align-items-center fw-bold position-absolute justify-content-center text-white`}
-                    >
-                      1
-                    </span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="30"
-                      height="30"
-                      viewBox="0 0 36 43"
-                      fill="none"
-                    >
-                      <path
-                        d="M18.1239 42.8392C21.3253 42.8392 24.0034 40.557 24.6183 37.5361H11.6294C12.2447 40.557 14.9228 42.8392 18.1239 42.8392Z"
-                        fill="#5F86B6"
-                      />
-                      <path
-                        d="M31.5159 26.0392C31.4699 26.0392 31.4275 26.0463 31.3816 26.0463C23.5843 26.0463 17.2403 19.7023 17.2403 11.9051C17.2403 8.84151 18.2301 6.01165 19.8919 3.69222V2.18261C19.8919 1.20512 19.0998 0.415039 18.124 0.415039C17.1484 0.415039 16.3564 1.20512 16.3564 2.18261V4.09195C10.3691 4.95454 5.75031 10.1038 5.75031 16.3242V21.2524C5.75031 24.7506 4.21772 28.0527 1.52898 30.3259C0.841498 30.9146 0.447266 31.7701 0.447266 32.6751C0.447266 34.3812 1.83485 35.7687 3.5406 35.7687H32.7073C34.4134 35.7687 35.801 34.3812 35.801 32.6751C35.801 31.7701 35.4067 30.9146 34.7015 30.312C33.3084 29.1328 32.2338 27.6656 31.5159 26.0392Z"
-                        fill="#5F86B6"
-                      />
-                    </svg>
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu
-                    className={`${styles.menu} rounded-0 pt-0 shadow-sm border-0`}
-                  >
-                    <div
-                      className={`${styles.top} top py-3 px-3 d-flex justify-content-between align-items-center mb-2`}
-                    >
-                      <h4 className="m-0 fw-sbold">
-                        Notifications{" "}
-                        <span
-                          className={`${styles.count} text-white rounded-circle fw-normal d-inline-flex align-items-center justify-content-center`}
-                        >
-                          2
-                        </span>
-                      </h4>
-                      <Button className="border-0 p-0" variant="transparent">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="4"
-                          height="19"
-                          viewBox="0 0 4 19"
-                          fill="none"
-                        >
-                          <circle
-                            cx="1.64589"
-                            cy="1.59413"
-                            r="1.55019"
-                            fill="#80849D"
-                          />
-                          <circle
-                            cx="1.64589"
-                            cy="9.03456"
-                            r="1.55019"
-                            fill="#80849D"
-                          />
-                          <circle
-                            cx="1.64589"
-                            cy="16.476"
-                            r="1.55019"
-                            fill="#80849D"
-                          />
-                        </svg>
-                      </Button>
-                    </div>
-                    <div className="ContentBody">
-                      <ul
-                        className={`${styles.notificationList} list-unstyled ps-0 mb-0`}
-                      >
-                        <li className="py-3 d-flex align-items-start gap-10 px-3">
-                          <div
-                            className="imgWrp rounded-circle"
-                            style={{
-                              height: 40,
-                              width: 40,
-                              background: "#6CBC6E",
-                            }}
-                          >
-                            {/* <img
-                              src={user}
-                              alt=""
-                              className="img-fluid h-100 w-100 rounded-circle"
-                               style={{ objectFit: "cover" }}
-                            /> */}
-                          </div>
-                          <div className="content">
-                            <h6 className="fw-bold text-dark m-0">
-                              Edward Curr
-                            </h6>
-                            <p className=" text-muted m-0">
-                              agency driver submits their profile for
-                              verification
-                            </p>
-                            <div className="btnWrpper my-2 d-flex align-items-center gap-10">
-                              <Button className="d-flex align-items-center justify-content-center h-auto commonBtn">
-                                Approve
-                              </Button>
-                              <Button
-                                className="d-flex align-items-center justify-content-center h-auto commonBtn bg-transparent text-muted broder-light"
-                                style={{ borderColor: "#ddd" }}
-                              >
-                                Approve
-                              </Button>
-                            </div>
-                            <p className="m-0 text-muted">17 min ago</p>
-                          </div>
-                        </li>
-                        <li className="py-3 d-flex align-items-start gap-10 px-3">
-                          <div
-                            className="imgWrp rounded-circle"
-                            style={{
-                              height: 40,
-                              width: 40,
-                              background: "#6CBC6E",
-                            }}
-                          >
-                            <img
-                              src={user}
-                              alt=""
-                              className="img-fluid h-100 w-100 rounded-circle"
-                              style={{ objectFit: "cover" }}
-                            />
-                          </div>
-                          <div className="content">
-                            <h6 className="fw-bold text-dark m-0">
-                              Edward Curr
-                            </h6>
-                            <p className=" text-muted m-0">
-                              agency driver submits their profile for
-                              verification
-                            </p>
-                            <div className="btnWrpper my-2 d-flex align-items-center gap-10">
-                              <Button className="d-flex align-items-center justify-content-center h-auto commonBtn">
-                                Approve
-                              </Button>
-                              <Button
-                                className="d-flex align-items-center justify-content-center h-auto commonBtn bg-transparent text-muted broder-light"
-                                style={{ borderColor: "#ddd" }}
-                              >
-                                Approve
-                              </Button>
-                            </div>
-                            <p className="m-0 text-muted">17 min ago</p>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </Dropdown.Menu>
-                </Dropdown>
+             
 
                 <Link
                   className={`${styles.profileLink} px-3 d-flex align-items-center gap-10`}
@@ -299,12 +140,12 @@ const Header = ({ sidebar, setSidebar }) => {
                     alt=""
                     className="img-fluid rounded-circle object-fit-cover flex-shrink-0"
                   />
-                  <div className="content">
+                  {/* <div className="content">
                     <p className="m-0 themeClr fw-sbold">Brooklyn Simmons</p>
                     <p className="m-0 text-muted fw-sbold">
                       michelle.rivera@example.com
                     </p>
-                  </div>
+                  </div> */}
                 </Link>
                 <Button
                   onClick={() => setConfirmation(true)}
