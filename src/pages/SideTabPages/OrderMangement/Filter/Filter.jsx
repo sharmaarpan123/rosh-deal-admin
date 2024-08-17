@@ -101,12 +101,12 @@ const Filter = ({ statusFilterOptionArr, setBody, body }) => {
           className="form-label m-0 fw-sbold text-muted"
           style={{ whiteSpace: "nowrap" }}
         >
-          Status
+          Order Status
         </label>
         <StatusFilter
           body={body}
           setBody={setBody}
-          statusKey={"status"}
+          statusKey={"orderFormStatus"}
           statusFilterOptionArr={statusFilterOptionArr}
         />
       </li>

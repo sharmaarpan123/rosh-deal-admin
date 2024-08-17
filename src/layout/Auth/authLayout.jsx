@@ -17,8 +17,9 @@ const AuthLayout = () => {
         className={`${styles.authLayout} authLayout position-relative py-3 d-flex align-items-center justify-content-center flex-column`}
         style={{
           zIndex: "9",
-          backgroundImage: `url(${AuthBg})`,
+          // backgroundImage: `url(${AuthBg})`,
           backgroundSize: "cover",
+          background: "#173b69",
           backgroundPosition: "center",
         }}
       >

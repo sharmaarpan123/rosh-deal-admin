@@ -36,8 +36,9 @@ const OrderManagement = () => {
     extraBody: {
       brandId: "",
       dealId: [],
+      orderFormStatus: "",
     },
-    dependencies: ["brandId", "dealId"],
+    dependencies: ["brandId", "dealId", "orderFormStatus"],
   });
   const [rejectReason, setRejectedReason] = useState("");
   const [rejectedModel, setRejectedModel] = useState({
