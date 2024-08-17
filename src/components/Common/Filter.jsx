@@ -21,7 +21,7 @@ const Filter = ({
       ...p,
       paymentStatus: "",
       isSlotCompleted: "",
-      status: "",
+      status: "1",
       search: "",
       page: 1,
       offset: 0,

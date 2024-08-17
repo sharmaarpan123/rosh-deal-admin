@@ -6,10 +6,14 @@ import TableLayout from "../../../components/TableLayout";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import TableActions from "../../../components/Common/TableActions";
+import TableToggle from "../../../components/Common/TableToggle";
 import noImg from "../../../components/Common/noImg";
-import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
 import dataHandler from "../../../hooks/dataHandler";
-import { DELETE_PLATFORM, PLATFORM_LIST } from "../../../services/ApiCalls";
+import {
+  PLATFORM_LIST,
+  STATUS_UPDATE_PLATFORM,
+} from "../../../services/ApiCalls";
+import { activeInActiveStatusOptions } from "../../../utilities/const";
 import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
 
 const PlatForm = () => {
@@ -65,18 +69,29 @@ const PlatForm = () => {
     },
     {
       head: "Status",
-      accessor: "isDeleted",
-      component: (item) => (
-        <p
-          className={`${
-            item.isDeleted ? "bg-danger text-white" : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
+      accessor: "",
+      component: (item, index) => (
+        <TableToggle
+          Options={activeInActiveStatusOptions}
+          value={item.isActive ? "1" : "0"}
+          classNames={item.isActive ? "bg-success" : "bg-danger"}
           style={{
-            width: "fit-content",
+            color: item.isActive ? "green" : "red",
+            width: 120,
           }}
-        >
-          {item.isDeleted ? "Deleted" : "Active"}
-        </p>
+          onChange={(e) =>
+            statusChangeHandler(
+              () =>
+                STATUS_UPDATE_PLATFORM({
+                  platFormId: item._id,
+                  status: e.target.value === "1",
+                }),
+              index,
+              "isActive",
+              !item.isActive
+            )
+          }
+        />
       ),
     },
     {
@@ -86,9 +101,6 @@ const PlatForm = () => {
         <TableActions
           editUrl={`/platform/edit/${item._id}`}
           viewLink={`/platform/details/${item._id}`}
-          setDeleteModel={() =>
-            setDeleteModel({ dumpId: item._id, show: true })
-          }
         />
       ),
     },
@@ -96,16 +108,6 @@ const PlatForm = () => {
 
   return (
     <>
-      <ConfirmationPop
-        type={"delete"}
-        confirmHandler={() =>
-          deleteHandler(() =>
-            DELETE_PLATFORM({ platFormId: deleteModel.dumpId })
-          )
-        }
-        confirmation={deleteModel.show}
-        setConfirmation={() => setDeleteModel({ dumpId: "", show: false })}
-      />
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>

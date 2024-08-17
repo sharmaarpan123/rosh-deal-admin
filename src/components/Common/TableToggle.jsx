@@ -3,7 +3,12 @@ import { Form } from "react-bootstrap";
 
 const TableToggle = ({ classNames, style, onChange, Options, value }) => {
   return (
-    <div className={`p-1 rounded   ${classNames}`}>
+    <div
+      className={`p-1 rounded   ${classNames}`}
+      style={{
+        width: "fit-content",
+      }}
+    >
       <Form.Select
         onChange={onChange}
         value={value}

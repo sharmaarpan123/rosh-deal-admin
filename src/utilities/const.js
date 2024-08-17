@@ -10,16 +10,27 @@ export const defaultDeleteModelState = {
 
 export const activeInactiveOptions = [
   {
-    label: "All",
-    value: "",
-  },
-  {
     label: "Active",
-    value: "active",
+    value: "1",
   },
   {
     label: "InActive",
-    value: "inactive",
+    value: "0",
+  },
+  {
+    label: "All",
+    value: "",
+  },
+];
+
+export const activeInActiveStatusOptions = [
+  {
+    label: "Active",
+    value: "1",
+  },
+  {
+    label: "InActive",
+    value: "0",
   },
 ];
 
@@ -64,7 +75,6 @@ export const POSTER_ENUM = {
   DEAL: "deal",
 };
 
-
 export const orderStatusArr = [
   "pending",
   "rejected",
@@ -73,6 +83,3 @@ export const orderStatusArr = [
   "reviewFormRejected",
   "reviewFormAccepted",
 ];
-
-
-

@@ -16,7 +16,6 @@ import {
   DEAL_UPDATE_PAYMENT_STATUS,
   DEAL_UPDATE_STATUS,
   DEALS_LIST,
-  DELETE_BRAND,
 } from "../../../services/ApiCalls";
 import {
   activeInactiveOptions,
@@ -207,9 +206,6 @@ const DealManagement = () => {
         <TableActions
           editUrl={`/deal/edit/${item._id}`}
           viewLink={`/deal/details/${item._id}`}
-          setDeleteModel={() =>
-            setDeleteModel({ dumpId: item._id, show: true })
-          }
         />
       ),
     },
@@ -217,14 +213,6 @@ const DealManagement = () => {
 
   return (
     <>
-      {/* <ConfirmationPop
-        type={"delete"}
-        // confirmHandler={() =>
-        //   deleteHandler(() => DELETE_BRAND({ brandId: deleteModel.dumpId }))
-        // }
-        confirmation={deleteModel.show}
-        setConfirmation={() => setDeleteModel({ dumpId: "", show: false })}
-      /> */}
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>

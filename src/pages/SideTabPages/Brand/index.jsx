@@ -10,14 +10,14 @@ import TableActions from "../../../components/Common/TableActions";
 import noImg from "../../../components/Common/noImg";
 import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
 import dataHandler from "../../../hooks/dataHandler";
-import {
-  BRAND_LIST,
-  DELETE_BRAND,
-  DELETE_PLATFORM,
-} from "../../../services/ApiCalls";
+import { BRAND_LIST, BRAND_UPDATE_STATUS } from "../../../services/ApiCalls";
 import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
 import Filter from "../../../components/Common/Filter";
-import { activeInactiveOptions } from "../../../utilities/const";
+import {
+  activeInactiveOptions,
+  activeInActiveStatusOptions,
+} from "../../../utilities/const";
+import TableToggle from "../../../components/Common/TableToggle";
 
 const Brand = () => {
   const {
@@ -47,7 +47,6 @@ const Brand = () => {
     {
       head: "_id",
       accessor: "_id",
-     
     },
     {
       head: "Name",
@@ -77,18 +76,29 @@ const Brand = () => {
     },
     {
       head: "Status",
-      accessor: "isDeleted",
-      component: (item) => (
-        <p
-          className={`${
-            item.isDeleted ? "bg-danger text-white" : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
+      accessor: "",
+      component: (item, index) => (
+        <TableToggle
+          Options={activeInActiveStatusOptions}
+          value={item.isActive ? "1" : "0"}
+          classNames={item.isActive ? "bg-success" : "bg-danger"}
           style={{
-            width: "fit-content",
+            color: item.isActive ? "green" : "red",
+            width: 120,
           }}
-        >
-          {item.isDeleted ? "Deleted" : "Active"}
-        </p>
+          onChange={(e) =>
+            statusChangeHandler(
+              () =>
+                BRAND_UPDATE_STATUS({
+                  brandId: item._id,
+                  status: e.target.value === "1",
+                }),
+              index,
+              "isActive",
+              !item.isActive
+            )
+          }
+        />
       ),
     },
     {
@@ -98,9 +108,6 @@ const Brand = () => {
         <TableActions
           editUrl={`/brand/edit/${item._id}`}
           viewLink={`/brand/details/${item._id}`}
-          setDeleteModel={() =>
-            setDeleteModel({ dumpId: item._id, show: true })
-          }
         />
       ),
     },
@@ -108,14 +115,6 @@ const Brand = () => {
 
   return (
     <>
-      <ConfirmationPop
-        type={"delete"}
-        confirmHandler={() =>
-          deleteHandler(() => DELETE_BRAND({ brandId: deleteModel.dumpId }))
-        }
-        confirmation={deleteModel.show}
-        setConfirmation={() => setDeleteModel({ dumpId: "", show: false })}
-      />
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>

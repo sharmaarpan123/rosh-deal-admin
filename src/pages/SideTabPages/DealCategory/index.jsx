@@ -1,25 +1,21 @@
-import React, { useState } from "react";
-import { Button, Col, Container, Dropdown, Form, Row } from "react-bootstrap";
+import React from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import TableLayout from "../../../components/TableLayout";
 
 // img
-import u1 from "../../../Assets/images/authBg.png";
+import moment from "moment";
 import { Link } from "react-router-dom";
-import { CstmPagination } from "../../../components/Common/Common";
+import noImg from "../../../components/Common/noImg";
+import TableActions from "../../../components/Common/TableActions";
+import TableToggle from "../../../components/Common/TableToggle";
 import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
+import dataHandler from "../../../hooks/dataHandler";
 import {
   DEAL_CATEGORY_LIST,
-  DELETE_DEAL_CATEGORY,
-  DELETE_PLATFORM,
-  PLATFORM_LIST,
+  UPDATE_STATUS_DEAL_CATEGORY
 } from "../../../services/ApiCalls";
-import dataHandler from "../../../hooks/dataHandler";
+import { activeInActiveStatusOptions } from "../../../utilities/const";
 import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
-import moment from "moment";
-import Toggle from "../../../components/Common/Toggle";
-import TableActions from "../../../components/Common/TableActions";
-import CustomPagination from "../../../components/Common/CustomPagination";
-import noImg from "../../../components/Common/noImg";
 
 const DealCategory = () => {
   const {
@@ -74,18 +70,29 @@ const DealCategory = () => {
     },
     {
       head: "Status",
-      accessor: "isDeleted",
-      component: (item) => (
-        <p
-          className={`${
-            item.isDeleted ? "bg-danger text-white" : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
+      accessor: "",
+      component: (item, index) => (
+        <TableToggle
+          Options={activeInActiveStatusOptions}
+          value={item.isActive ? "1" : "0"}
+          classNames={item.isActive ? "bg-success" : "bg-danger"}
           style={{
-            width: "fit-content",
+            color: item.isActive ? "green" : "red",
+            width: 120,
           }}
-        >
-          {item.isDeleted ? "Deleted" : "Active"}
-        </p>
+          onChange={(e) =>
+            statusChangeHandler(
+              () =>
+                UPDATE_STATUS_DEAL_CATEGORY({
+                  dealCategoryId: item._id,
+                  status: e.target.value === "1",
+                }),
+              index,
+              "isActive",
+              !item.isActive
+            )
+          }
+        />
       ),
     },
     {
@@ -95,9 +102,7 @@ const DealCategory = () => {
         <TableActions
           editUrl={`/deal-category/edit/${item._id}`}
           viewLink={`/deal-category/details/${item._id}`}
-          setDeleteModel={() =>
-            setDeleteModel({ dumpId: item._id, show: true })
-          }
+                
         />
       ),
     },
@@ -105,16 +110,7 @@ const DealCategory = () => {
 
   return (
     <>
-      <ConfirmationPop
-        type={"delete"}
-        confirmHandler={() =>
-          deleteHandler(() =>
-            DELETE_DEAL_CATEGORY({ dealCategoryId: deleteModel.dumpId })
-          )
-        }
-        confirmation={deleteModel.show}
-        setConfirmation={() => setDeleteModel({ dumpId: "", show: false })}
-      />
+      
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>

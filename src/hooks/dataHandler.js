@@ -16,7 +16,7 @@ const dataHandler = ({ api, extraBody, dependencies }) => {
   const [deleteModel, setDeleteModel] = useState(defaultDeleteModelState);
   const [body, setBody] = useState({
     search: "",
-    status: "",
+    status: "1",
     page: 1,
     offset: 0,
     limit: 10,

@@ -13,11 +13,7 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 import Loading from "../../../../components/Common/Loading";
 import Toggle from "../../../../components/Common/Toggle";
-import {
-  ADD_USER,
-  GET_USER_BY_ID,
-  UPDATE_USER,
-} from "../../../../services/ApiCalls";
+import { GET_USER_BY_ID, UPDATE_USER } from "../../../../services/ApiCalls";
 import { accountType, activeInActiveArr } from "../../../../utilities/const";
 import fileUploader from "../../../../utilities/fileUploader";
 import {
@@ -35,15 +31,12 @@ const getSchema = (editMode) =>
         .min(1, { message: "Email is required" })
         .email("Invalid email address"),
       password: z.string().optional(),
-      contactNumber: z.string().min(1, { message: "Phone number is required" }),
-      countryCode: z.string({ required_error: "CountryCode is Required" }),
-      address: z.string().min(1, { message: "Address is required" }),
-      status: z.nativeEnum(activeInActiveArr, {
+      phoneNumber: z.string().min(1, { message: "Phone number is required" }),
+      status: z.boolean({
         message: "This field is required",
         required_error: "This field is required",
         invalid_type_error: "This field is required!",
       }),
-      accountType: z.string(),
       passwordToggle: z.boolean(), // this for the edit mode
     })
     .refine(
@@ -83,52 +76,32 @@ const AddEditUser = () => {
       passwordToggle: false,
     },
     values: {
-      status: userDetails?.status || "active",
-      contactNumber: userDetails?.countryCode + userDetails?.mobileNumber || "",
-      accountType: userDetails?.accountType || "",
+      status: userDetails?.isActive,
+      phoneNumber: userDetails?.phoneNumber
+        ? "91" + userDetails?.phoneNumber
+        : "",
       email: userDetails?.email || "",
-      countryCode: userDetails?.countryCode || "",
-      address: userDetails?.address || "",
       name: userDetails?.name || "",
       passwordToggle: false,
     },
   });
 
   const submitHandler = catchAsync(async (data) => {
-    if (!profileImage?.link) {
-      return toast.error("Profile image is required");
-    }
-
     const body = {
       ...data,
-      ...(id && { _id: id }),
-      profileImage: profileImage._id,
-      mobileNumber: data.contactNumber.replace(data.countryCode, ""),
+      userId: id,
+      phoneNumber: data.phoneNumber.replace("91", ""),
     };
 
     delete body.passwordToggle;
 
-    const res = await (id ? UPDATE_USER(body) : ADD_USER(body));
+    const res = await UPDATE_USER(body);
 
     const success = checkResponse({ res, showSuccess: true });
 
     if (success) {
       navigate("/manage-user");
     }
-  });
-
-  const profileImageHandler = catchAsync(async (e) => {
-    setProfileImageLoader(true);
-    const res = await fileUploader(e.target.files[0]);
-
-    if (!res?._id) {
-      setProfileImageLoader(false);
-      return;
-    }
-
-    setProfileImageLoader(false);
-
-    setProfileImage(res);
   });
 
   const getData = catchAsync(async () => {
@@ -179,60 +152,6 @@ const AddEditUser = () => {
               >
                 <Form onSubmit={handleSubmit(submitHandler)}>
                   <Row className="justify-content-between">
-                    <Col lg="12" className="my-2">
-                      <div
-                        className="mx-auto position-relative upload text-center"
-                        style={{ maxWidth: "max-content" }}
-                      >
-                        <input
-                          type="file"
-                          className="file position-absolute h-100 w-100"
-                          onChange={profileImageHandler}
-                        />
-                        <div className="imgWrp position-relative">
-                          <span
-                            className="icn position-absolute"
-                            style={{ right: 0, bottom: 20 }}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="22"
-                              height="22"
-                              viewBox="0 0 26 26"
-                              fill="none"
-                            >
-                              <circle
-                                cx="13.2007"
-                                cy="12.9282"
-                                r="12.3872"
-                                fill="#3366FF"
-                              />
-                              <path
-                                d="M9.68021 16.69C9.79021 16.69 9.81221 16.679 9.91121 16.657L11.8912 16.261C12.1002 16.206 12.3092 16.107 12.4742 15.942L17.2702 11.146C18.0072 10.409 18.0072 9.14404 17.2702 8.40704L16.8632 7.97804C16.1262 7.24104 14.8502 7.24104 14.1132 7.97804L9.31721 12.785C9.16321 12.939 9.05321 13.159 8.99821 13.368L8.58021 15.37C8.52521 15.744 8.63521 16.107 8.89921 16.371C9.10821 16.58 9.41621 16.69 9.68021 16.69ZM10.0542 13.577L14.8502 8.77004C15.1692 8.45104 15.7522 8.45104 16.0602 8.77004L16.4782 9.18804C16.8522 9.56204 16.8522 10.09 16.4782 10.453L11.6932 15.26L9.65821 15.601L10.0542 13.577ZM17.2262 17.372H9.10821C8.78921 17.372 8.58021 17.581 8.58021 17.9C8.58021 18.219 8.84421 18.428 9.10821 18.428H17.1822C17.5012 18.428 17.7652 18.219 17.7652 17.9C17.7542 17.581 17.4902 17.372 17.2262 17.372Z"
-                                fill="#F2F2F7"
-                                stroke="#F8FAFC"
-                                stroke-width="0.3"
-                              />
-                            </svg>
-                          </span>
-                          {profileImageLoader ? (
-                            <div
-                              style={{ height: 140, width: 140 }}
-                              className="img-fluid rounded-circle object-fit-cover"
-                            >
-                              <Loading fullSize={true} />
-                            </div>
-                          ) : (
-                            <img
-                              style={{ height: 140, width: 140 }}
-                              src={profileImage.link || i1}
-                              alt=""
-                              className="img-fluid rounded-circle object-fit-cover"
-                            />
-                          )}
-                        </div>
-                      </div>
-                    </Col>
                     <Col lg="5" md="6" className="my-2">
                       <div className="py-2">
                         <label
@@ -247,9 +166,9 @@ const AddEditUser = () => {
                           className="form-control"
                           {...register("name")}
                         />
-                        {errors?.email && (
+                        {errors?.name && (
                           <p className="text-danger m-0">
-                            {errors?.email?.message}
+                            {errors?.name?.message}
                           </p>
                         )}
                       </div>
@@ -273,41 +192,6 @@ const AddEditUser = () => {
                           </p>
                         )}
                       </div>
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Phone Number
-                        </label>
-                        <Controller
-                          control={control}
-                          name="contactNumber"
-                          render={({ field }) => {
-                            return (
-                              <PhoneInput
-                                {...field}
-                                onChange={(value, { dialCode }) => {
-                                  setValue("countryCode", dialCode);
-                                  field.onChange(value);
-                                }}
-                              />
-                            );
-                          }}
-                        />{" "}
-                        {errors.countryCode ? (
-                          <p className="text-danger m-0">
-                            {errors?.countryCode?.message}
-                          </p>
-                        ) : (
-                          errors?.contactNumber && (
-                            <p className="text-danger m-0">
-                              {errors?.contactNumber?.message}
-                            </p>
-                          )
-                        )}
-                      </div>
-
                       {id && (
                         <div className="py-2">
                           <label
@@ -375,52 +259,38 @@ const AddEditUser = () => {
                           htmlFor=""
                           className="form-label fw-sbold text-muted ps-2 m-0"
                         >
-                          Account Type
+                          Phone Number
                         </label>
                         <Controller
                           control={control}
-                          name="accountType"
+                          name="phoneNumber"
                           render={({ field }) => {
                             return (
-                              <Form.Select
+                              <PhoneInput
                                 {...field}
-                                className="form-control"
-                                aria-label="Default select example"
-                              >
-                                {accountType.map((item) => {
-                                  return (
-                                    <option value={item}>
-                                      {removeUnderScoreAndCapitalizeFirstLetter(
-                                        item
-                                      )}
-                                    </option>
-                                  );
-                                })}
-                              </Form.Select>
+                                country={"in"}
+                                countryCodeEditable={false}
+                                disableDropdown={true}
+                                onChange={(value, { dialCode }) => {
+                                  field.onChange(value);
+                                }}
+                              />
                             );
                           }}
-                        />
-                      </div>
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Address
-                        </label>
-                        <textarea
-                          name=""
-                          rows={7}
-                          id=""
-                          className="form-control h-auto"
-                          {...register("address")}
-                        ></textarea>
-                        {errors?.address && (
+                        />{" "}
+                        {errors.countryCode ? (
                           <p className="text-danger m-0">
-                            {errors?.address?.message}
+                            {errors?.countryCode?.message}
                           </p>
+                        ) : (
+                          errors?.contactNumber && (
+                            <p className="text-danger m-0">
+                              {errors?.contactNumber?.message}
+                            </p>
+                          )
                         )}
                       </div>
+
                       <div className="py-2">
                         <label
                           htmlFor=""
@@ -428,37 +298,17 @@ const AddEditUser = () => {
                         >
                           Status
                         </label>
-                        <ul className="list-unstyled ps-0 mb-0 d-flex align-items-start gap-10  ps-2 flex-wrap">
-                          {activeInActiveArr.map((item) => {
-                            return (
-                              <li className="d-flex align-items-center">
-                                <input
-                                  type="radio"
-                                  id={item}
-                                  name="status"
-                                  value={item}
-                                  className="form-check"
-                                  {...register("status")}
-                                />
-                                <label
-                                  htmlFor={item}
-                                  className="form-label fw-sbold text-muted ps-2 m-0"
-                                >
-                                  {removeUnderScoreAndCapitalizeFirstLetter(
-                                    item
-                                  )}
-                                </label>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                        {errors?.status && (
-                          <p className="text-danger m-0">
-                            {errors?.status?.message}
-                          </p>
-                        )}
+                        <div className="iconWithText position-relative">
+                          <Toggle
+                            isChecked={watch("status")}
+                            onChange={(e) =>
+                              setValue("status", e.target.checked)
+                            }
+                          />
+                        </div>
                       </div>
                     </Col>
+
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10">
                         <Button

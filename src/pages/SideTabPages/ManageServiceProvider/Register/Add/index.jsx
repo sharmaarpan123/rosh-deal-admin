@@ -19,8 +19,6 @@ import { toast } from "react-toastify";
 import Loading from "../../../../../components/Common/Loading";
 import {
   ADD_SERVICE_PROVIDER,
-  ADD_USER,
-  GET_USER_BY_ID,
   SERVICE_CATEGORY_LIST,
   SERVICE_PROVIDER_VIEW,
   UPDATE_SERVICE_PROVIDER,

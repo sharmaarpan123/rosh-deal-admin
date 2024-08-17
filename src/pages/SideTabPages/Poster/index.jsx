@@ -119,24 +119,10 @@ const Poster = () => {
         <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
       ),
     },
-
-    {
-      head: "isDeleted",
-      accessor: "",
-      component: (item) => (
-        <p
-          className={`text-white rounded  text-center ${
-            item.isDeleted ? "bg-danger " : "bg-success"
-          } `}
-        >
-          {item.isDeleted ? "Deleted" : "active"}
-        </p>
-      ),
-    },
     {
       head: "Status",
       accessor: "isDeleted",
-      component: (item , index) => (
+      component: (item, index) => (
         <TableToggle
           Options={activeInActiveOptions}
           value={item.isActive ? "active" : "inactive"}
@@ -164,13 +150,7 @@ const Poster = () => {
       head: "Action",
       accessor: "Action",
       component: (item) => (
-        <TableActions
-          editUrl={`/poster/edit/${item._id}`}
-          // viewLink={`/poster/details/${item._id}`}
-          setDeleteModel={() =>
-            setDeleteModel({ dumpId: item._id, show: true })
-          }
-        />
+        <TableActions editUrl={`/poster/edit/${item._id}`} />
       ),
     },
   ];

@@ -19,19 +19,19 @@ export default {
   PLATFORM_LIST: "/platForm/getAllPlatForms",
   PLATFORM_BY_ID: "/admin/platForm/getById/",
   UPDATE_PLATFORM: "/admin/platForm/edit",
-  DELETE_PLATFORM: "/admin/platForm/delete",
+  STATUS_UPDATE_PLATFORM: "/admin/platForm/updateStatus",
   // DEAL CATEGORY
   ADD_DEAL_CATEGORY: "/admin/dealCategory/add",
   DEAL_CATEGORY_LIST: "/dealCategory/getAllDealCategories",
   DEAL_CATEGORY_BY_ID: "/admin/dealCategory/getById/",
   UPDATE_DEAL_CATEGORY: "/admin/dealCategory/edit",
-  DELETE_DEAL_CATEGORY: "/admin/dealCategory/delete",
+  UPDATE_STATUS_DEAL_CATEGORY: "/admin/dealCategory/updateStatus",
   // Brand
   ADD_BRAND: "/admin/brand/add",
   BRAND_LIST: "/brand/getAllBrands",
   BRAND_BY_ID: "/admin/brand/getById/",
   UPDATE_BRAND: "/admin/brand/edit",
-  DELETE_BRAND: "/admin/brand/delete",
+  BRAND_UPDATE_STATUS: "/admin/brand/updateStatus",
 
   // deal
 
@@ -63,12 +63,12 @@ export default {
   ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 
   // ADD USER
-  ADD_USER: "/store/adduser",
-  USER_LIST: "/store/users",
-  GET_USER_BY_ID: "/store/user/",
-  UPDATE_USER: "/store/updateuser",
-  DELETE_USER: "/store/removeuser",
-  USER_STATUS_CHANGE: "/store/user/updatestatus/all",
+  USER_LIST: "/admin/user/getAllUsers/withFilters",
+  USER_STATUS_CHANGE: "/admin/user/updateStatus",
+  GET_USER_BY_ID: "/admin/user/getUserById/",
+  UPDATE_USER: "/admin/user/updateUser",
+  // ADD_USER: "/store/adduser",
+  // DELETE_USER: "/store/removeuser",
 
   // service provider
   SERVICE_PROVIDERS_LIST: "/store/vendors",

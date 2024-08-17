@@ -20,8 +20,8 @@ export const PLATFORM_BY_ID = (data) =>
   Axios.get(API_URL.PLATFORM_BY_ID + data);
 export const UPDATE_PLATFORM = (data) =>
   Axios.post(API_URL.UPDATE_PLATFORM, data);
-export const DELETE_PLATFORM = (data) =>
-  Axios.post(API_URL.DELETE_PLATFORM, data);
+export const STATUS_UPDATE_PLATFORM = (data) =>
+  Axios.post(API_URL.STATUS_UPDATE_PLATFORM, data);
 
 // DEAL CATEGORY
 export const ADD_DEAL_CATEGORY = (data) =>
@@ -32,8 +32,8 @@ export const DEAL_CATEGORY_BY_ID = (data) =>
   Axios.get(API_URL.DEAL_CATEGORY_BY_ID + data);
 export const UPDATE_DEAL_CATEGORY = (data) =>
   Axios.post(API_URL.UPDATE_DEAL_CATEGORY, data);
-export const DELETE_DEAL_CATEGORY = (data) =>
-  Axios.post(API_URL.DELETE_DEAL_CATEGORY, data);
+export const UPDATE_STATUS_DEAL_CATEGORY = (data) =>
+  Axios.post(API_URL.UPDATE_STATUS_DEAL_CATEGORY, data);
 export const ALL_DEALS = (data) => Axios.get(API_URL.ALL_DEALS);
 
 // DEAL CATEGORY
@@ -41,7 +41,7 @@ export const ADD_BRAND = (data) => Axios.post(API_URL.ADD_BRAND, data);
 export const BRAND_LIST = (data) => Axios.post(API_URL.BRAND_LIST, data);
 export const BRAND_BY_ID = (data) => Axios.get(API_URL.BRAND_BY_ID + data);
 export const UPDATE_BRAND = (data) => Axios.post(API_URL.UPDATE_BRAND, data);
-export const DELETE_BRAND = (data) => Axios.post(API_URL.DELETE_BRAND, data);
+export const BRAND_UPDATE_STATUS = (data) => Axios.post(API_URL.BRAND_UPDATE_STATUS, data);
 
 // DEAL
 
@@ -81,12 +81,12 @@ export const POSTER_GET_BY_ID = (data) =>
 ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 
 // user
-export const ADD_USER = (data) => Axios.post(API_URL.ADD_USER, data);
+// export const ADD_USER = (data) => Axios.post(API_URL.ADD_USER, data);
 export const USER_LIST = (data) => Axios.post(API_URL.USER_LIST, data);
 export const GET_USER_BY_ID = (data) =>
   Axios.get(API_URL.GET_USER_BY_ID + data);
 export const UPDATE_USER = (data) => Axios.post(API_URL.UPDATE_USER, data);
-export const DELETE_USER = (data) => Axios.post(API_URL.DELETE_USER, data);
+// export const DELETE_USER = (data) => Axios.post(API_URL.DELETE_USER, data);
 export const USER_STATUS_CHANGE = (data) =>
   Axios.post(API_URL.USER_STATUS_CHANGE, data);
 
