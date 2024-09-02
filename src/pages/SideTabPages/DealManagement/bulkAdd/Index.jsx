@@ -143,8 +143,8 @@ const AddBulkDeal = () => {
 
     checkResponse({
       res,
+      navigate,
       showSuccess: true,
-      navigate: navigate,
       navigateUrl: "/deal",
     });
   });

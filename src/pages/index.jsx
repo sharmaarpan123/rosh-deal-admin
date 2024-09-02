@@ -48,6 +48,7 @@ import AddBulkDeal from "./SideTabPages/DealManagement/bulkAdd/Index";
 import Poster from "./SideTabPages/Poster";
 import AddEditPoster from "./SideTabPages/Poster/add";
 import PosterDetails from "./SideTabPages/Poster/detail";
+import NotificationManagement from "./SideTabPages/NotificationMangement";
 
 export const routes = [
   { path: "/login", component: <Login /> },
@@ -150,6 +151,11 @@ export const privateRoutes = [
   {
     path: "/orders/details/:id",
     component: <OrderDetails />,
+  },
+
+  {
+    path: "/notification-management",
+    component: <NotificationManagement />,
   },
 
   // not used yet this /////////////////******************* */

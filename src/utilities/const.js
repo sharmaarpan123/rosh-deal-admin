@@ -83,3 +83,23 @@ export const orderStatusArr = [
   "reviewFormRejected",
   "reviewFormAccepted",
 ];
+
+export const sendNotificationTypes = [
+  {
+    label: "All",
+    value: "all",
+  },
+  {
+    label: "Deal Order Status",
+    value: "dealOrderStatus",
+  },
+];
+
+export const orderStatusOptions = [
+  { label: "Pending", value: "pending" },
+  { label: "Rejected", value: "rejected" },
+  { label: "Accepted", value: "accepted" },
+  { label: "Review Form Submitted", value: "reviewFormSubmitted" },
+  { label: "Review Form Rejected", value: "reviewFormRejected" },
+  { label: "Review Form Accepted", value: "reviewFormAccepted" },
+];

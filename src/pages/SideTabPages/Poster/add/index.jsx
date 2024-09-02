@@ -274,7 +274,7 @@ const AddEditPoster = () => {
                   </svg>
                 </Link>
                 <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                  Add Brand
+                  {id ? "Edit" : "Add"} Poster
                 </h4>
               </div>
             </Col>

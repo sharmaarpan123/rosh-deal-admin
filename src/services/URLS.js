@@ -60,6 +60,10 @@ export default {
   POSTER_DELETE: "/admin/poster/delete",
   POSTER_GET_BY_ID: "/admin/poster/getById/",
 
+  // notification
+
+  SEND_NOTIFICATION: "/admin/notification/send",
+
   ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 
   // ADD USER

@@ -78,6 +78,10 @@ export const POSTER_DELETE = (data) =>
 export const POSTER_GET_BY_ID = (data) =>
   Axios.get(API_URL.POSTER_GET_BY_ID+ data, );
 
+// notification
+
+export const SEND_NOTIFICATION = (data) => Axios.post(API_URL.SEND_NOTIFICATION , data)
+
 ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 
 // user
