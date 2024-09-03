@@ -195,7 +195,7 @@ const NotificationManagement = () => {
                         Type
                       </label>
 
-                      <Controller
+                      <Controller 
                         name="type"
                         control={control}
                         render={({ field }) => {
