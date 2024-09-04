@@ -93,6 +93,11 @@ const schema = z.object({
       required_error: "Terms and condition is required",
     })
     .min(1, { message: "This  is required" }),
+  uniqueIdentifier: z
+    .string({
+      required_error: "unique Identifier is required",
+    })
+    .min(1, { message: "unique Identifier  is required" }),
 });
 
 const AddEditDeal = () => {
@@ -116,6 +121,7 @@ const AddEditDeal = () => {
     },
     values: {
       productName: data?.productName || "",
+      uniqueIdentifier: data?.uniqueIdentifier || "",
       brand: data?.brand || "",
       platForm: data?.platForm || "",
       dealCategory: data?.dealCategory || "",
@@ -262,6 +268,27 @@ const AddEditDeal = () => {
                         {errors?.productName && (
                           <p className="text-danger m-0">
                             {errors.productName.message}
+                          </p>
+                        )}
+                      </div>
+                    </Col>
+                    <Col lg="4" md="6" className="my-2">
+                      <div className="py-2">
+                        <label
+                          htmlFor=""
+                          className="form-label fw-sbold text-muted ps-2 m-0"
+                        >
+                          Unique Slug
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Annette Black"
+                          className="form-control"
+                          {...register("uniqueIdentifier")}
+                        />
+                        {errors?.uniqueIdentifier && (
+                          <p className="text-danger m-0">
+                            {errors.uniqueIdentifier.message}
                           </p>
                         )}
                       </div>
@@ -480,7 +507,7 @@ const AddEditDeal = () => {
                         <textarea
                           type="text"
                           placeholder="Annette Black"
-                          className="d-block w-100"
+                          className="d-block w-100 p-2"
                           onKeyUp={textAreaAdjust}
                           {...register("termsAndCondition")}
                         />

@@ -27,7 +27,7 @@ const schema = z
       .string({ required_error: "message is required" })
       .trim()
       .min(1, { message: "message is required" }),
-    type: optionsSchema("Notification type").required("please select the type"),
+    type: optionsSchema("Notification type"),
     dealId: optionsSchema("Deal").optional(),
     orderStatus: optionsSchema("order status").optional(),
   })

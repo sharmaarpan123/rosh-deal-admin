@@ -69,6 +69,15 @@ const DealManagement = () => {
       ),
     },
     {
+      head: "unique slug",
+      accessor: "unique slug",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+          {capitalizedFirstAlphaBet(item.uniqueIdentifier)}
+        </p>
+      ),
+    },
+    {
       head: "Brand",
       accessor: "brand",
       component: (item, key, arr) => (

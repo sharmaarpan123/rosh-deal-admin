@@ -91,6 +91,11 @@ const schema = z.object({
               required_error: "Terms and condition is required",
             })
             .min(1, { message: "This  is required" }),
+          uniqueIdentifier: z
+            .string({
+              required_error: "unique Identifier is required",
+            })
+            .min(1, { message: "unique Identifier  is required" }),
         },
         {
           invalid_type_error: "CSv Data is not imported or invalid",
@@ -171,7 +176,7 @@ const AddBulkDeal = () => {
     getData();
   }, []);
 
-  const csvImportHandler = (e) => {
+  const csvImportHandler = catchAsync((e) => {
     const file = e.target.files[0];
 
     if (!file) {
@@ -181,35 +186,44 @@ const AddBulkDeal = () => {
       header: true,
       dynamicTyping: true,
       complete: (result) => {
-        const data = [];
-        result?.data?.forEach((row) => {
-          if (Object.keys(row).length > 1) {
-            const item = { ...row };
-            item.productCategories = item?.productCategories?.split(",") || [];
-            item.productCategories = item?.productCategories?.filter(
-              (str) => !isStringOnlyContainSpaces(str)
-            );
-            item.actualPrice = String(item.actualPrice);
-            item.cashBack = String(item.cashBack);
-            item.slotAlloted = String(item.slotAlloted);
-            item.adminCommission = String(item.adminCommission);
-            data.push(item);
-          }
-        });
+        try {
+          const data = [];
+          result?.data?.forEach((row) => {
+            if (Object.keys(row).length > 1) {
+              const item = { ...row };
+              console.log(row, "item");
+              item.productCategories =
+                String(item?.productCategories)?.split(",") || [];
+              item.productCategories = item?.productCategories?.filter(
+                (str) => !isStringOnlyContainSpaces(str)
+              );
+              item.actualPrice = String(item.actualPrice);
+              item.cashBack = String(item.cashBack);
+              item.slotAlloted = String(item.slotAlloted);
+              item.adminCommission = String(item.adminCommission);
+              console.log(item , 'items')
+              data.push(item);
+            }
+          });
 
-        if (data.length) {
-          setValue("csvData", data, { shouldValidate: true });
+          if (data.length) {
+            setValue("csvData", data, { shouldValidate: true });
+          }
+        } catch (error) {
+          toast.error(error.message);
         }
       },
       error: (error) => {
+        console.log(error, "error");
         toast.error(error.message);
       },
     });
-  };
+  });
 
   const appendField = () => {
     prepend({
       productName: "",
+      uniqueIdentifier: "",
       productCategories: [],
       postUrl: "",
       actualPrice: "",
@@ -219,8 +233,6 @@ const AddBulkDeal = () => {
       adminCommission: "",
     });
   };
-
-  console.log(errors, "errors");
 
   return (
     <>

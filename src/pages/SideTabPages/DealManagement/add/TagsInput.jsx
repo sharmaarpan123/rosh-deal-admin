@@ -10,10 +10,9 @@ const TagsInput = ({ setValue, watch, fieldName }) => {
   };
 
   const AddTagHandler = () => {
-    console.log("hit", watch(fieldName));
     if (!inputValue.trim()) {
       toast.dismiss();
-      toast.warning("abe chutiye kuch likh to sahi!");
+      return toast.warning("abe chutiye kuch likh to sahi!");
     }
 
     let arr = [];
