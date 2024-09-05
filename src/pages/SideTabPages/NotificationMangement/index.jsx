@@ -14,7 +14,11 @@ import {
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DEALS_LIST, SEND_NOTIFICATION } from "../../../services/ApiCalls";
+import {
+  BRAND_LIST,
+  DEALS_LIST,
+  SEND_NOTIFICATION,
+} from "../../../services/ApiCalls";
 import { optionsSchema } from "../../../utilities/commonZodSchema";
 
 const schema = z
@@ -58,12 +62,15 @@ const schema = z
 
 const NotificationManagement = () => {
   const [dealsOptions, setDealsOptions] = useState([]);
+  const [brandsOptions, setBransOptions] = useState([]);
+  const [allDeals, setDeals] = useState([]);
   const {
     formState: { errors },
     register,
     handleSubmit,
     watch,
     control,
+    setValue,
   } = useForm({
     reValidateMode: "onChange",
     mode: "onChange",
@@ -80,13 +87,30 @@ const NotificationManagement = () => {
   console.log(errors, "errors");
 
   const getData = catchAsync(async () => {
-    const res = await DEALS_LIST({ status: "1" });
+    const apiArr = [DEALS_LIST(), BRAND_LIST()];
+
+    const res = await Promise.all(apiArr);
 
     checkResponse({
-      res,
+      res: res[0],
+      setData: (data) => {
+        const options = data.map((item) => ({
+          label:
+            item.productName +
+            (item.uniqueIdentifier ? ` - ${item.uniqueIdentifier}` : ""),
+          value: item?._id,
+          brand: item?.brand?._id,
+        }));
+
+        setDealsOptions((p) => options);
+        setDeals((p) => options);
+      },
+    });
+    checkResponse({
+      res: res[1],
       setData: (data) =>
-        setDealsOptions((p) =>
-          data.map((item) => ({ label: item.productName, value: item?._id }))
+        setBransOptions((p) =>
+          data.map((item) => ({ label: item.name, value: item?._id }))
         ),
     });
   });
@@ -221,6 +245,30 @@ const NotificationManagement = () => {
                     </Col>
                     {watch("type")?.value === "dealOrderStatus" && (
                       <>
+                        <Col md="12" className="my-2">
+                          <label
+                            htmlFor=""
+                            className="form-label m-0 fw-sbold text-muted ps-2"
+                          >
+                            select Brands
+                          </label>
+
+                          <Select
+                            options={brandsOptions}
+                            onChange={(option) => {
+                              setDealsOptions((p) => {
+                                setValue(
+                                  "dealId",
+                                  { label: "", value: "" },
+                                  { shouldValidate: true }
+                                );
+                                return allDeals.filter(
+                                  (item) => item.brand === option.value
+                                );
+                              });
+                            }}
+                          />
+                        </Col>
                         <Col md="12" className="my-2">
                           <label
                             htmlFor=""

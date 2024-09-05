@@ -9,6 +9,10 @@ export default {
   ADMIN_UPDATE: "admin/editAdmin",
   GET_ADMIN_BY_ID: "/admin/getUserById/",
 
+  // dashboard
+
+  DASHBOARD: "admin/dashboard",
+
   // UPLOAD FILE
 
   UPLOAD_FILE: "/fileUpload",

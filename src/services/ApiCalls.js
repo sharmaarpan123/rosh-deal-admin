@@ -12,6 +12,10 @@ export const CHANGE_PASSWORD = (data) =>
 // upload file
 export const UPLOAD_FILE = (data) => Axios.post(API_URL.UPLOAD_FILE, data);
 
+// dasbhoard
+
+export const DASHBOARD = () => Axios.get(API_URL.DASHBOARD);
+
 // PLATFORM
 
 export const ADD_PLATFORM = (data) => Axios.post(API_URL.ADD_PLATFORM, data);
@@ -41,7 +45,8 @@ export const ADD_BRAND = (data) => Axios.post(API_URL.ADD_BRAND, data);
 export const BRAND_LIST = (data) => Axios.post(API_URL.BRAND_LIST, data);
 export const BRAND_BY_ID = (data) => Axios.get(API_URL.BRAND_BY_ID + data);
 export const UPDATE_BRAND = (data) => Axios.post(API_URL.UPDATE_BRAND, data);
-export const BRAND_UPDATE_STATUS = (data) => Axios.post(API_URL.BRAND_UPDATE_STATUS, data);
+export const BRAND_UPDATE_STATUS = (data) =>
+  Axios.post(API_URL.BRAND_UPDATE_STATUS, data);
 
 // DEAL
 
@@ -73,14 +78,14 @@ export const POSTER_ADD = (data) => Axios.post(API_URL.POSTER_ADD, data);
 export const POSTER_EDIT = (data) => Axios.post(API_URL.POSTER_EDIT, data);
 export const POSTER_STATUS_CHANGE = (data) =>
   Axios.post(API_URL.POSTER_STATUS_CHANGE, data);
-export const POSTER_DELETE = (data) =>
-  Axios.post(API_URL.POSTER_DELETE, data);
+export const POSTER_DELETE = (data) => Axios.post(API_URL.POSTER_DELETE, data);
 export const POSTER_GET_BY_ID = (data) =>
-  Axios.get(API_URL.POSTER_GET_BY_ID+ data, );
+  Axios.get(API_URL.POSTER_GET_BY_ID + data);
 
 // notification
 
-export const SEND_NOTIFICATION = (data) => Axios.post(API_URL.SEND_NOTIFICATION , data)
+export const SEND_NOTIFICATION = (data) =>
+  Axios.post(API_URL.SEND_NOTIFICATION, data);
 
 ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 

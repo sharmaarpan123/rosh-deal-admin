@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
 // Mock data for series
@@ -34,12 +34,12 @@ const series = {
   },
 };
 
-const AreaChart = () => {
+const AreaChart = ({ data }) => {
   const [chartOptions, setChartOptions] = useState({
     series: [
       {
         name: "STOCK ABC",
-        data: series.monthDataSeries1.prices,
+        data: [],
       },
     ],
     options: {
@@ -56,16 +56,7 @@ const AreaChart = () => {
       stroke: {
         curve: "straight",
       },
-      labels: series.monthDataSeries1.dates,
-      xaxis: {
-        type: "datetime",
-        labels: {
-          formatter: function (value) {
-            const date = new Date(value);
-            return date.toLocaleDateString("en-US", { weekday: "short" });
-          },
-        },
-      },
+      labels: [],
       yaxis: {
         opposite: false,
       },
@@ -75,15 +66,42 @@ const AreaChart = () => {
     },
   });
 
+  useEffect(() => {
+    const months = [];
+
+    const earning = [];
+
+    data?.MonthsEarning?.forEach((item) => {
+      months.push(item?._id);
+      earning.push(item?.totalEarnings);
+    });
+
+    setChartOptions((p) => ({
+      ...p,
+      series: [
+        {
+          name: "STOCK ABC",
+          data: earning,
+        },
+      ],
+      options: {
+        ...p.options,
+        labels: months,
+      },
+    }));
+  }, [data]);
+
   return (
     <div>
       <div id="chart">
-        <ReactApexChart
-          options={chartOptions.options}
-          series={chartOptions.series}
-          type="area"
-          height={350}
-        />
+        {chartOptions && (
+          <ReactApexChart
+            options={chartOptions.options}
+            series={chartOptions.series}
+            type="area"
+            height={350}
+          />
+        )}
       </div>
       <div id="html-dist"></div>
     </div>

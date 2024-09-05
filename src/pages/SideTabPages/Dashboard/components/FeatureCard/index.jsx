@@ -1,8 +1,8 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 
-const FeatureCard = () => {
-  const data = [
+const FeatureCard = ({ data }) => {
+  const cards = [
     {
       icn: (
         <svg
@@ -63,7 +63,7 @@ const FeatureCard = () => {
         </svg>
       ),
       label: "Total Customer",
-      value: "4000",
+      value: data?.totalUsers,
     },
     {
       icn: (
@@ -84,8 +84,8 @@ const FeatureCard = () => {
           />
         </svg>
       ),
-      label: "Total Provider",
-      value: "40",
+      label: "Total Earning",
+      value: data?.totalRevenue,
     },
     {
       icn: (
@@ -102,8 +102,8 @@ const FeatureCard = () => {
           />
         </svg>
       ),
-      label: "Total Booking",
-      value: "4000",
+      label: "Total Orders",
+      value: data?.totalOrders,
     },
     {
       icn: (
@@ -120,26 +120,24 @@ const FeatureCard = () => {
           />
         </svg>
       ),
-      label: "Ongoing Order",
-      value: "12",
+      label: "Ongoing orders/ unpaid orders",
+      value: data?.unPaidOrders,
     },
   ];
   return (
     <>
       <Row>
-        {data &&
-          data.length > 0 &&
-          data.map((item, key) => ( 
-            <Col key={key} lg="3" md="4" sm="6" className="my-2">
-              <div className="cardCstm border rounded p-3 py-lg-4 d-flex align-items-center gap-10">
-                <div className="icnWrp flex-shrink-0 me-3">{item.icn}</div>
-                <div className="content">
-                  <h6 className="m-0 fw-bold text-muted py-1">{item.label}</h6>
-                  <h4 className="m-0 fw-bold themeBlue py-1">{item.value}</h4>
-                </div>
+        {cards?.map((item, key) => (
+          <Col key={key} lg="3" md="4" sm="6" className="my-2">
+            <div className="cardCstm border rounded p-3 py-lg-4 d-flex align-items-center gap-10 h-100">
+              <div className="icnWrp flex-shrink-0 me-3">{item.icn}</div>
+              <div className="content">
+                <h6 className="m-0 fw-bold text-muted py-1">{item.label}</h6>
+                <h4 className="m-0 fw-bold themeBlue py-1">{item.value}</h4>
               </div>
-            </Col>
-          ))}
+            </div>
+          </Col>
+        ))}
       </Row>
     </>
   );
