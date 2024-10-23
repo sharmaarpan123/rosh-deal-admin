@@ -7,29 +7,25 @@ import { useNavigate } from "react-router-dom";
 
 // css
 
-import noImg from "../../../../Assets/images/no-img.png";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import Select from "react-select";
+import { toast } from "react-toastify";
 import { z } from "zod";
 import {
-  ADD_BRAND,
   ADD_DEAL,
-  BRAND_BY_ID,
   BRAND_LIST,
   DEAL_CATEGORY_LIST,
   EDIT_DEAL,
   GET_DEAL_VIEW,
   PLATFORM_LIST,
-  UPDATE_BRAND,
+  SCRAPPER_IMAGE,
 } from "../../../../services/ApiCalls";
-import fileUploader from "../../../../utilities/fileUploader";
 import {
   catchAsync,
   checkResponse,
   textAreaAdjust,
 } from "../../../../utilities/utilities";
-import Select from "react-select";
 import TagsInput from "./TagsInput";
 
 const makeOptions = (data) => {
@@ -98,6 +94,7 @@ const schema = z.object({
       required_error: "unique Identifier is required",
     })
     .min(1, { message: "unique Identifier  is required" }),
+  imageUrl: z.string().optional(),
 });
 
 const AddEditDeal = () => {
@@ -115,6 +112,7 @@ const AddEditDeal = () => {
     watch,
     setValue,
     formState: { errors },
+    getValues,
   } = useForm({
     defaultValues: {
       productCategories: [],
@@ -132,6 +130,7 @@ const AddEditDeal = () => {
       slotAlloted: data?.slotAlloted ? String(data?.slotAlloted) : "",
       termsAndCondition: data?.termsAndCondition || "",
       adminCommission: data?.adminCommission || "",
+      imageUrl: data?.imageUrl,
     },
 
     resolver: zodResolver(schema),
@@ -212,6 +211,16 @@ const AddEditDeal = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const scrapeImageHandler = catchAsync(async () => {
+    if (!getValues("postUrl")) return toast.error("abe post url to daa!");
+    const res = await SCRAPPER_IMAGE(getValues("postUrl"));
+    if (res.status === 200) {
+      setValue("imageUrl", res.data.image_url, { shouldValidate: true });
+    } else {
+      toast.error(res.response.data.error);
+    }
+  });
 
   return (
     <>
@@ -388,27 +397,7 @@ const AddEditDeal = () => {
                         )}
                       </div>
                     </Col>
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Post url
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Annette Black"
-                          className="form-control"
-                          {...register("postUrl")}
-                        />
-                        {errors?.postUrl && (
-                          <p className="text-danger m-0">
-                            {errors.postUrl.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
+
                     <Col lg="4" md="6" className="my-2">
                       <div className="py-2">
                         <label
@@ -493,6 +482,44 @@ const AddEditDeal = () => {
                             {errors.slotAlloted.message}
                           </p>
                         )}
+                      </div>
+                    </Col>
+                    <Col lg="4" md="6" className="my-2">
+                      <Button onClick={scrapeImageHandler} type="button">
+                        Scrap Image
+                      </Button>
+                      <div className="py-2">
+                        <label
+                          htmlFor=""
+                          className="form-label fw-sbold text-muted ps-2 m-0"
+                        >
+                          Post url
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Annette Black"
+                          className="form-control"
+                          {...register("postUrl")}
+                        />
+                        {errors?.postUrl && (
+                          <p className="text-danger m-0">
+                            {errors.postUrl.message}
+                          </p>
+                        )}
+                      </div>
+                    </Col>
+                    <Col lg="4" md="6" className="my-2">
+                      <div className="py-2">
+                        <label
+                          htmlFor=""
+                          className="form-label fw-sbold text-muted ps-2 m-0"
+                        >
+                          Scrap Image View
+                        </label>
+                        <img
+                          src={watch("imageUrl")}
+                          style={{ width: 100, height: 100 }}
+                        />
                       </div>
                     </Col>
 

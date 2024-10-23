@@ -17,6 +17,7 @@ import {
   BULK_ADD_DEAL,
   DEAL_CATEGORY_LIST,
   PLATFORM_LIST,
+  SCRAPPER_IMAGE,
 } from "../../../../services/ApiCalls";
 import {
   catchAsync,
@@ -96,6 +97,7 @@ const schema = z.object({
               required_error: "unique Identifier is required",
             })
             .min(1, { message: "unique Identifier  is required" }),
+          imageUrl: z.string().optional(),
         },
         {
           invalid_type_error: "CSv Data is not imported or invalid",
@@ -119,6 +121,7 @@ const AddBulkDeal = () => {
     handleSubmit,
     watch,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -201,7 +204,7 @@ const AddBulkDeal = () => {
               item.cashBack = String(item.cashBack);
               item.slotAlloted = String(item.slotAlloted);
               item.adminCommission = String(item.adminCommission);
-              console.log(item , 'items')
+              console.log(item, "items");
               data.push(item);
             }
           });
@@ -231,8 +234,24 @@ const AddBulkDeal = () => {
       slotAlloted: "",
       termsAndCondition: "",
       adminCommission: "",
+      imageUrl: "",
     });
   };
+
+  const scrapHandler = catchAsync(async (index) => {
+    if (!getValues("csvData." + index + "." + "postUrl"))
+      return toast.error("abe post url to daa!");
+    const res = await SCRAPPER_IMAGE(
+      getValues("csvData." + index + "." + "postUrl")
+    );
+    if (res.status === 200) {
+      setValue("csvData." + index + "." + "imageUrl", res.data.image_url, {
+        shouldValidate: true,
+      });
+    } else {
+      toast.error(res.response.data.error);
+    }
+  });
 
   return (
     <>
@@ -398,9 +417,10 @@ const AddBulkDeal = () => {
                               </ul>
                             </Col>
                             {Object.keys(item)?.map((itm, i) => {
-                              if (itm === "id") {
+                              if (itm === "id" || itm === "imageUrl") {
                                 return;
                               }
+
                               return (
                                 <Col lg="4" md="6" className="my-2">
                                   <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
@@ -408,6 +428,15 @@ const AddBulkDeal = () => {
                                       <p className="m-0 themeBlue fw-sbold ">
                                         {itm} :
                                       </p>
+
+                                      {itm === "postUrl" && (
+                                        <button
+                                          type="button"
+                                          onClick={() => scrapHandler(index)}
+                                        >
+                                          scrap image
+                                        </button>
+                                      )}
 
                                       {itm === "productCategories" ? (
                                         <TagsInput
@@ -435,6 +464,21 @@ const AddBulkDeal = () => {
                                 </Col>
                               );
                             })}
+
+                            <Col lg="4" md="6" className="my-2">
+                              <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
+                                <li className="py-1 align-items-center gap-10">
+                                  <img
+                                    src={watch(`csvData.${index}.imageUrl`)}
+                                    style={{
+                                      width: 100,
+                                      height: 100,
+                                    }}
+                                    alt=""
+                                  />
+                                </li>
+                              </ul>
+                            </Col>
 
                             <Col className="4 d-flex align-items-end py-4">
                               <Button

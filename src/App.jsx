@@ -2,8 +2,6 @@ import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { privateRoutes, routes } from "./pages/index";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
 import "./Assets/css/style.css";
 import "./Assets/css/responsive.css";
 import AuthLayout from "./layout/Auth/authLayout";

@@ -87,6 +87,11 @@ export const POSTER_GET_BY_ID = (data) =>
 export const SEND_NOTIFICATION = (data) =>
   Axios.post(API_URL.SEND_NOTIFICATION, data);
 
+// SCRAPPER
+
+export const SCRAPPER_IMAGE = (data) =>
+  Axios.get(API_URL.SCRAPPER_URL + "?url=" + data);
+
 ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 
 // user

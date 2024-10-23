@@ -1,5 +1,6 @@
 export default {
   API_URL: import.meta.env.VITE_APP_API_URL,
+  SCRAPPER_URL: "http://127.0.0.1:5000/fetch-image",
 
   // ADMIN
   LOGIN_ADMIN: "auth/signin",
@@ -67,6 +68,10 @@ export default {
   // notification
 
   SEND_NOTIFICATION: "/admin/notification/send",
+
+  //scrapper
+
+  PARSE_HTML: "/scrapper/parseHtml",
 
   ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 
