@@ -67,15 +67,7 @@ export function createObjectURL(object) {
 export const exportCsvHandler = async (data) => {
   try {
     let res;
-    // if (data === "customers") {
-    //   res = await EXPORT_CUSTOMER_CSV();
-    // }
-    // if (data === "builders") {
-    //   res = await EXPORT_BUILDER_CSV();
-    // }
-    // if (data === "properties") {
-    //   res = await EXPORT_PROPERTY_CSV();
-    // }
+
     if (res.status === 200) {
       var hiddenElement = document.createElement("a");
       hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(res.data);

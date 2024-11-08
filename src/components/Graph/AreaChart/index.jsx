@@ -71,7 +71,7 @@ const AreaChart = ({ data }) => {
 
     const earning = [];
 
-    data?.MonthsEarning?.forEach((item) => {
+    data?.revenueGraphData?.forEach((item) => {
       months.push(item?._id);
       earning.push(item?.totalEarnings);
     });

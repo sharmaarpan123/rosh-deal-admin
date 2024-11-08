@@ -95,6 +95,8 @@ export const sendNotificationTypes = [
   },
 ];
 
+export const dashboardReportTypeArr = ["yearly", "monthly", "weekly"];
+
 export const orderStatusOptions = [
   { label: "Pending", value: "pending" },
   { label: "Rejected", value: "rejected" },

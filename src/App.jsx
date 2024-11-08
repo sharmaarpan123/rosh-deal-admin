@@ -8,6 +8,7 @@ import AuthLayout from "./layout/Auth/authLayout";
 import MainLayout from "./layout/MainLayout/MainLayout";
 import { useSelector } from "react-redux";
 
+
 function App() {
   const isAuthenticated = useSelector((s) => s.login.token);
 
@@ -25,7 +26,7 @@ function App() {
               key={index}
             />
           ))}
-        </Route>
+        </Route>  
       ) : (
         <Route element={<AuthLayout />}>
           <Route path="*" element={<Navigate to="/login" />} />

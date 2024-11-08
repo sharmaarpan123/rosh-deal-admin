@@ -6,17 +6,17 @@ import moment from "moment";
 import TableActions from "../../../components/Common/TableActions";
 import TableToggle from "../../../components/Common/TableToggle";
 import noImg from "../../../components/Common/noImg";
-import {
-  PAYMENT_STATUS_CHANGE
-} from "../../../services/ApiCalls";
-import {
-  paymentStatusOptions
-} from "../../../utilities/const";
-import {
-  capitalizedFirstAlphaBet
-} from "../../../utilities/utilities";
+import { PAYMENT_STATUS_CHANGE } from "../../../services/ApiCalls";
+import { paymentStatusOptions } from "../../../utilities/const";
+import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
 
-export const getColumn = (body, statusChangeHandler , SetPopUpImage , acceptRejectHandler  , setRejectedModel) => [
+export const getColumn = (
+  body,
+  statusChangeHandler,
+  SetPopUpImage,
+  acceptRejectHandler,
+  setRejectedModel
+) => [
   {
     head: "#",
     accessor: "#",
@@ -73,6 +73,16 @@ export const getColumn = (body, statusChangeHandler , SetPopUpImage , acceptReje
       </p>
     ),
   },
+  {
+    head: "Admin Commission",
+    accessor: "",
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold">
+        {capitalizedFirstAlphaBet(item?.dealId?.adminCommission)}
+      </p>
+    ),
+  },
+
   {
     head: "Created At",
     accessor: "createdAt",
