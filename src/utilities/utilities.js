@@ -117,6 +117,7 @@ export const checkResponse = ({
     navigate && navigate(navigateUrl);
     return true;
   } else {
+    console.log(res, "Res");
     toast.dismiss();
     toast.error(res?.response?.data?.message);
     setLoader && setLoader(false);
@@ -159,3 +160,18 @@ export function textAreaAdjust(element) {
 }
 
 export const isStringOnlyContainSpaces = (str) => /^\s*$/.test(str);
+
+export const makeQueryFromData = (data) => {
+  if (!data || typeof data !== "object") {
+    return "?";
+  }
+
+  let string = "?";
+
+  Object.keys(data)?.forEach((item) => {
+    string += item + "=";
+    string += data[item] + "&";
+  });
+
+  return string;
+};

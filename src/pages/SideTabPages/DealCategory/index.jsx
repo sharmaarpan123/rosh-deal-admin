@@ -12,10 +12,15 @@ import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
 import dataHandler from "../../../hooks/dataHandler";
 import {
   DEAL_CATEGORY_LIST,
-  UPDATE_STATUS_DEAL_CATEGORY
+  UPDATE_STATUS_DEAL_CATEGORY,
 } from "../../../services/ApiCalls";
-import { activeInActiveStatusOptions } from "../../../utilities/const";
+import {
+  activeInactiveOptions,
+  activeInActiveStatusOptions,
+} from "../../../utilities/const";
 import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
+import CustomPagination from "../../../components/Common/CustomPagination";
+import Filter from "../../../components/Common/Filter";
 
 const DealCategory = () => {
   const {
@@ -102,7 +107,6 @@ const DealCategory = () => {
         <TableActions
           editUrl={`/deal-category/edit/${item._id}`}
           viewLink={`/deal-category/details/${item._id}`}
-                
         />
       ),
     },
@@ -110,7 +114,6 @@ const DealCategory = () => {
 
   return (
     <>
-      
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
@@ -122,7 +125,14 @@ const DealCategory = () => {
             <Col lg="12" className="my-2">
               <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
                 <div className="left">
-                  <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap"></ul>
+                  <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
+                    <Filter
+                      body={body}
+                      searchHandler={searchHandler}
+                      setBody={setBody}
+                      statusFilterOptionArr={activeInactiveOptions}
+                    />
+                  </ul>
                 </div>
                 <div className="right">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
@@ -141,6 +151,12 @@ const DealCategory = () => {
             </Col>
             <Col lg="12" className="my-2">
               <TableLayout column={column} data={data} loader={loader} />
+              <CustomPagination
+                total={total}
+                pageChangeHandler={paginationHandler}
+                body={body}
+                setBody={setBody}
+              />
             </Col>
           </Row>
         </Container>

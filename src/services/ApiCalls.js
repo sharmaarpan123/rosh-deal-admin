@@ -1,3 +1,4 @@
+import { makeQueryFromData } from "../utilities/utilities";
 import Axios from "./Axios";
 import API_URL from "./URLS";
 
@@ -14,12 +15,13 @@ export const UPLOAD_FILE = (data) => Axios.post(API_URL.UPLOAD_FILE, data);
 
 // dasbhoard
 
-export const DASHBOARD = (data) => Axios.post(API_URL.DASHBOARD , data  );
+export const DASHBOARD = (data) => Axios.post(API_URL.DASHBOARD, data);
 
 // PLATFORM
 
 export const ADD_PLATFORM = (data) => Axios.post(API_URL.ADD_PLATFORM, data);
-export const PLATFORM_LIST = (data) => Axios.get(API_URL.PLATFORM_LIST, data);
+export const PLATFORM_LIST = (data) =>
+  Axios.get(API_URL.PLATFORM_LIST + makeQueryFromData(data));
 export const PLATFORM_BY_ID = (data) =>
   Axios.get(API_URL.PLATFORM_BY_ID + data);
 export const UPDATE_PLATFORM = (data) =>
@@ -31,7 +33,7 @@ export const STATUS_UPDATE_PLATFORM = (data) =>
 export const ADD_DEAL_CATEGORY = (data) =>
   Axios.post(API_URL.ADD_DEAL_CATEGORY, data);
 export const DEAL_CATEGORY_LIST = (data) =>
-  Axios.get(API_URL.DEAL_CATEGORY_LIST, data);
+  Axios.get(API_URL.DEAL_CATEGORY_LIST + makeQueryFromData(data));
 export const DEAL_CATEGORY_BY_ID = (data) =>
   Axios.get(API_URL.DEAL_CATEGORY_BY_ID + data);
 export const UPDATE_DEAL_CATEGORY = (data) =>
@@ -91,6 +93,29 @@ export const SEND_NOTIFICATION = (data) =>
 
 export const SCRAPPER_IMAGE = (data) =>
   Axios.get(API_URL.SCRAPPER_URL + "?url=" + data);
+
+// SUB_ADMINS
+
+export const SUB_ADMIN_LIST = (data) => Axios.get(API_URL.SUB_ADMIN_LIST, data);
+export const GET_ADMIN_BY_ID = (data) =>
+  Axios.get(API_URL.GET_ADMIN_BY_ID + data);
+
+export const ADD_SUB_ADMIN = (data) => Axios.post(API_URL.ADD_SUB_ADMIN, data);
+
+export const UPDATE_SUB_ADMIN = (data) =>
+  Axios.post(API_URL.UPDATE_SUB_ADMIN, data);
+
+// ADMINS_MODULES
+
+export const MODULES_LIST = (data) =>
+  Axios.get(API_URL.MODULES_LIST, { params: data });
+
+export const GET_MODULE_BY_ID = (data) =>
+  Axios.get(API_URL.GET_MODULE_BY_ID + data);
+
+export const ADD_MODULE = (data) => Axios.post(API_URL.ADD_MODULE, data);
+
+export const UPDATE_MODULE = (data) => Axios.post(API_URL.UPDATE_MODULE, data);
 
 ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 

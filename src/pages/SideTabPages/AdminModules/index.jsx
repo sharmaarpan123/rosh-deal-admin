@@ -3,110 +3,50 @@ import { Col, Container, Row } from "react-bootstrap";
 import TableLayout from "../../../components/TableLayout";
 
 // img
-import moment from "moment";
 import { Link } from "react-router-dom";
-import TableActions from "../../../components/Common/TableActions";
-import TableToggle from "../../../components/Common/TableToggle";
-import noImg from "../../../components/Common/noImg";
-import dataHandler from "../../../hooks/dataHandler";
-import {
-  PLATFORM_LIST,
-  STATUS_UPDATE_PLATFORM,
-} from "../../../services/ApiCalls";
-import {
-  activeInactiveOptions,
-  activeInActiveStatusOptions,
-} from "../../../utilities/const";
-import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
-import Filter from "../../../components/Common/Filter";
 import CustomPagination from "../../../components/Common/CustomPagination";
+import Filter from "../../../components/Common/Filter";
+import TableActions from "../../../components/Common/TableActions";
+import dataHandler from "../../../hooks/dataHandler";
+import { MODULES_LIST } from "../../../services/ApiCalls";
 
-const PlatForm = () => {
+const AdminModules = () => {
   const {
     setBody,
+    statusChangeHandler,
     body,
     data,
     loader,
-    deleteModel,
-    setDeleteModel,
     paginationHandler,
     searchHandler,
     total,
-    deleteHandler,
-    statusChangeHandler,
   } = dataHandler({
-    api: PLATFORM_LIST,
+    api: MODULES_LIST,
+    extraBody: {
+      limit: 20,
+    },
   });
-
   const column = [
     {
-      head: "#",
+      head: "Sr. No.",
       accessor: "#",
       component: (item, key) => {
-        return <>{body.limit * (body.page - 1) + key + 1}</>;
+        return <>{key < 9 ? `0${key + 1}` : key + 1}</>;
       },
     },
-    {
+  {
       head: "Name",
-      accessor: "name",
+      accessor: "Name",
       component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item.name)}
-        </p>
+        <p className="m-0 fw-sbold">{item?.name}</p>
       ),
     },
-    {
-      head: "Image",
-      accessor: "image",
-      component: (item, key, arr) => (
-        <img
-          src={item.image || noImg}
-          style={{ width: 100, height: 80, objectFit: "contain" }}
-        />
-      ),
-    },
-    {
-      head: "Created At",
-      accessor: "createdAt",
-      component: (item, key, arr) => (
-        <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
-      ),
-    },
-    {
-      head: "Status",
-      accessor: "",
-      component: (item, index) => (
-        <TableToggle
-          Options={activeInActiveStatusOptions}
-          value={item.isActive ? "1" : "0"}
-          classNames={item.isActive ? "bg-success" : "bg-danger"}
-          style={{
-            color: item.isActive ? "green" : "red",
-            width: 120,
-          }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                STATUS_UPDATE_PLATFORM({
-                  platFormId: item._id,
-                  status: e.target.value === "1",
-                }),
-              index,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
-      ),
-    },
+    { head: "unique Slug", accessor: "uniqueSlug" },
     {
       head: "Action",
-      accessor: "Action",
-      component: (item) => (
-        <TableActions
-          editUrl={`/platform/edit/${item._id}`}
-          viewLink={`/platform/details/${item._id}`}
-        />
+      accessor: "",
+      component: (item, key, arr) => (
+        <TableActions editUrl={"/module/edit/" + item?._id} />
       ),
     },
   ];
@@ -118,7 +58,7 @@ const PlatForm = () => {
           <Row>
             <Col lg="12">
               <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                Plat form
+                Sub Admin Modules
               </h4>
             </Col>
             <Col lg="12" className="my-2">
@@ -129,7 +69,7 @@ const PlatForm = () => {
                       body={body}
                       searchHandler={searchHandler}
                       setBody={setBody}
-                      statusFilterOptionArr={activeInactiveOptions}
+                      showStatusFilter={false}
                     />
                   </ul>
                 </div>
@@ -137,7 +77,7 @@ const PlatForm = () => {
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
                     <li className="">
                       <Link
-                        to={"/platform/add"}
+                        to={"/module/add"}
                         className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
                         style={{ height: 40, minWidth: 100, fontSize: 12 }}
                       >
@@ -164,4 +104,4 @@ const PlatForm = () => {
   );
 };
 
-export default PlatForm;
+export default AdminModules;

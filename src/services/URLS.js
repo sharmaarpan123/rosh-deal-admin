@@ -3,7 +3,7 @@ export default {
   SCRAPPER_URL: "http://127.0.0.1:5000/fetch-image",
 
   // ADMIN
-  LOGIN_ADMIN: "auth/signin",
+  LOGIN_ADMIN: "auth/admin/singIn",
   FORGET_PASSWORD_ADMIN: "auth/forgetPassword",
   RESET_PASSWORD: "auth/resetPassword",
   CHANGE_PASSWORD: "/api/v1/admin/changePassword",
@@ -21,19 +21,19 @@ export default {
   // add plat form
 
   ADD_PLATFORM: "/admin/platForm/add",
-  PLATFORM_LIST: "/platForm/getAllPlatForms",
+  PLATFORM_LIST: "/admin/platForm/getWithFilters",
   PLATFORM_BY_ID: "/admin/platForm/getById/",
   UPDATE_PLATFORM: "/admin/platForm/edit",
   STATUS_UPDATE_PLATFORM: "/admin/platForm/updateStatus",
   // DEAL CATEGORY
   ADD_DEAL_CATEGORY: "/admin/dealCategory/add",
-  DEAL_CATEGORY_LIST: "/dealCategory/getAllDealCategories",
+  DEAL_CATEGORY_LIST: "/admin/dealCategory/getAllDealCategories",
   DEAL_CATEGORY_BY_ID: "/admin/dealCategory/getById/",
   UPDATE_DEAL_CATEGORY: "/admin/dealCategory/edit",
   UPDATE_STATUS_DEAL_CATEGORY: "/admin/dealCategory/updateStatus",
   // Brand
   ADD_BRAND: "/admin/brand/add",
-  BRAND_LIST: "/brand/getAllBrands",
+  BRAND_LIST: "/admin/brand/getAllWithFilters",
   BRAND_BY_ID: "/admin/brand/getById/",
   UPDATE_BRAND: "/admin/brand/edit",
   BRAND_UPDATE_STATUS: "/admin/brand/updateStatus",
@@ -72,6 +72,20 @@ export default {
   //scrapper
 
   PARSE_HTML: "/scrapper/parseHtml",
+
+  //  subAdmin
+
+  SUB_ADMIN_LIST: "/admin/subAdmin/getAllWithFilters",
+  GET_ADMIN_BY_ID: "/admin/subAdmin/getById/",
+  ADD_SUB_ADMIN: "/admin/add/subAdmin",
+  UPDATE_SUB_ADMIN: "/admin/update/subAdmin",
+
+  // ADMINS_MODULES
+
+  MODULES_LIST: "/admin/subAdminModule/getAllWithFilters",
+  ADD_MODULE: "/admin/add/subAdminModule",
+  GET_MODULE_BY_ID: "/admin/subAdminModule/getById/",
+  UPDATE_MODULE: "/admin/update/subAdminModule",
 
   ////////////////////////////////// this api are already imported at some where so no time remove that other wise it will give errors
 

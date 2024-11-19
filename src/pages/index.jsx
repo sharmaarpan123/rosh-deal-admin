@@ -49,6 +49,8 @@ import Poster from "./SideTabPages/Poster";
 import AddEditPoster from "./SideTabPages/Poster/add";
 import PosterDetails from "./SideTabPages/Poster/detail";
 import NotificationManagement from "./SideTabPages/NotificationMangement";
+import AddEditModule from "./SideTabPages/AdminModules/add";
+import AdminModules from "./SideTabPages/AdminModules";
 
 export const routes = [
   { path: "/login", component: <Login /> },
@@ -158,6 +160,31 @@ export const privateRoutes = [
     component: <NotificationManagement />,
   },
 
+  {
+    path: "/system-access",
+    component: <SystemAccess />,
+  },
+  {
+    path: "/system-access/add",
+    component: <AddSubAdmin />,
+  },
+  {
+    path: "/system-access/edit/:adminId",
+    component: <AddSubAdmin />,
+  },
+  {
+    path: "/modules",
+    component: <AdminModules />,
+  },
+  {
+    path: "/module/add",
+    component: <AddEditModule />,
+  },
+  {
+    path: "/module/edit/:moduleId",
+    component: <AddEditModule />,
+  },
+
   // not used yet this /////////////////******************* */
   { path: "/manage-user", component: <ManageUser /> },
   { path: "/manage-user/add", component: <AddEditUser /> },
@@ -237,14 +264,6 @@ export const privateRoutes = [
     component: <HelpDetail />,
   },
 
-  {
-    path: "/system-access",
-    component: <SystemAccess />,
-  },
-  {
-    path: "/system-access/add",
-    component: <AddSubAdmin />,
-  },
   {
     path: "/settings",
     component: <Settings />,

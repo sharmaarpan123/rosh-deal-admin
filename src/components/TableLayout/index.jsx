@@ -10,16 +10,13 @@ import Loading from "../Common/Loading";
 const showUnderScoreIds =
   import.meta.env.VITE_APP_SHOW_UNDER_SCORE_ID_IN_TABLES === "true";
 
-console.log(typeof showUnderScoreIds, "show id");
-
 const TableLayout = ({ column, data, loader }) => {
-  const isUnderScoreColAlreadyAdded = column.some((item) => {
+  const isUnderScoreColAlreadyAdded = column?.some((item) => {
     if (item.accessor === "_id") {
       return true;
     }
   }); // this is to avoid duplicated _id id on development mode , if_id is already showing in the table
 
-  console.log(isUnderScoreColAlreadyAdded, "aslkj");
   return (
     <>
       <div className="table-responsive">
@@ -30,8 +27,8 @@ const TableLayout = ({ column, data, loader }) => {
                 <th className="text-muted fw-bold">_id</th>
               )}
               {column &&
-                column.length > 0 &&
-                column.map((item, key) => (
+                column?.length > 0 &&
+                column?.map((item, key) => (
                   <>
                     <th className="text-muted fw-bold">{item.head}</th>
                   </>
@@ -52,8 +49,8 @@ const TableLayout = ({ column, data, loader }) => {
                       </td>
                     )}
                     {column &&
-                      column.length > 0 &&
-                      column.map((item, key) => {
+                      column?.length > 0 &&
+                      column?.map((item, key) => {
                         if (item.component) {
                           return (
                             <td className="border-bottom border-secondary">
@@ -73,14 +70,14 @@ const TableLayout = ({ column, data, loader }) => {
               })}
             {!!loader && (
               <tr>
-                <td colSpan={column.length} align="center">
+                <td colSpan={column?.length} align="center">
                   <Loading />
                 </td>
               </tr>
             )}
             {!loader && !!!data?.length && (
               <tr>
-                <td colSpan={column.length}>
+                <td colSpan={column?.length}>
                   <p className="text-center">No Data Found!</p>
                 </td>
               </tr>
