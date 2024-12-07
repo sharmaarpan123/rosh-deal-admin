@@ -6,7 +6,7 @@ import "./Assets/css/responsive.css";
 import "./Assets/css/style.css";
 import AuthLayout from "./layout/Auth/authLayout";
 import MainLayout from "./layout/MainLayout/MainLayout";
-import { privateRoutes, routes } from "./pages/index";
+import { privateRoutes, publicRoutes, routes } from "./pages/index";
 
 function App() {
   const isAuthenticated = useSelector((s) => s.login.token);
@@ -41,6 +41,15 @@ function App() {
             ))}
           </Route>
         )}
+        {publicRoutes.map((data, index) => (
+          <Route
+            onUpdate={() => window.scrollTo(0, 0)}
+            exact={true}
+            path={data.path}
+            element={data.component}
+            key={index}
+          />
+        ))}
       </Routes>
     </>
   );

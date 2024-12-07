@@ -51,6 +51,12 @@ import PosterDetails from "./SideTabPages/Poster/detail";
 import NotificationManagement from "./SideTabPages/NotificationMangement";
 import AddEditModule from "./SideTabPages/AdminModules/add";
 import AdminModules from "./SideTabPages/AdminModules";
+import { components } from "react-select";
+import PrivacyPolicy from "./PublicPages/privacyPolicy/PrivacyPolicy";
+
+export const publicRoutes = [
+  { path: "privacy-policy", component: <PrivacyPolicy /> },
+];
 
 export const routes = [
   { path: "/login", component: <Login /> },
@@ -60,6 +66,7 @@ export const routes = [
 ];
 
 export const privateRoutes = [
+  { path: "privacy-policy", components: <PrivacyPolicy /> },
   { path: "/dashboard", component: <Dashboard /> },
   {
     path: "/platform",
