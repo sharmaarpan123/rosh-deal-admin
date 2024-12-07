@@ -14,6 +14,15 @@ function App() {
   return (
     <>
       <Routes>
+      {publicRoutes.map((data, index) => (
+          <Route
+            onUpdate={() => window.scrollTo(0, 0)}
+            exact={true}
+            path={data.path}
+            element={data.component}
+            key={index}
+          />
+        ))}
         {isAuthenticated ? (
           <Route element={<MainLayout />}>
             <Route path="*" element={<Navigate replace to="/dashboard" />} />
@@ -41,15 +50,7 @@ function App() {
             ))}
           </Route>
         )}
-        {publicRoutes.map((data, index) => (
-          <Route
-            onUpdate={() => window.scrollTo(0, 0)}
-            exact={true}
-            path={data.path}
-            element={data.component}
-            key={index}
-          />
-        ))}
+        
       </Routes>
     </>
   );
