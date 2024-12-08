@@ -53,6 +53,7 @@ import AddEditModule from "./SideTabPages/AdminModules/add";
 import AdminModules from "./SideTabPages/AdminModules";
 import { components } from "react-select";
 import PrivacyPolicy from "./PublicPages/privacyPolicy/PrivacyPolicy";
+import ChatPage from "./SideTabPages/chat";
 
 export const publicRoutes = [
   { path: "privacy-policy", component: <PrivacyPolicy /> },
@@ -68,6 +69,7 @@ export const routes = [
 export const privateRoutes = [
   { path: "privacy-policy", components: <PrivacyPolicy /> },
   { path: "/dashboard", component: <Dashboard /> },
+  { path: "/chat", component: <ChatPage /> },
   {
     path: "/platform",
     component: <PlatForm />,
