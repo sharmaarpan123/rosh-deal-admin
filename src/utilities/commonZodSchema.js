@@ -17,3 +17,16 @@ export const optionsSchema = (key) => {
     }
   );
 };
+
+export const optionalOptionSchema = (key) => {
+  return z.object(
+    {
+      label: z.string().optional(),
+      value: z.string().optional(),
+    },
+    {
+      // invalid_type_error: requiredMessage,
+      // required_error: requiredMessage,
+    }
+  );
+};

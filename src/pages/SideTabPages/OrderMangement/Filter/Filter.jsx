@@ -116,7 +116,7 @@ const Filter = ({ statusFilterOptionArr, setBody, body }) => {
           className="form-label m-0 fw-sbold text-muted"
           style={{ whiteSpace: "nowrap" }}
         >
-          Brand
+          Search your Brand to filter
         </label>
         <AsyncSelect
           loadOptions={loadOptions}
@@ -133,7 +133,7 @@ const Filter = ({ statusFilterOptionArr, setBody, body }) => {
           className="form-label m-0 fw-sbold text-muted"
           style={{ whiteSpace: "nowrap" }}
         >
-          Deals
+          Brand Deals
         </label>
         <Select
           isLoading={getDealsOptionLoader}

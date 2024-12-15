@@ -28,8 +28,12 @@ import {
 } from "../../../../utilities/utilities";
 import TagsInput from "./TagsInput";
 
-const makeOptions = (data) => {
-  return data?.map((item) => ({ label: item.name, value: item._id }));
+const makeOptions = (data, extraKey, extraKeyValueKey) => {
+  return data?.map((item) => ({
+    label: item.name,
+    value: item._id,
+    [extraKey]: item[extraKeyValueKey],
+  }));
 };
 
 const objectIdSchema = (fieldName) =>
@@ -44,58 +48,80 @@ const objectIdSchema = (fieldName) =>
     }
   );
 
-const schema = z.object({
-  productName: z
-    .string({ required_error: "This is Required" })
-    .min(1, { message: "Name is required" }),
-  brand: objectIdSchema("brand"),
-  platForm: objectIdSchema("Plat form"),
-  dealCategory: objectIdSchema("Deal Category"),
-  productCategories: z
-    .array(z.string())
-    .refine((data) => !data.some((item) => item.trim() === ""), {
-      message: "Product categories must contain at least one letter",
-    })
-    .optional(),
-  postUrl: z.string().url({ invalid_type_error: "inValid post url" }),
-  actualPrice: z
-    .string({ required_error: "Actual Price is required" })
-    .min(1, { message: "Actual Price is required" })
-    .refine((data) => !isNaN(data), {
-      message: "Actual Price must be numeric",
-      paths: ["actualPrice"],
-    }),
-  cashBack: z
-    .string({ required_error: "Cashback is required" })
-    .min(1, { message: "Cashback is required" })
-    .refine((data) => !isNaN(data), {
-      message: "cashback must be numeric",
-      paths: ["cashBack"],
-    }),
-  adminCommission: z
-    .string({ required_error: "Admin commission required" })
-    .min(1, { message: "admin commission is required" })
-    .refine((data) => !isNaN(data), {
-      message: "Admin  commission should be numeric",
-    }),
-  slotAlloted: z
-    .string({
-      invalid_type_error: "invalid slotAlloted",
-      required_error: "slot Alloted is required",
-    })
-    .min(1, { message: "Slot Alloted is required" }),
-  termsAndCondition: z
-    .string({
-      required_error: "Terms and condition is required",
-    })
-    .min(1, { message: "This  is required" }),
-  uniqueIdentifier: z
-    .string({
-      required_error: "unique Identifier is required",
-    })
-    .min(1, { message: "unique Identifier  is required" }),
-  imageUrl: z.string().optional(),
-});
+const schema = z
+  .object({
+    productName: z
+      .string({ required_error: "This is Required" })
+      .min(1, { message: "Name is required" }),
+    brand: objectIdSchema("brand"),
+    platForm: objectIdSchema("Plat form"),
+    dealCategory: objectIdSchema("Deal Category"),
+    productCategories: z
+      .array(z.string())
+      .refine((data) => !data.some((item) => item.trim() === ""), {
+        message: "Product categories must contain at least one letter",
+      })
+      .optional(),
+    postUrl: z.string().url({ invalid_type_error: "inValid post url" }),
+    actualPrice: z
+      .string({ required_error: "Actual Price is required" })
+      .min(1, { message: "Actual Price is required" })
+      .refine((data) => !isNaN(data), {
+        message: "Actual Price must be numeric",
+        paths: ["actualPrice"],
+      }),
+    cashBack: z
+      .string({ required_error: "Cashback is required" })
+      .min(1, { message: "Cashback is required" })
+      .refine((data) => !isNaN(data), {
+        message: "cashback must be numeric",
+        paths: ["cashBack"],
+      }),
+    adminCommission: z
+      .string({ required_error: "Admin commission required" })
+      .min(1, { message: "admin commission is required" })
+      .refine((data) => !isNaN(data), {
+        message: "Admin  commission should be numeric",
+      }),
+    slotAlloted: z
+      .string({
+        invalid_type_error: "invalid slotAlloted",
+        required_error: "slot Alloted is required",
+      })
+      .min(1, { message: "Slot Alloted is required" }),
+    termsAndCondition: z
+      .string({
+        required_error: "Terms and condition is required",
+      })
+      .min(1, { message: "This  is required" }),
+    uniqueIdentifier: z
+      .string({
+        required_error: "unique Identifier is required",
+      })
+      .min(1, { message: "unique Identifier  is required" }),
+    imageUrl: z.string().optional(),
+    exchangeDealProducts: z.array(z.string()).optional(),
+    isExchangeDeal: z.boolean().optional(),
+  })
+  .refine(
+    (data) => {
+      console.log(data?.exchangeDealProducts, "2312");
+      if (
+        data?.isExchangeDeal &&
+        (!data.exchangeDealProducts || !data.exchangeDealProducts[0])
+      ) {
+        console.log("asd");
+        return false;
+      }
+      console.log("123");
+      return true;
+    },
+    {
+      message:
+        "If your deal is exchange deal , then please provide the exchange deals products fields",
+      path: ["exchangeDealProducts"],
+    }
+  );
 
 const AddEditDeal = () => {
   const navigate = useNavigate();
@@ -114,9 +140,9 @@ const AddEditDeal = () => {
     formState: { errors },
     getValues,
   } = useForm({
-    defaultValues: {
-      productCategories: [],
-    },
+    // defaultValues: {
+    //   productCategories: [],
+    // },
     values: {
       productName: data?.productName || "",
       uniqueIdentifier: data?.uniqueIdentifier || "",
@@ -131,6 +157,10 @@ const AddEditDeal = () => {
       termsAndCondition: data?.termsAndCondition || "",
       adminCommission: data?.adminCommission || "",
       imageUrl: data?.imageUrl,
+      isExchangeDeal: data?.dealCategory?.isExchangeDeal ? true : false,
+      exchangeDealProducts: data?.exchangeDealProducts
+        ? data?.exchangeDealProducts
+        : [],
     },
 
     resolver: zodResolver(schema),
@@ -138,7 +168,10 @@ const AddEditDeal = () => {
     reValidateMode: "onChange",
   });
 
+  console.log(watch("isExchangeDeal"), data?.dealCategory, errors);
+
   const submitHandler = catchAsync(async (data) => {
+    console.log(data, "Data");
     let res;
 
     if (id) {
@@ -184,7 +217,10 @@ const AddEditDeal = () => {
     });
     checkResponse({
       res: res[2],
-      setData: (data) => setDealCategoryOptions((p) => makeOptions(data)),
+      setData: (data) =>
+        setDealCategoryOptions((p) =>
+          makeOptions(data, "isExchangeDeal", "isExchangeDeal")
+        ),
     });
     checkResponse({
       res: res[3],
@@ -202,6 +238,7 @@ const AddEditDeal = () => {
           dealCategory: {
             label: data?.dealCategory?.name || "",
             value: data?.dealCategory?._id || "",
+            isExchangeDeal: data?.dealCategory?.isExchangeDeal || false,
           },
         }));
       },
@@ -213,7 +250,7 @@ const AddEditDeal = () => {
   }, []);
 
   const scrapeImageHandler = catchAsync(async () => {
-    if (!getValues("postUrl")) return toast.error("abe post url to daa!");
+    if (!getValues("postUrl")) return toast.error("Please add the post url!");
     const res = await SCRAPPER_IMAGE(getValues("postUrl"));
     if (res.status === 200) {
       setValue("imageUrl", res.data.image_url, { shouldValidate: true });
@@ -339,6 +376,19 @@ const AddEditDeal = () => {
                             return (
                               <Select
                                 {...field}
+                                onChange={(value) => {
+                                  console.log(value, "Value");
+                                  if (value?.isExchangeDeal) {
+                                    setValue("isExchangeDeal", true, {
+                                      shouldValidate: true,
+                                    });
+                                  } else {
+                                    setValue("isExchangeDeal", false, {
+                                      shouldValidate: true,
+                                    });
+                                  }
+                                  field.onChange(value);
+                                }}
                                 options={dealCategoryOptions}
                               />
                             );
@@ -351,6 +401,28 @@ const AddEditDeal = () => {
                         )}
                       </div>
                     </Col>
+                    {watch("isExchangeDeal") && (
+                      <Col lg="4" md="6" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Exchange Deal Products
+                          </label>
+                          <TagsInput
+                            setValue={setValue}
+                            watch={watch}
+                            fieldName={"exchangeDealProducts"}
+                          />
+                          {errors?.exchangeDealProducts && (
+                            <p className="text-danger m-0">
+                              {errors.exchangeDealProducts.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                    )}
 
                     <Col lg="4" md="6" className="my-2">
                       <div className="py-2">

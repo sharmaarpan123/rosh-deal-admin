@@ -11,6 +11,10 @@ import AuthBg from "../../Assets/images/authBg.png";
 import g1 from "../../Assets/images/bub.png";
 
 const AuthLayout = () => {
+
+
+  
+
   return (
     <>
       <section

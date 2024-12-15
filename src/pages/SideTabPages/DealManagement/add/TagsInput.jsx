@@ -12,7 +12,7 @@ const TagsInput = ({ setValue, watch, fieldName }) => {
   const AddTagHandler = () => {
     if (!inputValue.trim()) {
       toast.dismiss();
-      return toast.warning("abe chutiye kuch likh to sahi!");
+      return toast.warning("Please write something to add the tag!");
     }
 
     let arr = [];
@@ -23,7 +23,7 @@ const TagsInput = ({ setValue, watch, fieldName }) => {
 
     arr.push(inputValue.trim());
 
-    setValue(fieldName, arr);
+    setValue(fieldName, arr, { shouldValidate: true });
     setInputValue("");
   };
 

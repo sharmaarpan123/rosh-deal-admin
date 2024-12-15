@@ -29,6 +29,31 @@ export const getColumn = (
     accessor: "orderIdOfPlatForm",
   },
   {
+    head: "Deal Name",
+    accessor: "productName",
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+        {capitalizedFirstAlphaBet(item?.dealId?.productName)}
+        {item?.dealId?.uniqueIdentifier || ""}
+      </p>
+    ),
+  },
+
+  {
+    head: "Selected Exchange Products",
+    accessor: "",
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+        {item?.exchangeDealProducts?.map((item) => {
+          return `${capitalizedFirstAlphaBet(item)} , `;
+        })}
+        {(item?.exchangeDealProducts?.length === 0 ||
+          !item?.exchangeDealProducts?.length) &&
+          "-"}
+      </p>
+    ),
+  },
+  {
     head: "User Name",
     accessor: "productName",
     component: (item, key, arr) => (

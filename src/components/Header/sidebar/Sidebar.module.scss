@@ -32,10 +32,13 @@
           background: #fff;
           clip-path: polygon(50% 100%, 0 0, 100% 0);
         }
+        
       }
+      
       &:has(a.active) .accordionBtn button {
         background-color: #0b4897;
       }
+      
       .subLinks {
         font-size: 10px;
         line-height: 12px;
@@ -48,6 +51,7 @@
     }
     .link,
     .accordionBtn button {
+      transition: all ease 0.5s;
       color: #fff;
       border-radius: 4px !important;
       background-color: transparent;
@@ -59,6 +63,9 @@
       gap: 10px;
       font-weight: 600;
       &.active {
+        background-color: #0b4897;
+      }
+      &:hover {
         background-color: #0b4897;
       }
     }

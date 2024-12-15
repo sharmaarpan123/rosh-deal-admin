@@ -19,7 +19,10 @@ import {
   DEALS_LIST,
   SEND_NOTIFICATION,
 } from "../../../services/ApiCalls";
-import { optionsSchema } from "../../../utilities/commonZodSchema";
+import {
+  optionalOptionSchema,
+  optionsSchema,
+} from "../../../utilities/commonZodSchema";
 
 const schema = z
   .object({
@@ -32,12 +35,12 @@ const schema = z
       .trim()
       .min(1, { message: "message is required" }),
     type: optionsSchema("Notification type"),
-    dealId: optionsSchema("Deal").optional(),
-    orderStatus: optionsSchema("order status").optional(),
+    dealId: optionalOptionSchema("Deal"),
+    orderStatus: optionalOptionSchema("order status"),
   })
   .refine(
     (data) => {
-      if (data.type.value === "dealOrderStatus" && !data?.dealId) {
+      if (data?.type?.value === "dealOrderStatus" && !data?.dealId?.value) {
         return false;
       }
       return true;
@@ -49,7 +52,10 @@ const schema = z
   )
   .refine(
     (data) => {
-      if (data.type.value === "dealOrderStatus" && !data?.orderStatus) {
+      if (
+        data?.type?.value === "dealOrderStatus" &&
+        !data?.orderStatus?.value
+      ) {
         return false;
       }
       return true;

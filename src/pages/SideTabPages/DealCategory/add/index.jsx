@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import noImg from "../../../../Assets/images/no-img.png";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
   ADD_DEAL_CATEGORY,
@@ -22,9 +22,14 @@ import {
 } from "../../../../services/ApiCalls";
 import { catchAsync, checkResponse } from "../../../../utilities/utilities";
 import fileUploader from "../../../../utilities/fileUploader";
+import Toggle from "../../../../components/Common/Toggle";
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
+  isExchangeDeal: z.boolean({
+    required_error: "Is Exchange Deal   is required",
+    invalid_type_error: "Is Exchange Deal   should be boolean",
+  }),
 });
 
 const AddEditDealCategory = () => {
@@ -37,9 +42,12 @@ const AddEditDealCategory = () => {
     register,
     handleSubmit,
     formState: { errors },
+    control,
+    watch,
   } = useForm({
     values: {
       name: detailsCategory?.name || "",
+      isExchangeDeal: detailsCategory?.isExchangeDeal || false,
     },
 
     resolver: zodResolver(schema),
@@ -112,7 +120,7 @@ const AddEditDealCategory = () => {
                   </svg>
                 </Link>
                 <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                 Add deal Category
+                  Add deal Category
                 </h4>
               </div>
             </Col>
@@ -185,6 +193,35 @@ const AddEditDealCategory = () => {
                         {errors?.name && (
                           <p className="text-danger m-0">
                             {errors.name.message}
+                          </p>
+                        )}
+                      </div>
+                    </Col>
+                    <Col lg="8" md="6" className="my-2">
+                      <div className="py-2">
+                        <label
+                          htmlFor=""
+                          className="form-label fw-sbold text-muted ps-2 m-0"
+                        >
+                          Is Exchange Deal
+                        </label>
+                        <Controller
+                          control={control}
+                          name="isExchangeDeal"
+                          render={({ field }) => {
+                            return (
+                              <Toggle
+                                isChecked={watch("isExchangeDeal")}
+                                onChange={(e) => {
+                                  field.onChange(e?.target?.checked);
+                                }}
+                              />
+                            );
+                          }}
+                        />
+                        {errors?.isExchangeDeal && (
+                          <p className="text-danger m-0">
+                            {errors.isExchangeDeal.message}
                           </p>
                         )}
                       </div>

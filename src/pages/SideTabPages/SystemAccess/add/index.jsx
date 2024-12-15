@@ -119,7 +119,7 @@ const AddEditUser = () => {
     }
   });
 
-  console.log(errors, "errors");
+  console.log(permissions, "errors");
 
   const getData = catchAsync(async () => {
     const apiArr = [MODULES_LIST()];
@@ -172,8 +172,6 @@ const AddEditUser = () => {
       return newArr;
     });
   };
-
-  console.log("re-render");
 
   const selectDeSelectAllPermissions = (type) => {
     setPermissions((p) => {
