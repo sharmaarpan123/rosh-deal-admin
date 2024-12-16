@@ -89,6 +89,18 @@ const schema = z
         required_error: "slot Alloted is required",
       })
       .min(1, { message: "Slot Alloted is required" }),
+    finalCashBackForUser: z
+      .string({
+        invalid_type_error: "invalid finalCashBackForUser",
+        required_error: "final Cash Back ForUser is required",
+      })
+      .min(1, { message: "final Cash Back ForUser is required" }),
+    refundDays: z
+      .string({
+        invalid_type_error: "invalid Refund Days",
+        required_error: "Refund Days is required",
+      })
+      .min(1, { message: "Refund Days is required" }),
     termsAndCondition: z
       .string({
         required_error: "Terms and condition is required",
@@ -123,6 +135,10 @@ const schema = z
     }
   );
 
+const getAdminCommission = (actualPrice, cashBack, adminPercentage = 5) => {
+  return ((actualPrice - cashBack) * adminPercentage) / 100;
+};
+
 const AddEditDeal = () => {
   const navigate = useNavigate();
   const [brandOptions, setBrandOptions] = useState([]);
@@ -140,9 +156,6 @@ const AddEditDeal = () => {
     formState: { errors },
     getValues,
   } = useForm({
-    // defaultValues: {
-    //   productCategories: [],
-    // },
     values: {
       productName: data?.productName || "",
       uniqueIdentifier: data?.uniqueIdentifier || "",
@@ -153,6 +166,10 @@ const AddEditDeal = () => {
       postUrl: data?.postUrl || "",
       actualPrice: data?.actualPrice || "",
       cashBack: data?.cashBack || "",
+      finalCashBackForUser: data?.finalCashBackForUser
+        ? data?.finalCashBackForUser
+        : "",
+      refundDays: data?.refundDays || "",
       slotAlloted: data?.slotAlloted ? String(data?.slotAlloted) : "",
       termsAndCondition: data?.termsAndCondition || "",
       adminCommission: data?.adminCommission || "",
@@ -162,13 +179,10 @@ const AddEditDeal = () => {
         ? data?.exchangeDealProducts
         : [],
     },
-
     resolver: zodResolver(schema),
     mode: "onChange",
     reValidateMode: "onChange",
   });
-
-  console.log(watch("isExchangeDeal"), data?.dealCategory, errors);
 
   const submitHandler = catchAsync(async (data) => {
     console.log(data, "Data");
@@ -182,6 +196,7 @@ const AddEditDeal = () => {
         platForm: data.platForm.value,
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
+        refundDays: +data.refundDays,
       });
     } else {
       res = await ADD_DEAL({
@@ -190,6 +205,7 @@ const AddEditDeal = () => {
         platForm: data.platForm.value,
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
+        refundDays: +data.refundDays,
       });
     }
     checkResponse({
@@ -258,6 +274,34 @@ const AddEditDeal = () => {
       toast.error(res.response.data.error);
     }
   });
+
+  const superAdminCommission = 5; // percentage;
+
+  useEffect(() => {
+    const actualPrice = watch("actualPrice");
+    const cashBack = watch("cashBack");
+    if (actualPrice && cashBack) {
+      const agentProfit = +actualPrice - +cashBack;
+
+      const adminCommission = (agentProfit * superAdminCommission) / 100;
+
+      setValue("adminCommission", String(adminCommission), {
+        shouldValidate: true,
+      });
+      setValue("finalCashBackForUser", String(cashBack - adminCommission), {
+        shouldValidate: true,
+      });
+    } else {
+      setValue("adminCommission", "0", {
+        shouldValidate: true,
+      });
+      setValue("finalCashBackForUser", "0", {
+        shouldValidate: true,
+      });
+    }
+  }, [watch("actualPrice"), watch("cashBack")]);
+
+  console.log(errors, "errors");
 
   return (
     <>
@@ -377,7 +421,6 @@ const AddEditDeal = () => {
                               <Select
                                 {...field}
                                 onChange={(value) => {
-                                  console.log(value, "Value");
                                   if (value?.isExchangeDeal) {
                                     setValue("isExchangeDeal", true, {
                                       shouldValidate: true,
@@ -470,72 +513,7 @@ const AddEditDeal = () => {
                       </div>
                     </Col>
 
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Actual Price
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Annette Black"
-                          className="form-control"
-                          {...register("actualPrice")}
-                        />
-                        {errors?.actualPrice && (
-                          <p className="text-danger m-0">
-                            {errors.actualPrice.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Admin commission
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Annette Black"
-                          className="form-control"
-                          {...register("adminCommission")}
-                        />
-                        {errors?.adminCommission && (
-                          <p className="text-danger m-0">
-                            {errors.adminCommission.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Cash Back
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Annette Black"
-                          className="form-control"
-                          {...register("cashBack")}
-                        />
-                        {errors?.cashBack && (
-                          <p className="text-danger m-0">
-                            {errors.cashBack.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-
-                    <Col lg="4" md="6" className="my-2">
+                    <Col lg="4" md="6" className="my-2 h-100 ">
                       <div className="py-2">
                         <label
                           htmlFor=""
@@ -557,9 +535,6 @@ const AddEditDeal = () => {
                       </div>
                     </Col>
                     <Col lg="4" md="6" className="my-2">
-                      <Button onClick={scrapeImageHandler} type="button">
-                        Scrap Image
-                      </Button>
                       <div className="py-2">
                         <label
                           htmlFor=""
@@ -579,6 +554,9 @@ const AddEditDeal = () => {
                           </p>
                         )}
                       </div>
+                      <Button onClick={scrapeImageHandler} type="button">
+                        Scrap Image
+                      </Button>
                     </Col>
                     <Col lg="4" md="6" className="my-2">
                       <div className="py-2">
@@ -592,6 +570,172 @@ const AddEditDeal = () => {
                           src={watch("imageUrl")}
                           style={{ width: 100, height: 100 }}
                         />
+                      </div>
+                    </Col>
+
+                    <Col md="12">
+                      <Row>
+                        <Col lg="4" md="6" className="my-2">
+                          <div className="py-2">
+                            <label
+                              htmlFor=""
+                              className="form-label fw-sbold text-muted ps-2 m-0"
+                            >
+                              Actual Price
+                            </label>
+                            <Controller
+                              control={control}
+                              name="actualPrice"
+                              render={({ field }) => {
+                                return (
+                                  <input
+                                    {...field}
+                                    onChange={(e) => {
+                                      console.log(watch("cashBack"), "12321");
+                                      if (
+                                        e.target.value &&
+                                        getValues("cashBack")
+                                      ) {
+                                        setValue(
+                                          "adminCommission",
+                                          getAdminCommission(
+                                            e.target.value,
+                                            getValues("cashBack")
+                                          ),
+                                          { shouldValidate: true }
+                                        );
+                                      } else {
+                                        setValue("adminCommission", 0, {
+                                          shouldValidate: true,
+                                        });
+                                      }
+                                      field.onChange(e.target.value);
+                                    }}
+                                    type="text"
+                                    placeholder="Annette Black"
+                                    className="form-control"
+                                  />
+                                );
+                              }}
+                            />
+                            {errors?.actualPrice && (
+                              <p className="text-danger m-0">
+                                {errors.actualPrice.message}
+                              </p>
+                            )}
+                          </div>
+                        </Col>
+
+                        <Col lg="4" md="6" className="my-2">
+                          <div className="py-2">
+                            <label
+                              htmlFor=""
+                              className="form-label fw-sbold text-muted ps-2 m-0"
+                            >
+                              Less Value
+                            </label>
+                            <Controller
+                              control={control}
+                              name="cashBack"
+                              render={({ field }) => {
+                                return (
+                                  <input
+                                    {...field}
+                                    onChange={(e) => {
+                                      if (
+                                        e.target.value &&
+                                        getValues("actualPrice")
+                                      ) {
+                                        setValue(
+                                          "adminCommission",
+                                          setValue(
+                                            "adminCommission",
+                                            getAdminCommission(
+                                              +e.target.value,
+                                              +getValues("actualPrice")
+                                            ),
+                                            { shouldValidate: true }
+                                          ),
+                                          { shouldValidate: true }
+                                        );
+                                      } else {
+                                        setValue("adminCommission", 0, {
+                                          shouldValidate: true,
+                                        });
+                                      }
+                                      field.onChange(e.target.value);
+                                    }}
+                                    type="text"
+                                    placeholder="Annette Black"
+                                    className="form-control"
+                                    // {...register("cashBack")}
+                                  />
+                                );
+                              }}
+                            />
+
+                            {errors?.cashBack && (
+                              <p className="text-danger m-0">
+                                {errors.cashBack.message}
+                              </p>
+                            )}
+                          </div>
+                        </Col>
+
+                        <Col lg="4" md="6" className="my-2">
+                          <Col>
+                            <div className="py-2 d-flex flex-column">
+                              <label
+                                htmlFor=""
+                                className="form-label fw-sbold text-muted ps-2 m-0"
+                              >
+                                Your Profit
+                              </label>
+
+                              <p className="form-label fw-sbold  ps-2 m-0 text-success">
+                                {watch("actualPrice") && watch("cashBack")
+                                  ? watch("actualPrice") - watch("cashBack")
+                                  : "--"}
+                              </p>
+                            </div>
+                          </Col>
+                          <Col>
+                            <div className="py-2 d-flex flex-column">
+                              <label
+                                htmlFor=""
+                                className="form-label fw-sbold text-muted ps-2 m-0"
+                              >
+                                Final Less Value To user
+                              </label>
+
+                              <p className="form-label fw-sbold  ps-2 m-0 text-success">
+                                {watch("finalCashBackForUser")}
+                              </p>
+                            </div>
+                          </Col>
+                        </Col>
+                      </Row>
+                    </Col>
+
+                    <Col lg="4" md="6" className="my-2 h-100 ">
+                      <div className="py-2">
+                        <label
+                          htmlFor=""
+                          className="form-label fw-sbold text-muted ps-2 m-0"
+                        >
+                          Refund Days
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Annette Black"
+                          className="form-control"
+                          {...register("refundDays")}
+                        />
+                        {errors?.refundDays && (
+                          <p className="text-danger m-0">
+                            {errors.refundDays.message}
+                          </p>
+                        )}
                       </div>
                     </Col>
 
