@@ -175,3 +175,23 @@ export const makeQueryFromData = (data) => {
 
   return string;
 };
+
+export const handleShare = (productId) => {
+  if (!productId) {
+    alert('Product ID is missing. Unable to share.');
+    return;
+  }
+  const shareData = {
+    title: 'Share this deal now',
+    text: `https://dev-cash-back-bajar.vercel.app?product_id=${productId}`,
+  };
+
+  if (navigator.share) {
+    navigator
+      .share(shareData)
+      .then(() => console.log("Successful share"))
+      .catch((error) => console.error("Error sharing", error));
+  } else {
+    alert("Share functionality is not supported on this browser.");
+  }
+};

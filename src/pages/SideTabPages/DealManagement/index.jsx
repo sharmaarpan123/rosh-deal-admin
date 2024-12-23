@@ -24,8 +24,10 @@ import {
 import {
   activeInActiveOptions,
   capitalizedFirstAlphaBet,
+  handleShare,
 } from "../../../utilities/utilities";
 import TableToggle from "../../../components/Common/TableToggle";
+import share from "../../../Assets/images/share.png";
 
 const DealManagement = () => {
   const {
@@ -60,9 +62,27 @@ const DealManagement = () => {
       head: "Name",
       accessor: "productName",
       component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
-          {capitalizedFirstAlphaBet(item.productName)}
-        </p>
+        <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
+          <p className="m-0 themeBlue fw-sbold">
+            {capitalizedFirstAlphaBet(item.productName)}
+          </p>
+          <button
+            className="share-button"
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              marginLeft: "5px",
+            }}
+            onClick={() => handleShare(item?._id)}
+          >
+            <img
+              src={share}
+              alt="Share"
+              style={{ width: 15, height: 15 }}
+            />
+          </button>
+        </div>
       ),
     },
     {
