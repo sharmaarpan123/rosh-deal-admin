@@ -5,17 +5,17 @@ import TableLayout from "../../../components/TableLayout";
 // img
 import moment from "moment";
 import { Link } from "react-router-dom";
+import copyIcon from "../../../Assets/images/copyIcon.png";
+import share from "../../../Assets/images/share.png";
 import CustomPagination from "../../../components/Common/CustomPagination";
 import Filter from "../../../components/Common/Filter";
 import TableActions from "../../../components/Common/TableActions";
-import noImg from "../../../components/Common/noImg";
-import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
+import TableToggle from "../../../components/Common/TableToggle";
 import dataHandler from "../../../hooks/dataHandler";
 import {
-  BRAND_LIST,
   DEAL_UPDATE_PAYMENT_STATUS,
   DEAL_UPDATE_STATUS,
-  DEALS_LIST,
+  DEALS_LIST
 } from "../../../services/ApiCalls";
 import {
   activeInactiveOptions,
@@ -24,10 +24,9 @@ import {
 import {
   activeInActiveOptions,
   capitalizedFirstAlphaBet,
+  copyClipboard,
   handleShare,
 } from "../../../utilities/utilities";
-import TableToggle from "../../../components/Common/TableToggle";
-import share from "../../../Assets/images/share.png";
 
 const DealManagement = () => {
   const {
@@ -82,18 +81,33 @@ const DealManagement = () => {
               style={{ width: 15, height: 15 }}
             />
           </button>
+          <button
+            className="share-button"
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => copyClipboard(item?._id)}
+          >
+            <img
+              src={copyIcon}
+              alt="Share"
+              style={{ width: 15, height: 15 }}
+            />
+          </button>
         </div>
       ),
     },
-    {
-      head: "unique slug",
-      accessor: "unique slug",
-      component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
-          {capitalizedFirstAlphaBet(item.uniqueIdentifier)}
-        </p>
-      ),
-    },
+    // {
+    //   head: "unique slug",
+    //   accessor: "unique slug",
+    //   component: (item, key, arr) => (
+    //     <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+    //       {capitalizedFirstAlphaBet(item.uniqueIdentifier)}
+    //     </p>
+    //   ),
+    // },
     {
       head: "Brand",
       accessor: "brand",
@@ -122,16 +136,16 @@ const DealManagement = () => {
       ),
     },
     {
-      head: "Commission",
-      accessor: "adminCommission",
-    },
-    {
-      head: "cashback",
-      accessor: "cashBack",
-    },
-    {
-      head: "actualPrice",
+      head: "Price",
       accessor: "actualPrice",
+    },
+    {
+      head: "Refund",
+      accessor: "finalCashBackForUser",
+    },
+    {
+      head: "Platform Fee",
+      accessor: "adminCommission",
     },
     {
       head: "Created At",

@@ -81,7 +81,7 @@ const TagsInput = ({ setValue, watch, fieldName }) => {
         <li>
           <input
             type="text"
-            placeholder="Annette Black"
+            placeholder="Add Categories"
             className="form-control border-white focus-border-none"
             value={inputValue}
             onChange={handleInputChange}

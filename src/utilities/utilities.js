@@ -181,17 +181,35 @@ export const handleShare = (productId) => {
     alert('Product ID is missing. Unable to share.');
     return;
   }
+
+  const shareUrl = `https://dev-cash-back-bajar.vercel.app?product_id=${productId}`;
   const shareData = {
     title: 'Share this deal now',
-    text: `https://dev-cash-back-bajar.vercel.app?product_id=${productId}`,
+    text: shareUrl,
   };
 
-  if (navigator.share) {
-    navigator
-      .share(shareData)
-      .then(() => console.log("Successful share"))
-      .catch((error) => console.error("Error sharing", error));
-  } else {
-    alert("Share functionality is not supported on this browser.");
-  }
+    // Share using navigator.share if supported
+    if (navigator.share) {
+      navigator
+        .share(shareData)
+        .then(() => console.log("Successful share"))
+        .catch((error) => console.error("Error sharing", error));
+    } else {
+      alert("Share functionality is not supported on this browser.");
+    }
 };
+
+export const copyClipboard = (productId)=>{
+  const shareUrl = `https://dev-cash-back-bajar.vercel.app?product_id=${productId}`;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard
+      .writeText(shareUrl)
+      .then(() => toast.success("Link copied to clipboard!"))
+      .catch((error) =>
+        toast.error("Failed to copy the link to clipboard. Please try again.")
+      );
+  } else {
+    toast.warning("Clipboard functionality is not supported on this browser.");
+  }
+}
