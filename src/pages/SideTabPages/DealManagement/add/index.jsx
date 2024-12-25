@@ -73,12 +73,11 @@ const schema = z
         paths: ["actualPrice"],
       }),
     lessAmount: z
-      .string({ required_error: "Cashback is required" })
-      .min(1, { message: "Cashback is required" })
+      .string({ required_error: "Less Amount is required" })
       .refine((data) => !isNaN(data), {
-        message: "cashback must be numeric",
+        message: "Less Amount must be numeric",
         paths: ["lessAmount"],
-      }),
+      }).optional(),
     adminCommission: z
       .string({ required_error: "Admin commission required" })
       .min(1, { message: "admin commission is required" })
@@ -125,15 +124,12 @@ const schema = z
   })
   .refine(
     (data) => {
-      console.log(data?.exchangeDealProducts, "2312");
       if (
         data?.isExchangeDeal &&
         (!data.exchangeDealProducts || !data.exchangeDealProducts[0])
       ) {
-        console.log("asd");
         return false;
       }
-      console.log("123");
       return true;
     },
     {
@@ -215,7 +211,7 @@ const AddEditDeal = () => {
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
         refundDays: +data.refundDays,
-        cashBack: data?.lessAmount
+        cashBack: data?.lessAmount||''
       });
     } else {
       res = await ADD_DEAL({
@@ -225,7 +221,7 @@ const AddEditDeal = () => {
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
         refundDays: +data.refundDays,
-        cashBack: data?.lessAmount
+        cashBack: data?.lessAmount||''
       });
     }
     checkResponse({
@@ -299,7 +295,7 @@ const AddEditDeal = () => {
         shouldValidate: true,
       });
       if (commissionValue) {
-        setValue("finalCashBackForUser", String((actualPrice + commissionValue) - adminCommission), {
+        setValue("finalCashBackForUser", String((Number(actualPrice) + Number(commissionValue)) - Number(adminCommission)), {
           shouldValidate: true,
         });
       } else {
@@ -317,7 +313,6 @@ const AddEditDeal = () => {
     }
   }, [watch("actualPrice"), watch("lessAmount"), watch("commissionValue")]);
 
-  console.log(errors, "errors");
 
   return (
     <>
@@ -808,7 +803,7 @@ const AddEditDeal = () => {
                                 htmlFor=""
                                 className="form-label fw-sbold text-muted ps-2 m-0"
                               >
-                                Final Less Value To user
+                                Final Refund Value To user
                               </label>
 
                               <p className="form-label fw-sbold  ps-2 m-0 text-success">
