@@ -13,6 +13,7 @@ import { SUB_ADMIN_LIST, UPDATE_SUB_ADMIN } from "../../../services/ApiCalls";
 import TableToggle from "../../../components/Common/TableToggle";
 import Toggle from "../../../components/Common/Toggle";
 import CustomPagination from "../../../components/Common/CustomPagination";
+import { ADMIN_ROLE_TYPE_ENUM } from "../../../utilities/const";
 
 const PlatForm = () => {
   const {
@@ -57,7 +58,9 @@ const PlatForm = () => {
       accessor: "status",
       component: (item, ind, arr) => (
         <Toggle
-          disabled={item?.roles?.includes("admin") || false}
+          disabled={
+            item?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN) || false
+          }
           isChecked={item?.isActive}
           onChange={({ target: { checked } }) => {
             statusChangeHandler(
