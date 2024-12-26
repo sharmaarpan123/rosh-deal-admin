@@ -27,6 +27,8 @@ import {
   textAreaAdjust,
 } from "../../../../utilities/utilities";
 import TagsInput from "./TagsInput";
+import fileUploader from "../../../../utilities/fileUploader";
+import noImg from "../../../../Assets/images/no-img.png";
 
 const makeOptions = (data, extraKey, extraKeyValueKey) => {
   return data?.map((item) => ({
@@ -70,13 +72,12 @@ const schema = z
         message: "Actual Price must be numeric",
         paths: ["actualPrice"],
       }),
-    cashBack: z
-      .string({ required_error: "Cashback is required" })
-      .min(1, { message: "Cashback is required" })
+    lessAmount: z
+      .string({ required_error: "Less Amount is required" })
       .refine((data) => !isNaN(data), {
-        message: "cashback must be numeric",
-        paths: ["cashBack"],
-      }),
+        message: "Less Amount must be numeric",
+        paths: ["lessAmount"],
+      }).optional(),
     adminCommission: z
       .string({ required_error: "Admin commission required" })
       .min(1, { message: "admin commission is required" })
@@ -95,6 +96,12 @@ const schema = z
         required_error: "final Cash Back ForUser is required",
       })
       .min(1, { message: "final Cash Back ForUser is required" }),
+    commissionValue: z
+      .string({
+        invalid_type_error: "Invalid Commision Amount",
+        required_error: "Commision Amount is required",
+      })
+      .optional(),
     refundDays: z
       .string({
         invalid_type_error: "invalid Refund Days",
@@ -117,15 +124,12 @@ const schema = z
   })
   .refine(
     (data) => {
-      console.log(data?.exchangeDealProducts, "2312");
       if (
         data?.isExchangeDeal &&
         (!data.exchangeDealProducts || !data.exchangeDealProducts[0])
       ) {
-        console.log("asd");
         return false;
       }
-      console.log("123");
       return true;
     },
     {
@@ -135,10 +139,9 @@ const schema = z
     }
   );
 
-const getAdminCommission = (actualPrice, cashBack, adminPercentage = 5) => {
-  return ((actualPrice - cashBack) * adminPercentage) / 100;
+const getAdminCommission = (actualPrice, lessAmount, adminPercentage = 5) => {
+  return ((actualPrice - lessAmount) * adminPercentage) / 100;
 };
-
 const AddEditDeal = () => {
   const navigate = useNavigate();
   const [brandOptions, setBrandOptions] = useState([]);
@@ -165,9 +168,12 @@ const AddEditDeal = () => {
       productCategories: data?.productCategories || [],
       postUrl: data?.postUrl || "",
       actualPrice: data?.actualPrice || "",
-      cashBack: data?.cashBack || "",
+      lessAmount: data?.cashBack || "",
       finalCashBackForUser: data?.finalCashBackForUser
         ? data?.finalCashBackForUser
+        : "",
+      commissionValue: data?.commissionValue
+        ? data?.commissionValue
         : "",
       refundDays: data?.refundDays || "",
       slotAlloted: data?.slotAlloted ? String(data?.slotAlloted) : "",
@@ -184,8 +190,16 @@ const AddEditDeal = () => {
     reValidateMode: "onChange",
   });
 
+  const imageChangeHandler = catchAsync(async (e) => {
+    const url = await fileUploader(e.target.files[0]);
+
+    if (!url) {
+      return;
+    }
+    setValue("imageUrl", url, { shouldValidate: true });
+  });
+
   const submitHandler = catchAsync(async (data) => {
-    console.log(data, "Data");
     let res;
 
     if (id) {
@@ -197,6 +211,7 @@ const AddEditDeal = () => {
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
         refundDays: +data.refundDays,
+        cashBack: data?.lessAmount||''
       });
     } else {
       res = await ADD_DEAL({
@@ -206,6 +221,7 @@ const AddEditDeal = () => {
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
         refundDays: +data.refundDays,
+        cashBack: data?.lessAmount||''
       });
     }
     checkResponse({
@@ -265,32 +281,28 @@ const AddEditDeal = () => {
     getData();
   }, []);
 
-  const scrapeImageHandler = catchAsync(async () => {
-    if (!getValues("postUrl")) return toast.error("Please add the post url!");
-    const res = await SCRAPPER_IMAGE(getValues("postUrl"));
-    if (res.status === 200) {
-      setValue("imageUrl", res.data.image_url, { shouldValidate: true });
-    } else {
-      toast.error(res.response.data.error);
-    }
-  });
 
-  const superAdminCommission = 5; // percentage;
+  const superAdminCommission = 10; // percentage;
 
   useEffect(() => {
     const actualPrice = watch("actualPrice");
-    const cashBack = watch("cashBack");
-    if (actualPrice && cashBack) {
-      const agentProfit = +actualPrice - +cashBack;
-
-      const adminCommission = (agentProfit * superAdminCommission) / 100;
+    const lessAmount = watch("lessAmount");
+    const commissionValue = watch("commissionValue");
+    if (actualPrice && (lessAmount || commissionValue)) {
+      const adminCommission = (superAdminCommission * (lessAmount || commissionValue)) / 100;
 
       setValue("adminCommission", String(adminCommission), {
         shouldValidate: true,
       });
-      setValue("finalCashBackForUser", String(cashBack - adminCommission), {
-        shouldValidate: true,
-      });
+      if (commissionValue) {
+        setValue("finalCashBackForUser", String((Number(actualPrice) + Number(commissionValue)) - Number(adminCommission)), {
+          shouldValidate: true,
+        });
+      } else {
+        setValue("finalCashBackForUser", String(Number(actualPrice)-  Number(lessAmount) - Number(adminCommission)), {
+          shouldValidate: true,
+        });
+      }
     } else {
       setValue("adminCommission", "0", {
         shouldValidate: true,
@@ -299,9 +311,8 @@ const AddEditDeal = () => {
         shouldValidate: true,
       });
     }
-  }, [watch("actualPrice"), watch("cashBack")]);
+  }, [watch("actualPrice"), watch("lessAmount"), watch("commissionValue")]);
 
-  console.log(errors, "errors");
 
   return (
     <>
@@ -341,238 +352,226 @@ const AddEditDeal = () => {
               >
                 <Form onSubmit={handleSubmit(submitHandler)}>
                   <Row className="d-flex justify-content-center">
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Product Name
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Annette Black"
-                          className="form-control"
-                          {...register("productName")}
-                        />
-                        {errors?.productName && (
-                          <p className="text-danger m-0">
-                            {errors.productName.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Unique Slug
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Annette Black"
-                          className="form-control"
-                          {...register("uniqueIdentifier")}
-                        />
-                        {errors?.uniqueIdentifier && (
-                          <p className="text-danger m-0">
-                            {errors.uniqueIdentifier.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Select Brand
-                        </label>
-                        <Controller
-                          control={control}
-                          name="brand"
-                          render={({ field }) => {
-                            return <Select {...field} options={brandOptions} />;
-                          }}
-                        />
-                        {errors?.brand && (
-                          <p className="text-danger m-0">
-                            {errors.brand.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Select DealCategory
-                        </label>
-                        <Controller
-                          control={control}
-                          name="dealCategory"
-                          render={({ field }) => {
-                            return (
-                              <Select
-                                {...field}
-                                onChange={(value) => {
-                                  if (value?.isExchangeDeal) {
-                                    setValue("isExchangeDeal", true, {
-                                      shouldValidate: true,
-                                    });
-                                  } else {
-                                    setValue("isExchangeDeal", false, {
-                                      shouldValidate: true,
-                                    });
-                                  }
-                                  field.onChange(value);
-                                }}
-                                options={dealCategoryOptions}
-                              />
-                            );
-                          }}
-                        />
-                        {errors?.dealCategory && (
-                          <p className="text-danger m-0">
-                            {errors.dealCategory.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-                    {watch("isExchangeDeal") && (
+                    {/* Category Platform Brand View */}
+                    <>
                       <Col lg="4" md="6" className="my-2">
                         <div className="py-2">
                           <label
                             htmlFor=""
                             className="form-label fw-sbold text-muted ps-2 m-0"
                           >
-                            Exchange Deal Products
+                            Select DealCategory
                           </label>
-                          <TagsInput
-                            setValue={setValue}
-                            watch={watch}
-                            fieldName={"exchangeDealProducts"}
+                          <Controller
+                            control={control}
+                            name="dealCategory"
+                            render={({ field }) => {
+                              return (
+                                <Select
+                                  {...field}
+                                  onChange={(value) => {
+                                    if (value?.isExchangeDeal) {
+                                      setValue("isExchangeDeal", true, {
+                                        shouldValidate: true,
+                                      });
+                                    } else {
+                                      setValue("isExchangeDeal", false, {
+                                        shouldValidate: true,
+                                      });
+                                    }
+                                    field.onChange(value);
+                                  }}
+                                  options={dealCategoryOptions}
+                                />
+                              );
+                            }}
                           />
-                          {errors?.exchangeDealProducts && (
+                          {errors?.dealCategory && (
                             <p className="text-danger m-0">
-                              {errors.exchangeDealProducts.message}
+                              {errors.dealCategory.message}
                             </p>
                           )}
                         </div>
                       </Col>
-                    )}
 
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Select Plat Form
-                        </label>
-                        <Controller
-                          control={control}
-                          name="platForm"
-                          render={({ field }) => {
-                            return (
-                              <Select {...field} options={platFormOptions} />
-                            );
-                          }}
-                        />
-                        {errors?.platForm && (
-                          <p className="text-danger m-0">
-                            {errors.platForm.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Product Categories
-                        </label>
-                        <TagsInput
-                          setValue={setValue}
-                          watch={watch}
-                          fieldName={"productCategories"}
-                        />
-                        {errors?.productCategories && (
-                          <p className="text-danger m-0">
-                            {errors.productCategories.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-
-                    <Col lg="4" md="6" className="my-2 h-100 ">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Slot Allotted
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Annette Black"
-                          className="form-control"
-                          {...register("slotAlloted")}
-                        />
-                        {errors?.slotAlloted && (
-                          <p className="text-danger m-0">
-                            {errors.slotAlloted.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Post url
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Annette Black"
-                          className="form-control"
-                          {...register("postUrl")}
-                        />
-                        {errors?.postUrl && (
-                          <p className="text-danger m-0">
-                            {errors.postUrl.message}
-                          </p>
-                        )}
-                      </div>
-                      <Button onClick={scrapeImageHandler} type="button">
-                        Scrap Image
-                      </Button>
-                    </Col>
-                    <Col lg="4" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Scrap Image View
-                        </label>
-                        <img
-                          src={watch("imageUrl")}
-                          style={{ width: 100, height: 100 }}
-                        />
-                      </div>
-                    </Col>
-
+                      <Col lg="4" md="6" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Select Plat Form
+                          </label>
+                          <Controller
+                            control={control}
+                            name="platForm"
+                            render={({ field }) => {
+                              return (
+                                <Select {...field} options={platFormOptions} />
+                              );
+                            }}
+                          />
+                          {errors?.platForm && (
+                            <p className="text-danger m-0">
+                              {errors.platForm.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                      <Col lg="4" md="6" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Select Brand
+                          </label>
+                          <Controller
+                            control={control}
+                            name="brand"
+                            render={({ field }) => {
+                              return <Select {...field} options={brandOptions} />;
+                            }}
+                          />
+                          {errors?.brand && (
+                            <p className="text-danger m-0">
+                              {errors.brand.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                    </>
+                    {/* Product Name , Slug , Product Categories View */}
+                    <>
+                      <Col lg="4" md="6" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Product Name
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Enter name of product"
+                            className="form-control"
+                            {...register("productName")}
+                          />
+                          {errors?.productName && (
+                            <p className="text-danger m-0">
+                              {errors.productName.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                      <Col lg="4" md="6" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Unique Value(Add deal month)
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Boat-Watch-Dec"
+                            className="form-control"
+                            {...register("uniqueIdentifier")}
+                          />
+                          {errors?.uniqueIdentifier && (
+                            <p className="text-danger m-0">
+                              {errors.uniqueIdentifier.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                      <Col lg="4" md="6" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Product Categories
+                          </label>
+                          <TagsInput
+                            setValue={setValue}
+                            watch={watch}
+                            fieldName={"productCategories"}
+                          />
+                          {errors?.productCategories && (
+                            <p className="text-danger m-0">
+                              {errors.productCategories.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                    </>
+                    {/* Slow Alloted, Product Link, Refund Days */}
+                    <>
+                      <Col lg="4" md="6" className="my-2 h-100 ">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Total Slots Available
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Add total number of slots available"
+                            className="form-control"
+                            {...register("slotAlloted")}
+                          />
+                          {errors?.slotAlloted && (
+                            <p className="text-danger m-0">
+                              {errors.slotAlloted.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                      <Col lg="4" md="6" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Product Link
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Add product link"
+                            className="form-control"
+                            {...register("postUrl")}
+                          />
+                          {errors?.postUrl && (
+                            <p className="text-danger m-0">
+                              {errors.postUrl.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                      <Col lg="4" md="6" className="my-2 h-100 ">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Refund Days
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="No of days after user get refund"
+                            className="form-control"
+                            {...register("refundDays")}
+                          />
+                          {errors?.refundDays && (
+                            <p className="text-danger m-0">
+                              {errors.refundDays.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                    </>
                     <Col md="12">
                       <Row>
                         <Col lg="4" md="6" className="my-2">
@@ -591,28 +590,10 @@ const AddEditDeal = () => {
                                   <input
                                     {...field}
                                     onChange={(e) => {
-                                      console.log(watch("cashBack"), "12321");
-                                      if (
-                                        e.target.value &&
-                                        getValues("cashBack")
-                                      ) {
-                                        setValue(
-                                          "adminCommission",
-                                          getAdminCommission(
-                                            e.target.value,
-                                            getValues("cashBack")
-                                          ),
-                                          { shouldValidate: true }
-                                        );
-                                      } else {
-                                        setValue("adminCommission", 0, {
-                                          shouldValidate: true,
-                                        });
-                                      }
                                       field.onChange(e.target.value);
                                     }}
                                     type="text"
-                                    placeholder="Annette Black"
+                                    placeholder="Enter the actual price of product"
                                     className="form-control"
                                   />
                                 );
@@ -632,30 +613,27 @@ const AddEditDeal = () => {
                               htmlFor=""
                               className="form-label fw-sbold text-muted ps-2 m-0"
                             >
-                              Less Value
+                              Less Amount
                             </label>
                             <Controller
                               control={control}
-                              name="cashBack"
+                              name="lessAmount"
                               render={({ field }) => {
                                 return (
                                   <input
                                     {...field}
                                     onChange={(e) => {
+                                      if (getValues("commissionValue")) {
+                                        toast.error('You cannot add both less and commission value ')
+                                        return
+                                      }
                                       if (
                                         e.target.value &&
                                         getValues("actualPrice")
                                       ) {
                                         setValue(
                                           "adminCommission",
-                                          setValue(
-                                            "adminCommission",
-                                            getAdminCommission(
-                                              +e.target.value,
-                                              +getValues("actualPrice")
-                                            ),
-                                            { shouldValidate: true }
-                                          ),
+                                          getAdminCommission(getValues("actualPrice"), e.target.value, superAdminCommission),
                                           { shouldValidate: true }
                                         );
                                       } else {
@@ -666,36 +644,156 @@ const AddEditDeal = () => {
                                       field.onChange(e.target.value);
                                     }}
                                     type="text"
-                                    placeholder="Annette Black"
+                                    placeholder="Enter less value for users"
                                     className="form-control"
-                                    // {...register("cashBack")}
                                   />
                                 );
                               }}
                             />
 
-                            {errors?.cashBack && (
+                            {errors?.lessAmount && !getValues('commissionValue') && (
                               <p className="text-danger m-0">
-                                {errors.cashBack.message}
+                                {errors.lessAmount.message}
                               </p>
                             )}
                           </div>
                         </Col>
-
+                        {/* Commsion View */}
                         <Col lg="4" md="6" className="my-2">
+                          <div className="py-2">
+                            <label
+                              htmlFor=""
+                              className="form-label fw-sbold text-muted ps-2 m-0"
+                            >
+                              Commission Value
+                            </label>
+                            <Controller
+                              control={control}
+                              name="commissionValue"
+                              render={({ field }) => {
+                                return (
+                                  <input
+                                    {...field}
+                                    onChange={(e) => {
+                                      if (getValues("lessAmount")) {
+                                        toast.error('You cannot add both less and commission value ')
+                                        return
+                                      }
+                                      if (
+                                        e.target.value &&
+                                        getValues("actualPrice")
+                                      ) {
+                                        setValue(
+                                          "adminCommission",
+                                          getAdminCommission(getValues("actualPrice"), e.target.value, superAdminCommission),
+                                          { shouldValidate: true }
+                                        );
+                                      } else {
+                                        setValue("adminCommission", 0, {
+                                          shouldValidate: true,
+                                        });
+                                      }
+                                      field.onChange(e.target.value);
+                                    }}
+                                    type="text"
+                                    placeholder="Add commission value"
+                                    className="form-control"
+                                  />
+                                );
+                              }}
+                            />
+
+                            {errors?.commissionValue && (
+                              <p className="text-danger m-0">
+                                {errors.commissionValue.message}
+                              </p>
+                            )}
+                          </div>
+                        </Col>
+                        {watch("isExchangeDeal") && (
+                          <Col lg="4" md="6" className="my-2">
+                            <div className="py-2">
+                              <label
+                                htmlFor=""
+                                className="form-label fw-sbold text-muted ps-2 m-0"
+                              >
+                                Exchange Deal Products
+                              </label>
+                              <TagsInput
+                                setValue={setValue}
+                                watch={watch}
+                                fieldName={"exchangeDealProducts"}
+                              />
+                              {errors?.exchangeDealProducts && (
+                                <p className="text-danger m-0">
+                                  {errors.exchangeDealProducts.message}
+                                </p>
+                              )}
+                            </div>
+                          </Col>
+                        )}
+                        <Row lg="4" md="6" className="my-2">
+                          <Col>
+                            <div
+                              className="position-relative upload text-center"
+                              style={{ maxWidth: "max-content" }}
+                            >
+                              <label
+                                htmlFor=""
+                                className="form-label fw-sbold text-muted ps-2 m-0"
+                              >
+                                Product Image
+                              </label>
+                              <input
+                                type="file"
+                                className="file position-absolute h-100 w-100 "
+                                onChange={imageChangeHandler}
+                              />
+                              <div className="imgWrp position-relative">
+                                <span
+                                  className="icn position-absolute"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="10"
+                                    height="10"
+                                    viewBox="0 0 26 26"
+                                    fill="none"
+                                  >
+                                    <circle
+                                      cx="13.2007"
+                                      cy="12.9282"
+                                      r="12.3872"
+                                      fill="#3366FF"
+                                    />
+                                    <path
+                                      d="M9.68021 16.69C9.79021 16.69 9.81221 16.679 9.91121 16.657L11.8912 16.261C12.1002 16.206 12.3092 16.107 12.4742 15.942L17.2702 11.146C18.0072 10.409 18.0072 9.14404 17.2702 8.40704L16.8632 7.97804C16.1262 7.24104 14.8502 7.24104 14.1132 7.97804L9.31721 12.785C9.16321 12.939 9.05321 13.159 8.99821 13.368L8.58021 15.37C8.52521 15.744 8.63521 16.107 8.89921 16.371C9.10821 16.58 9.41621 16.69 9.68021 16.69ZM10.0542 13.577L14.8502 8.77004C15.1692 8.45104 15.7522 8.45104 16.0602 8.77004L16.4782 9.18804C16.8522 9.56204 16.8522 10.09 16.4782 10.453L11.6932 15.26L9.65821 15.601L10.0542 13.577ZM17.2262 17.372H9.10821C8.78921 17.372 8.58021 17.581 8.58021 17.9C8.58021 18.219 8.84421 18.428 9.10821 18.428H17.1822C17.5012 18.428 17.7652 18.219 17.7652 17.9C17.7542 17.581 17.4902 17.372 17.2262 17.372Z"
+                                      fill="#F2F2F7"
+                                      stroke="#F8FAFC"
+                                      stroke-width="0.3"
+                                    />
+                                  </svg>
+                                </span>
+                                <img
+                                  style={{ height: 60, width: 60 }}
+                                  src={getValues('imageUrl') || noImg}
+                                  alt=""
+                                  className="img-fluid rounded-circle object-fit-contain"
+                                />
+                              </div>
+                            </div>
+                          </Col>
                           <Col>
                             <div className="py-2 d-flex flex-column">
                               <label
                                 htmlFor=""
                                 className="form-label fw-sbold text-muted ps-2 m-0"
                               >
-                                Your Profit
+                                Platform Fee
                               </label>
 
                               <p className="form-label fw-sbold  ps-2 m-0 text-success">
-                                {watch("actualPrice") && watch("cashBack")
-                                  ? watch("actualPrice") - watch("cashBack")
-                                  : "--"}
+                                {getValues("adminCommission")}
                               </p>
                             </div>
                           </Col>
@@ -705,7 +803,7 @@ const AddEditDeal = () => {
                                 htmlFor=""
                                 className="form-label fw-sbold text-muted ps-2 m-0"
                               >
-                                Final Less Value To user
+                                Final Refund Value To user
                               </label>
 
                               <p className="form-label fw-sbold  ps-2 m-0 text-success">
@@ -713,32 +811,10 @@ const AddEditDeal = () => {
                               </p>
                             </div>
                           </Col>
-                        </Col>
+
+                        </Row>
                       </Row>
                     </Col>
-
-                    <Col lg="4" md="6" className="my-2 h-100 ">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Refund Days
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Annette Black"
-                          className="form-control"
-                          {...register("refundDays")}
-                        />
-                        {errors?.refundDays && (
-                          <p className="text-danger m-0">
-                            {errors.refundDays.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-
                     <Col md="12" className="my-2">
                       <div className="py-2">
                         <label
@@ -749,7 +825,7 @@ const AddEditDeal = () => {
                         </label>
                         <textarea
                           type="text"
-                          placeholder="Annette Black"
+                          placeholder="Add terms and conditions of the deal"
                           className="d-block w-100 p-2"
                           onKeyUp={textAreaAdjust}
                           {...register("termsAndCondition")}

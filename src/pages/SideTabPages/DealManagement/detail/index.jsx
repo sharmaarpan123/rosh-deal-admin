@@ -185,7 +185,7 @@ const DealDetails = () => {
                         </h6>
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">Cash Back</p>
+                        <p className="m-0 themeBlue fw-sbold w-25">Less Amount</p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           {userDetails?.cashBack}
                         </h6>
