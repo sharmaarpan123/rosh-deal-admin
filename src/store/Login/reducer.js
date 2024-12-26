@@ -5,6 +5,8 @@ import { startTransition } from "react";
 const intialState = {
   isLogin: false,
   loading: false,
+  meQueryLoading: false,
+  admin: null,
   token: (localStorage && localStorage.getItem("token")) || null,
   _id: (localStorage && localStorage.getItem("_id")) || null,
   profileImage: (localStorage && localStorage.getItem("profileImage")) || null,
@@ -23,6 +25,7 @@ const LoginReducer = (state = intialState, { type, payload }) => {
         isLogin: true,
         loading: false,
         token: payload.token,
+        admin: payload,
         _id: payload?.data?._id,
         profileImage: payload?.data?.profileImage,
       };
@@ -42,6 +45,26 @@ const LoginReducer = (state = intialState, { type, payload }) => {
         isLogin: false,
         token: null,
         _id: null,
+      };
+
+    case CONST.GET_ADMIN_DETAILS:
+      return {
+        ...state,
+        meQueryLoading: true,
+      };
+    case CONST.GET_ADMIN_DETAILS_SUCCESS:
+      return {
+        ...state,
+        meQueryLoading: false,
+        admin: payload,
+        
+      };
+    case CONST.GET_ADMIN_DETAILS_FAIL:
+      return {
+        ...state,
+        meQueryLoading: false,
+        admin: null,
+        error: payload,
       };
 
     case CONST.CHANGE_PROFILE_IMAGE:

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 // css
 import styles from "../../../layout/Auth/Auth.module.scss";
@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginAdmin } from "../../../store/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const schema = z.object({
   phoneNumber: z
@@ -26,6 +26,7 @@ const Login = () => {
     setPass(!pass);
   };
   const dispatch = useDispatch();
+  const { loading } = useSelector((s) => s.login);
   const {
     register,
     handleSubmit,
@@ -57,7 +58,7 @@ const Login = () => {
                   htmlFor="Email ID / Phone number"
                   className="form-label m-0 pb-1 themeClr fw-sbold"
                 >
-                 Phone number
+                  Phone number
                 </label>
                 <input
                   type="text"
@@ -119,9 +120,10 @@ const Login = () => {
                 <div className={`${styles.btnWrpper} pt-3 btnWrpper`}>
                   <Button
                     type="submit"
+                    disabled={loading}
                     className="d-flex align-items-center justify-content-center w-100 commonBtn"
                   >
-                    Login
+                    {loading ? "Loading..." : "Login"}
                   </Button>
                 </div>
               </Col>

@@ -2,7 +2,7 @@ import { put, call, takeEvery } from "redux-saga/effects";
 import * as CONST from "./actionTypes";
 import * as ACTION from "./actions";
 import { toast } from "react-toastify";
-import { LOGIN_ADMIN } from "../../services/ApiCalls";
+import { LOGIN_ADMIN, ME_QUERY } from "../../services/ApiCalls";
 
 function* loginUserSaga({ payload, callBack }) {
   try {
@@ -14,7 +14,7 @@ function* loginUserSaga({ payload, callBack }) {
       localStorage.setItem("profileImage", response?.data?.profileImage);
       localStorage.setItem("name", response?.data?.data?.name);
       localStorage.setItem("mobileNumber", response?.data?.data?.mobileNumber);
-      localStorage.setItem("role", response?.data?.data?.role);
+      localStorage.setItem("roles", response?.data?.data?.roles);
       callBack && callBack();
       yield put(ACTION.loginAdmin_Success(response?.data));
     } else {
@@ -28,8 +28,28 @@ function* loginUserSaga({ payload, callBack }) {
   }
 }
 
+function* meQuery() {
+  try {
+    const response = yield call(ME_QUERY, {
+      token: localStorage.getItem("token"),
+    });
+    if (response?.data?.success) {
+      yield put(ACTION.getAdminDetails_Success(response?.data?.data));
+    } else {
+      toast.error(response?.response?.data?.message);
+      localStorage.clear();
+      yield put(ACTION.loginAdmin_Fail(response?.response?.data?.message));
+    }
+  } catch (error) {
+    console.log(error, "Error");
+    toast.error(error?.data?.message);
+    yield put(ACTION.loginAdmin_Fail(error));
+  }
+}
+
 function* LoginSaga() {
   yield takeEvery(CONST.LOGIN_ADMIN, loginUserSaga);
+  yield takeEvery(CONST.GET_ADMIN_DETAILS, meQuery);
 }
 
 export default LoginSaga;

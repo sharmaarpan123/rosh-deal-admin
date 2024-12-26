@@ -4,31 +4,26 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 // img
 // import i1 from "@/Assets/images/authBg.png";
-import i1 from "../../../../Assets/images/authBg.png";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
-import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import { z } from "zod";
-import Loading from "../../../../components/Common/Loading";
 import Toggle from "../../../../components/Common/Toggle";
+import TableLayout from "../../../../components/TableLayout";
 import {
   ADD_SUB_ADMIN,
   GET_ADMIN_BY_ID,
-  GET_USER_BY_ID,
   MODULES_LIST,
   UPDATE_SUB_ADMIN,
-  UPDATE_USER,
 } from "../../../../services/ApiCalls";
-import { accountType, activeInActiveArr } from "../../../../utilities/const";
-import fileUploader from "../../../../utilities/fileUploader";
 import {
-  catchAsync,
-  checkResponse,
-  removeUnderScoreAndCapitalizeFirstLetter,
-} from "../../../../utilities/utilities";
-import TableLayout from "../../../../components/TableLayout";
+  ADMIN_ROLE_TYPE_ENUM,
+  adminRoleLabel,
+} from "../../../../utilities/const";
+import { catchAsync, checkResponse } from "../../../../utilities/utilities";
+import Select from "react-select";
 
 const getSchema = (editMode) =>
   z
@@ -46,6 +41,23 @@ const getSchema = (editMode) =>
         invalid_type_error: "This field is required!",
       }),
       passwordToggle: z.boolean(), // this for the edit mode
+      // isActive : z.boolean({required_error : ""
+      roles: z
+        .array(
+          z.object(
+            {
+              label: z.string(),
+              value: z.nativeEnum(Object.values(ADMIN_ROLE_TYPE_ENUM), {
+                message: "In Valid roles Type",
+              }),
+            },
+            {
+              invalid_type_error: "in Valid Roles Type",
+              required_error: "Please select the role",
+            }
+          )
+        )
+        .min(1, { message: "Please select the role" }),
     })
     .refine(
       (data) => {
@@ -67,11 +79,21 @@ const AddEditUser = () => {
   const { adminId } = useParams();
   const [userDetails, setUserUserDetails] = useState();
   const [permissions, setPermissions] = useState([]);
-  const [profileImageLoader, setProfileImageLoader] = useState(false);
+  const [rolesArr, setRolesArr] = useState([
+    {
+      label: adminRoleLabel[ADMIN_ROLE_TYPE_ENUM.SUBADMIN],
+      value: ADMIN_ROLE_TYPE_ENUM.SUBADMIN,
+    },
+  ]);
 
   const schema = useMemo(() => getSchema(adminId), [adminId]);
   const [showPassWord, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { admin } = useSelector((s) => s.login);
+  const isSuperAdminAccessing = admin?.roles?.includes(
+    ADMIN_ROLE_TYPE_ENUM.SUPERADMIN
+  );
+
   const {
     register,
     handleSubmit,
@@ -93,6 +115,14 @@ const AddEditUser = () => {
       email: userDetails?.email || "",
       name: userDetails?.name || "",
       passwordToggle: false,
+      roles: userDetails?.roles?.length
+        ? userDetails?.roles?.map((item) => {
+            return {
+              label: adminRoleLabel[item],
+              value: item,
+            };
+          })
+        : [],
     },
   });
 
@@ -101,6 +131,7 @@ const AddEditUser = () => {
       ...data,
       ...(adminId && { adminId }),
       phoneNumber: data.phoneNumber.replace("91", ""),
+      roles: data.roles?.map((i) => i.value),
       permissions:
         permissions?.map((item) => ({
           ...item,
@@ -119,51 +150,63 @@ const AddEditUser = () => {
     }
   });
 
-  console.log(permissions, "errors");
-
   const getData = catchAsync(async () => {
-    const apiArr = [MODULES_LIST()];
+    const apiArr = [];
+
+    if (isSuperAdminAccessing) {
+      apiArr.push(MODULES_LIST());
+    }
 
     if (adminId) apiArr.push(GET_ADMIN_BY_ID(adminId));
     const res = await Promise.all(apiArr);
 
+    isSuperAdminAccessing &&
+      checkResponse({
+        res: res[0],
+        setData: (data) => {
+          const AlreadyAddedModules =
+            res[1]?.data?.data?.permissions?.map(
+              (item) => item?.moduleId?._id
+            ) || [];
+
+          const permissionsArr = res[1]?.data?.data?.permissions || [];
+
+          data?.forEach((element) => {
+            if (!AlreadyAddedModules?.includes(element?._id)) {
+              permissionsArr.push({
+                moduleId: {
+                  _id: element?._id,
+                  name: element?.name,
+                  uniqueSlug: element?.uniqueSlug,
+                },
+                allowAccess: false,
+                canEdit: false,
+                canAdd: false,
+                canView: false,
+                canViewList: false,
+              });
+            }
+          });
+
+          setPermissions((p) => permissionsArr);
+        },
+      });
+
     checkResponse({
-      res: res[0],
-      setData: (data) => {
-        const AlreadyAddedModules =
-          res[1]?.data?.data?.permissions?.map((item) => item?.moduleId?._id) ||
-          [];
-
-        const permissionsArr = res[1]?.data?.data?.permissions || [];
-
-        data?.forEach((element) => {
-          if (!AlreadyAddedModules?.includes(element?._id)) {
-            permissionsArr.push({
-              moduleId: {
-                _id: element?._id,
-                name: element?.name,
-                uniqueSlug: element?.uniqueSlug,
-              },
-              allowAccess: false,
-              canEdit: false,
-              canAdd: false,
-              canView: false,
-              canViewList: false,
-            });
-          }
-        });
-
-        setPermissions((p) => permissionsArr);
-      },
+      res: isSuperAdminAccessing ? res[1] : res[0],
+      setData: setUserUserDetails,
     });
-
-    const success = checkResponse({ res: res[1], setData: setUserUserDetails });
-    if (success) setProfileImage(res?.data?.data?.profileImage);
   });
 
   useEffect(() => {
     getData();
   }, [adminId]);
+
+  console.log(
+    // admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN) &&
+    watch("roles"),
+    "admin"
+  );
 
   const accessChangeHandler = ({ ind, key, isChecked }) => {
     setPermissions((p) => {
@@ -284,6 +327,33 @@ const AddEditUser = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    if (!admin) {
+      return;
+    }
+
+    const arrToUpdateRoles = [];
+
+    const superSubAdminObj = {
+      label: adminRoleLabel[ADMIN_ROLE_TYPE_ENUM.SUPERSUBADMIN],
+      value: ADMIN_ROLE_TYPE_ENUM.SUPERSUBADMIN,
+    };
+    const adminObj = {
+      label: adminRoleLabel[ADMIN_ROLE_TYPE_ENUM.ADMIN],
+      value: ADMIN_ROLE_TYPE_ENUM.ADMIN,
+    };
+
+    if (admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)) {
+      arrToUpdateRoles.push(superSubAdminObj);
+      arrToUpdateRoles.push(adminObj);
+      return setRolesArr((p) => [...p, ...arrToUpdateRoles]);
+    }
+    if (admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERSUBADMIN)) {
+      arrToUpdateRoles.push(adminObj);
+      return setRolesArr((p) => [...p, ...arrToUpdateRoles]);
+    }
+  }, [admin]);
 
   return (
     <>
@@ -462,7 +532,31 @@ const AddEditUser = () => {
                           )
                         )}
                       </div>
-
+                      <div className="py-2">
+                        <label
+                          htmlFor=""
+                          className="form-label fw-sbold text-muted ps-2 m-0"
+                        >
+                          Roles
+                        </label>
+                        <div className="iconWithText position-relative">
+                          <Controller
+                            name="roles"
+                            control={control}
+                            render={({ field }) => {
+                              return (
+                                <Select
+                                  className="select text-muted"
+                                  aria-label="Default select example"
+                                  isMulti
+                                  {...field}
+                                  options={rolesArr}
+                                />
+                              );
+                            }}
+                          />
+                        </div>
+                      </div>
                       <div className="py-2">
                         <label
                           htmlFor=""
@@ -472,38 +566,45 @@ const AddEditUser = () => {
                         </label>
                         <div className="iconWithText position-relative">
                           <Toggle
-                            isChecked={watch("status")}
+                            isChecked={watch("isActive")}
                             onChange={(e) =>
-                              setValue("status", e.target.checked)
+                              setValue("isActive", e.target.checked)
                             }
                           />
                         </div>
                       </div>
                     </Col>
 
-                    <Col className="d-flex justify-content-end gap-10" lg="12">
-                      <Button
-                        onClick={() =>
-                          selectDeSelectAllPermissions("selectAll")
-                        }
-                      >
-                        Select All
-                      </Button>
+                    {admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN) &&
+                      watch("roles")
+                        ?.map((item) => item.value)
+                        ?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERSUBADMIN) && (
+                        <>
+                          <Col
+                            className="d-flex justify-content-end gap-10"
+                            lg="12"
+                          >
+                            <Button
+                              onClick={() =>
+                                selectDeSelectAllPermissions("selectAll")
+                              }
+                            >
+                              Select All
+                            </Button>
 
-                      <Button
-                        onClick={() =>
-                          selectDeSelectAllPermissions("deSelectAll")
-                        }
-                      >
-                        DeSelect All
-                      </Button>
-                    </Col>
-
-                    {!userDetails?.roles?.includes("admin") && (
-                      <Col lg="12" className="my-2">
-                        <TableLayout data={permissions} column={column} />
-                      </Col>
-                    )}
+                            <Button
+                              onClick={() =>
+                                selectDeSelectAllPermissions("deSelectAll")
+                              }
+                            >
+                              DeSelect All
+                            </Button>
+                          </Col>
+                          <Col lg="12" className="my-2">
+                            <TableLayout data={permissions} column={column} />
+                          </Col>
+                        </>
+                      )}
 
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10">

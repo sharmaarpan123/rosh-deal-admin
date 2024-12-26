@@ -18,6 +18,24 @@ export const loginAdmin_Fail = (payload) => ({
   payload,
 });
 
+export const getAdminDetails = (payload, callBack) => {
+  return {
+    type: CONST.GET_ADMIN_DETAILS,
+    payload,
+    callBack,
+  };
+};
+
+export const getAdminDetails_Success = (payload) => ({
+  type: CONST.GET_ADMIN_DETAILS_SUCCESS,
+  payload,
+});
+
+export const getAdminDetails_Fail = (payload) => ({
+  type: CONST.GET_ADMIN_DETAILS_FAIL,
+  payload,
+});
+
 export const logoutAdmin = (payload) => ({
   type: CONST.LOGOUT_ADMIN,
   payload,

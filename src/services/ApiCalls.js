@@ -3,6 +3,7 @@ import Axios from "./Axios";
 import API_URL from "./URLS";
 
 export const LOGIN_ADMIN = (data) => Axios.post(API_URL.LOGIN_ADMIN, data);
+export const ME_QUERY = (data) => Axios.post(API_URL.ME_QUERY, data);
 export const FORGET_PASSWORD_ADMIN = (data) =>
   Axios.post(API_URL.FORGET_PASSWORD_ADMIN, data);
 export const OTP_VERIFY = (data) => Axios.post(API_URL.OTP_VERIFY, data);

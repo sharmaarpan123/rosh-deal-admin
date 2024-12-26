@@ -3,6 +3,20 @@ import { makingOptionsFromArr } from "./utilities";
 
 export const paginationLimitArr = [5, 10, 20, 50, 100, 200, 500, 1000];
 
+export const ADMIN_ROLE_TYPE_ENUM = {
+  SUPERADMIN: "superAdmin",
+  SUPERSUBADMIN: "superSubAdmin",
+  ADMIN: "admin",
+  SUBADMIN: "subadmin",
+};
+
+export const adminRoleLabel = {
+  superAdmin: "SUPER ADMIN",
+  superSubAdmin: "SUPER SUB ADMIN",
+  admin: "ADMIN",
+  subadmin: "SUB ADMIN",
+};
+
 export const defaultDeleteModelState = {
   show: false,
   dumpId: "",
