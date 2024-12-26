@@ -18,6 +18,7 @@ import logo from "../../Assets/images/logo.png";
 import user from "../../Assets/images/authBg.png";
 import ConfirmationPop from "../Modals/ConfirmationPop";
 import Axios from "../../services/Axios";
+import { useSelector } from "react-redux";
 
 const Header = ({ sidebar, setSidebar }) => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const Header = ({ sidebar, setSidebar }) => {
     const afterLastSlash = pageName.substring(lastSlashIndex + 1);
     heading = afterLastSlash;
   }
+  const { admin } = useSelector((s) => s.login);
   const handleSidebar = () => {
     setSidebar(!sidebar);
   };
@@ -85,51 +87,7 @@ const Header = ({ sidebar, setSidebar }) => {
               className={` justify-content-end`}
               id="navbarScroll"
             >
-              <Form
-                className={`${styles.searchForm} mx-lg-2 position-relative`}
-              >
-                {/* <div className="iconWithText position-relative">
-                  <Form.Control
-                    type="search"
-                    placeholder="Search"
-                    className=""
-                    aria-label="Search"
-                  />
-                  <Button
-                    variant="transparent"
-                    className="border-0 icn p-0 position-absolute"
-                    style={{ left: 10 }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="19"
-                      height="19"
-                      viewBox="0 0 19 19"
-                      fill="none"
-                    >
-                      <g clip-path="url(#clip0_8_762)">
-                        <path
-                          d="M17.7916 17.4843L12.6916 12.3843C13.6666 11.1843 14.2666 9.60928 14.2666 7.88428C14.2666 3.98428 11.0416 0.759277 7.1416 0.759277C3.2416 0.759277 0.0166016 3.98428 0.0166016 7.88428C0.0166016 11.7843 3.2416 15.0093 7.1416 15.0093C8.8666 15.0093 10.3666 14.4093 11.6416 13.4343L16.7416 18.5343C16.8916 18.6843 17.1166 18.7593 17.2666 18.7593C17.4166 18.7593 17.6416 18.6843 17.7916 18.5343C18.0916 18.2343 18.0916 17.7843 17.7916 17.4843ZM7.1416 13.5093C4.0666 13.5093 1.5166 10.9593 1.5166 7.88428C1.5166 4.80928 4.0666 2.25928 7.1416 2.25928C10.2166 2.25928 12.7666 4.80928 12.7666 7.88428C12.7666 10.9593 10.2166 13.5093 7.1416 13.5093Z"
-                          fill="#C4C4C4"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_8_762">
-                          <rect
-                            width="18"
-                            height="18"
-                            fill="white"
-                            transform="translate(0.0166016 0.759277)"
-                          />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </Button>
-                </div> */}
-              </Form>
               <Nav className=" my-2 my-lg-0 align-items-center">
-             
-
                 <Link
                   className={`${styles.profileLink} px-3 d-flex align-items-center gap-10`}
                   to="/settings"
@@ -140,12 +98,12 @@ const Header = ({ sidebar, setSidebar }) => {
                     alt=""
                     className="img-fluid rounded-circle object-fit-cover flex-shrink-0"
                   />
-                  {/* <div className="content">
-                    <p className="m-0 themeClr fw-sbold">Brooklyn Simmons</p>
+                  <div className="content">
+                    <p className="m-0 themeClr fw-sbold">{admin?.name}</p>
                     <p className="m-0 text-muted fw-sbold">
-                      michelle.rivera@example.com
+                     {admin?.email}
                     </p>
-                  </div> */}
+                  </div>
                 </Link>
                 <Button
                   onClick={() => setConfirmation(true)}

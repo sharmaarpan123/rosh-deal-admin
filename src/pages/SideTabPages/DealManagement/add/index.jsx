@@ -77,7 +77,8 @@ const schema = z
       .refine((data) => !isNaN(data), {
         message: "Less Amount must be numeric",
         paths: ["lessAmount"],
-      }).optional(),
+      })
+      .optional(),
     adminCommission: z
       .string({ required_error: "Admin commission required" })
       .min(1, { message: "admin commission is required" })
@@ -172,9 +173,7 @@ const AddEditDeal = () => {
       finalCashBackForUser: data?.finalCashBackForUser
         ? data?.finalCashBackForUser
         : "",
-      commissionValue: data?.commissionValue
-        ? data?.commissionValue
-        : "",
+      commissionValue: data?.commissionValue ? data?.commissionValue : "",
       refundDays: data?.refundDays || "",
       slotAlloted: data?.slotAlloted ? String(data?.slotAlloted) : "",
       termsAndCondition: data?.termsAndCondition || "",
@@ -211,7 +210,7 @@ const AddEditDeal = () => {
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
         refundDays: +data.refundDays,
-        cashBack: data?.lessAmount||''
+        cashBack: data?.lessAmount || "",
       });
     } else {
       res = await ADD_DEAL({
@@ -221,7 +220,7 @@ const AddEditDeal = () => {
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
         refundDays: +data.refundDays,
-        cashBack: data?.lessAmount||''
+        cashBack: data?.lessAmount || "",
       });
     }
     checkResponse({
@@ -281,7 +280,6 @@ const AddEditDeal = () => {
     getData();
   }, []);
 
-
   const superAdminCommission = 10; // percentage;
 
   useEffect(() => {
@@ -289,19 +287,34 @@ const AddEditDeal = () => {
     const lessAmount = watch("lessAmount");
     const commissionValue = watch("commissionValue");
     if (actualPrice && (lessAmount || commissionValue)) {
-      const adminCommission = (superAdminCommission * (lessAmount || commissionValue)) / 100;
+      const adminCommission =
+        (superAdminCommission * (lessAmount || commissionValue)) / 100;
 
       setValue("adminCommission", String(adminCommission), {
         shouldValidate: true,
       });
       if (commissionValue) {
-        setValue("finalCashBackForUser", String((Number(actualPrice) + Number(commissionValue)) - Number(adminCommission)), {
-          shouldValidate: true,
-        });
+        setValue(
+          "finalCashBackForUser",
+          String(
+            Number(actualPrice) +
+              Number(commissionValue) -
+              Number(adminCommission)
+          ),
+          {
+            shouldValidate: true,
+          }
+        );
       } else {
-        setValue("finalCashBackForUser", String(Number(actualPrice)-  Number(lessAmount) - Number(adminCommission)), {
-          shouldValidate: true,
-        });
+        setValue(
+          "finalCashBackForUser",
+          String(
+            Number(actualPrice) - Number(lessAmount) - Number(adminCommission)
+          ),
+          {
+            shouldValidate: true,
+          }
+        );
       }
     } else {
       setValue("adminCommission", "0", {
@@ -312,7 +325,6 @@ const AddEditDeal = () => {
       });
     }
   }, [watch("actualPrice"), watch("lessAmount"), watch("commissionValue")]);
-
 
   return (
     <>
@@ -430,7 +442,9 @@ const AddEditDeal = () => {
                             control={control}
                             name="brand"
                             render={({ field }) => {
-                              return <Select {...field} options={brandOptions} />;
+                              return (
+                                <Select {...field} options={brandOptions} />
+                              );
                             }}
                           />
                           {errors?.brand && (
@@ -624,8 +638,11 @@ const AddEditDeal = () => {
                                     {...field}
                                     onChange={(e) => {
                                       if (getValues("commissionValue")) {
-                                        toast.error('You cannot add both less and commission value ')
-                                        return
+                                        toast.dismiss();
+                                        toast.error(
+                                          "You cannot add both less and commission value "
+                                        );
+                                        return;
                                       }
                                       if (
                                         e.target.value &&
@@ -633,7 +650,11 @@ const AddEditDeal = () => {
                                       ) {
                                         setValue(
                                           "adminCommission",
-                                          getAdminCommission(getValues("actualPrice"), e.target.value, superAdminCommission),
+                                          getAdminCommission(
+                                            getValues("actualPrice"),
+                                            e.target.value,
+                                            superAdminCommission
+                                          ),
                                           { shouldValidate: true }
                                         );
                                       } else {
@@ -651,11 +672,12 @@ const AddEditDeal = () => {
                               }}
                             />
 
-                            {errors?.lessAmount && !getValues('commissionValue') && (
-                              <p className="text-danger m-0">
-                                {errors.lessAmount.message}
-                              </p>
-                            )}
+                            {errors?.lessAmount &&
+                              !getValues("commissionValue") && (
+                                <p className="text-danger m-0">
+                                  {errors.lessAmount.message}
+                                </p>
+                              )}
                           </div>
                         </Col>
                         {/* Commsion View */}
@@ -676,8 +698,11 @@ const AddEditDeal = () => {
                                     {...field}
                                     onChange={(e) => {
                                       if (getValues("lessAmount")) {
-                                        toast.error('You cannot add both less and commission value ')
-                                        return
+                                        toast.dismiss();
+                                        toast.error(
+                                          "You cannot add both less and commission value "
+                                        );
+                                        return;
                                       }
                                       if (
                                         e.target.value &&
@@ -685,7 +710,11 @@ const AddEditDeal = () => {
                                       ) {
                                         setValue(
                                           "adminCommission",
-                                          getAdminCommission(getValues("actualPrice"), e.target.value, superAdminCommission),
+                                          getAdminCommission(
+                                            getValues("actualPrice"),
+                                            e.target.value,
+                                            superAdminCommission
+                                          ),
                                           { shouldValidate: true }
                                         );
                                       } else {
@@ -750,9 +779,7 @@ const AddEditDeal = () => {
                                 onChange={imageChangeHandler}
                               />
                               <div className="imgWrp position-relative">
-                                <span
-                                  className="icn position-absolute"
-                                >
+                                <span className="icn position-absolute">
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="10"
@@ -776,7 +803,7 @@ const AddEditDeal = () => {
                                 </span>
                                 <img
                                   style={{ height: 60, width: 60 }}
-                                  src={getValues('imageUrl') || noImg}
+                                  src={getValues("imageUrl") || noImg}
                                   alt=""
                                   className="img-fluid rounded-circle object-fit-contain"
                                 />
@@ -811,7 +838,6 @@ const AddEditDeal = () => {
                               </p>
                             </div>
                           </Col>
-
                         </Row>
                       </Row>
                     </Col>
@@ -821,7 +847,7 @@ const AddEditDeal = () => {
                           htmlFor=""
                           className="form-label fw-sbold text-muted ps-2 m-0"
                         >
-                          terms and condition
+                          Terms and condition
                         </label>
                         <textarea
                           type="text"

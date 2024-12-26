@@ -4,8 +4,12 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 // img
 import i1 from "../../../Assets/images/authBg.png";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const Settings = () => {
+  const { admin } = useSelector((s) => s.login);
+
   return (
     <>
       <section className="setting position-relative py-3">
@@ -40,32 +44,48 @@ const Settings = () => {
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Name:</p>
-                        <h6 className="m-0 text-muted fw-bold w-75">Devon</h6>
+                        <h6 className="m-0 text-muted fw-bold w-75">
+                          {admin?.name}
+                        </h6>
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Phone Number:
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-75">
-                          (217) 555-0113
+                          +91 {admin?.phoneNumber}
                         </h6>
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Email:</p>
                         <h6 className="m-0 text-muted fw-bold w-75">
-                          nevaeh.simmons@example.com
+                          {admin?.email}
                         </h6>
                       </li>
                     </ul>
                     <div className="btnWrpper my-3 d-flex align-items-center justify-content-center gap-10 pt-5">
                       <Link
-                        to="/settings/password"
+                        // to="/settings/password"
+                        to={"#"}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toast.dismiss();
+                          toast.warning(
+                            "This feature is in dev mode still you can forget your password by logout other wise you can contact your admin or super admin "
+                          );
+                        }}
                         className="d-flex btn btn-primary align-items-center justify-content-center commonBtn GreyBtn"
                       >
                         Manage Password
                       </Link>
                       <Link
-                        to="/settings/edit-profile"
+                        // to="/settings/edit-profile"
+                        to={"#"}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toast.dismiss();
+                          toast.warning("This feature is in dev mode");
+                        }}
                         className="d-flex btn btn-primary align-items-center justify-content-center commonBtn"
                       >
                         Edit Profile
