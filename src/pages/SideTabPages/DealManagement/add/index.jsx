@@ -90,7 +90,10 @@ const schema = z
         invalid_type_error: "invalid slotAlloted",
         required_error: "slot Alloted is required",
       })
-      .min(1, { message: "Slot Alloted is required" }),
+      .min(1, { message: "Slot Alloted is required" })
+      .refine((data) => !isNaN(data), {
+        message: "slot Alloted should be numeric",
+      }),
     finalCashBackForUser: z
       .string({
         invalid_type_error: "invalid finalCashBackForUser",
@@ -108,7 +111,10 @@ const schema = z
         invalid_type_error: "invalid Refund Days",
         required_error: "Refund Days is required",
       })
-      .min(1, { message: "Refund Days is required" }),
+      .min(1, { message: "Refund Days is required" })
+      .refine((data) => !isNaN(data), {
+        message: "Refund Days should be Numeric",
+      }),
     termsAndCondition: z
       .string({
         required_error: "Terms and condition is required",
@@ -122,6 +128,7 @@ const schema = z
     imageUrl: z.string().optional(),
     exchangeDealProducts: z.array(z.string()).optional(),
     isExchangeDeal: z.boolean().optional(),
+    isCommissionDeal: z.boolean(),
   })
   .refine(
     (data) => {
@@ -169,10 +176,11 @@ const AddEditDeal = () => {
       productCategories: data?.productCategories || [],
       postUrl: data?.postUrl || "",
       actualPrice: data?.actualPrice || "",
-      lessAmount: data?.cashBack || "",
+      lessAmount: data?.lessAmount || "",
       finalCashBackForUser: data?.finalCashBackForUser
         ? data?.finalCashBackForUser
         : "",
+      isCommissionDeal: data?.isCommissionDeal || false,
       commissionValue: data?.commissionValue ? data?.commissionValue : "",
       refundDays: data?.refundDays || "",
       slotAlloted: data?.slotAlloted ? String(data?.slotAlloted) : "",
@@ -210,7 +218,8 @@ const AddEditDeal = () => {
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
         refundDays: +data.refundDays,
-        cashBack: data?.lessAmount || "",
+        lessAmount: data?.lessAmount || "",
+        isCommissionDeal: data?.commissionValue ? true : false,
       });
     } else {
       res = await ADD_DEAL({
@@ -220,7 +229,8 @@ const AddEditDeal = () => {
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
         refundDays: +data.refundDays,
-        cashBack: data?.lessAmount || "",
+        lessAmount: data?.lessAmount || "",
+        isCommissionDeal: data?.commissionValue ? true : false,
       });
     }
     checkResponse({
