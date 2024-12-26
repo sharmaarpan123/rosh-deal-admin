@@ -299,7 +299,7 @@ const AddEditDeal = () => {
           shouldValidate: true,
         });
       } else {
-        setValue("finalCashBackForUser", String(lessAmount - adminCommission), {
+        setValue("finalCashBackForUser", String(Number(actualPrice)-  Number(lessAmount) - Number(adminCommission)), {
           shouldValidate: true,
         });
       }
