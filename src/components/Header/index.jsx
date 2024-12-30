@@ -20,7 +20,7 @@ import ConfirmationPop from "../Modals/ConfirmationPop";
 import Axios from "../../services/Axios";
 import { useSelector } from "react-redux";
 
-const Header = ({ sidebar, setSidebar }) => {
+const Header = ({ sidebar, setSidebar, title }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [confirmation, setConfirmation] = useState();
@@ -55,7 +55,10 @@ const Header = ({ sidebar, setSidebar }) => {
         style={{ zIndex: 99 }}
       >
         <Container>
-          <Navbar expand="lg" className=" border-bottom border-dark px-lg-3">
+          <Navbar
+            expand="lg"
+            className=" border-bottom border-dark px-lg-3 d-flex justi"
+          >
             <Button
               onClick={handleSidebar}
               className="d-lg-none border-0 p-0"
@@ -76,18 +79,26 @@ const Header = ({ sidebar, setSidebar }) => {
               </svg>
             </Button>
             <Navbar.Brand className={`${styles.logo} d-lg-none`} href="#">
-              <img src={logo} alt="" className={`img-fluid`} />
+              {/* <img src={logo} alt="" className={`img-fluid`} /> */}
+              <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize ">
+                {title}
+              </h4>
             </Navbar.Brand>
 
             <Navbar.Toggle
               className="border-0 p-0"
               aria-controls="navbarScroll"
             />
+
+            <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize d-none d-lg-block">
+              {title}
+            </h4>
+
             <Navbar.Collapse
               className={` justify-content-end`}
               id="navbarScroll"
             >
-              <Nav className=" my-2 my-lg-0 align-items-center">
+              <Nav className=" my-2 my-lg-0 align-items-center justify-content-between">
                 <Link
                   className={`${styles.profileLink} px-3 d-flex align-items-center gap-10`}
                   to="/settings"
@@ -100,9 +111,7 @@ const Header = ({ sidebar, setSidebar }) => {
                   />
                   <div className="content">
                     <p className="m-0 themeClr fw-sbold">{admin?.name}</p>
-                    <p className="m-0 text-muted fw-sbold">
-                     {admin?.email}
-                    </p>
+                    <p className="m-0 text-muted fw-sbold">{admin?.email}</p>
                   </div>
                 </Link>
                 <Button

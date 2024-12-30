@@ -52,17 +52,16 @@ const Sidebar = ({ sidebar, setSidebar }) => {
           />
         </svg>
       </Button>
-      <div className={`${styles.top} top text-center px-3 py-2`}>
-        <Link to="/" className={`${styles.logo} logo`}>
-          <img
-            src={logo}
-            alt=""
-            className="w-100"
-            style={{
-              width: 100,
-            }}
-          />
-        </Link>
+      <div className={`${styles.top} top text-center px-3 py-2 rounded`}>
+        <div className={`${styles.logo}`}>
+          <Link to="/">
+            <img
+              src={logo}
+              alt=""
+              className="w-100  object-fit-contain rounded"
+            />
+          </Link>
+        </div>
       </div>
       <Accordion className={`${styles.linkWrpper} linkWrpper pt-2 px-2`}>
         <ul className="list-unstyled ps-0 mb-0">

@@ -97,7 +97,8 @@ export const SCRAPPER_IMAGE = (data) =>
 
 // SUB_ADMINS
 
-export const SUB_ADMIN_LIST = (data) => Axios.get(API_URL.SUB_ADMIN_LIST, data);
+export const SUB_ADMIN_LIST = (data) =>
+  Axios.get(API_URL.SUB_ADMIN_LIST + makeQueryFromData(data));
 export const GET_ADMIN_BY_ID = (data) =>
   Axios.get(API_URL.GET_ADMIN_BY_ID + data);
 

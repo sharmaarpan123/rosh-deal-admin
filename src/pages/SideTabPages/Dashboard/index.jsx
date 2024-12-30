@@ -71,7 +71,6 @@ const Dashboard = () => {
           <Row>
             <Col lg="12">
               <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize d-flex justify-content-between">
-                Dashboard{" "}
                 {loader && (
                   <div
                     style={{

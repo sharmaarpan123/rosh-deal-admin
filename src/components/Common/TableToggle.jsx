@@ -14,11 +14,14 @@ const TableToggle = ({ classNames, style, onChange, Options, value }) => {
         value={value}
         style={{
           width: "130px",
+          padding: "0 4px 0 4px",
           ...(style && style),
         }}
       >
         {Options?.map((item) => (
-          <option value={item.value}>{item.label} </option>
+          <option style={{
+            height: "10px",
+          }} value={item.value}>{item.label} </option>
         ))}
       </Form.Select>
     </div>

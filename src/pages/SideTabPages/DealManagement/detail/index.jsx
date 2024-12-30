@@ -112,7 +112,7 @@ const DealDetails = () => {
                           {userDetails?.dealCategory?.name}
                         </h6>
                       </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
+                      {/* <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Product categories
                         </p>
@@ -121,15 +121,8 @@ const DealDetails = () => {
                             (item) => `${item}, `
                           )}
                         </h6>
-                      </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          Terms And Condition
-                        </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.termsAndCondition}
-                        </h6>
-                      </li>
+                      </li> */}
+
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">
                           payment Status
@@ -139,7 +132,7 @@ const DealDetails = () => {
                             className={`text-white rounded text-center ${
                               userDetails?.paymentStatus === "paid"
                                 ? "bg-success"
-                                : userDetails?.paymentStatus === "received"
+                                : userDetails?.paymentStatus === "pending"
                                 ? "bg-warning"
                                 : "bg-pending"
                             }`}
@@ -158,6 +151,14 @@ const DealDetails = () => {
                           >
                             {userDetails?.isActive ? "active" : "inactive"}
                           </p>
+                        </h6>
+                      </li>
+                      <li className="py-3 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">
+                          Admin Commission
+                        </p>
+                        <h6 className="m-0 text-muted fw-bold w-50">
+                          {userDetails?.adminCommission}
                         </h6>
                       </li>
                     </ul>
@@ -184,12 +185,26 @@ const DealDetails = () => {
                           {userDetails?.actualPrice}
                         </h6>
                       </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">Less Amount</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.cashBack}
-                        </h6>
-                      </li>
+                      {userDetails?.isCommissionDeal ? (
+                        <li className="py-3 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Commission Amount
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50">
+                            {userDetails?.commissionValue}
+                          </h6>
+                        </li>
+                      ) : (
+                        <li className="py-3 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Less Amount
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50">
+                            {userDetails?.lessAmount}
+                          </h6>
+                        </li>
+                      )}
+
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Slot Alloted
@@ -243,15 +258,17 @@ const DealDetails = () => {
                           )}
                         </h6>
                       </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          Admin Commission
-                        </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.adminCommission}
-                        </h6>
-                      </li>
                     </ul>
+                  </Col>
+                  <Col lg="12">
+                    <li className="py-3 d-flex align-items-center gap-10">
+                      <p className="m-0 themeBlue fw-sbold w-25">
+                        Terms And Condition
+                      </p>
+                      <h6 className="m-0 text-muted fw-bold w-50">
+                        {userDetails?.termsAndCondition}
+                      </h6>
+                    </li>
                   </Col>
                 </Row>
               </div>

@@ -97,11 +97,6 @@ const OrderManagement = () => {
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
-            <Col lg="12">
-              <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                Order Management
-              </h4>
-            </Col>
             <Col lg="12" className="my-2">
               <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
                 <div className="left">

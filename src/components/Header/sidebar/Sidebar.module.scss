@@ -9,9 +9,14 @@
   overflow-y: scroll;
   scrollbar-width: none;
   .top {
+    display: flex;
+    justify-content: center;
     .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 20px;
+     
       img {
-        height: 80px;
         object-fit: contain;
       }
     }

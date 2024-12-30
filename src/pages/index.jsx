@@ -66,137 +66,119 @@ export const routes = [
 ];
 
 export const privateRoutes = [
-  { path: "privacy-policy", components: <PrivacyPolicy /> },
-  { path: "/dashboard", component: <Dashboard /> },
   {
-    path: "/platform",
-    component: <PlatForm />,
+    path: "privacy-policy",
+    component: <PrivacyPolicy />,
+    title: "Privacy Policy",
   },
-  {
-    path: "/platform/add",
-    component: <AddPlatForm />,
-  },
+  { path: "/dashboard", component: <Dashboard />, title: "Dashboard" },
+  { path: "/platform", component: <PlatForm />, title: "Platform" },
+  { path: "/platform/add", component: <AddPlatForm />, title: "Add Platform" },
   {
     path: "/platform/edit/:id",
     component: <AddPlatForm />,
+    title: "Edit Platform",
   },
   {
     path: "/platform/details/:id",
     component: <PlatFormDetail />,
+    title: "Platform Details",
   },
-  {
-    path: "/category",
-    component: <DealCategory />,
-  },
+  { path: "/category", component: <DealCategory />, title: "Deal Categories" },
   {
     path: "/category/add",
     component: <AddEditDealCategory />,
+    title: "Add Deal Category",
   },
   {
     path: "/category/edit/:id",
     component: <AddEditDealCategory />,
+    title: "Edit Deal Category",
   },
   {
     path: "/category/details/:id",
     component: <DealCategoryDetails />,
+    title: "Category Details",
   },
-  {
-    path: "/brand",
-    component: <Brand />,
-  },
-  {
-    path: "/brand/add",
-    component: <AddEditBrand />,
-  },
-  {
-    path: "/brand/edit/:id",
-    component: <AddEditBrand />,
-  },
+  { path: "/brand", component: <Brand />, title: "Brands" },
+  { path: "/brand/add", component: <AddEditBrand />, title: "Add Brand" },
+  { path: "/brand/edit/:id", component: <AddEditBrand />, title: "Edit Brand" },
   {
     path: "/brand/details/:id",
     component: <BrandDetails />,
+    title: "Brand Details",
   },
-  {
-    path: "/poster",
-    component: <Poster />,
-  },
-  {
-    path: "/poster/add",
-    component: <AddEditPoster />,
-  },
+  { path: "/poster", component: <Poster />, title: "Posters" },
+  { path: "/poster/add", component: <AddEditPoster />, title: "Add Poster" },
   {
     path: "/poster/edit/:id",
     component: <AddEditPoster />,
+    title: "Edit Poster",
   },
   {
     path: "/poster/details/:id",
     component: <PosterDetails />,
+    title: "Poster Details",
   },
-  {
-    path: "/deal",
-    component: <DealManagement />,
-  },
-  {
-    path: "/deal/add",
-    component: <AddEditDeal />,
-  },
+  { path: "/deal", component: <DealManagement />, title: "Deals" },
+  { path: "/deal/add", component: <AddEditDeal />, title: "Add Deal" },
   {
     path: "/deal/bulk-add",
     component: <AddBulkDeal />,
+    title: "Add Bulk Deals",
   },
-  {
-    path: "/deal/edit/:id",
-    component: <AddEditDeal />,
-  },
+  { path: "/deal/edit/:id", component: <AddEditDeal />, title: "Edit Deal" },
   {
     path: "/deal/details/:id",
     component: <DealDetails />,
+    title: "Deal Details",
   },
-
-  {
-    path: "/orders",
-    component: <OrderManagement />,
-  },
+  { path: "/orders", component: <OrderManagement />, title: "Orders" },
   {
     path: "/orders/details/:id",
     component: <OrderDetails />,
+    title: "Order Details",
   },
-
   {
     path: "/notification-management",
     component: <NotificationManagement />,
+    title: "Notification Management",
   },
-
   {
     path: "/system-access",
     component: <SystemAccess />,
+    title: "System Access",
   },
   {
     path: "/system-access/add",
     component: <AddSubAdmin />,
+    title: "Add Sub Admin",
   },
   {
     path: "/system-access/edit/:adminId",
     component: <AddSubAdmin />,
+    title: "Edit Sub Admin",
   },
-  {
-    path: "/modules",
-    component: <AdminModules />,
-  },
-  {
-    path: "/module/add",
-    component: <AddEditModule />,
-  },
+  { path: "/modules", component: <AdminModules />, title: "Modules" },
+  { path: "/module/add", component: <AddEditModule />, title: "Add Module" },
   {
     path: "/module/edit/:moduleId",
     component: <AddEditModule />,
+    title: "Edit Module",
   },
-
+  { path: "/manage-user", component: <ManageUser />, title: "Manage Users" },
+  { path: "/manage-user/add", component: <AddEditUser />, title: "Add User" },
+  {
+    path: "/manage-user/edit/:id",
+    component: <AddEditUser />,
+    title: "Edit User",
+  },
+  {
+    path: "/manage-user/detail/:id",
+    component: <UserDetail />,
+    title: "User Details",
+  },
   // not used yet this /////////////////******************* */
-  { path: "/manage-user", component: <ManageUser /> },
-  { path: "/manage-user/add", component: <AddEditUser /> },
-  { path: "/manage-user/edit/:id", component: <AddEditUser /> },
-  { path: "/manage-user/detail/:id", component: <UserDetail /> },
   {
     path: "/service-provider/register",
     component: <RegisterServiceProvider />,

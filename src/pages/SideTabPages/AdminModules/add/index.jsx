@@ -88,9 +88,7 @@ const AddEditModule = () => {
                     />
                   </svg>
                 </Link>
-                <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                  Add New Module
-                </h4>
+               
               </div>
             </Col>
             <Col lg="12" className="my-2">

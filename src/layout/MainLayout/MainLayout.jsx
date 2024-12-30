@@ -10,12 +10,12 @@ import Loading from "../../components/Common/Loading";
 import Sidebar from "../../components/Header/sidebar/Sidebar";
 import { getAdminDetails } from "../../store/actions";
 
-const MainLayout = () => {
+const MainLayout = ({ title }) => {
   const [sidebar, setSidebar] = useState();
 
   const dispatch = useDispatch();
 
-  const { meQueryLoading } = useSelector((s) => s.login);
+  const { meQueryLoading, admin } = useSelector((s) => s.login);
 
   useEffect(() => {
     dispatch(getAdminDetails());
@@ -23,7 +23,7 @@ const MainLayout = () => {
 
   return (
     <>
-      {meQueryLoading ? (
+      {meQueryLoading || !admin ? (
         <div
           className="d-flex justify-content-center align-items-center"
           style={{
@@ -38,7 +38,7 @@ const MainLayout = () => {
           <main
             className={`${styles.MainBody} ms-auto MainBody position-relative bg-white`}
           >
-            <Header sidebar={sidebar} setSidebar={setSidebar} />
+            <Header sidebar={sidebar} setSidebar={setSidebar} title={title} />
             <Outlet />
           </main>
         </div>

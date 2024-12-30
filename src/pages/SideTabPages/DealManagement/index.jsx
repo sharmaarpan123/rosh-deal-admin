@@ -15,7 +15,7 @@ import dataHandler from "../../../hooks/dataHandler";
 import {
   DEAL_UPDATE_PAYMENT_STATUS,
   DEAL_UPDATE_STATUS,
-  DEALS_LIST
+  DEALS_LIST,
 } from "../../../services/ApiCalls";
 import {
   activeInactiveOptions,
@@ -75,11 +75,7 @@ const DealManagement = () => {
             }}
             onClick={() => handleShare(item?._id)}
           >
-            <img
-              src={share}
-              alt="Share"
-              style={{ width: 15, height: 15 }}
-            />
+            <img src={share} alt="Share" style={{ width: 15, height: 15 }} />
           </button>
           <button
             className="share-button"
@@ -90,11 +86,7 @@ const DealManagement = () => {
             }}
             onClick={() => copyClipboard(item?._id)}
           >
-            <img
-              src={copyIcon}
-              alt="Share"
-              style={{ width: 15, height: 15 }}
-            />
+            <img src={copyIcon} alt="Share" style={{ width: 15, height: 15 }} />
           </button>
         </div>
       ),
@@ -172,7 +164,6 @@ const DealManagement = () => {
         <TableToggle
           Options={activeInActiveOptions}
           value={item.isActive ? "active" : "inactive"}
-          classNames={item.isActive ? "bg-success" : "bg-danger"}
           style={{
             color: item.isActive ? "green" : "red",
             width: 120,
@@ -199,9 +190,6 @@ const DealManagement = () => {
         <TableToggle
           Options={paymentStatusOptions.slice(1)}
           value={item.paymentStatus}
-          classNames={
-            item.paymentStatus === "pending" ? "bg-danger" : "bg-success"
-          }
           style={{
             color: item.paymentStatus === "pending" ? "red" : "pending",
             width: 120,
@@ -235,7 +223,7 @@ const DealManagement = () => {
             width: "fit-content",
           }}
         >
-          {item.isSlotCompleted ? "Completed" : "UnCompleted"}
+          {item.isSlotCompleted ? "Completed" : "Ongoing"}
         </p>
       ),
     },
@@ -256,12 +244,12 @@ const DealManagement = () => {
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
-            <Col lg="12">
+            {/* <Col lg="12">
               <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
                 Deal Management
               </h4>
-            </Col>
-            <Col lg="12" className="my-2">
+            </Col> */}
+            <Col lg="12">
               <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
                 <div className="left">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">

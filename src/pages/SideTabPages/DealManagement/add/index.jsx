@@ -362,9 +362,7 @@ const AddEditDeal = () => {
                     />
                   </svg>
                 </Link>
-                <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                  {id ? "Edit" : "Add"} Deal
-                </h4>
+               
               </div>
             </Col>
             <Col lg="12" className="my-2">

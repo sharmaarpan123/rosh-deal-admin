@@ -122,7 +122,6 @@ export const getColumn = (
     component: (item, index) => (
       <TableToggle
         Options={paymentStatusOptions.slice(1)}
-        classNames={item.paymentStatus === "paid" ? "bg-success" : "bg-danger"}
         onChange={(e) =>
           statusChangeHandler(
             () =>
@@ -135,6 +134,10 @@ export const getColumn = (
             item.paymentStatus === "paid" ? "pending" : "paid"
           )
         }
+        style={{
+          color: item.paymentStatus === "pending" ? "red" : "green",
+          width: 120,
+        }}
         value={item.paymentStatus}
       />
     ),

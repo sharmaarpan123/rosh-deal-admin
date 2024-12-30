@@ -170,9 +170,7 @@ const NotificationManagement = () => {
                     />
                   </svg>
                 </Link>
-                <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                  Send Notifications
-                </h4>
+               
               </div>
             </Col>
             <Col lg="9" className="my-2">
