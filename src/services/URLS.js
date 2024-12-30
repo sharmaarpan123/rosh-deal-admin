@@ -80,6 +80,8 @@ export default {
   GET_ADMIN_BY_ID: "/admin/subAdmin/getById/",
   ADD_SUB_ADMIN: "/admin/add/subAdmin",
   UPDATE_SUB_ADMIN: "/admin/update/subAdmin",
+  CHECK_ADMIN_USER_NAME_EXISTS: "/admin/isUserNameExists",
+  MANAGE_ADMIN_SUB_ADMIN_RELATION: "/admin/manageAdminSubAdminRelation",
 
   // ADMINS_MODULES
 

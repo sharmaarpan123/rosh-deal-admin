@@ -69,7 +69,7 @@ const AddEditDealCategory = () => {
       res,
       showSuccess: true,
       navigate: navigate,
-      navigateUrl: "/deal-category",
+      navigateUrl: "/category",
     });
   });
 
@@ -101,7 +101,7 @@ const AddEditDealCategory = () => {
             <Col lg="12">
               <div className="d-flex align-items-center gap-10">
                 <Link
-                  to="/deal-category"
+                  to="/category"
                   className="border d-flex align-items-center p-2 rounded"
                 >
                   <svg

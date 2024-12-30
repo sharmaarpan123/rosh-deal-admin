@@ -4,20 +4,24 @@ import TableLayout from "../../../components/TableLayout";
 
 // img
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import CustomPagination from "../../../components/Common/CustomPagination";
 import TableActions from "../../../components/Common/TableActions";
 import noImg from "../../../components/Common/noImg";
 import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
 import dataHandler from "../../../hooks/dataHandler";
 import { BRAND_LIST, BRAND_UPDATE_STATUS } from "../../../services/ApiCalls";
-import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
+import {
+  capitalizedFirstAlphaBet,
+  isSuperAdmin,
+} from "../../../utilities/utilities";
 import Filter from "../../../components/Common/Filter";
 import {
   activeInactiveOptions,
   activeInActiveStatusOptions,
 } from "../../../utilities/const";
 import TableToggle from "../../../components/Common/TableToggle";
+import { useSelector } from "react-redux";
 
 const Brand = () => {
   const {
@@ -35,6 +39,8 @@ const Brand = () => {
   } = dataHandler({
     api: BRAND_LIST,
   });
+
+  const { admin } = useSelector((s) => s.login);
 
   const column = [
     {
@@ -74,39 +80,43 @@ const Brand = () => {
         <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
       ),
     },
-    {
-      head: "Status",
-      accessor: "",
-      component: (item, index) => (
-        <TableToggle
-          Options={activeInActiveStatusOptions}
-          value={item.isActive ? "1" : "0"}
-          classNames={item.isActive ? "bg-success" : "bg-danger"}
-          style={{
-            color: item.isActive ? "green" : "red",
-            width: 120,
-          }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                BRAND_UPDATE_STATUS({
-                  brandId: item._id,
-                  status: e.target.value === "1",
-                }),
-              index,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
-      ),
-    },
+    ...(isSuperAdmin(admin)
+      ? [
+          {
+            head: "Status",
+            accessor: "",
+            component: (item, index) => (
+              <TableToggle
+                Options={activeInActiveStatusOptions}
+                value={item.isActive ? "1" : "0"}
+                classNames={item.isActive ? "bg-success" : "bg-danger"}
+                style={{
+                  color: item.isActive ? "green" : "red",
+                  width: 120,
+                }}
+                onChange={(e) =>
+                  statusChangeHandler(
+                    () =>
+                      BRAND_UPDATE_STATUS({
+                        brandId: item._id,
+                        status: e.target.value === "1",
+                      }),
+                    index,
+                    "isActive",
+                    !item.isActive
+                  )
+                }
+              />
+            ),
+          },
+        ]
+      : []),
     {
       head: "Action",
       accessor: "Action",
       component: (item) => (
         <TableActions
-          editUrl={`/brand/edit/${item._id}`}
+          editUrl={isSuperAdmin(admin) ? `/brand/edit/${item._id}` : null}
           viewLink={`/brand/details/${item._id}`}
         />
       ),

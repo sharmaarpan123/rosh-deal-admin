@@ -1,15 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
-// img
-// import i1 from "@/Assets/images/authBg.png";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import { useSelector } from "react-redux";
-import { z } from "zod";
+import Select from "react-select";
 import Toggle from "../../../../components/Common/Toggle";
 import TableLayout from "../../../../components/TableLayout";
 import {
@@ -23,59 +19,10 @@ import {
   adminRoleLabel,
 } from "../../../../utilities/const";
 import { catchAsync, checkResponse } from "../../../../utilities/utilities";
-import Select from "react-select";
-
-const getSchema = (editMode) =>
-  z
-    .object({
-      name: z.string().min(1, { message: "Name is required" }),
-      email: z
-        .string()
-        .min(1, { message: "Email is required" })
-        .email("Invalid email address"),
-      password: z.string().optional(),
-      phoneNumber: z.string().min(1, { message: "Phone number is required" }),
-      isActive: z.boolean({
-        message: "This field is required",
-        required_error: "This field is required",
-        invalid_type_error: "This field is required!",
-      }),
-      passwordToggle: z.boolean(), // this for the edit mode
-      // isActive : z.boolean({required_error : ""
-      roles: z
-        .array(
-          z.object(
-            {
-              label: z.string(),
-              value: z.nativeEnum(Object.values(ADMIN_ROLE_TYPE_ENUM), {
-                message: "In Valid roles Type",
-              }),
-            },
-            {
-              invalid_type_error: "in Valid Roles Type",
-              required_error: "Please select the role",
-            }
-          )
-        )
-        .min(1, { message: "Please select the role" }),
-    })
-    .refine(
-      (data) => {
-        if (!editMode) {
-          if (data.password === "") {
-            return false;
-          }
-        }
-        if (data.passwordToggle && data.password === "") {
-          return false;
-        }
-        return true;
-      },
-      { message: "Password is required", path: ["password"] }
-    );
+import { getAdminSchema } from "./Schama";
+import UserNameInput from "./UserNameInput";
 
 const AddEditUser = () => {
-  const [profileImage, setProfileImage] = useState({});
   const { adminId } = useParams();
   const [userDetails, setUserUserDetails] = useState();
   const [permissions, setPermissions] = useState([]);
@@ -86,7 +33,7 @@ const AddEditUser = () => {
     },
   ]);
 
-  const schema = useMemo(() => getSchema(adminId), [adminId]);
+  const schema = useMemo(() => getAdminSchema(adminId), [adminId]);
   const [showPassWord, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { admin } = useSelector((s) => s.login);
@@ -115,6 +62,7 @@ const AddEditUser = () => {
       email: userDetails?.email || "",
       name: userDetails?.name || "",
       passwordToggle: false,
+      userName: userDetails?.userName,
       roles: userDetails?.roles?.length
         ? userDetails?.roles?.map((item) => {
             return {
@@ -141,7 +89,9 @@ const AddEditUser = () => {
 
     delete body.passwordToggle;
 
-    const res = adminId ? await UPDATE_SUB_ADMIN(body) : ADD_SUB_ADMIN(body);
+    const res = adminId
+      ? await UPDATE_SUB_ADMIN(body)
+      : await ADD_SUB_ADMIN(body);
 
     const success = checkResponse({ res, showSuccess: true });
 
@@ -363,7 +313,7 @@ const AddEditUser = () => {
             <Col lg="12">
               <div className="d-flex align-items-center gap-10">
                 <Link
-                  to="/manage-user"
+                  to="/system-access"
                   className="border d-flex align-items-center p-2 rounded"
                 >
                   <svg
@@ -403,7 +353,7 @@ const AddEditUser = () => {
                         </label>
                         <input
                           type="text"
-                          placeholder="Annette Black"
+                          placeholder="Enter Full Name"
                           className="form-control"
                           {...register("name")}
                         />
@@ -413,6 +363,11 @@ const AddEditUser = () => {
                           </p>
                         )}
                       </div>
+                      <UserNameInput
+                        errors={errors}
+                        register={register}
+                        watch={watch}
+                      />
                       <div className="py-2">
                         <label
                           htmlFor=""
@@ -422,7 +377,7 @@ const AddEditUser = () => {
                         </label>
                         <input
                           type="email"
-                          placeholder="jackson.graham@example.com"
+                          placeholder="Enter Email Address"
                           className="form-control"
                           {...register("email")}
                         />
@@ -462,7 +417,7 @@ const AddEditUser = () => {
                           <div className="iconWithText position-relative">
                             <input
                               type={!showPassWord && "password"}
-                              placeholder="*******************"
+                              placeholder="Enter Password"
                               className="form-control"
                               {...register("password")}
                             />
@@ -525,9 +480,9 @@ const AddEditUser = () => {
                             {errors?.countryCode?.message}
                           </p>
                         ) : (
-                          errors?.contactNumber && (
+                          errors?.phoneNumber && (
                             <p className="text-danger m-0">
-                              {errors?.contactNumber?.message}
+                              {errors?.phoneNumber?.message}
                             </p>
                           )
                         )}
@@ -550,6 +505,7 @@ const AddEditUser = () => {
                                   aria-label="Default select example"
                                   isMulti
                                   {...field}
+                                  placeholder="Select Role"
                                   options={rolesArr}
                                 />
                               );
@@ -566,6 +522,7 @@ const AddEditUser = () => {
                         </label>
                         <div className="iconWithText position-relative">
                           <Toggle
+                            disabled={!adminId}
                             isChecked={watch("isActive")}
                             onChange={(e) =>
                               setValue("isActive", e.target.checked)

@@ -10,12 +10,17 @@ export const allModels = {
   logout: {
     title: "Do you want to Logout?",
     cancelText: "No",
-    confirmText: "Yes",
+    confirmText: "Logout",
   },
   delete: {
     title: "Are you sure you want to delete ?",
     cancelText: "No",
     confirmText: "Delete",
+  },
+  sure: {
+    title: "Are you sure ? ",
+    cancelText: "No",
+    confirmText: "yes",
   },
 };
 

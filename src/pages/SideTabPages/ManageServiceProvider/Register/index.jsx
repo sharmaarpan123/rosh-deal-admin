@@ -1,25 +1,23 @@
-import React, { useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import moment from "moment";
+import React from "react";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import TableLayout from "../../../../components/TableLayout";
-import { CstmPagination } from "../../../../components/Common/Common";
+import CustomPagination from "../../../../components/Common/CustomPagination";
+import Filter from "../../../../components/Common/Filter";
+import TableActions from "../../../../components/Common/TableActions";
+import Toggle from "../../../../components/Common/Toggle";
 import ConfirmationPop from "../../../../components/Modals/ConfirmationPop";
+import TableLayout from "../../../../components/TableLayout";
 import dataHandler from "../../../../hooks/dataHandler";
 import {
   DELETE_PROVIDER,
   SERVICE_PROVIDERS_LIST,
   STATUS_CHANGE_SERVICE_PROVIDER,
 } from "../../../../services/ApiCalls";
-import CustomPagination from "../../../../components/Common/CustomPagination";
-import TableActions from "../../../../components/Common/TableActions";
-import Toggle from "../../../../components/Common/Toggle";
-import Filter from "../../../../components/Common/Filter";
 import {
-  activeInActiveArr,
-  activeInactiveOptions,
+  activeInactiveOptions
 } from "../../../../utilities/const";
-import moment from "moment";
-import { capitalizedFirstAlphaBet, removeUnderScoreAndCapitalizeFirstLetter } from "../../../../utilities/utilities";
+import { capitalizedFirstAlphaBet } from "../../../../utilities/utilities";
 
 const RegisterServiceProvider = () => {
   const {

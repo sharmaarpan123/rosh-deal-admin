@@ -1,5 +1,4 @@
 import URLS from "../services/URLS";
-import { makingOptionsFromArr } from "./utilities";
 
 export const paginationLimitArr = [5, 10, 20, 50, 100, 200, 500, 1000];
 
@@ -20,6 +19,11 @@ export const adminRoleLabel = {
 export const defaultDeleteModelState = {
   show: false,
   dumpId: "",
+};
+export const defaultStatusModelState = {
+  show: false,
+  dumpId: "",
+  body: {},
 };
 
 export const activeInactiveOptions = [
@@ -77,8 +81,6 @@ export const csvImportEnum = {
     api: (data) => console.log(data, "wating for api"),
   },
 };
-
-export const activeInActiveArr = ["active", "inactive"];
 
 export const accountType = ["single", "enterprise"];
 

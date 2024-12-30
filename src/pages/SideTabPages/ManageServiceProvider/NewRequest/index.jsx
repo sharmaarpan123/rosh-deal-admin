@@ -13,10 +13,8 @@ import CustomPagination from "../../../../components/Common/CustomPagination";
 import TableActions from "../../../../components/Common/TableActions";
 import Toggle from "../../../../components/Common/Toggle";
 import Filter from "../../../../components/Common/Filter";
-import {
-  activeInActiveArr,
-  activeInactiveOptions,
-} from "../../../../utilities/const";
+import { activeInactiveOptions } from "../../../../utilities/const";
+
 import moment from "moment";
 
 const ServiceProviderRequest = () => {
@@ -69,7 +67,7 @@ const ServiceProviderRequest = () => {
       component: (item) => (
         <TableActions
           viewLink={`/service-provider/request/detail/${item._id}`}
-        />  
+        />
       ),
     },
   ];

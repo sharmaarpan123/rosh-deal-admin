@@ -8,8 +8,23 @@ import CustomPagination from "../../../components/Common/CustomPagination";
 import TableActions from "../../../components/Common/TableActions";
 import Toggle from "../../../components/Common/Toggle";
 import dataHandler from "../../../hooks/dataHandler";
-import { SUB_ADMIN_LIST, UPDATE_SUB_ADMIN } from "../../../services/ApiCalls";
-import { ADMIN_ROLE_TYPE_ENUM } from "../../../utilities/const";
+import {
+  MANAGE_ADMIN_SUB_ADMIN_RELATION,
+  SUB_ADMIN_LIST,
+  UPDATE_SUB_ADMIN,
+} from "../../../services/ApiCalls";
+import {
+  ADMIN_ROLE_TYPE_ENUM,
+  defaultDeleteModelState,
+  defaultStatusModelState,
+} from "../../../utilities/const";
+import { useSelector } from "react-redux";
+import ConfirmationPop from "../../../components/Modals/ConfirmationPop";
+import TableToggle from "../../../components/Common/TableToggle";
+import {
+  activeInActiveArr,
+  activeInActiveOptions,
+} from "../../../utilities/utilities";
 
 const PlatForm = () => {
   const {
@@ -19,11 +34,13 @@ const PlatForm = () => {
     data,
     loader,
     paginationHandler,
-    searchHandler,
+    statusChangeModel,
+    setStatusChangeModel,
     total,
   } = dataHandler({
     api: SUB_ADMIN_LIST,
   });
+  const { admin } = useSelector((s) => s.login);
   const column = [
     {
       head: "Sr. No.",
@@ -39,7 +56,15 @@ const PlatForm = () => {
         <p className="m-0 fw-sbold">{item.name}</p>
       ),
     },
+    {
+      head: "userName",
+      accessor: "userName",
+      component: (item, key, arr) => (
+        <p className="m-0 fw-sbold">{item.userName}</p>
+      ),
+    },
     { head: "Email", accessor: "email" },
+    { head: "Phone Number", accessor: "phoneNumber" },
     {
       head: "Roles",
       accessor: "Roles",
@@ -49,37 +74,96 @@ const PlatForm = () => {
         </p>
       ),
     },
-    {
-      head: "Status",
-      accessor: "status",
-      component: (item, ind, arr) => (
-        <Toggle
-          disabled={
-            item?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN) || false
-          }
-          isChecked={item?.isActive}
-          onChange={({ target: { checked } }) => {
-            statusChangeHandler(
-              () => UPDATE_SUB_ADMIN({ isActive: checked }),
-              ind,
-              "isActive",
-              checked
-            );
-          }}
-        />
-      ),
-    },
-    {
-      head: "Action",
-      accessor: "Action",
-      component: (item, key, arr) => (
-        <TableActions editUrl={"/system-access/edit/" + item?._id} />
-      ),
-    },
+    ...(admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)
+      ? [
+          {
+            head: "Status",
+            accessor: "status",
+            component: (item, ind, arr) => (
+              <Toggle
+                disabled={
+                  item?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN) || // abe super admin ko kon deactivate kar sakata be
+                  false
+                }
+                isChecked={item?.isActive}
+                onChange={({ target: { checked } }) => {
+                  statusChangeHandler(
+                    () =>
+                      UPDATE_SUB_ADMIN({
+                        isActive: checked,
+                        adminId: item?._id,
+                      }),
+                    ind,
+                    "isActive",
+                    checked
+                  );
+                }}
+              />
+            ),
+          },
+          {
+            head: "Action",
+            accessor: "Action",
+            component: (item, key, arr) => (
+              <TableActions editUrl={"/system-access/edit/" + item?._id} />
+            ),
+          },
+        ]
+      : []),
+    ...(admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN)
+      ? [
+          {
+            head: "Action",
+            accessor: "Action",
+            component: (item, key, arr) => (
+              <TableToggle
+                Options={activeInActiveOptions}
+                onChange={(e) => {
+                  setStatusChangeModel((p) => ({
+                    dumpId: item?._id,
+                    show: true,
+                    body: {
+                      adminId: admin?._id,
+                      isActive: e?.target?.value === "active",
+                      ind: key,
+                    },
+                  }));
+                }}
+                value={
+                  item?.adminSubAdminLinkerInfo?.isActive
+                    ? "active"
+                    : "inactive"
+                }
+              />
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (
     <>
+      <ConfirmationPop
+        confirmHandler={() =>
+          statusChangeHandler(
+            () =>
+              MANAGE_ADMIN_SUB_ADMIN_RELATION({
+                adminId: statusChangeModel?.body?.adminId,
+                subAdminId: statusChangeModel?.body?.subAdminId,
+                isActive: statusChangeModel?.body?.isActive,
+                subAdminId: statusChangeModel?.dumpId,
+              }), // api
+            statusChangeModel?.body?.ind, // ind
+            "isActive", // key
+            statusChangeModel?.body?.isActive // value
+          )
+        }
+        confirmation={statusChangeModel.show}
+        setConfirmation={() => {
+          setStatusChangeModel((p) => defaultStatusModelState);
+        }}
+        type={"sure"}
+      />
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
@@ -92,24 +176,28 @@ const PlatForm = () => {
               <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
                 <div className="left">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
-                    <li className="d-flex align-items-center gap-10">
-                      <label
-                        htmlFor=""
-                        className="form-label m-0 fw-sbold text-muted"
-                        style={{ whiteSpace: "nowrap" }}
-                      >
-                        Filter by Status
-                      </label>
-                      <Form.Select
-                        className="select text-muted"
-                        aria-label="Default select example"
-                      >
-                        <option>Active</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </Form.Select>
-                    </li>
+                    {admin?.roles?.includes(
+                      ADMIN_ROLE_TYPE_ENUM?.SUPERADMIN
+                    ) && (
+                      <li className="d-flex align-items-center gap-10">
+                        <label
+                          htmlFor=""
+                          className="form-label m-0 fw-sbold text-muted"
+                          style={{ whiteSpace: "nowrap" }}
+                        >
+                          Filter by Status
+                        </label>
+                        <Form.Select
+                          className="select text-muted"
+                          aria-label="Default select example"
+                        >
+                          <option>Active</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </Form.Select>
+                      </li>
+                    )}
                     <li className="">
                       <div className="searchBox position-relative iconWithText">
                         <Button

@@ -7,7 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import i1 from "../../../../../Assets/images/authBg.png";
-import { accountType, activeInActiveArr } from "../../../../../utilities/const";
+import { accountType } from "../../../../../utilities/const";
+import {  activeInActiveArr } from "../../../../../utilities/utilities";
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";

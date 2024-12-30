@@ -5,7 +5,10 @@ import {
   changePageToOne,
   checkResponse,
 } from "../utilities/utilities";
-import { defaultDeleteModelState } from "../utilities/const";
+import {
+  defaultDeleteModelState,
+  defaultStatusModelState,
+} from "../utilities/const";
 import { toast } from "react-toastify";
 
 const dataHandler = ({ api, extraBody, dependencies }) => {
@@ -14,6 +17,9 @@ const dataHandler = ({ api, extraBody, dependencies }) => {
   const [loader, setLoader] = useState(false);
   const [total, setTotal] = useState(0);
   const [deleteModel, setDeleteModel] = useState(defaultDeleteModelState);
+  const [statusChangeModel, setStatusChangeModel] = useState(
+    defaultStatusModelState
+  );
   const [body, setBody] = useState({
     search: "",
     status: "1",
@@ -47,6 +53,7 @@ const dataHandler = ({ api, extraBody, dependencies }) => {
   const statusChangeCallBack = () => {
     setData((p) => oldData);
   };
+
   const statusChangeHandler = catchAsync(
     async (api, ind, key, value) => {
       oldData = JSON.parse(JSON.stringify(data));
@@ -62,6 +69,8 @@ const dataHandler = ({ api, extraBody, dependencies }) => {
       if (!success) {
         statusChangeCallBack();
       } else {
+        setStatusChangeModel((p) => defaultStatusModelState);
+        refetch();
         return true;
       }
     },
@@ -132,6 +141,8 @@ const dataHandler = ({ api, extraBody, dependencies }) => {
     getData,
     statusChangeHandler,
     deleteHandler,
+    statusChangeModel,
+    setStatusChangeModel,
   };
 };
 

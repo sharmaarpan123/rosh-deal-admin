@@ -5,9 +5,10 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 // img
 import logo from "../../../Assets/images/logo.png";
 import { Accordion, Button } from "react-bootstrap";
-import ManageUserIcons from "./icons/ManangeUserIcons.jsx";
-import DashboardIcon from "./icons/DashBoardIcon.jsx";
-import CommonNavIcon from "./icons/CommonNavIcon.jsx";
+
+import { useSelector } from "react-redux";
+import { ADMIN_ROLE_TYPE_ENUM } from "../../../utilities/const";
+import { adminItems, subAdminItems, superAdminItems } from "./Routes";
 
 const Sidebar = ({ sidebar, setSidebar }) => {
   const location = useLocation();
@@ -16,63 +17,15 @@ const Sidebar = ({ sidebar, setSidebar }) => {
     setSidebar(!sidebar);
   };
 
-  const navItems = [
-    {
-      path: "/dashboard",
-      name: "Dashboard",
-      icon: DashboardIcon,
-    },
-    {
-      path: "/manage-user",
-      name: "Manage User",
-      icon: ManageUserIcons,
-    },
-    {
-      path: "/platform",
-      name: "Plat Form",
-      icon: CommonNavIcon,
-    },
-    {
-      path: "/deal-category",
-      name: "Deal Category",
-      icon: CommonNavIcon,
-    },
-    {
-      path: "/brand",
-      name: "Brand",
-      icon: CommonNavIcon,
-    },
-    {
-      path: "/deal",
-      name: "Deal Management",
-      icon: CommonNavIcon,
-    },
-    {
-      path: "/orders",
-      name: "Order Management",
-      icon: CommonNavIcon,
-    },
-    {
-      path: "/poster",
-      name: "Poster Management",
-      icon: CommonNavIcon,
-    },
-    {
-      path: "/notification-management",
-      name: "Notification Management",
-      icon: CommonNavIcon,
-    },
-    {
-      path: "/modules",
-      name: "Admin Modules",
-      icon: CommonNavIcon,
-    },
-    {
-      path: "/system-access",
-      name: "System Access",
-      icon: CommonNavIcon,
-    },
-  ];
+  const { admin } = useSelector((s) => s.login);
+
+  const navItems = admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)
+    ? superAdminItems
+    : admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN)
+    ? adminItems
+    : admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUBADMIN)
+    ? subAdminItems
+    : [];
 
   return (
     <div

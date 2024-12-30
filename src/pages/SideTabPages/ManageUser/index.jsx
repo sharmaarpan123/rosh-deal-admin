@@ -11,8 +11,10 @@ import Toggle from "../../../components/Common/Toggle";
 import dataHandler from "../../../hooks/dataHandler";
 import { USER_LIST, USER_STATUS_CHANGE } from "../../../services/ApiCalls";
 import {
-  activeInactiveOptions
+  activeInactiveOptions,
+  ADMIN_ROLE_TYPE_ENUM,
 } from "../../../utilities/const";
+import { useSelector } from "react-redux";
 
 const ManageUser = () => {
   const {
@@ -27,6 +29,8 @@ const ManageUser = () => {
   } = dataHandler({
     api: USER_LIST,
   });
+
+  const { admin } = useSelector((s) => s.login);
 
   const column = [
     {
@@ -52,35 +56,42 @@ const ManageUser = () => {
         <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
       ),
     },
-
-    {
-      head: "Status",
-      accessor: "status",
-      component: (item, key, arr) => (
-        <Toggle
-          isChecked={item.isActive}
-          onChange={() =>
-            statusChangeHandler(
-              () =>
-                USER_STATUS_CHANGE({
-                  userId: item._id,
-                  status: !item.isActive,
-                }),
-              key,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
-      ),
-    },
-    {
-      head: "Action",
-      accessor: "Action",
-      component: (item) => (
-        <TableActions editUrl={`/manage-user/edit/${item._id}`} />
-      ),
-    },
+    ...(admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)
+      ? [
+          {
+            head: "Status",
+            accessor: "status",
+            component: (item, key, arr) => (
+              <Toggle
+                isChecked={item.isActive}
+                onChange={() =>
+                  statusChangeHandler(
+                    () =>
+                      USER_STATUS_CHANGE({
+                        userId: item._id,
+                        status: !item.isActive,
+                      }),
+                    key,
+                    "isActive",
+                    !item.isActive
+                  )
+                }
+              />
+            ),
+          },
+        ]
+      : []),
+    ...(admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)
+      ? [
+          {
+            head: "Action",
+            accessor: "Action",
+            component: (item) => (
+              <TableActions editUrl={`/manage-user/edit/${item._id}`} />
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (

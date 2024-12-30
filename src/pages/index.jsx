@@ -85,19 +85,19 @@ export const privateRoutes = [
     component: <PlatFormDetail />,
   },
   {
-    path: "/deal-category",
+    path: "/category",
     component: <DealCategory />,
   },
   {
-    path: "/deal-category/add",
+    path: "/category/add",
     component: <AddEditDealCategory />,
   },
   {
-    path: "/deal-category/edit/:id",
+    path: "/category/edit/:id",
     component: <AddEditDealCategory />,
   },
   {
-    path: "/deal-category/details/:id",
+    path: "/category/details/:id",
     component: <DealCategoryDetails />,
   },
   {

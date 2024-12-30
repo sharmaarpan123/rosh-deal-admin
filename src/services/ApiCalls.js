@@ -105,6 +105,10 @@ export const ADD_SUB_ADMIN = (data) => Axios.post(API_URL.ADD_SUB_ADMIN, data);
 
 export const UPDATE_SUB_ADMIN = (data) =>
   Axios.post(API_URL.UPDATE_SUB_ADMIN, data);
+export const CHECK_ADMIN_USER_NAME_EXISTS = (data) =>
+  Axios.post(API_URL.CHECK_ADMIN_USER_NAME_EXISTS, data);
+export const MANAGE_ADMIN_SUB_ADMIN_RELATION = (data) =>
+  Axios.post(API_URL.MANAGE_ADMIN_SUB_ADMIN_RELATION, data);
 
 // ADMINS_MODULES
 

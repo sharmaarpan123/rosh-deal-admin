@@ -1,5 +1,7 @@
 import { toast } from "react-toastify";
-import { activeInActiveArr, POSTER_ENUM } from "./const";
+import { ADMIN_ROLE_TYPE_ENUM, POSTER_ENUM } from "./const";
+
+export const activeInActiveArr = ["active", "inactive"];
 
 export const changePageToOne = (body, setBody) => {
   const newBody = { ...body, page: 1, offset: 0 };
@@ -108,6 +110,7 @@ export const checkResponse = ({
   totalCount,
   navigate,
   navigateUrl,
+  showError = true,
 }) => {
   if (res?.data?.success) {
     setData && setData(dataToSet || res?.data?.data);
@@ -119,7 +122,7 @@ export const checkResponse = ({
   } else {
     console.log(res, "Res");
     toast.dismiss();
-    toast.error(res?.response?.data?.message);
+    showError && toast.error(res?.response?.data?.message);
     setLoader && setLoader(false);
     return false;
   }
@@ -220,3 +223,6 @@ export const copyClipboard = (productId) => {
     toast.warning("Clipboard functionality is not supported on this browser.");
   }
 };
+
+export const isSuperAdmin = (admin) =>
+  admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM?.SUPERADMIN);

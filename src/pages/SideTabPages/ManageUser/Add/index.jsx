@@ -4,22 +4,16 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 // img
 // import i1 from "@/Assets/images/authBg.png";
-import i1 from "../../../../Assets/images/authBg.png";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
-import { toast } from "react-toastify";
 import { z } from "zod";
-import Loading from "../../../../components/Common/Loading";
 import Toggle from "../../../../components/Common/Toggle";
 import { GET_USER_BY_ID, UPDATE_USER } from "../../../../services/ApiCalls";
-import { accountType, activeInActiveArr } from "../../../../utilities/const";
-import fileUploader from "../../../../utilities/fileUploader";
 import {
   catchAsync,
-  checkResponse,
-  removeUnderScoreAndCapitalizeFirstLetter,
+  checkResponse
 } from "../../../../utilities/utilities";
 
 const getSchema = (editMode) =>

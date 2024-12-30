@@ -17,9 +17,13 @@ import {
   activeInactiveOptions,
   activeInActiveStatusOptions,
 } from "../../../utilities/const";
-import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
+import {
+  capitalizedFirstAlphaBet,
+  isSuperAdmin,
+} from "../../../utilities/utilities";
 import Filter from "../../../components/Common/Filter";
 import CustomPagination from "../../../components/Common/CustomPagination";
+import { useSelector } from "react-redux";
 
 const PlatForm = () => {
   const {
@@ -37,6 +41,8 @@ const PlatForm = () => {
   } = dataHandler({
     api: PLATFORM_LIST,
   });
+
+  const { admin } = useSelector((s) => s.login);
 
   const column = [
     {
@@ -72,39 +78,43 @@ const PlatForm = () => {
         <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
       ),
     },
-    {
-      head: "Status",
-      accessor: "",
-      component: (item, index) => (
-        <TableToggle
-          Options={activeInActiveStatusOptions}
-          value={item.isActive ? "1" : "0"}
-          classNames={item.isActive ? "bg-success" : "bg-danger"}
-          style={{
-            color: item.isActive ? "green" : "red",
-            width: 120,
-          }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                STATUS_UPDATE_PLATFORM({
-                  platFormId: item._id,
-                  status: e.target.value === "1",
-                }),
-              index,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
-      ),
-    },
+    ...(isSuperAdmin(admin)
+      ? [
+          {
+            head: "Status",
+            accessor: "",
+            component: (item, index) => (
+              <TableToggle
+                Options={activeInActiveStatusOptions}
+                value={item.isActive ? "1" : "0"}
+                classNames={item.isActive ? "bg-success" : "bg-danger"}
+                style={{
+                  color: item.isActive ? "green" : "red",
+                  width: 120,
+                }}
+                onChange={(e) =>
+                  statusChangeHandler(
+                    () =>
+                      STATUS_UPDATE_PLATFORM({
+                        platFormId: item._id,
+                        status: e.target.value === "1",
+                      }),
+                    index,
+                    "isActive",
+                    !item.isActive
+                  )
+                }
+              />
+            ),
+          },
+        ]
+      : []),
     {
       head: "Action",
       accessor: "Action",
       component: (item) => (
         <TableActions
-          editUrl={`/platform/edit/${item._id}`}
+          editUrl={isSuperAdmin(admin) ? `/platform/edit/${item._id}` : null}
           viewLink={`/platform/details/${item._id}`}
         />
       ),

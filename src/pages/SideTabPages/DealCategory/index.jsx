@@ -18,9 +18,13 @@ import {
   activeInactiveOptions,
   activeInActiveStatusOptions,
 } from "../../../utilities/const";
-import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
+import {
+  capitalizedFirstAlphaBet,
+  isSuperAdmin,
+} from "../../../utilities/utilities";
 import CustomPagination from "../../../components/Common/CustomPagination";
 import Filter from "../../../components/Common/Filter";
+import { useSelector } from "react-redux";
 
 const DealCategory = () => {
   const {
@@ -38,6 +42,8 @@ const DealCategory = () => {
   } = dataHandler({
     api: DEAL_CATEGORY_LIST,
   });
+
+  const { admin } = useSelector((s) => s.login);
 
   const column = [
     {
@@ -73,40 +79,44 @@ const DealCategory = () => {
         <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
       ),
     },
-    {
-      head: "Status",
-      accessor: "",
-      component: (item, index) => (
-        <TableToggle
-          Options={activeInActiveStatusOptions}
-          value={item.isActive ? "1" : "0"}
-          classNames={item.isActive ? "bg-success" : "bg-danger"}
-          style={{
-            color: item.isActive ? "green" : "red",
-            width: 120,
-          }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                UPDATE_STATUS_DEAL_CATEGORY({
-                  dealCategoryId: item._id,
-                  status: e.target.value === "1",
-                }),
-              index,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
-      ),
-    },
+    ...(isSuperAdmin(admin)
+      ? [
+          {
+            head: "Status",
+            accessor: "",
+            component: (item, index) => (
+              <TableToggle
+                Options={activeInActiveStatusOptions}
+                value={item.isActive ? "1" : "0"}
+                classNames={item.isActive ? "bg-success" : "bg-danger"}
+                style={{
+                  color: item.isActive ? "green" : "red",
+                  width: 120,
+                }}
+                onChange={(e) =>
+                  statusChangeHandler(
+                    () =>
+                      UPDATE_STATUS_DEAL_CATEGORY({
+                        dealCategoryId: item._id,
+                        status: e.target.value === "1",
+                      }),
+                    index,
+                    "isActive",
+                    !item.isActive
+                  )
+                }
+              />
+            ),
+          },
+        ]
+      : []),
     {
       head: "Action",
       accessor: "Action",
       component: (item) => (
         <TableActions
-          editUrl={`/deal-category/edit/${item._id}`}
-          viewLink={`/deal-category/details/${item._id}`}
+          editUrl={isSuperAdmin(admin) ? `/category/edit/${item._id}` : null}
+          viewLink={`/category/details/${item._id}`}
         />
       ),
     },
@@ -138,7 +148,7 @@ const DealCategory = () => {
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
                     <li className="">
                       <Link
-                        to={"/deal-category/add"}
+                        to={"/category/add"}
                         className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
                         style={{ height: 40, minWidth: 100, fontSize: 12 }}
                       >
