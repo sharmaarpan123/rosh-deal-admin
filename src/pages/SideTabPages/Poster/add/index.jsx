@@ -14,14 +14,12 @@ import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import { z } from "zod";
 import {
-  ADD_BRAND,
   ALL_DEALS,
   BRAND_LIST,
   DEAL_CATEGORY_LIST,
   POSTER_ADD,
   POSTER_EDIT,
-  POSTER_GET_BY_ID,
-  UPDATE_BRAND,
+  POSTER_GET_BY_ID
 } from "../../../../services/ApiCalls";
 import { POSTER_ENUM } from "../../../../utilities/const";
 import fileUploader from "../../../../utilities/fileUploader";

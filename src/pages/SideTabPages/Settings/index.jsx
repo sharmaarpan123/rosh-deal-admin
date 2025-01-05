@@ -64,7 +64,7 @@ const Settings = () => {
                       </li>
                     </ul>
                     <div className="btnWrpper my-3 d-flex align-items-center justify-content-center gap-10 pt-5">
-                      <Link
+                      {/* <Link
                         // to="/settings/password"
                         to={"#"}
                         onClick={(e) => {
@@ -84,12 +84,12 @@ const Settings = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           toast.dismiss();
-                          toast.warning("This feature is in dev mode");
+                          toast.warning("This feature is in development");
                         }}
                         className="d-flex btn btn-primary align-items-center justify-content-center commonBtn"
                       >
                         Edit Profile
-                      </Link>
+                      </Link> */}
                     </div>
                   </Col>
                 </Row>

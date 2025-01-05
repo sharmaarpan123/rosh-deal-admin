@@ -2,10 +2,19 @@ import Login from "./AuthPages/Login/Index";
 import Otp from "./AuthPages/Otp/Index";
 import ForgotPassword from "./AuthPages/forgotPassword/Index";
 import ResetPassword from "./AuthPages/resetPassword/Index";
+import PrivacyPolicy from "./PublicPages/privacyPolicy/PrivacyPolicy";
 import Accounting from "./SideTabPages/Accounting";
+import AdminModules from "./SideTabPages/AdminModules";
+import AddEditModule from "./SideTabPages/AdminModules/add";
+import Brand from "./SideTabPages/Brand";
+import AddEditBrand from "./SideTabPages/Brand/add";
+import BrandDetails from "./SideTabPages/Brand/detail";
 import ContentPage from "./SideTabPages/ContentPages";
 import AddContentPage from "./SideTabPages/ContentPages/add";
 import Dashboard from "./SideTabPages/Dashboard";
+import DealCategory from "./SideTabPages/DealCategory";
+import AddEditDealCategory from "./SideTabPages/DealCategory/add";
+import DealCategoryDetails from "./SideTabPages/DealCategory/detail";
 import Earnings from "./SideTabPages/Earnings";
 import Faq from "./SideTabPages/Faq";
 import AddFaq from "./SideTabPages/Faq/add";
@@ -22,6 +31,22 @@ import ServiceProviderDetail from "./SideTabPages/ManageServiceProvider/detail";
 import ManageUser from "./SideTabPages/ManageUser";
 import AddEditUser from "./SideTabPages/ManageUser/Add";
 import UserDetail from "./SideTabPages/ManageUser/detail";
+import MyAgencyDealsAsMed from "./SideTabPages/MyAgencyDeals";
+import MyAgencyDealDetailsAsMed from "./SideTabPages/MyAgencyDeals/detail";
+import DealManagement from "./SideTabPages/MyDealsAsAgency";
+import AddEditDeal from "./SideTabPages/MyDealsAsAgency/add";
+import AddBulkDeal from "./SideTabPages/MyDealsAsAgency/bulkAdd/Index";
+import DealDetails from "./SideTabPages/MyDealsAsAgency/detail";
+import MyDealsAsMed from "./SideTabPages/MyDealsAsMed";
+import NotificationManagement from "./SideTabPages/NotificationMangement";
+import OrderManagement from "./SideTabPages/OrderMangement";
+import OrderDetails from "./SideTabPages/OrderMangement/detail";
+import PlatForm from "./SideTabPages/PlatForm";
+import AddPlatForm from "./SideTabPages/PlatForm/add";
+import PlatFormDetail from "./SideTabPages/PlatForm/detail";
+import Poster from "./SideTabPages/Poster";
+import AddEditPoster from "./SideTabPages/Poster/add";
+import PosterDetails from "./SideTabPages/Poster/detail";
 import Promocode from "./SideTabPages/Promocode";
 import AddPromoCode from "./SideTabPages/Promocode/add";
 import PromoCodeDetail from "./SideTabPages/Promocode/detail";
@@ -29,30 +54,7 @@ import Settings from "./SideTabPages/Settings";
 import EditProfile from "./SideTabPages/Settings/EditProfile";
 import ManagePassword from "./SideTabPages/Settings/ManagePassword";
 import SystemAccess from "./SideTabPages/SystemAccess";
-import PlatForm from "./SideTabPages/PlatForm";
 import AddSubAdmin from "./SideTabPages/SystemAccess/add";
-import AddPlatForm from "./SideTabPages/PlatForm/add";
-import PlatFormDetail from "./SideTabPages/PlatForm/detail";
-import DealCategory from "./SideTabPages/DealCategory";
-import AddEditDealCategory from "./SideTabPages/DealCategory/add";
-import DealCategoryDetails from "./SideTabPages/DealCategory/detail";
-import Brand from "./SideTabPages/Brand";
-import AddEditBrand from "./SideTabPages/Brand/add";
-import BrandDetails from "./SideTabPages/Brand/detail";
-import DealManagement from "./SideTabPages/DealManagement";
-import AddEditDeal from "./SideTabPages/DealManagement/add";
-import DealDetails from "./SideTabPages/DealManagement/detail";
-import OrderManagement from "./SideTabPages/OrderMangement";
-import OrderDetails from "./SideTabPages/OrderMangement/detail";
-import AddBulkDeal from "./SideTabPages/DealManagement/bulkAdd/Index";
-import Poster from "./SideTabPages/Poster";
-import AddEditPoster from "./SideTabPages/Poster/add";
-import PosterDetails from "./SideTabPages/Poster/detail";
-import NotificationManagement from "./SideTabPages/NotificationMangement";
-import AddEditModule from "./SideTabPages/AdminModules/add";
-import AdminModules from "./SideTabPages/AdminModules";
-import { components } from "react-select";
-import PrivacyPolicy from "./PublicPages/privacyPolicy/PrivacyPolicy";
 
 export const publicRoutes = [
   { path: "privacy-policy", component: <PrivacyPolicy /> },
@@ -120,7 +122,12 @@ export const privateRoutes = [
     component: <PosterDetails />,
     title: "Poster Details",
   },
-  { path: "/deal", component: <DealManagement />, title: "Deals" },
+  {
+    path: "/myDealsAsAgency",
+    component: <DealManagement />,
+    title: "My Deals",
+  },
+
   { path: "/deal/add", component: <AddEditDeal />, title: "Add Deal" },
   {
     path: "/deal/bulk-add",
@@ -133,6 +140,22 @@ export const privateRoutes = [
     component: <DealDetails />,
     title: "Deal Details",
   },
+  {
+    path: "/myAgencyDealsAsMed",
+    component: <MyAgencyDealsAsMed />,
+    title: "My Agency Deals",
+  },
+  {
+    path: "/myAgencyDealsAsMed/details/:id",
+    component: <MyAgencyDealDetailsAsMed />,
+    title: "My Agency Deal Details",
+  },
+  {
+    path: "/myDealsAsMed",
+    component: <MyDealsAsMed />,
+    title: "Deal Details",
+  },
+
   { path: "/orders", component: <OrderManagement />, title: "Orders" },
   {
     path: "/orders/details/:id",

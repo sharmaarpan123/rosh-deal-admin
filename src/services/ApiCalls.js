@@ -56,8 +56,13 @@ export const BRAND_UPDATE_STATUS = (data) =>
 export const ADD_DEAL = (data) => Axios.post(API_URL.ADD_DEAL, data);
 export const BULK_ADD_DEAL = (data) => Axios.post(API_URL.BULK_ADD_DEAL, data);
 export const EDIT_DEAL = (data) => Axios.post(API_URL.EDIT_DEAL, data);
+export const CLONE_DEAL = (data) => Axios.post(API_URL.CLONE_DEAL, data);
+
 export const DEALS_LIST = (data) => Axios.post(API_URL.DEALS_LIST, data);
+export const MY_AGENCY_DEALS_AS_MED= (data) => Axios.post(API_URL.MY_AGENCY_DEALS_AS_MED, data);
 export const GET_DEAL_VIEW = (data) => Axios.get(API_URL.GET_DEAL_VIEW + data);
+export const MY_AGENCY_DEAL_DETAIL_AS_MED = (data) => Axios.get(API_URL.MY_AGENCY_DEAL_DETAIL_AS_MED + data);
+
 export const DEAL_BY_BRAND_ID = (body) =>
   Axios.get(API_URL.DEAL_BY_BRAND_ID + body);
 export const DEAL_UPDATE_PAYMENT_STATUS = (data) =>

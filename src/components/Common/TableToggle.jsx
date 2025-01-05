@@ -1,7 +1,14 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 
-const TableToggle = ({ classNames, style, onChange, Options, value }) => {
+const TableToggle = ({
+  classNames,
+  style,
+  onChange,
+  Options,
+  value,
+  disabled = false,
+}) => {
   return (
     <div
       className={`p-1 rounded   ${classNames}`}
@@ -17,11 +24,17 @@ const TableToggle = ({ classNames, style, onChange, Options, value }) => {
           padding: "0 4px 0 4px",
           ...(style && style),
         }}
+        disabled={disabled}
       >
         {Options?.map((item) => (
-          <option style={{
-            height: "10px",
-          }} value={item.value}>{item.label} </option>
+          <option
+            style={{
+              height: "10px",
+            }}
+            value={item.value}
+          >
+            {item.label}{" "}
+          </option>
         ))}
       </Form.Select>
     </div>

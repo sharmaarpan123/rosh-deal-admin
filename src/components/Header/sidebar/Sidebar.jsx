@@ -8,7 +8,12 @@ import { Accordion, Button } from "react-bootstrap";
 
 import { useSelector } from "react-redux";
 import { ADMIN_ROLE_TYPE_ENUM } from "../../../utilities/const";
-import { adminItems, subAdminItems, superAdminItems } from "./Routes";
+import {
+  adminItems,
+  subAdminItems,
+  superAdminItems,
+  adminSubAdminItems,
+} from "./Routes";
 
 const Sidebar = ({ sidebar, setSidebar }) => {
   const location = useLocation();
@@ -21,6 +26,9 @@ const Sidebar = ({ sidebar, setSidebar }) => {
 
   const navItems = admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)
     ? superAdminItems
+    : admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN) &&
+      admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUBADMIN)
+    ? adminSubAdminItems
     : admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN)
     ? adminItems
     : admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUBADMIN)
@@ -65,54 +73,52 @@ const Sidebar = ({ sidebar, setSidebar }) => {
       </div>
       <Accordion className={`${styles.linkWrpper} linkWrpper pt-2 px-2`}>
         <ul className="list-unstyled ps-0 mb-0">
-          {navItems.map(({ path, name, icon: Icon }) => (
-            <li key={path} className="my-1">
-              <NavLink
-                to={path}
-                className={`${styles.link} ${
-                  pageActive.includes(path) && styles.active
-                } d-flex align-items-center gap-10 text-white`}
-              >
-                <Icon styles={styles} />
-                {name}
-              </NavLink>
-            </li>
-          ))}
+          {navItems.map(
+            ({ path, name, icon: Icon, IsSubItems, subItems }, ind) => {
+              if (IsSubItems) {
+                return (
+                  <li className={`py-1 ${styles.accordionWrp} `}>
+                    <Accordion.Item
+                      eventKey={ind}
+                      className={`${styles?.accordionBtn}`}
+                    >
+                      <Accordion.Header>{name}</Accordion.Header>
+                      {subItems?.map(({ path, name, icon: Icon }) => {
+                        return (
+                          <Accordion.Body>
+                            <NavLink
+                              to={path}
+                              className={`${styles.link} ${
+                                pageActive.includes(path) && styles.active
+                              } d-flex align-items-center gap-10 text-white`}
+                            >
+                              <Icon styles={styles} />
+                              {name}
+                            </NavLink>
+                          </Accordion.Body>
+                        );
+                      })}
+                    </Accordion.Item>
+                  </li>
+                );
+              }
+              return (
+                <li key={path} className="my-1">
+                  <NavLink
+                    to={path}
+                    className={`${styles.link} ${
+                      pageActive.includes(path) && styles.active
+                    } d-flex align-items-center gap-10 text-white`}
+                  >
+                    <Icon styles={styles} />
+                    {name}
+                  </NavLink>
+                </li>
+              );
+            }
+          )}
 
           {/*  some extra nav can be beneficial in future */}
-
-          {/* <li className="py-1">
-            <NavLink
-              to="/manage-commissions"
-              className={`${styles.link} ${
-                pageActive.includes("/manage-commissions") && styles.active
-              } d-flex align-items-center gap-10 text-white`}
-            >
-              <span className={`${styles.icn} ${styles.stroke} icn me-1`}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="15"
-                  height="15"
-                  viewBox="0 0 20 21"
-                  fill="none"
-                >
-                  <path
-                    d="M12.9297 0.873535C10.3445 0.873535 8.24219 3.01545 8.24219 5.6001C8.24219 8.18475 10.3445 10.2876 12.9297 10.2876C15.5149 10.2876 17.6172 8.18475 17.6172 5.6001C17.6172 3.01545 15.5149 0.873535 12.9297 0.873535ZM11.7578 3.25635C12.0814 3.25635 12.3438 3.51861 12.3438 3.84229C12.3438 4.16588 12.0814 4.42822 11.7578 4.42822C11.4342 4.42822 11.1719 4.16588 11.1719 3.84229C11.1719 3.51861 11.4343 3.25635 11.7578 3.25635ZM14.1016 7.94385C13.778 7.94385 13.5156 7.6815 13.5156 7.35791C13.5156 7.03424 13.778 6.77197 14.1016 6.77197C14.4252 6.77197 14.6875 7.03424 14.6875 7.35791C14.6875 7.6815 14.4252 7.94385 14.1016 7.94385ZM14.5891 4.16729L12.2454 7.68291C12.0638 7.95436 11.6999 8.02346 11.4328 7.84541C11.1639 7.66572 11.0906 7.3024 11.2703 7.03287L13.6141 3.51725C13.7949 3.24717 14.1588 3.17623 14.4266 3.35475C14.6955 3.53443 14.7688 3.89779 14.5891 4.16729Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M0.171621 15.7327C-0.057207 15.9616 -0.057207 16.3325 0.171621 16.5613L4.27318 20.7019C4.50205 20.9308 4.87287 20.9308 5.10174 20.7019L5.93049 19.8731C6.15936 19.6443 6.15936 19.2733 5.93049 19.0444L1.82908 14.9039C1.60021 14.675 1.22928 14.675 1.00037 14.9039L0.171621 15.7327Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M15.3638 17.1977L19.8168 13.0433C20.058 12.814 20.0599 12.4338 19.8282 12.2033C19.8241 12.1991 19.82 12.195 19.8158 12.191C19.1746 11.5589 18.0791 11.6201 17.4036 12.2153L14.8801 14.4875C14.5734 14.7937 14.1339 14.975 13.667 14.975H9.99988C9.67602 14.975 9.41395 14.713 9.41395 14.3891C9.41395 14.0652 9.67602 13.8032 9.99988 13.8032H13.5155C14.1627 13.8032 14.6874 13.2784 14.6874 12.6313C14.6874 11.9841 14.1627 11.4594 13.5155 11.4594H11.1054C9.84652 10.0558 7.41453 9.94309 6.0332 11.246L2.84082 14.2591L6.58734 18.0441L7.27375 17.3579H14.9611C15.1108 17.3579 15.255 17.3005 15.3638 17.1977Z"
-                    fill="white"
-                  />
-                </svg>
-              </span>
-              Manage Commissions
-            </NavLink>
-          </li>  */}
 
           {/* <li className="py-1">
             <NavLink

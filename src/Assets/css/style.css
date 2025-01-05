@@ -302,3 +302,16 @@ header .dropdown:has(.dropdown-menu.show) .position-fixed {
   outline: none;
   border: none;
 }
+
+.linkWrpper .accordion-item {
+  background-color: transparent !important;
+  border: none;
+}
+
+.linkWrpper .accordion-collapse .accordion-body {
+  padding: 1px !important;
+}
+
+.linkWrpper .accordion-header {
+  margin-bottom: 2px !important;
+}

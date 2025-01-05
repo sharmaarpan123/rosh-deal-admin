@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import { toast } from "react-toastify";
-import { z } from "zod";
+import noImg from "../../../../Assets/images/no-img.png";
 import {
   ADD_DEAL,
   BRAND_LIST,
@@ -19,16 +19,16 @@ import {
   EDIT_DEAL,
   GET_DEAL_VIEW,
   PLATFORM_LIST,
-  SCRAPPER_IMAGE,
 } from "../../../../services/ApiCalls";
+import fileUploader from "../../../../utilities/fileUploader";
 import {
   catchAsync,
   checkResponse,
   textAreaAdjust,
 } from "../../../../utilities/utilities";
+import { addEditDealSchema } from "./schema";
 import TagsInput from "./TagsInput";
-import fileUploader from "../../../../utilities/fileUploader";
-import noImg from "../../../../Assets/images/no-img.png";
+import { superAdminCommission } from "../../../../utilities/const";
 
 const makeOptions = (data, extraKey, extraKeyValueKey) => {
   return data?.map((item) => ({
@@ -38,117 +38,8 @@ const makeOptions = (data, extraKey, extraKeyValueKey) => {
   }));
 };
 
-const objectIdSchema = (fieldName) =>
-  z.object(
-    {
-      label: z.string({ required_error: fieldName + " is Required" }),
-      value: z.string({ required_error: fieldName + " is Required" }),
-    },
-    {
-      invalid_type_error: fieldName + " is required",
-      required_error: fieldName + " is Required",
-    }
-  );
-
-const schema = z
-  .object({
-    productName: z
-      .string({ required_error: "This is Required" })
-      .min(1, { message: "Name is required" }),
-    brand: objectIdSchema("brand"),
-    platForm: objectIdSchema("Plat form"),
-    dealCategory: objectIdSchema("Deal Category"),
-    productCategories: z
-      .array(z.string())
-      .refine((data) => !data.some((item) => item.trim() === ""), {
-        message: "Product categories must contain at least one letter",
-      })
-      .optional(),
-    postUrl: z.string().url({ invalid_type_error: "inValid post url" }),
-    actualPrice: z
-      .string({ required_error: "Actual Price is required" })
-      .min(1, { message: "Actual Price is required" })
-      .refine((data) => !isNaN(data), {
-        message: "Actual Price must be numeric",
-        paths: ["actualPrice"],
-      }),
-    lessAmount: z
-      .string({ required_error: "Less Amount is required" })
-      .refine((data) => !isNaN(data), {
-        message: "Less Amount must be numeric",
-        paths: ["lessAmount"],
-      })
-      .optional(),
-    adminCommission: z
-      .string({ required_error: "Admin commission required" })
-      .min(1, { message: "admin commission is required" })
-      .refine((data) => !isNaN(data), {
-        message: "Admin  commission should be numeric",
-      }),
-    slotAlloted: z
-      .string({
-        invalid_type_error: "invalid slotAlloted",
-        required_error: "slot Alloted is required",
-      })
-      .min(1, { message: "Slot Alloted is required" })
-      .refine((data) => !isNaN(data), {
-        message: "slot Alloted should be numeric",
-      }),
-    finalCashBackForUser: z
-      .string({
-        invalid_type_error: "invalid finalCashBackForUser",
-        required_error: "final Cash Back ForUser is required",
-      })
-      .min(1, { message: "final Cash Back ForUser is required" }),
-    commissionValue: z
-      .string({
-        invalid_type_error: "Invalid Commision Amount",
-        required_error: "Commision Amount is required",
-      })
-      .optional(),
-    refundDays: z
-      .string({
-        invalid_type_error: "invalid Refund Days",
-        required_error: "Refund Days is required",
-      })
-      .min(1, { message: "Refund Days is required" })
-      .refine((data) => !isNaN(data), {
-        message: "Refund Days should be Numeric",
-      }),
-    termsAndCondition: z
-      .string({
-        required_error: "Terms and condition is required",
-      })
-      .min(1, { message: "This  is required" }),
-    uniqueIdentifier: z
-      .string({
-        required_error: "unique Identifier is required",
-      })
-      .min(1, { message: "unique Identifier  is required" }),
-    imageUrl: z.string().optional(),
-    exchangeDealProducts: z.array(z.string()).optional(),
-    isExchangeDeal: z.boolean().optional(),
-    isCommissionDeal: z.boolean(),
-  })
-  .refine(
-    (data) => {
-      if (
-        data?.isExchangeDeal &&
-        (!data.exchangeDealProducts || !data.exchangeDealProducts[0])
-      ) {
-        return false;
-      }
-      return true;
-    },
-    {
-      message:
-        "If your deal is exchange deal , then please provide the exchange deals products fields",
-      path: ["exchangeDealProducts"],
-    }
-  );
-
 const getAdminCommission = (actualPrice, lessAmount, adminPercentage = 5) => {
-  return ((actualPrice - lessAmount) * adminPercentage) / 100;
+  return Math.ceil(((actualPrice - lessAmount) * adminPercentage) / 100);
 };
 const AddEditDeal = () => {
   const navigate = useNavigate();
@@ -187,12 +78,16 @@ const AddEditDeal = () => {
       termsAndCondition: data?.termsAndCondition || "",
       adminCommission: data?.adminCommission || "",
       imageUrl: data?.imageUrl,
+      showToSubAdmins: Boolean(data?.showToSubAdmins),
+      showToUsers: Boolean(data?.showToUsers),
+      commissionValueToSubAdmin: data?.commissionValueToSubAdmin || "",
+      lessAmountToSubAdmin: data?.lessAmountToSubAdmin || "",
       isExchangeDeal: data?.dealCategory?.isExchangeDeal ? true : false,
       exchangeDealProducts: data?.exchangeDealProducts
         ? data?.exchangeDealProducts
         : [],
     },
-    resolver: zodResolver(schema),
+    resolver: zodResolver(addEditDealSchema),
     mode: "onChange",
     reValidateMode: "onChange",
   });
@@ -237,7 +132,7 @@ const AddEditDeal = () => {
       res,
       showSuccess: true,
       navigate: navigate,
-      navigateUrl: "/deal",
+      navigateUrl: "/myDealsAsAgency",
     });
   });
 
@@ -290,15 +185,14 @@ const AddEditDeal = () => {
     getData();
   }, []);
 
-  const superAdminCommission = 10; // percentage;
-
   useEffect(() => {
     const actualPrice = watch("actualPrice");
     const lessAmount = watch("lessAmount");
     const commissionValue = watch("commissionValue");
     if (actualPrice && (lessAmount || commissionValue)) {
-      const adminCommission =
-        (superAdminCommission * (lessAmount || commissionValue)) / 100;
+      const adminCommission = Math.ceil(
+        (superAdminCommission * (lessAmount || commissionValue)) / 100
+      );
 
       setValue("adminCommission", String(adminCommission), {
         shouldValidate: true,
@@ -344,7 +238,7 @@ const AddEditDeal = () => {
             <Col lg="12">
               <div className="d-flex align-items-center gap-10">
                 <Link
-                  to="/deal"
+                  to="/myDealsAsAgency"
                   className="border d-flex align-items-center p-2 rounded"
                 >
                   <svg
@@ -362,7 +256,6 @@ const AddEditDeal = () => {
                     />
                   </svg>
                 </Link>
-               
               </div>
             </Col>
             <Col lg="12" className="my-2">
@@ -371,6 +264,54 @@ const AddEditDeal = () => {
                 style={{ background: "#EEEEEE" }}
               >
                 <Form onSubmit={handleSubmit(submitHandler)}>
+                  <Row className="d-flex justify-content-center">
+                    <div
+                      className="position-relative upload text-center"
+                      style={{ maxWidth: "max-content" }}
+                    >
+                      <label
+                        htmlFor=""
+                        className="form-label fw-sbold text-muted ps-2 m-0"
+                      >
+                        Product Image
+                      </label>
+                      <input
+                        type="file"
+                        className="file position-absolute h-100 w-100 "
+                        onChange={imageChangeHandler}
+                      />
+                      <div className="imgWrp position-relative">
+                        <span className="icn position-absolute">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 26 26"
+                            fill="none"
+                          >
+                            <circle
+                              cx="13.2007"
+                              cy="12.9282"
+                              r="12.3872"
+                              fill="#3366FF"
+                            />
+                            <path
+                              d="M9.68021 16.69C9.79021 16.69 9.81221 16.679 9.91121 16.657L11.8912 16.261C12.1002 16.206 12.3092 16.107 12.4742 15.942L17.2702 11.146C18.0072 10.409 18.0072 9.14404 17.2702 8.40704L16.8632 7.97804C16.1262 7.24104 14.8502 7.24104 14.1132 7.97804L9.31721 12.785C9.16321 12.939 9.05321 13.159 8.99821 13.368L8.58021 15.37C8.52521 15.744 8.63521 16.107 8.89921 16.371C9.10821 16.58 9.41621 16.69 9.68021 16.69ZM10.0542 13.577L14.8502 8.77004C15.1692 8.45104 15.7522 8.45104 16.0602 8.77004L16.4782 9.18804C16.8522 9.56204 16.8522 10.09 16.4782 10.453L11.6932 15.26L9.65821 15.601L10.0542 13.577ZM17.2262 17.372H9.10821C8.78921 17.372 8.58021 17.581 8.58021 17.9C8.58021 18.219 8.84421 18.428 9.10821 18.428H17.1822C17.5012 18.428 17.7652 18.219 17.7652 17.9C17.7542 17.581 17.4902 17.372 17.2262 17.372Z"
+                              fill="#F2F2F7"
+                              stroke="#F8FAFC"
+                              stroke-width="0.3"
+                            />
+                          </svg>
+                        </span>
+                        <img
+                          style={{ height: 80, width: 80 }}
+                          src={getValues("imageUrl") || noImg}
+                          alt=""
+                          className="img-fluid rounded-circle object-fit-contain"
+                        />
+                      </div>
+                    </div>
+                  </Row>
                   <Row className="d-flex justify-content-center">
                     {/* Category Platform Brand View */}
                     <>
@@ -652,24 +593,6 @@ const AddEditDeal = () => {
                                         );
                                         return;
                                       }
-                                      if (
-                                        e.target.value &&
-                                        getValues("actualPrice")
-                                      ) {
-                                        setValue(
-                                          "adminCommission",
-                                          getAdminCommission(
-                                            getValues("actualPrice"),
-                                            e.target.value,
-                                            superAdminCommission
-                                          ),
-                                          { shouldValidate: true }
-                                        );
-                                      } else {
-                                        setValue("adminCommission", 0, {
-                                          shouldValidate: true,
-                                        });
-                                      }
                                       field.onChange(e.target.value);
                                     }}
                                     type="text"
@@ -688,7 +611,6 @@ const AddEditDeal = () => {
                               )}
                           </div>
                         </Col>
-                        {/* Commsion View */}
                         <Col lg="4" md="6" className="my-2">
                           <div className="py-2">
                             <label
@@ -708,27 +630,9 @@ const AddEditDeal = () => {
                                       if (getValues("lessAmount")) {
                                         toast.dismiss();
                                         toast.error(
-                                          "You cannot add both less and commission value "
+                                          "You cannot add both  less and commission value "
                                         );
                                         return;
-                                      }
-                                      if (
-                                        e.target.value &&
-                                        getValues("actualPrice")
-                                      ) {
-                                        setValue(
-                                          "adminCommission",
-                                          getAdminCommission(
-                                            getValues("actualPrice"),
-                                            e.target.value,
-                                            superAdminCommission
-                                          ),
-                                          { shouldValidate: true }
-                                        );
-                                      } else {
-                                        setValue("adminCommission", 0, {
-                                          shouldValidate: true,
-                                        });
                                       }
                                       field.onChange(e.target.value);
                                     }}
@@ -769,84 +673,146 @@ const AddEditDeal = () => {
                             </div>
                           </Col>
                         )}
+                          <Row lg="4" md="6" className="my-2">
+                            <Col>
+                              <div className="py-2 d-flex flex-column">
+                                <label
+                                  htmlFor=""
+                                  className="form-label fw-sbold text-muted ps-2 m-0"
+                                >
+                                  Platform Fee
+                                </label>
+
+                                <p className="form-label fw-sbold  ps-2 m-0 text-success">
+                                  {getValues("adminCommission")}
+                                </p>
+                              </div>
+                            </Col>
+                            <Col>
+                              <div className="py-2 d-flex flex-column">
+                                <label
+                                  htmlFor=""
+                                  className="form-label fw-sbold text-muted ps-2 m-0"
+                                >
+                                  Final Refund amount To buyer
+                                </label>
+
+                                <p className="form-label fw-sbold  ps-2 m-0 text-success">
+                                  {watch("finalCashBackForUser")}
+                                </p>
+                              </div>
+                            </Col>
+                          </Row>
                         <Row lg="4" md="6" className="my-2">
-                          <Col>
-                            <div
-                              className="position-relative upload text-center"
-                              style={{ maxWidth: "max-content" }}
-                            >
+                          <Col lg="6">
+                            <div className="position-relative upload text-center d-flex align-items-center gap-10">
                               <label
-                                htmlFor=""
+                                htmlFor="showToUser"
                                 className="form-label fw-sbold text-muted ps-2 m-0"
                               >
-                                Product Image
+                                Show To Your Users
                               </label>
                               <input
-                                type="file"
-                                className="file position-absolute h-100 w-100 "
-                                onChange={imageChangeHandler}
+                                id="showToUser"
+                                style={{
+                                  width: 25,
+                                  height: 25,
+                                }}
+                                {...register("showToUsers")}
+                                type="checkbox"
                               />
-                              <div className="imgWrp position-relative">
-                                <span className="icn position-absolute">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="10"
-                                    height="10"
-                                    viewBox="0 0 26 26"
-                                    fill="none"
-                                  >
-                                    <circle
-                                      cx="13.2007"
-                                      cy="12.9282"
-                                      r="12.3872"
-                                      fill="#3366FF"
-                                    />
-                                    <path
-                                      d="M9.68021 16.69C9.79021 16.69 9.81221 16.679 9.91121 16.657L11.8912 16.261C12.1002 16.206 12.3092 16.107 12.4742 15.942L17.2702 11.146C18.0072 10.409 18.0072 9.14404 17.2702 8.40704L16.8632 7.97804C16.1262 7.24104 14.8502 7.24104 14.1132 7.97804L9.31721 12.785C9.16321 12.939 9.05321 13.159 8.99821 13.368L8.58021 15.37C8.52521 15.744 8.63521 16.107 8.89921 16.371C9.10821 16.58 9.41621 16.69 9.68021 16.69ZM10.0542 13.577L14.8502 8.77004C15.1692 8.45104 15.7522 8.45104 16.0602 8.77004L16.4782 9.18804C16.8522 9.56204 16.8522 10.09 16.4782 10.453L11.6932 15.26L9.65821 15.601L10.0542 13.577ZM17.2262 17.372H9.10821C8.78921 17.372 8.58021 17.581 8.58021 17.9C8.58021 18.219 8.84421 18.428 9.10821 18.428H17.1822C17.5012 18.428 17.7652 18.219 17.7652 17.9C17.7542 17.581 17.4902 17.372 17.2262 17.372Z"
-                                      fill="#F2F2F7"
-                                      stroke="#F8FAFC"
-                                      stroke-width="0.3"
-                                    />
-                                  </svg>
-                                </span>
-                                <img
-                                  style={{ height: 60, width: 60 }}
-                                  src={getValues("imageUrl") || noImg}
-                                  alt=""
-                                  className="img-fluid rounded-circle object-fit-contain"
-                                />
-                              </div>
                             </div>
                           </Col>
-                          <Col>
-                            <div className="py-2 d-flex flex-column">
+                          <Col lg="6">
+                            <div className="position-relative upload text-center d-flex align-items-center gap-10">
                               <label
-                                htmlFor=""
+                                htmlFor="showToSubUser"
                                 className="form-label fw-sbold text-muted ps-2 m-0"
                               >
-                                Platform Fee
+                                Show To Your Mediators
                               </label>
-
-                              <p className="form-label fw-sbold  ps-2 m-0 text-success">
-                                {getValues("adminCommission")}
-                              </p>
-                            </div>
-                          </Col>
-                          <Col>
-                            <div className="py-2 d-flex flex-column">
-                              <label
-                                htmlFor=""
-                                className="form-label fw-sbold text-muted ps-2 m-0"
-                              >
-                                Final Refund Value To user
-                              </label>
-
-                              <p className="form-label fw-sbold  ps-2 m-0 text-success">
-                                {watch("finalCashBackForUser")}
-                              </p>
+                              <input
+                                id="showToSubUser"
+                                style={{
+                                  width: 25,
+                                  height: 25,
+                                }}
+                                {...register("showToSubAdmins")}
+                                type="checkbox"
+                              />
                             </div>
                           </Col>
                         </Row>
+                      </Row>
+                      <Row>
+                        {watch("showToSubAdmins") && watch("lessAmount") && (
+                          <Col lg="4" md="6" className="my-2">
+                            <div className="py-2">
+                              <label
+                                htmlFor=""
+                                className="form-label fw-sbold text-muted ps-2 m-0"
+                              >
+                                Less Amount To SubAdmins
+                              </label>
+                              <Controller
+                                control={control}
+                                name="lessAmountToSubAdmin"
+                                render={({ field }) => {
+                                  return (
+                                    <input
+                                      {...field}
+                                      type="text"
+                                      placeholder="Enter less value for users"
+                                      className="form-control"
+                                    />
+                                  );
+                                }}
+                              />
+
+                              {errors?.lessAmountToSubAdmin && (
+                                <p className="text-danger m-0">
+                                  {errors.lessAmountToSubAdmin.message}
+                                </p>
+                              )}
+                            </div>
+                          </Col>
+                        )}
+                        {watch("showToSubAdmins") &&
+                          watch("commissionValue") && (
+                            <Col lg="4" md="6" className="my-2">
+                              <div className="py-2">
+                                <label
+                                  htmlFor=""
+                                  className="form-label fw-sbold text-muted ps-2 m-0"
+                                >
+                                  commission To SubAdmins
+                                </label>
+                                <Controller
+                                  control={control}
+                                  name="commissionValueToSubAdmin"
+                                  render={({ field }) => {
+                                    return (
+                                      <input
+                                        {...field}
+                                        type="text"
+                                        placeholder="Enter less value for users"
+                                        className="form-control"
+                                      />
+                                    );
+                                  }}
+                                />
+                                {errors?.lessAmountToSubAdmin ? (
+                                  <p className="text-danger m-0">
+                                    {errors.lessAmountToSubAdmin.message}
+                                  </p>
+                                ) : errors?.commissionValueToSubAdmin ? (
+                                  <p className="text-danger m-0">
+                                    {errors.commissionValueToSubAdmin.message}
+                                  </p>
+                                ) : null}
+                              </div>
+                            </Col>
+                          )}
                       </Row>
                     </Col>
                     <Col md="12" className="my-2">
