@@ -38,6 +38,7 @@ import AddEditDeal from "./SideTabPages/MyDealsAsAgency/add";
 import AddBulkDeal from "./SideTabPages/MyDealsAsAgency/bulkAdd/Index";
 import DealDetails from "./SideTabPages/MyDealsAsAgency/detail";
 import MyDealsAsMed from "./SideTabPages/MyDealsAsMed";
+import MyMedDealsAsAgency from "./SideTabPages/MyMediatorDeals";
 import NotificationManagement from "./SideTabPages/NotificationMangement";
 import OrderManagement from "./SideTabPages/OrderMangement";
 import OrderDetails from "./SideTabPages/OrderMangement/detail";
@@ -125,6 +126,11 @@ export const privateRoutes = [
   {
     path: "/myDealsAsAgency",
     component: <DealManagement />,
+    title: "My Deals",
+  },
+  {
+    path: "/myMedDealsAsAgency",
+    component: <MyMedDealsAsAgency />,
     title: "My Deals",
   },
 

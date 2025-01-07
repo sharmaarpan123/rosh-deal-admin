@@ -4,7 +4,6 @@ import TableLayout from "../../../components/TableLayout";
 
 // img
 import moment from "moment";
-import { Link } from "react-router-dom";
 import copyIcon from "../../../Assets/images/copyIcon.png";
 import share from "../../../Assets/images/share.png";
 import CustomPagination from "../../../components/Common/CustomPagination";
@@ -16,6 +15,7 @@ import {
   DEAL_UPDATE_PAYMENT_STATUS,
   DEAL_UPDATE_STATUS,
   DEALS_LIST,
+  MY_MED_DEALS_AS_AGENCY,
 } from "../../../services/ApiCalls";
 import {
   activeInactiveOptions,
@@ -28,21 +28,18 @@ import {
   handleShare,
 } from "../../../utilities/utilities";
 
-const DealManagement = () => {
+const MyMedDealsAsAgency = () => {
   const {
     setBody,
     body,
     data,
     loader,
-    deleteModel,
-    setDeleteModel,
     paginationHandler,
     searchHandler,
     total,
-    deleteHandler,
     statusChangeHandler,
   } = dataHandler({
-    api: DEALS_LIST,
+    api: MY_MED_DEALS_AS_AGENCY,
   });
 
   const column = [
@@ -63,7 +60,7 @@ const DealManagement = () => {
       component: (item, key, arr) => (
         <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
           <p className="m-0 themeBlue fw-sbold">
-            {capitalizedFirstAlphaBet(item.productName)}
+            {capitalizedFirstAlphaBet(item?.parentDealId?.productName)}
           </p>
           <button
             className="share-button"
@@ -91,21 +88,13 @@ const DealManagement = () => {
         </div>
       ),
     },
-    // {
-    //   head: "unique slug",
-    //   accessor: "unique slug",
-    //   component: (item, key, arr) => (
-    //     <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
-    //       {capitalizedFirstAlphaBet(item.uniqueIdentifier)}
-    //     </p>
-    //   ),
-    // },
+
     {
       head: "Brand",
       accessor: "brand",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item.brand.name)}
+          {capitalizedFirstAlphaBet(item?.parentDealId?.brand?.name)}
         </p>
       ),
     },
@@ -114,7 +103,7 @@ const DealManagement = () => {
       accessor: "platForm",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item.platForm.name)}
+          {capitalizedFirstAlphaBet(item?.parentDealId?.platForm?.name)}
         </p>
       ),
     },
@@ -123,13 +112,18 @@ const DealManagement = () => {
       accessor: "dealCategory",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item.dealCategory.name)}
+          {capitalizedFirstAlphaBet(item?.parentDealId?.dealCategory?.name)}
         </p>
       ),
     },
     {
       head: "Price",
       accessor: "actualPrice",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(item?.parentDealId?.actualPrice)}
+        </p>
+      ),
     },
     {
       head: "Refund",
@@ -150,63 +144,34 @@ const DealManagement = () => {
       head: "Status",
       accessor: "isDeleted",
       component: (item, index) => (
-        // <p
-        //   className={`mb-0 ${
-        //     !item.isActive ? "bg-danger text-white" : "bg-success text-white"
-        //   } d-flex justify-content-start pb-0 rounded px-2 `}
-        //   style={{
-        //     width: "fit-content",
-        //   }}
-        // >
-        //   {item.isActive ? "Active" : "InActive"}
-        // </p>
-
-        <TableToggle
-          Options={activeInActiveOptions}
-          value={item.isActive ? "active" : "inactive"}
+        <p
+          className={`mb-0 ${
+            !item.isActive ? "bg-danger text-white" : "bg-success text-white"
+          } d-flex justify-content-start pb-0 rounded px-2 `}
           style={{
-            color: item.isActive ? "green" : "red",
-            width: 120,
+            width: "fit-content",
           }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                DEAL_UPDATE_STATUS({
-                  dealId: item._id,
-                  status: e.target.value === "active",
-                }),
-              index,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
+        >
+          {item.isActive ? "Active" : "InActive"}
+        </p>
       ),
     },
     {
       head: "Payment Status",
       accessor: "payment Status",
       component: (item, index) => (
-        <TableToggle
-          Options={paymentStatusOptions.slice(1)}
-          value={item.paymentStatus}
+        <p
+          className={`mb-0 ${
+            !(item.paymentStatus === "paid")
+              ? "bg-danger text-white"
+              : "bg-success text-white"
+          } d-flex justify-content-start pb-0 rounded px-2 `}
           style={{
-            color: item.paymentStatus === "pending" ? "red" : "pending",
-            width: 120,
+            width: "fit-content",
           }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                DEAL_UPDATE_PAYMENT_STATUS({
-                  dealId: item._id,
-                  status: e.target.value,
-                }),
-              index,
-              "paymentStatus",
-              item.paymentStatus === "pending" ? "paid" : "pending"
-            )
-          }
-        />
+        >
+          {item.paymentStatus === "paid" ? "Paid" : "No Paid Yet"}
+        </p>
       ),
     },
     {
@@ -215,7 +180,7 @@ const DealManagement = () => {
       component: (item) => (
         <p
           className={`mb-0 ${
-            !item.isSlotCompleted
+            !item?.parentDealId?.isSlotCompleted
               ? "bg-danger text-white"
               : "bg-success text-white"
           } d-flex justify-content-start pb-0 rounded px-2 `}
@@ -223,20 +188,17 @@ const DealManagement = () => {
             width: "fit-content",
           }}
         >
-          {item.isSlotCompleted ? "Completed" : "Ongoing"}
+          {item?.parentDealId?.isSlotCompleted ? "Completed" : "Ongoing"}
         </p>
       ),
     },
-    {
-      head: "Action",
-      accessor: "Action",
-      component: (item) => (
-        <TableActions
-          editUrl={`/deal/edit/${item._id}`}
-          viewLink={`/deal/details/${item._id}`}
-        />
-      ),
-    },
+    // {
+    //   head: "Action",
+    //   accessor: "Action",
+    //   component: (item) => (
+    //     <TableActions viewLink={`/deal/details/${item._id}`} />
+    //   ),
+    // },
   ];
 
   return (
@@ -263,28 +225,7 @@ const DealManagement = () => {
                     />
                   </ul>
                 </div>
-                <div className="right">
-                  <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
-                    <li className="">
-                      <Link
-                        to={"/deal/bulk-add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Bulk Add
-                      </Link>
-                    </li>
-                    <li className="">
-                      <Link
-                        to={"/deal/add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Add New
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
+                <div className="right"></div>
               </div>
             </Col>
             <Col lg="12" className="my-2">
@@ -303,4 +244,4 @@ const DealManagement = () => {
   );
 };
 
-export default DealManagement;
+export default MyMedDealsAsAgency;

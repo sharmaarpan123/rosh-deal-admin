@@ -109,7 +109,7 @@ export const adminItems = [
         icon: CommonNavIcon,
       },
       {
-        path: "/deal",
+        path: "/myMedDealsAsAgency",
         name: "My Mediator Deals",
         icon: CommonNavIcon,
       },

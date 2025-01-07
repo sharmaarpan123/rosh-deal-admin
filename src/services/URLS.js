@@ -47,6 +47,7 @@ export default {
   CLONE_DEAL: "/subAdmin/deal/clone",
   GET_DEAL_VIEW: "/admin/deal/detail/",
   MY_AGENCY_DEAL_DETAIL_AS_MED: "/subAdmin/myAgencyDealAsMed/detail/",
+  MY_MED_DEALS_AS_AGENCY: "subAdmin/myMedDealsAsAgency/getWithFilters",
   DEALS_LIST: "/admin/deal/all/withFilters",
   MY_AGENCY_DEALS_AS_MED: "subAdmin/myAgencyDealAsMed/getWithFilters",
   DEAL_BY_BRAND_ID: "/admin/deal/getDealWithBrandId/",
