@@ -11,7 +11,7 @@ import Sidebar from "../../components/Header/sidebar/Sidebar";
 import { getAdminDetails } from "../../store/actions";
 
 const MainLayout = ({ title }) => {
-  const [sidebar, setSidebar] = useState();
+  const [sidebar, setSidebar] = useState(false);
 
   const dispatch = useDispatch();
 
