@@ -45,30 +45,13 @@ export const superAdminItems = [
         icon: CommonNavIcon,
       },
       {
-        path: "/myDealsAsAgency",
+        path: "/myMedDealsAsAgency",
         name: "My Mediator Deals",
         icon: CommonNavIcon,
       },
     ],
   },
-  {
-    path: "/deal",
-    name: "Mediator Deal Management",
-    icon: CommonNavIcon,
-    IsSubItems: true,
-    subItems: [
-      {
-        path: "/deal",
-        name: "My Agency  Deals",
-        icon: CommonNavIcon,
-      },
-      {
-        path: "/deal",
-        name: "My  Deals As Med",
-        icon: CommonNavIcon,
-      },
-    ],
-  },
+
   {
     path: "/orders",
     name: "Order Management",
@@ -165,7 +148,7 @@ export const subAdminItems = [
 export const adminSubAdminItems = [
   ...commonItems,
   {
-    path: "/deal",
+    path: "/myDealsAsAgency",
     name: "Agency Deal Management",
     icon: CommonNavIcon,
     IsSubItems: true,
@@ -176,7 +159,7 @@ export const adminSubAdminItems = [
         icon: CommonNavIcon,
       },
       {
-        path: "/myMedDeals",
+        path: "/myMedDealsAsAgency",
         name: "My Mediator Deals",
         icon: CommonNavIcon,
       },
@@ -189,12 +172,12 @@ export const adminSubAdminItems = [
     IsSubItems: true,
     subItems: [
       {
-        path: "/deal",
+        path: "/myAgencyDealsAsMed",
         name: "My Agency  Deals",
         icon: CommonNavIcon,
       },
       {
-        path: "/deal",
+        path: "/myDealsAsMed",
         name: "My  Deals As Med",
         icon: CommonNavIcon,
       },

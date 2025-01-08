@@ -77,10 +77,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
             ({ path, name, icon: Icon, IsSubItems, subItems }, ind) => {
               if (IsSubItems) {
                 return (
-                  <li
-                    className={`py-1 ${styles.accordionWrp} `}
-                    onClick={() => setSidebar((p) => false)}
-                  >
+                  <li className={`py-1 ${styles.accordionWrp} `}>
                     <Accordion.Item
                       eventKey={ind}
                       className={`${styles?.accordionBtn}`}
@@ -90,6 +87,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
                         return (
                           <Accordion.Body>
                             <NavLink
+                              onClick={() => setSidebar((p) => false)}
                               to={path}
                               className={`${styles.link} ${
                                 pageActive.includes(path) && styles.active
