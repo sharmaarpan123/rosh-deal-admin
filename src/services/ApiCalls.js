@@ -65,6 +65,10 @@ export const MY_MED_DEALS_AS_AGENCY = (data) =>
   Axios.post(API_URL.MY_MED_DEALS_AS_AGENCY, data);
 export const MY_AGENCY_DEAL_DETAIL_AS_MED = (data) =>
   Axios.get(API_URL.MY_AGENCY_DEAL_DETAIL_AS_MED + data);
+
+export const My_DEAL_AS_MED = (data) =>
+  Axios.post(API_URL.My_DEAL_AS_MED, data);
+
 export const GET_DEAL_VIEW = (data) => Axios.get(API_URL.GET_DEAL_VIEW + data);
 
 export const DEAL_BY_BRAND_ID = (body) =>

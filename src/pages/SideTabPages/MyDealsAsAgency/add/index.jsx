@@ -73,7 +73,7 @@ const AddEditDeal = () => {
         : "",
       isCommissionDeal: data?.isCommissionDeal || false,
       commissionValue: data?.commissionValue ? data?.commissionValue : "",
-      refundDays: data?.refundDays || "",
+      refundDays: data?.refundDays ? String(data?.refundDays) : "",
       slotAlloted: data?.slotAlloted ? String(data?.slotAlloted) : "",
       termsAndCondition: data?.termsAndCondition || "",
       adminCommission: data?.adminCommission || "",
@@ -123,7 +123,7 @@ const AddEditDeal = () => {
         platForm: data.platForm.value,
         brand: data.brand.value,
         slotAlloted: +data.slotAlloted,
-        refundDays: +data.refundDays,
+        refundDays: data.refundDays,
         lessAmount: data?.lessAmount || "",
         isCommissionDeal: data?.commissionValue ? true : false,
       });
@@ -673,36 +673,36 @@ const AddEditDeal = () => {
                             </div>
                           </Col>
                         )}
-                          <Row lg="4" md="6" className="my-2">
-                            <Col>
-                              <div className="py-2 d-flex flex-column">
-                                <label
-                                  htmlFor=""
-                                  className="form-label fw-sbold text-muted ps-2 m-0"
-                                >
-                                  Platform Fee
-                                </label>
+                        <Row lg="4" md="6" className="my-2">
+                          <Col>
+                            <div className="py-2 d-flex flex-column">
+                              <label
+                                htmlFor=""
+                                className="form-label fw-sbold text-muted ps-2 m-0"
+                              >
+                                Platform Fee
+                              </label>
 
-                                <p className="form-label fw-sbold  ps-2 m-0 text-success">
-                                  {getValues("adminCommission")}
-                                </p>
-                              </div>
-                            </Col>
-                            <Col>
-                              <div className="py-2 d-flex flex-column">
-                                <label
-                                  htmlFor=""
-                                  className="form-label fw-sbold text-muted ps-2 m-0"
-                                >
-                                  Final Refund amount To buyer
-                                </label>
+                              <p className="form-label fw-sbold  ps-2 m-0 text-success">
+                                {getValues("adminCommission")}
+                              </p>
+                            </div>
+                          </Col>
+                          <Col>
+                            <div className="py-2 d-flex flex-column">
+                              <label
+                                htmlFor=""
+                                className="form-label fw-sbold text-muted ps-2 m-0"
+                              >
+                                Final Refund amount To buyer
+                              </label>
 
-                                <p className="form-label fw-sbold  ps-2 m-0 text-success">
-                                  {watch("finalCashBackForUser")}
-                                </p>
-                              </div>
-                            </Col>
-                          </Row>
+                              <p className="form-label fw-sbold  ps-2 m-0 text-success">
+                                {watch("finalCashBackForUser")}
+                              </p>
+                            </div>
+                          </Col>
+                        </Row>
                         <Row lg="4" md="6" className="my-2">
                           <Col lg="6">
                             <div className="position-relative upload text-center d-flex align-items-center gap-10">

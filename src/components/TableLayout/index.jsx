@@ -1,6 +1,4 @@
 import React from "react";
-import { Button } from "react-bootstrap";
-
 // css
 import styles from "./Table.module.scss";
 import Loading from "../Common/Loading";

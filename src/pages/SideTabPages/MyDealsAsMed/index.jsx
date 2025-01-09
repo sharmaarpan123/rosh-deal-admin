@@ -14,7 +14,7 @@ import dataHandler from "../../../hooks/dataHandler";
 import {
   DEAL_UPDATE_PAYMENT_STATUS,
   DEAL_UPDATE_STATUS,
-  DEALS_LIST,
+  My_DEAL_AS_MED,
 } from "../../../services/ApiCalls";
 import {
   activeInactiveOptions,
@@ -41,7 +41,7 @@ const MyDealsAsMed = () => {
     deleteHandler,
     statusChangeHandler,
   } = dataHandler({
-    api: DEALS_LIST,
+    api: My_DEAL_AS_MED,
   });
 
   const column = [
