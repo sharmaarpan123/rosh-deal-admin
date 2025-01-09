@@ -132,8 +132,32 @@ const DealManagement = () => {
       accessor: "actualPrice",
     },
     {
-      head: "Refund",
-      accessor: "finalCashBackForUser",
+      head: "Less Value",
+      accessor: "lessAmount",
+      component: (item) => (
+        <>{item?.isCommissionDeal ? "-" : item?.lessAmount}</>
+      ),
+    },
+    {
+      head: "Less Value To Med",
+      accessor: "lessAmountToSubAdmin",
+      component: (item) => (
+        <>{item?.isCommissionDeal ? "-" : item?.lessAmountToSubAdmin}</>
+      ),
+    },
+    {
+      head: "commissionValue",
+      accessor: "commissionValue",
+      component: (item) => (
+        <>{item?.isCommissionDeal ? item.commissionValue : "-"}</>
+      ),
+    },
+    {
+      head: "Commission To Med",
+      accessor: "commissionValueToSubAdmin",
+      component: (item) => (
+        <>{item?.isCommissionDeal ? item.commissionValueToSubAdmin : "-"}</>
+      ),
     },
     {
       head: "Platform Fee",
@@ -183,32 +207,32 @@ const DealManagement = () => {
         />
       ),
     },
-    {
-      head: "Payment Status",
-      accessor: "payment Status",
-      component: (item, index) => (
-        <TableToggle
-          Options={paymentStatusOptions.slice(1)}
-          value={item.paymentStatus}
-          style={{
-            color: item.paymentStatus === "pending" ? "red" : "pending",
-            width: 120,
-          }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                DEAL_UPDATE_PAYMENT_STATUS({
-                  dealId: item._id,
-                  status: e.target.value,
-                }),
-              index,
-              "paymentStatus",
-              item.paymentStatus === "pending" ? "paid" : "pending"
-            )
-          }
-        />
-      ),
-    },
+    // {
+    //   head: "Payment Status",
+    //   accessor: "payment Status",
+    //   component: (item, index) => (
+    //     <TableToggle
+    //       Options={paymentStatusOptions.slice(1)}
+    //       value={item.paymentStatus}
+    //       style={{
+    //         color: item.paymentStatus === "pending" ? "red" : "pending",
+    //         width: 120,
+    //       }}
+    //       onChange={(e) =>
+    //         statusChangeHandler(
+    //           () =>
+    //             DEAL_UPDATE_PAYMENT_STATUS({
+    //               dealId: item._id,
+    //               status: e.target.value,
+    //             }),
+    //           index,
+    //           "paymentStatus",
+    //           item.paymentStatus === "pending" ? "paid" : "pending"
+    //         )
+    //       }
+    //     />
+    //   ),
+    // },
     {
       head: "Is slot Completed",
       accessor: "isSlotCompleted",

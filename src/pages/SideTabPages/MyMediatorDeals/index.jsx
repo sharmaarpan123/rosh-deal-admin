@@ -54,8 +54,21 @@ const MyMedDealsAsAgency = () => {
       head: "_id",
       accessor: "_id",
     },
+
     {
-      head: "Name",
+      head: "Mediator",
+      accessor: "adminId",
+      component: (item, key, arr) => (
+        <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
+          <p className="m-0 themeBlue fw-sbold">
+            {capitalizedFirstAlphaBet(item?.adminId?.name)}(
+            {item?.adminId?.userName})
+          </p>
+        </div>
+      ),
+    },
+    {
+      head: "Product Name",
       accessor: "productName",
       component: (item, key, arr) => (
         <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
@@ -156,24 +169,24 @@ const MyMedDealsAsAgency = () => {
         </p>
       ),
     },
-    {
-      head: "Payment Status",
-      accessor: "payment Status",
-      component: (item, index) => (
-        <p
-          className={`mb-0 ${
-            !(item.paymentStatus === "paid")
-              ? "bg-danger text-white"
-              : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
-          style={{
-            width: "fit-content",
-          }}
-        >
-          {item.paymentStatus === "paid" ? "Paid" : "No Paid Yet"}
-        </p>
-      ),
-    },
+    // {
+    //   head: "Payment Status",
+    //   accessor: "payment Status",
+    //   component: (item, index) => (
+    //     <p
+    //       className={`mb-0 ${
+    //         !(item.paymentStatus === "paid")
+    //           ? "bg-danger text-white"
+    //           : "bg-success text-white"
+    //       } d-flex justify-content-start pb-0 rounded px-2 `}
+    //       style={{
+    //         width: "fit-content",
+    //       }}
+    //     >
+    //       {item.paymentStatus === "paid" ? "Paid" : "No Paid Yet"}
+    //     </p>
+    //   ),
+    // },
     {
       head: "Is slot Completed",
       accessor: "isSlotCompleted",

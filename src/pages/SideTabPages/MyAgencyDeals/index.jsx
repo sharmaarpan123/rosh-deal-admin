@@ -10,16 +10,12 @@ import CustomPagination from "../../../components/Common/CustomPagination";
 import Filter from "../../../components/Common/Filter";
 import TableActions from "../../../components/Common/TableActions";
 import dataHandler from "../../../hooks/dataHandler";
-import {
-  MY_AGENCY_DEALS_AS_MED
-} from "../../../services/ApiCalls";
-import {
-  activeInactiveOptions
-} from "../../../utilities/const";
+import { MY_AGENCY_DEALS_AS_MED } from "../../../services/ApiCalls";
+import { activeInactiveOptions } from "../../../utilities/const";
 import {
   capitalizedFirstAlphaBet,
   copyClipboard,
-  handleShare
+  handleShare,
 } from "../../../utilities/utilities";
 
 const MyAgencyDealsAsMed = () => {
@@ -85,6 +81,23 @@ const MyAgencyDealsAsMed = () => {
         </div>
       ),
     },
+
+    {
+      head: "Less Value",
+      accessor: "lessAmount",
+      component: (item) => (
+        <>{!item?.isCommissionDeal ? item?.lessAmount : "-"}</>
+      ),
+    },
+
+    {
+      head: "Commission Value",
+      accessor: "commissionValue",
+      component: (item) => (
+        <>{item?.isCommissionDeal ? item?.commissionValue : "-"}</>
+      ),
+    },
+
     // {
     //   head: "unique slug",
     //   accessor: "unique slug",
@@ -125,14 +138,7 @@ const MyAgencyDealsAsMed = () => {
       head: "Price",
       accessor: "actualPrice",
     },
-    {
-      head: "Refund",
-      accessor: "finalCashBackForUser",
-    },
-    {
-      head: "Platform Fee",
-      accessor: "adminCommission",
-    },
+
     {
       head: "Created At",
       accessor: "createdAt",
@@ -156,24 +162,24 @@ const MyAgencyDealsAsMed = () => {
         </p>
       ),
     },
-    {
-      head: "Payment Status",
-      accessor: "payment Status",
-      component: (item, index) => (
-        <p
-          className={`mb-0 ${
-            !(item.paymentStatus === "paid")
-              ? "bg-danger text-white"
-              : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
-          style={{
-            width: "fit-content",
-          }}
-        >
-          {item.paymentStatus === "paid" ? "Paid" : "No Paid Yet"}
-        </p>
-      ),
-    },
+    // {
+    //   head: "Payment Status",
+    //   accessor: "payment Status",
+    //   component: (item, index) => (
+    //     <p
+    //       className={`mb-0 ${
+    //         !(item.paymentStatus === "paid")
+    //           ? "bg-danger text-white"
+    //           : "bg-success text-white"
+    //       } d-flex justify-content-start pb-0 rounded px-2 `}
+    //       style={{
+    //         width: "fit-content",
+    //       }}
+    //     >
+    //       {item.paymentStatus === "paid" ? "Paid" : "No Paid Yet"}
+    //     </p>
+    //   ),
+    // },
     {
       head: "Is slot Completed",
       accessor: "isSlotCompleted",
