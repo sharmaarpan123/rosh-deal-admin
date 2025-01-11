@@ -59,12 +59,12 @@ export const superAdminItems = [
   },
   {
     path: "/poster",
-    name: "Poster Management",
+    name: "Banners",
     icon: CommonNavIcon,
   },
   {
     path: "/notification-management",
-    name: "Notification Management",
+    name: "Notification",
     icon: CommonNavIcon,
   },
   {
@@ -118,7 +118,7 @@ export const subAdminItems = [
   ...commonItems,
   {
     path: "/deal",
-    name: "Mediator Deal Management",
+    name: "Deal Management",
     icon: CommonNavIcon,
     IsSubItems: true,
     subItems: [
@@ -167,7 +167,7 @@ export const adminSubAdminItems = [
   },
   {
     path: "/deal",
-    name: "Mediator Deal Management",
+    name: "Deal Management",
     icon: CommonNavIcon,
     IsSubItems: true,
     subItems: [
