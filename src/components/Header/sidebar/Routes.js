@@ -35,7 +35,7 @@ export const superAdminItems = [
 
   {
     path: "/myDealsAsAgency",
-    name: "Agency Deal Management",
+    name: "Deal Management",
     icon: CommonNavIcon,
     IsSubItems: true,
     subItems: [
@@ -82,7 +82,7 @@ export const adminItems = [
   ...commonItems,
   {
     path: "/myDealsAsAgency",
-    name: "Agency Deal Management",
+    name: "Deal Management",
     icon: CommonNavIcon,
     IsSubItems: true,
     subItems: [
@@ -149,7 +149,7 @@ export const adminSubAdminItems = [
   ...commonItems,
   {
     path: "/myDealsAsAgency",
-    name: "Agency Deal Management",
+    name: "Deal Management",
     icon: CommonNavIcon,
     IsSubItems: true,
     subItems: [
