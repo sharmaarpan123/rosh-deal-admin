@@ -54,7 +54,7 @@ export default {
   DEAL_UPDATE_PAYMENT_STATUS: "/admin/deal/updatePaymentStatus",
   DEAL_UPDATE_STATUS: "/admin/deal/updateStatus",
   ALL_DEALS: "/admin/deal/all/allDeals",
-  My_DEAL_AS_MED: "myDealsAsMed/getWithFilters",
+  My_DEAL_AS_MED: "subAdmin/myDealsAsMed/getWithFilters",
 
   // orders
 
