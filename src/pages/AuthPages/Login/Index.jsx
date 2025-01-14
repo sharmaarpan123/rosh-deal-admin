@@ -13,8 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 const schema = z.object({
   phoneNumber: z
-    .string()
-    .min(1, { message: "Email is required" })
+    .string({
+      required_error: "Phone Number is required",
+      invalid_type_error: "Phone Number should be valid",
+    })
+    .min(1, { message: "Phone Number should contain 10 digit" })
+    .max(10, { message: "Phone Number should contain max 10 digit" })
     .refine((data) => !isNaN(data), { message: "Number should be numeric" }),
   password: z.string().min(1, { message: "Password is required" }),
 });
@@ -66,8 +70,8 @@ const Login = () => {
                   placeholder="jackson.graham@example.com"
                   {...register("phoneNumber")}
                 />
-                {errors?.email && (
-                  <p className="text-danger m-0">{errors.email.message}</p>
+                {errors?.phoneNumber && (
+                  <p className="text-danger m-0">{errors.phoneNumber.message}</p>
                 )}
               </Col>
               <Col lg="12" className="my-2">

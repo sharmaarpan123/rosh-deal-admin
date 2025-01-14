@@ -38,6 +38,7 @@ import AddEditDeal from "./SideTabPages/MyDealsAsAgency/add";
 import AddBulkDeal from "./SideTabPages/MyDealsAsAgency/bulkAdd/Index";
 import DealDetails from "./SideTabPages/MyDealsAsAgency/detail";
 import MyDealsAsMed from "./SideTabPages/MyDealsAsMed";
+import MyDealsDetailsAsMed from "./SideTabPages/MyDealsAsMed/detail";
 import MyMedDealsAsAgency from "./SideTabPages/MyMediatorDeals";
 import NotificationManagement from "./SideTabPages/NotificationMangement";
 import OrderManagement from "./SideTabPages/OrderMangement";
@@ -55,6 +56,7 @@ import Settings from "./SideTabPages/Settings";
 import EditProfile from "./SideTabPages/Settings/EditProfile";
 import ManagePassword from "./SideTabPages/Settings/ManagePassword";
 import SystemAccess from "./SideTabPages/SystemAccess";
+import LinkedSubAdmin from "./SideTabPages/SystemAccess/LinkedMed";
 import AddSubAdmin from "./SideTabPages/SystemAccess/add";
 
 export const publicRoutes = [
@@ -161,6 +163,11 @@ export const privateRoutes = [
     component: <MyDealsAsMed />,
     title: "Deal Details",
   },
+  {
+    path: "/myDealsAsMed/details/:id",
+    component: <MyDealsDetailsAsMed />,
+    title: "My Agency Deal Details",
+  },
 
   { path: "/orders", component: <OrderManagement />, title: "Orders" },
   {
@@ -182,6 +189,11 @@ export const privateRoutes = [
     path: "/system-access/add",
     component: <AddSubAdmin />,
     title: "Add Sub Admin",
+  },
+  {
+    path: "/system-access/linkedMed",
+    component: <LinkedSubAdmin />,
+    title: "Linked  Mediator",
   },
   {
     path: "/system-access/edit/:adminId",

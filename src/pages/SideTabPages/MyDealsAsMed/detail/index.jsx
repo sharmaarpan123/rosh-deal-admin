@@ -4,19 +4,19 @@ import { Link, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 import moment from "moment";
-import { GET_DEAL_VIEW } from "../../../../services/ApiCalls";
+import { MY_AGENCY_DEAL_DETAIL_AS_MED } from "../../../../services/ApiCalls";
 import {
   catchAsync,
   checkResponse,
   removeUnderScoreAndCapitalizeFirstLetter,
 } from "../../../../utilities/utilities";
 
-const DealDetails = () => {
-  const [userDetails, setUserUserDetails] = useState();
+const MyDealsDetailsAsMed = () => {
+  const [dealDetails, setDealDetails] = useState();
   const { id } = useParams();
   const getData = catchAsync(async () => {
-    const res = await GET_DEAL_VIEW(id);
-    const success = checkResponse({ res, setData: setUserUserDetails });
+    const res = await MY_AGENCY_DEAL_DETAIL_AS_MED(id);
+    checkResponse({ res, setData: setDealDetails });
   });
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const DealDetails = () => {
                           Full Name:
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.productName}
+                          {dealDetails?.parentDealId?.productName}
                         </h6>
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
@@ -88,13 +88,13 @@ const DealDetails = () => {
                           brand Name
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.brand?.name}
+                          {dealDetails?.parentDealId?.brand?.name}
                         </h6>
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Plat Form</p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.platForm?.name}
+                          {dealDetails?.parentDealId?.platForm?.name}
                         </h6>
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
@@ -102,47 +102,23 @@ const DealDetails = () => {
                           Deal Category
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.dealCategory?.name}
+                          {dealDetails?.parentDealId?.dealCategory?.name}
                         </h6>
                       </li>
-                      {/* <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          Product categories
-                        </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.productCategories?.map(
-                            (item) => `${item}, `
-                          )}
-                        </h6>
-                      </li> */}
 
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          payment Status
-                        </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          <p
-                            className={`text-white rounded text-center ${
-                              userDetails?.paymentStatus === "paid"
-                                ? "bg-success"
-                                : userDetails?.paymentStatus === "pending"
-                                ? "bg-warning"
-                                : "bg-pending"
-                            }`}
-                          >
-                            {userDetails?.paymentStatus}
-                          </p>
-                        </h6>
-                      </li>
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">isActive</p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           <p
                             className={` rounded  text-center text-white ${
-                              userDetails?.isActive ? "bg-success" : "bg-danger"
+                              dealDetails?.parentDealId?.isActive
+                                ? "bg-success"
+                                : "bg-danger"
                             }`}
                           >
-                            {userDetails?.isActive ? "active" : "inactive"}
+                            {dealDetails?.parentDealId?.isActive
+                              ? "active"
+                              : "inactive"}
                           </p>
                         </h6>
                       </li>
@@ -151,7 +127,7 @@ const DealDetails = () => {
                           Admin Commission
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.adminCommission}
+                          {dealDetails?.adminCommission}
                         </h6>
                       </li>
                     </ul>
@@ -162,7 +138,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">Post Url</p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           <a
-                            href={userDetails?.postUrl}
+                            href={dealDetails?.parentDealId?.postUrl}
                             target="_blank"
                             style={{}}
                           >
@@ -175,16 +151,16 @@ const DealDetails = () => {
                           Actual Price
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.actualPrice}
+                          {dealDetails?.parentDealId?.actualPrice}
                         </h6>
                       </li>
-                      {userDetails?.isCommissionDeal ? (
+                      {dealDetails?.parentDealId?.isCommissionDeal ? (
                         <li className="py-3 d-flex align-items-center gap-10">
                           <p className="m-0 themeBlue fw-sbold w-25">
                             Commission Amount
                           </p>
                           <h6 className="m-0 text-muted fw-bold w-50">
-                            {userDetails?.commissionValue}
+                            {dealDetails?.commissionValue}
                           </h6>
                         </li>
                       ) : (
@@ -193,7 +169,7 @@ const DealDetails = () => {
                             Less Amount
                           </p>
                           <h6 className="m-0 text-muted fw-bold w-50">
-                            {userDetails?.lessAmount}
+                            {dealDetails?.lessAmount}
                           </h6>
                         </li>
                       )}
@@ -203,7 +179,7 @@ const DealDetails = () => {
                           Slot Alloted
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.slotAlloted}
+                          {dealDetails?.parentDealId?.slotAlloted}
                         </h6>
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
@@ -211,7 +187,7 @@ const DealDetails = () => {
                           slot Completed Count
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.slotCompletedCount}
+                          {dealDetails?.parentDealId?.slotCompletedCount}
                         </h6>
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
@@ -221,12 +197,12 @@ const DealDetails = () => {
                         <h6 className={`m-0 text-muted fw-bold w-50 `}>
                           <p
                             className={` rounded  text-center text-white ${
-                              userDetails?.isSlotCompleted
+                              dealDetails?.parentDealId?.isSlotCompleted
                                 ? "bg-success"
                                 : "bg-danger"
                             }`}
                           >
-                            {userDetails?.isSlotCompleted
+                            {dealDetails?.parentDealId?.isSlotCompleted
                               ? "completed"
                               : "uncompleted"}
                           </p>
@@ -238,7 +214,7 @@ const DealDetails = () => {
                           Created at:
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {moment(userDetails?.createdAt).format(
+                          {moment(dealDetails?.parentDealId?.createdAt).format(
                             "DD-MM-YYYY , HH:MM:SS"
                           )}
                         </h6>
@@ -247,7 +223,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">Deleted</p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           {removeUnderScoreAndCapitalizeFirstLetter(
-                            userDetails?.isDeleted ? "yes" : "no"
+                            dealDetails?.parentDealId?.isDeleted ? "yes" : "no"
                           )}
                         </h6>
                       </li>
@@ -259,7 +235,7 @@ const DealDetails = () => {
                         Terms And Condition
                       </p>
                       <h6 className="m-0 text-muted fw-bold w-50">
-                        {userDetails?.termsAndCondition}
+                        {dealDetails?.parentDealId?.termsAndCondition}
                       </h6>
                     </li>
                   </Col>
@@ -273,4 +249,4 @@ const DealDetails = () => {
   );
 };
 
-export default DealDetails;
+export default MyDealsDetailsAsMed;

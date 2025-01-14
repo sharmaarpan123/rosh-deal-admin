@@ -158,27 +158,28 @@ const AddEditDeal = () => {
           makeOptions(data, "isExchangeDeal", "isExchangeDeal")
         ),
     });
-    checkResponse({
-      res: res[3],
-      setData: (data) => {
-        setData((p) => ({
-          ...data,
-          brand: {
-            label: data?.brand?.name || "",
-            value: data?.brand?._id || "",
-          },
-          platForm: {
-            label: data?.platForm?.name || "",
-            value: data?.platForm?._id || "",
-          },
-          dealCategory: {
-            label: data?.dealCategory?.name || "",
-            value: data?.dealCategory?._id || "",
-            isExchangeDeal: data?.dealCategory?.isExchangeDeal || false,
-          },
-        }));
-      },
-    });
+    id &&
+      checkResponse({
+        res: res[3],
+        setData: (data) => {
+          setData((p) => ({
+            ...data,
+            brand: {
+              label: data?.brand?.name || "",
+              value: data?.brand?._id || "",
+            },
+            platForm: {
+              label: data?.platForm?.name || "",
+              value: data?.platForm?._id || "",
+            },
+            dealCategory: {
+              label: data?.dealCategory?.name || "",
+              value: data?.dealCategory?._id || "",
+              isExchangeDeal: data?.dealCategory?.isExchangeDeal || false,
+            },
+          }));
+        },
+      });
   });
 
   useEffect(() => {

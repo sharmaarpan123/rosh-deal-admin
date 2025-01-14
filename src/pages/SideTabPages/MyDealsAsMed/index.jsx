@@ -216,10 +216,7 @@ const MyDealsAsMed = () => {
       head: "Action",
       accessor: "Action",
       component: (item) => (
-        <TableActions
-          // editUrl={`/deal/edit/${item._id}`}
-          viewLink={`/myAgencyDealsAsMed/details/${item._id}`}
-        />
+        <TableActions viewLink={`/myDealsAsMed/details/${item._id}`} />
       ),
     },
   ];

@@ -123,6 +123,8 @@ export const CHECK_ADMIN_USER_NAME_EXISTS = (data) =>
   Axios.post(API_URL.CHECK_ADMIN_USER_NAME_EXISTS, data);
 export const MANAGE_ADMIN_SUB_ADMIN_RELATION = (data) =>
   Axios.post(API_URL.MANAGE_ADMIN_SUB_ADMIN_RELATION, data);
+export const LINKED_SUB_ADMIN = (data) =>
+  Axios.post(API_URL.LINKED_SUB_ADMIN, data);
 
 // ADMINS_MODULES
 
