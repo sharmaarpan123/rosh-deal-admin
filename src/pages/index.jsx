@@ -41,8 +41,6 @@ import MyDealsAsMed from "./SideTabPages/MyDealsAsMed";
 import MyDealsDetailsAsMed from "./SideTabPages/MyDealsAsMed/detail";
 import MyMedDealsAsAgency from "./SideTabPages/MyMediatorDeals";
 import NotificationManagement from "./SideTabPages/NotificationMangement";
-import OrderManagement from "./SideTabPages/OrderMangement";
-import OrderDetails from "./SideTabPages/OrderMangement/detail";
 import PlatForm from "./SideTabPages/PlatForm";
 import AddPlatForm from "./SideTabPages/PlatForm/add";
 import PlatFormDetail from "./SideTabPages/PlatForm/detail";
@@ -58,7 +56,9 @@ import ManagePassword from "./SideTabPages/Settings/ManagePassword";
 import SystemAccess from "./SideTabPages/SystemAccess";
 import LinkedSubAdmin from "./SideTabPages/SystemAccess/LinkedMed";
 import AddSubAdmin from "./SideTabPages/SystemAccess/add";
-
+import MyOrderAsAgency from "./SideTabPages/OrderMangement/MyOrderAsAgency";
+import MyMedOrdersAsAgency from "./SideTabPages/OrderMangement/MyMedOrdersAsAgency";
+import MyOrderAsMed from "./SideTabPages/OrderMangement/MyOrderAsMed";
 export const publicRoutes = [
   { path: "privacy-policy", component: <PrivacyPolicy /> },
 ];
@@ -128,12 +128,12 @@ export const privateRoutes = [
   {
     path: "/myDealsAsAgency",
     component: <DealManagement />,
-    title: "My Deals",
+    title: "My Deals As Agency",
   },
   {
     path: "/myMedDealsAsAgency",
     component: <MyMedDealsAsAgency />,
-    title: "My Deals",
+    title: "My Med Deals As Agency",
   },
 
   { path: "/deal/add", component: <AddEditDeal />, title: "Add Deal" },
@@ -146,34 +146,43 @@ export const privateRoutes = [
   {
     path: "/deal/details/:id",
     component: <DealDetails />,
-    title: "Deal Details",
+    title: "Deal Details As Agency",
   },
   {
     path: "/myAgencyDealsAsMed",
     component: <MyAgencyDealsAsMed />,
-    title: "My Agency Deals",
+    title: "My Agency Deals As Med",
   },
   {
     path: "/myAgencyDealsAsMed/details/:id",
     component: <MyAgencyDealDetailsAsMed />,
-    title: "My Agency Deal Details",
+    title: "My Agency Deal Details As Med",
   },
   {
     path: "/myDealsAsMed",
     component: <MyDealsAsMed />,
-    title: "Deal Details",
+    title: "My Deal As Med",
   },
   {
     path: "/myDealsAsMed/details/:id",
     component: <MyDealsDetailsAsMed />,
-    title: "My Agency Deal Details",
+    title: "My Agency Deal Details As Med",
   },
 
-  { path: "/orders", component: <OrderManagement />, title: "Orders" },
   {
-    path: "/orders/details/:id",
-    component: <OrderDetails />,
-    title: "Order Details",
+    path: "/orders",
+    component: <MyOrderAsAgency />,
+    title: "My Orders AS Agency",
+  },
+  {
+    path: "/myOrdersAsMed",
+    component: <MyOrderAsMed />,
+    title: "My  Orders as Med ",
+  },
+  {
+    path: "/myMedOrdersAsAgency",
+    component: <MyMedOrdersAsAgency />,
+    title: "My Med Orders as Agency ",
   },
   {
     path: "/notification-management",

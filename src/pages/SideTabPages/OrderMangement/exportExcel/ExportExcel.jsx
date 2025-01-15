@@ -16,7 +16,7 @@ function makeHyperLink(row, cellKey, text, hyperValue) {
   cell.font = { color: { argb: "FF0000FF" }, underline: true };
 }
 
-const ExportExcel = ({ body }) => {
+const ExportExcel = ({ body , api }) => {
   const [loader, setLoader] = useState(false);
   const handleExport = catchAsync(async () => {
     setLoader(true);
@@ -24,11 +24,11 @@ const ExportExcel = ({ body }) => {
 
     const customizeBody = { ...body };
 
-    delete customizeBody.page;
-    delete customizeBody.offset;
-    delete customizeBody.limit;
+    // delete customizeBody.page;
+    // delete customizeBody.offset;
+    // delete customizeBody.limit;
 
-    const res = await ORDER_LIST(customizeBody);
+    const res = await api(customizeBody);
 
     const success = checkResponse({
       res,

@@ -58,7 +58,9 @@ export default {
 
   // orders
 
-  ORDER_LIST: "/admin/orders/all",
+  ORDER_LIST: "/admin/orders/all", // as agency
+  ORDER_LIST_OF_MED_AS_AGENCY: "/admin/ordersOfMedAsAgency/all",
+  MY_ORDER_LIST_MED: "/admin/ordersOfMedAsMed/all",
   ACCEPT_REJECT_ORDER: "admin/order/acceptRejectOrder",
   PAYMENT_STATUS_CHANGE: "admin/order/paymentStatusUpdate",
   BULK_PAYMENT_STATUS_CHANGE: "admin/order/bulkPaymentStatusUpdate",

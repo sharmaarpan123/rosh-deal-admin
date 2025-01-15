@@ -32,7 +32,6 @@ const commonItems = [
 
 export const superAdminItems = [
   ...commonItems,
-
   {
     path: "/myDealsAsAgency",
     name: "Deal Management",
@@ -52,11 +51,32 @@ export const superAdminItems = [
     ],
   },
 
+  // myOrdersAsMed
+
   {
     path: "/orders",
-    name: "Order Management",
+    name: "Orders",
     icon: CommonNavIcon,
+    IsSubItems: true,
+    subItems: [
+      {
+        path: "/orders",
+        name: "My Orders As Agency",
+        icon: CommonNavIcon,
+      },
+      {
+        path: "/myMedOrdersAsAgency",
+        name: "My Mediator Orders",
+        icon: CommonNavIcon,
+      },
+    ],
   },
+
+  // {
+  //   path: "/orders",
+  //   name: "Order Management",
+  //   icon: CommonNavIcon,
+  // },
   {
     path: "/poster",
     name: "Banners",
@@ -100,8 +120,21 @@ export const adminItems = [
   },
   {
     path: "/orders",
-    name: "Order Management",
+    name: "Orders",
     icon: CommonNavIcon,
+    IsSubItems: true,
+    subItems: [
+      {
+        path: "/orders",
+        name: "My Orders As Agency",
+        icon: CommonNavIcon,
+      },
+      {
+        path: "/myMedOrdersAsAgency",
+        name: "My Mediator Orders",
+        icon: CommonNavIcon,
+      },
+    ],
   },
   {
     path: "/notification-management",
@@ -136,8 +169,16 @@ export const subAdminItems = [
   },
   {
     path: "/orders",
-    name: "Order Management",
+    name: "Orders",
     icon: CommonNavIcon,
+    IsSubItems: true,
+    subItems: [
+      {
+        path: "/myOrdersAsMed",
+        name: "My  Orders As Med",
+        icon: CommonNavIcon,
+      },
+    ],
   },
   {
     path: "/notification-management",
@@ -155,7 +196,7 @@ export const adminSubAdminItems = [
     subItems: [
       {
         path: "/myDealsAsAgency",
-        name: "My Deals",
+        name: "My Deals As Agency",
         icon: CommonNavIcon,
       },
       {
@@ -165,38 +206,39 @@ export const adminSubAdminItems = [
       },
       {
         path: "/myAgencyDealsAsMed",
-        name: "My Agency  Deals",
+        name: "My Agency Deal As Med",
         icon: CommonNavIcon,
       },
       {
         path: "/myDealsAsMed",
-        name: "My  Deals As Med",
+        name: "My  Deal As Med",
         icon: CommonNavIcon,
       },
     ],
   },
-  // {
-  //   path: "/deal",
-  //   name: "Deal Management",
-  //   icon: CommonNavIcon,
-  //   IsSubItems: true,
-  //   subItems: [
-  //     {
-  //       path: "/myAgencyDealsAsMed",
-  //       name: "My Agency  Deals",
-  //       icon: CommonNavIcon,
-  //     },
-  //     {
-  //       path: "/myDealsAsMed",
-  //       name: "My  Deals As Med",
-  //       icon: CommonNavIcon,
-  //     },
-  //   ],
-  // },
+
   {
     path: "/orders",
-    name: "Order Management",
+    name: "Orders",
     icon: CommonNavIcon,
+    IsSubItems: true,
+    subItems: [
+      {
+        path: "/orders",
+        name: "My Orders As Agency",
+        icon: CommonNavIcon,
+      },
+      {
+        path: "/myMedOrdersAsAgency",
+        name: "My Mediator Orders",
+        icon: CommonNavIcon,
+      },
+      {
+        path: "/myOrdersAsMed",
+        name: "My  Orders As Med",
+        icon: CommonNavIcon,
+      },
+    ],
   },
   {
     path: "/notification-management",

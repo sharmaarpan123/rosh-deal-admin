@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import TableLayout from "../../../components/TableLayout";
+import TableLayout from "../../../../components/TableLayout";
 
 // img
 
-import CustomPagination from "../../../components/Common/CustomPagination";
-import ImagePopUp from "../../../components/Modals/ImagePopUp";
-import SetReasonModel from "../../../components/Modals/SetReasonModel";
-import dataHandler from "../../../hooks/dataHandler";
-import { ACCEPT_REJECT_ORDER, ORDER_LIST } from "../../../services/ApiCalls";
+import CustomPagination from "../../../../components/Common/CustomPagination";
+import ImagePopUp from "../../../../components/Modals/ImagePopUp";
+import SetReasonModel from "../../../../components/Modals/SetReasonModel";
+import dataHandler from "../../../../hooks/dataHandler";
+import { ACCEPT_REJECT_ORDER, ORDER_LIST } from "../../../../services/ApiCalls";
 import {
   defaultDeleteModelState,
   OrderFromStatusOptionArr,
-} from "../../../utilities/const";
-import BulkPaymentStatusChange from "./BulkPaymentStatusChange";
-import Filter from "./Filter/Filter";
-import { getColumn } from "./column";
-import ExportExcel from "./exportExcel/ExportExcel";
+} from "../../../../utilities/const";
+import BulkPaymentStatusChange from "../BulkPaymentStatusChange";
+import Filter from "../Filter/Filter";
+import { getColumn } from "../column";
+import ExportExcel from "../exportExcel/ExportExcel";
 
-const OrderManagement = () => {
+const MyOrderAsAgency = () => {
   const {
     setBody,
     body,
@@ -110,7 +110,7 @@ const OrderManagement = () => {
                 </div>
                 <div className="right">
                   <div className="d-flex gap-10">
-                    <ExportExcel body={body} />
+                    <ExportExcel body={body} api={ORDER_LIST} />
                     <BulkPaymentStatusChange refetch={refetch} />
                   </div>
                 </div>
@@ -132,4 +132,4 @@ const OrderManagement = () => {
   );
 };
 
-export default OrderManagement;
+export default MyOrderAsAgency;

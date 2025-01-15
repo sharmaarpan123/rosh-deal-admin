@@ -80,6 +80,11 @@ export const DEAL_UPDATE_STATUS = (data) =>
 // ORDERS
 
 export const ORDER_LIST = (data) => Axios.post(API_URL.ORDER_LIST, data);
+export const ORDER_LIST_OF_MED_AS_AGENCY = (data) =>
+  Axios.post(API_URL.ORDER_LIST_OF_MED_AS_AGENCY, data);
+export const MY_ORDER_LIST_MED = (data) =>
+  Axios.post(API_URL.MY_ORDER_LIST_MED, data);
+//
 export const ACCEPT_REJECT_ORDER = (data) =>
   Axios.post(API_URL.ACCEPT_REJECT_ORDER, data);
 export const PAYMENT_STATUS_CHANGE = (data) =>
