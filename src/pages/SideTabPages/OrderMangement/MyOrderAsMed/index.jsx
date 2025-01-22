@@ -19,8 +19,9 @@ import {
 } from "../../../../utilities/const";
 import BulkPaymentStatusChange from "../BulkPaymentStatusChange";
 import Filter from "../Filter/Filter";
-import { getColumn } from "../column";
+
 import ExportExcel from "../exportExcel/ExportExcel";
+import { getColumn } from "./column";
 
 const MyOrderAsMed = () => {
   const {

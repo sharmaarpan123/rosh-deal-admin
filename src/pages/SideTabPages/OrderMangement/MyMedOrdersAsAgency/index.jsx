@@ -19,7 +19,7 @@ import {
 } from "../../../../utilities/const";
 import BulkPaymentStatusChange from "../BulkPaymentStatusChange";
 import Filter from "../Filter/Filter";
-import { getColumn } from "../column";
+import { getColumn } from "./column";
 import ExportExcel from "../exportExcel/ExportExcel";
 
 const MyMedOrdersAsAgency = () => {

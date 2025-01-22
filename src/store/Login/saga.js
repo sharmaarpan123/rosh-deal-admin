@@ -37,7 +37,10 @@ function* meQuery() {
       yield put(ACTION.getAdminDetails_Success(response?.data?.data));
     } else {
       toast.error(response?.response?.data?.message);
-      localStorage.clear();
+
+      console.log(response, "Response");
+
+      // localStorage.clear();
       yield put(ACTION.loginAdmin_Fail(response?.response?.data?.message));
     }
   } catch (error) {

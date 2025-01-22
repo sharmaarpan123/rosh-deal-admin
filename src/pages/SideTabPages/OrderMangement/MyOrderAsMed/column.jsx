@@ -3,12 +3,12 @@ import React from "react";
 // img
 import moment from "moment";
 
-import TableActions from "../../../components/Common/TableActions";
-import TableToggle from "../../../components/Common/TableToggle";
-import noImg from "../../../components/Common/noImg";
-import { PAYMENT_STATUS_CHANGE } from "../../../services/ApiCalls";
-import { paymentStatusOptions } from "../../../utilities/const";
-import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
+import TableActions from "../../../../components/Common/TableActions";
+import TableToggle from "../../../../components/Common/TableToggle";
+import noImg from "../../../../components/Common/noImg";
+import { PAYMENT_STATUS_CHANGE } from "../../../../services/ApiCalls";
+import { paymentStatusOptions } from "../../../../utilities/const";
+import { capitalizedFirstAlphaBet } from "../../../../utilities/utilities";
 
 export const getColumn = (
   body,
@@ -33,7 +33,7 @@ export const getColumn = (
     accessor: "productName",
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
-        {capitalizedFirstAlphaBet(item?.dealId?.productName)}
+        {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.productName)}
         {/* {item?.dealId?.uniqueIdentifier || ""} */}
       </p>
     ),
@@ -76,7 +76,7 @@ export const getColumn = (
     accessor: "brand",
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
-        {capitalizedFirstAlphaBet(item?.dealId?.brand?.name)}
+        {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.brand?.name)}
       </p>
     ),
   },
@@ -85,7 +85,7 @@ export const getColumn = (
     accessor: "platForm",
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
-        {capitalizedFirstAlphaBet(item?.dealId?.platForm?.name)}
+        {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.platForm?.name)}
       </p>
     ),
   },
@@ -94,7 +94,7 @@ export const getColumn = (
     accessor: "dealCategory",
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
-        {capitalizedFirstAlphaBet(item?.dealId?.dealCategory?.name)}
+        {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.dealCategory?.name)}
       </p>
     ),
   },

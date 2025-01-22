@@ -32,7 +32,7 @@ const SetReasonModel = ({
         centered
         onBackdropClick={hide}
       >
-        <Modal.Body className={`${styles.modalBody} position-relative rounded`}>
+        <Modal.Body className={` position-relative rounded`}>
           <Button
             onClick={hide}
             className="border-0 p-0 position-absolute"
@@ -69,7 +69,7 @@ const SetReasonModel = ({
             </svg>
           </Button>
           <div className=" text-center mx-auto text-white">
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} className="d-flex flex-column gap-10">
               <label htmlFor="">Add the reason</label>
               <input
                 type="text"

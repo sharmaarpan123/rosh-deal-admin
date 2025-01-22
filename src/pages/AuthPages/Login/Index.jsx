@@ -67,11 +67,13 @@ const Login = () => {
                 <input
                   type="text"
                   className={`${styles.formControl} form-control`}
-                  placeholder="jackson.graham@example.com"
+                  placeholder="123456789"
                   {...register("phoneNumber")}
                 />
                 {errors?.phoneNumber && (
-                  <p className="text-danger m-0">{errors.phoneNumber.message}</p>
+                  <p className="text-danger m-0">
+                    {errors.phoneNumber.message}
+                  </p>
                 )}
               </Col>
               <Col lg="12" className="my-2">
