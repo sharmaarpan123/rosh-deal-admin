@@ -102,7 +102,7 @@ export const orderStatusArr = [
   "reviewFormAccepted",
 ];
 
-export const sendNotificationTypes = [
+export const commonSendNotificationTypes = [
   {
     label: "All",
     value: "all",
@@ -110,6 +110,10 @@ export const sendNotificationTypes = [
   {
     label: "Deal Order Status",
     value: "dealOrderStatus",
+  },
+  {
+    label: "Users",
+    value: "toUser",
   },
 ];
 
