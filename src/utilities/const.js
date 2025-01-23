@@ -102,6 +102,15 @@ export const orderStatusArr = [
   "reviewFormAccepted",
 ];
 
+export const orderStatusObj = {
+  pending: "Pending",
+  rejected: "Rejected",
+  accepted: "Accepted",
+  reviewFormSubmitted: "Review Form Submitted",
+  reviewFormRejected: "Review Form Rejected",
+  reviewFormAccepted: "Review Form Accepted",
+};
+
 export const commonSendNotificationTypes = [
   {
     label: "All",

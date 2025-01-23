@@ -7,7 +7,7 @@ import TableActions from "../../../../components/Common/TableActions";
 import TableToggle from "../../../../components/Common/TableToggle";
 import noImg from "../../../../components/Common/noImg";
 import { PAYMENT_STATUS_CHANGE } from "../../../../services/ApiCalls";
-import { paymentStatusOptions } from "../../../../utilities/const";
+import { orderStatusObj, paymentStatusOptions } from "../../../../utilities/const";
 import { capitalizedFirstAlphaBet } from "../../../../utilities/utilities";
 
 export const getColumn = (
@@ -94,7 +94,9 @@ export const getColumn = (
     accessor: "dealCategory",
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
-        {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.dealCategory?.name)}
+        {capitalizedFirstAlphaBet(
+          item?.dealId?.parentDealId?.dealCategory?.name
+        )}
       </p>
     ),
   },
@@ -195,7 +197,7 @@ export const getColumn = (
           width: "fit-content",
         }}
       >
-        {item.orderFormStatus}
+        {orderStatusObj[item.orderFormStatus]}
       </p>
     ),
   },
@@ -206,7 +208,7 @@ export const getColumn = (
     component: (item, ind) => (
       <TableActions
         acceptHandler={
-          ["pending", "rejected", "accepted"].includes(item?.orderFormStatus) &&
+          ["pending"].includes(item?.orderFormStatus) &&
           (() => acceptRejectHandler(item._id, ind, "accepted"))
         }
         rejectHandler={
@@ -220,11 +222,7 @@ export const getColumn = (
             }))
         }
         reviewAcceptHandler={
-          [
-            "reviewFormSubmitted",
-            "reviewFormRejected",
-            "reviewFormAccepted",
-          ].includes(item.orderFormStatus) &&
+          ["reviewFormSubmitted"].includes(item.orderFormStatus) &&
           (() => acceptRejectHandler(item._id, ind, "reviewFormAccepted"))
         }
         reviewRejectHandler={
