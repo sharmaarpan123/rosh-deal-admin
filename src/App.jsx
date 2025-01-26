@@ -7,9 +7,15 @@ import "./Assets/css/style.css";
 import AuthLayout from "./layout/Auth/authLayout";
 import MainLayout from "./layout/MainLayout/MainLayout";
 import { privateRoutes, publicRoutes, routes } from "./pages/index";
+import requestNotificationPermission from "./firebase";
+import { useEffect } from "react";
 
 function App() {
   const isAuthenticated = useSelector((s) => s.login.token);
+
+  useEffect(() => {
+    isAuthenticated && requestNotificationPermission();
+  }, [isAuthenticated]);
 
   return (
     <>

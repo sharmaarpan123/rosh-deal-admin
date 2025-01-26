@@ -43,7 +43,9 @@ const Login = () => {
     const callBack = (status) => {
       navigate("/dashboard");
     };
-    dispatch(loginAdmin(data, callBack));
+
+    const fcmToken = await requestNotificationPermission();
+    dispatch(loginAdmin({ ...data, fcmToken }, callBack));
   };
   return (
     <>
