@@ -7,7 +7,7 @@ import TableActions from "../../../components/Common/TableActions";
 import TableToggle from "../../../components/Common/TableToggle";
 import noImg from "../../../components/Common/noImg";
 import { PAYMENT_STATUS_CHANGE } from "../../../services/ApiCalls";
-import { paymentStatusOptions } from "../../../utilities/const";
+import { orderStatusObj, paymentStatusOptions } from "../../../utilities/const";
 import { capitalizedFirstAlphaBet } from "../../../utilities/utilities";
 
 export const getColumn = (
@@ -182,12 +182,13 @@ export const getColumn = (
     accessor: "orderFormStatus",
     component: (item) => (
       <p
-        className={`${
+        className={ ` text-nowrap ${
           item.orderFormStatus === "reviewFormSubmitted"
             ? "bg-success "
             : item.orderFormStatus === "accepted"
             ? "bg-primary "
-            : item.orderFormStatus === "rejected"
+            : item.orderFormStatus === "rejected" ||
+              item.orderFormStatus === "reviewFormRejected"
             ? "bg-danger"
             : "bg-warning"
         } d-flex justify-content-start pb-0 rounded px-2 text-white `}
@@ -195,7 +196,7 @@ export const getColumn = (
           width: "fit-content",
         }}
       >
-        {item.orderFormStatus}
+        {orderStatusObj[item.orderFormStatus]}
       </p>
     ),
   },
@@ -206,11 +207,11 @@ export const getColumn = (
     component: (item, ind) => (
       <TableActions
         acceptHandler={
-          ["pending", "rejected", "accepted"].includes(item?.orderFormStatus) &&
+          ["pending"].includes(item?.orderFormStatus) &&
           (() => acceptRejectHandler(item._id, ind, "accepted"))
         }
         rejectHandler={
-          ["pending", "rejected", "accepted"].includes(item?.orderFormStatus) &&
+          ["pending", "accepted"].includes(item?.orderFormStatus) &&
           (() =>
             setRejectedModel({
               show: true,
@@ -220,19 +221,13 @@ export const getColumn = (
             }))
         }
         reviewAcceptHandler={
-          [
-            "reviewFormSubmitted",
-            "reviewFormRejected",
-            "reviewFormAccepted",
-          ].includes(item.orderFormStatus) &&
+          ["reviewFormSubmitted"].includes(item.orderFormStatus) &&
           (() => acceptRejectHandler(item._id, ind, "reviewFormAccepted"))
         }
         reviewRejectHandler={
-          [
-            "reviewFormSubmitted",
-            "reviewFormRejected",
-            "reviewFormAccepted",
-          ].includes(item.orderFormStatus) &&
+          ["reviewFormSubmitted", "reviewFormAccepted"].includes(
+            item.orderFormStatus
+          ) &&
           (() =>
             setRejectedModel({
               show: true,

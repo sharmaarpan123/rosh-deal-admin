@@ -18,6 +18,7 @@ const Filter = ({ statusFilterOptionArr, setBody, body }) => {
   const [DealsOption, setDealsOptions] = useState([]);
 
   const loadOptions = async (inputValue, callback) => {
+    
     const response = await BRAND_LIST({ search: inputValue });
     if (response) {
       const options = response?.data?.data?.map((item) => ({

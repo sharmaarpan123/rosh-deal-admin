@@ -1,28 +1,32 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import {
-  catchAsync,
-  checkResponse,
-  textAreaAdjust,
-} from "../../../utilities/utilities";
-import Select from "react-select";
-import {
-  orderStatusOptions,
-  sendNotificationTypes,
-} from "../../../utilities/const";
-import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import Select from "react-select";
+import { z } from "zod";
 import {
   BRAND_LIST,
   DEALS_LIST,
+  My_DEAL_AS_MED,
   SEND_NOTIFICATION,
 } from "../../../services/ApiCalls";
 import {
   optionalOptionSchema,
   optionsSchema,
 } from "../../../utilities/commonZodSchema";
+import {
+  ADMIN_ROLE_TYPE_ENUM,
+  commonSendNotificationTypes,
+  orderStatusOptions,
+} from "../../../utilities/const";
+import {
+  catchAsync,
+  checkResponse,
+  textAreaAdjust,
+} from "../../../utilities/utilities";
+import { useSelector } from "react-redux";
+import AsyncSelect from "react-select/async";
+import { toast } from "react-toastify";
 
 const schema = z
   .object({
@@ -70,6 +74,14 @@ const NotificationManagement = () => {
   const [dealsOptions, setDealsOptions] = useState([]);
   const [brandsOptions, setBransOptions] = useState([]);
   const [allDeals, setDeals] = useState([]);
+  const [asAgencyOrMediator, setAsAgencyOrMediator] = useState(""); // asAgency // asMediator
+  const [sendNotificationTypeOption, setSendNotificationOption] = useState(
+    commonSendNotificationTypes
+  );
+  const [brandIdToFilterDeal, setBrandIdToFilterDeal] = useState("");
+
+  const { admin } = useSelector((s) => s.login);
+
   const {
     formState: { errors },
     register,
@@ -89,8 +101,6 @@ const NotificationManagement = () => {
       orderStatus: { value: "", label: "" },
     },
   });
-
-  console.log(errors, "errors");
 
   const getData = catchAsync(async () => {
     const apiArr = [DEALS_LIST(), BRAND_LIST()];
@@ -144,12 +154,96 @@ const NotificationManagement = () => {
     });
   });
 
+  useEffect(() => {
+    if (admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)) {
+      setSendNotificationOption((p) => [
+        ...p,
+        { label: "For Agency", value: "toAgency" },
+        { label: "For Med", value: "toMed" },
+      ]);
+    }
+    if (admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN)) {
+      setSendNotificationOption((p) => [
+        ...p,
+        { label: "For Med", value: "toMed" },
+      ]);
+    }
+  }, [admin]);
+
+  const loadBrandOptions = async (inputValue, callback) => {
+    const response = await BRAND_LIST({ search: inputValue });
+    if (response) {
+      const options = response?.data?.data?.map((item) => ({
+        value: item._id,
+        label: item.name,
+      }));
+      callback(options);
+      if (!!!options.length) {
+        setBrandIdToFilterDeal((p) => "");
+      }
+    } else {
+      callback([]);
+      setBrandIdToFilterDeal((p) => "");
+    }
+  };
+
+  const loadDealOptions = async (inputValue, callback) => {
+    // validation start
+    if (!brandIdToFilterDeal) {
+      toast.error("Please select brand to see the deals options!");
+      return callback([]);
+    }
+
+    if (
+      admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN) &&
+      admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUBADMIN) &&
+      !asAgencyOrMediator
+    ) {
+      toast.error("Please Select The Check Box As Agency or Mediator");
+      return callback([]);
+    }
+    // validation end
+
+    let dealApi = async () => {};
+
+    /// api to call to fetch according to the role
+    if (
+      admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN) &&
+      admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUBADMIN) &&
+      asAgencyOrMediator === "asMediator"
+    ) {
+      dealApi = My_DEAL_AS_MED;
+    } else if (
+      admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN) &&
+      admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUBADMIN) &&
+      asAgencyOrMediator === "asAgency"
+    ) {
+      dealApi = DEALS_LIST;
+    } else if (
+      admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN) ||
+      admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN)
+    ) {
+      dealApi = DEALS_LIST;
+    } else if (admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUBADMIN)) {
+      dealApi = My_DEAL_AS_MED;
+    } else {
+      dealApi = async () => {};
+    }
+    /// api to call to fetch according to the role
+
+    const response = await dealApi({ search: inputValue });
+    const options = response?.data?.data?.map((item) => ({
+      value: item._id,
+      label: item?.parentDealId?.item.productName || item?.productName,
+    }));
+    callback(options || []);
+  };
+
   return (
     <>
       <section className=" py-3 position-relative">
         <Container>
           <Row className="justify-content-center">
-        
             <Col lg="9" className="my-2">
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <div className="formWrpper px-sm-4 box p-3 pb-5">
@@ -207,7 +301,7 @@ const NotificationManagement = () => {
                           return (
                             <Select
                               {...field}
-                              options={sendNotificationTypes}
+                              options={sendNotificationTypeOption}
                             />
                           );
                         }}
@@ -226,6 +320,60 @@ const NotificationManagement = () => {
                     </Col>
                     {watch("type")?.value === "dealOrderStatus" && (
                       <>
+                        {admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN) &&
+                          admin?.roles?.includes(
+                            ADMIN_ROLE_TYPE_ENUM.SUBADMIN
+                          ) && ( // only show if panel is accessing by the double role (agency and med)
+                            <Col md="12" className="my-2">
+                              <div className="d-flex gap-10">
+                                <label
+                                  htmlFor="asMediator"
+                                  className="form-label m-0 fw-sbold text-muted ps-2"
+                                >
+                                  As Mediator
+                                </label>
+                                <input
+                                  type="checkbox"
+                                  id="asMediator"
+                                  checked={asAgencyOrMediator === "asMediator"}
+                                  value={"asMediator"}
+                                  onChange={() => {
+                                    setValue(
+                                      "dealId",
+                                      { label: "", value: "" },
+                                      {
+                                        shouldValidate: true,
+                                      }
+                                    );
+                                    setAsAgencyOrMediator("asMediator");
+                                  }}
+                                />
+                                <label
+                                  htmlFor="asAgency"
+                                  className="form-label m-0 fw-sbold text-muted ps-2"
+                                >
+                                  As Agency
+                                </label>
+                                <input
+                                  type="checkbox"
+                                  id="asAgency"
+                                  value={"asAgency"}
+                                  checked={asAgencyOrMediator === "asAgency"}
+                                  onChange={() => {
+                                    setValue(
+                                      "dealId",
+                                      { label: "", value: "" },
+                                      {
+                                        shouldValidate: true,
+                                      }
+                                    );
+                                    setAsAgencyOrMediator("asAgency");
+                                  }}
+                                />
+                              </div>
+                            </Col>
+                          )}
+
                         <Col md="12" className="my-2">
                           <label
                             htmlFor=""
@@ -234,19 +382,11 @@ const NotificationManagement = () => {
                             select Brands
                           </label>
 
-                          <Select
-                            options={brandsOptions}
+                          <AsyncSelect
+                            placeholder="Please Type To see the brands"
+                            loadOptions={loadBrandOptions}
                             onChange={(option) => {
-                              setDealsOptions((p) => {
-                                setValue(
-                                  "dealId",
-                                  { label: "", value: "" },
-                                  { shouldValidate: true }
-                                );
-                                return allDeals.filter(
-                                  (item) => item.brand === option.value
-                                );
-                              });
+                              setBrandIdToFilterDeal(option?.value || "");
                             }}
                           />
                         </Col>
@@ -263,7 +403,14 @@ const NotificationManagement = () => {
                             control={control}
                             render={({ field }) => {
                               return (
-                                <Select {...field} options={dealsOptions} />
+                                <AsyncSelect
+                                  placeholder="Please Type To see the Deals"
+                                  loadOptions={loadDealOptions}
+                                  // onChange={(option) => {}}
+                                  {...field}
+                                />
+
+                                // <Select {...field} options={dealsOptions} />
                               );
                             }}
                           />
