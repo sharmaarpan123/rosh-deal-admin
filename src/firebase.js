@@ -20,7 +20,6 @@ export { messaging, getToken, onMessage };
 
 const requestNotificationPermission = async () => {
   const isAlreadyFirebaseSaved = localStorage.getItem("fireBaseToken");
-  console.log(isAlreadyFirebaseSaved,'isAlreadyFirebaseSaved')
   if (isAlreadyFirebaseSaved) {
     return;
   }

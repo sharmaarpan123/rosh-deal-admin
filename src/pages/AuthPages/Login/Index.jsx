@@ -10,6 +10,7 @@ import { z } from "zod";
 import { loginAdmin } from "../../../store/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
+import requestNotificationPermission from "../../../firebase";
 
 const schema = z.object({
   phoneNumber: z
