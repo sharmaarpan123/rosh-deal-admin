@@ -3,12 +3,13 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyBWXI9A_rFIrG1IcYTGH9PlhGg93WNYrLA",
+  authDomain: "roash-deals.firebaseapp.com",
+  projectId: "roash-deals",
+  storageBucket: "roash-deals.firebasestorage.app",
+  messagingSenderId: "445125567251",
+  appId: "1:445125567251:web:62102c6b8fce6ea3bb70e6",
+  measurementId: "G-ZMNN74WPC7"
 };
 
 // Initialize Firebase
@@ -19,6 +20,7 @@ export { messaging, getToken, onMessage };
 
 const requestNotificationPermission = async () => {
   const isAlreadyFirebaseSaved = localStorage.getItem("fireBaseToken");
+  console.log(isAlreadyFirebaseSaved,'isAlreadyFirebaseSaved')
   if (isAlreadyFirebaseSaved) {
     return;
   }
