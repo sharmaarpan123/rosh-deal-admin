@@ -59,6 +59,7 @@ import AddSubAdmin from "./SideTabPages/SystemAccess/add";
 import MyOrderAsAgency from "./SideTabPages/OrderMangement/MyOrderAsAgency";
 import MyMedOrdersAsAgency from "./SideTabPages/OrderMangement/MyMedOrdersAsAgency";
 import MyOrderAsMed from "./SideTabPages/OrderMangement/MyOrderAsMed";
+import Notification from "./SideTabPages/Notifications";
 export const publicRoutes = [
   { path: "privacy-policy", component: <PrivacyPolicy /> },
 ];
@@ -227,6 +228,12 @@ export const privateRoutes = [
     path: "/manage-user/detail/:id",
     component: <UserDetail />,
     title: "User Details",
+  },
+
+  {
+    path: "/notifications",
+    component: <Notification />,
+    title :"Notifications"
   },
   // not used yet this /////////////////******************* */
   {

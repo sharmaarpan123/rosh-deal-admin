@@ -103,6 +103,9 @@ export const POSTER_DELETE = (data) => Axios.post(API_URL.POSTER_DELETE, data);
 export const POSTER_GET_BY_ID = (data) =>
   Axios.get(API_URL.POSTER_GET_BY_ID + data);
 
+export const GET_ALL_NOTIFICATIONS = (data) =>
+  Axios.post(API_URL.GET_ALL_NOTIFICATIONS, data);
+
 // notification
 
 export const SEND_NOTIFICATION = (data) =>

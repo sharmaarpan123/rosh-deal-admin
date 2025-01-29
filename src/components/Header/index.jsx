@@ -19,6 +19,7 @@ import user from "../../Assets/images/authBg.png";
 import ConfirmationPop from "../Modals/ConfirmationPop";
 import Axios from "../../services/Axios";
 import { useSelector } from "react-redux";
+import Notification from "../icons/svg/Notification";
 
 const Header = ({ sidebar, setSidebar, title }) => {
   const navigate = useNavigate();
@@ -99,6 +100,13 @@ const Header = ({ sidebar, setSidebar, title }) => {
               id="navbarScroll"
             >
               <Nav className=" my-2 my-lg-0 align-items-center justify-content-between">
+                <Link
+                  className={`${styles.profileLink} px-3 d-flex align-items-center gap-10`}
+                  to="/notifications"
+                >
+                  <Notification />
+                </Link>
+
                 <Link
                   className={`${styles.profileLink} px-3 d-flex align-items-center gap-10`}
                   to="/settings"

@@ -53,21 +53,13 @@ export const getColumn = (
       </p>
     ),
   },
-  {
-    head: "User Name",
-    accessor: "productName",
-    component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">
-        {capitalizedFirstAlphaBet(item?.userId?.name)}
-      </p>
-    ),
-  },
+
   {
     head: "Reviewer Name",
     accessor: "reviewerName",
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
-        {capitalizedFirstAlphaBet(item?.userId?.name)}
+        {capitalizedFirstAlphaBet(item?.reviewerName)}
       </p>
     ),
   },
@@ -109,10 +101,10 @@ export const getColumn = (
   },
 
   {
-    head: "Created At",
+    head: "Date || Time ",
     accessor: "createdAt",
     component: (item, key, arr) => (
-      <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
+      <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
     ),
   },
 
@@ -182,7 +174,7 @@ export const getColumn = (
     accessor: "orderFormStatus",
     component: (item) => (
       <p
-        className={ ` text-nowrap ${
+        className={` text-nowrap ${
           item.orderFormStatus === "reviewFormSubmitted"
             ? "bg-success "
             : item.orderFormStatus === "accepted"

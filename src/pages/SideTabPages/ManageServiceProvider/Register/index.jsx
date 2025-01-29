@@ -56,10 +56,10 @@ const RegisterServiceProvider = () => {
     },
     { head: "Email", accessor: "email" },
     {
-      head: "Created At",
+      head: "Date || Time ",
       accessor: "createdAt",
       component: (item, key, arr) => (
-        <>{moment(item.date_created_utc).format("DD-MM-YYYY , HH:MM:SS")}</>
+        <>{moment(item.date_created_utc).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
       ),
     },
     {

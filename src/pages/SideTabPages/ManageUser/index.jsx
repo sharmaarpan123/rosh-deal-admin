@@ -50,10 +50,10 @@ const ManageUser = () => {
     { head: "Email", accessor: "email" },
     { head: "Phone Number", accessor: "phoneNumber" },
     {
-      head: "Created At",
+      head: "Date || Time ",
       accessor: "createdAt",
       component: (item, key, arr) => (
-        <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
+        <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
       ),
     },
     ...(admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)

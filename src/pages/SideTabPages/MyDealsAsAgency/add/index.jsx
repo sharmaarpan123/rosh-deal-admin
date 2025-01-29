@@ -48,6 +48,7 @@ const AddEditDeal = () => {
   const [platFormOptions, setPlatFormOptions] = useState([]);
   const [data, setData] = useState();
   const { id } = useParams();
+  const [loader, setLoader] = useState(false);
 
   const {
     register,
@@ -103,7 +104,7 @@ const AddEditDeal = () => {
 
   const submitHandler = catchAsync(async (data) => {
     let res;
-
+    setLoader(true);
     if (id) {
       res = await EDIT_DEAL({
         ...data,
@@ -133,6 +134,7 @@ const AddEditDeal = () => {
       showSuccess: true,
       navigate: navigate,
       navigateUrl: "/myDealsAsAgency",
+      setLoader,
     });
   });
 
@@ -847,8 +849,9 @@ const AddEditDeal = () => {
                         <Button
                           className="d-flex align-items-center justify-content-center commonBtn"
                           type="submit"
+                          disabled={loader}
                         >
-                          Submit
+                          {loader ? "loading...." : "Submit"}
                         </Button>
                       </div>
                     </Col>

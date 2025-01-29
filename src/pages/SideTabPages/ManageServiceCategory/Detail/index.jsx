@@ -63,7 +63,7 @@ const ManageServiceDetail = () => {
                     </p>
                   </li>
                   <li className="py-2 d-flex align-items-start">
-                    <p className="m-0 fw-sbold themeBlue w-50">Created At:</p>
+                    <p className="m-0 fw-sbold themeBlue w-50">Date || Time :</p>
                     <p className="m-0 fw-sbold text-muted w-50">
                       {moment(serviceData?.date_created_utc).format(
                         "DD-MM-YYY , HH:MM:SS"

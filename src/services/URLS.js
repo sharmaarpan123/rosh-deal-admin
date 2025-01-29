@@ -77,6 +77,10 @@ export default {
 
   SEND_NOTIFICATION: "/admin/notification/send",
 
+  // push notification
+
+  GET_ALL_NOTIFICATIONS :"/commonApi/getAllNotifications",
+
   //scrapper
 
   PARSE_HTML: "/scrapper/parseHtml",

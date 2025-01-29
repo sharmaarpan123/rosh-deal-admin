@@ -31,7 +31,6 @@ const PlatForm = () => {
     body,
     data,
     loader,
-    deleteModel,
     setDeleteModel,
     paginationHandler,
     searchHandler,
@@ -72,10 +71,10 @@ const PlatForm = () => {
       ),
     },
     {
-      head: "Created At",
+      head: "Date || Time ",
       accessor: "createdAt",
       component: (item, key, arr) => (
-        <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
+        <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
       ),
     },
     ...(isSuperAdmin(admin)
@@ -126,7 +125,6 @@ const PlatForm = () => {
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
-           
             <Col lg="12" className="my-2">
               <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
                 <div className="left">

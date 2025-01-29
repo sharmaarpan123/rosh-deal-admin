@@ -29,7 +29,7 @@ const ContentPage = () => {
       ),
     },
     {
-      head: "Created At",
+      head: "Date || Time ",
       accessor: "createdAt",
       classNames: "fw-sbold",
       isComponent: true,

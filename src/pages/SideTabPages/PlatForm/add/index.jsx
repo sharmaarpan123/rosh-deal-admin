@@ -29,6 +29,7 @@ const AddPlatForm = () => {
   const [image, setImage] = useState("");
   const [platFormDetails, setPlatFormDetails] = useState();
   const { id } = useParams();
+  const [loader, setLoader] = useState(false);
 
   const {
     register,
@@ -44,6 +45,7 @@ const AddPlatForm = () => {
 
   const submitHandler = catchAsync(async (data) => {
     let res;
+    setLoader(true);
 
     if (id) {
       res = await UPDATE_PLATFORM({
@@ -59,15 +61,20 @@ const AddPlatForm = () => {
       showSuccess: true,
       navigate: navigate,
       navigateUrl: "/platform",
+      setLoader,
     });
   });
 
   const imageChangeHandler = catchAsync(async (e) => {
+    setLoader(true);
     const url = await fileUploader(e.target.files[0]);
 
     if (!url) {
+      setLoader(false);
+
       return;
     }
+    setLoader(false);
 
     setImage(url);
   });
@@ -108,7 +115,6 @@ const AddPlatForm = () => {
                     />
                   </svg>
                 </Link>
-                
               </div>
             </Col>
             <Col lg="12" className="my-2">
@@ -187,14 +193,18 @@ const AddPlatForm = () => {
 
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10">
-                        <Button className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
+                        <Button
+                          disabled={loader}
+                          className="d-flex align-items-center justify-content-center commonBtn GreyBtn"
+                        >
                           Cancel
                         </Button>
                         <Button
                           className="d-flex align-items-center justify-content-center commonBtn"
                           type="submit"
+                          disabled={loader}
                         >
-                          Submit
+                          {loader ? "loading..." : "Submit"}
                         </Button>
                       </div>
                     </Col>

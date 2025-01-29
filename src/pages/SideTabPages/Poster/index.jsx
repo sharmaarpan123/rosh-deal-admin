@@ -113,10 +113,10 @@ const Poster = () => {
     },
 
     {
-      head: "Created At",
+      head: "Date || Time ",
       accessor: "createdAt",
       component: (item, key, arr) => (
-        <>{moment(item.createdAt).format("DD-MM-YYYY , HH:MM:SS")}</>
+        <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
       ),
     },
     {

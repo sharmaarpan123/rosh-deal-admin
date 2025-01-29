@@ -42,10 +42,10 @@ const ManageServiceCategory = () => {
     },
     { head: "Service name", accessor: "catName" },
     {
-      head: "Created At",
+      head: "Date || Time ",
       accessor: "createdAt",
       component: (item, key, arr) => (
-        <>{moment(item.date_created_utc).format("DD-MM-YYYY , HH:MM:SS")}</>
+        <>{moment(item.date_created_utc).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
       ),
     },
     { head: "Status", accessor: "status" },

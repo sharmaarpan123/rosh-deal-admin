@@ -26,7 +26,7 @@ const Help = () => {
     { head: "User Name", accessor: "UserName" },
     { head: "Email", accessor: "Email" },
     {
-      head: "Created At",
+      head: "Date || Time ",
       accessor: "createdAt",
       component: (item, key, arr) => <>{item.createdAt}</>,
     },

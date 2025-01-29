@@ -168,7 +168,7 @@ const DealDetailView = ({
                   <p className="m-0 themeBlue fw-sbold w-25">Created at:</p>
                   <h6 className="m-0 text-muted fw-bold w-50">
                     {moment(DealDetails?.createdAt).format(
-                      "DD-MM-YYYY , HH:MM:SS"
+                      "DD-MM-YYYY ||  hh:mm:ss A"
                     )}
                   </h6>
                 </li>
