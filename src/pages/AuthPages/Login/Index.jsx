@@ -68,11 +68,13 @@ const Login = () => {
                   Phone number
                 </label>
                 <input
-                  type="text"
+                  type="tel"
                   className={`${styles.formControl} form-control`}
                   placeholder="123456789"
-                  {...register("phoneNumber")}
-                />
+                  maxLength={10}
+                  {...register("phoneNumber", { pattern: /^[0-9]{0,10}$/ })}
+                  onInput={(e) => (e.target.value = e.target.value.replace(/\D/g, ""))}                
+                  />
                 {errors?.phoneNumber && (
                   <p className="text-danger m-0">
                     {errors.phoneNumber.message}
