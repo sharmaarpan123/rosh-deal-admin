@@ -57,6 +57,15 @@ export const getColumn = (
       </p>
     ),
   },
+    {
+      head: "User Name",
+      accessor: "reviewerName",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(item?.userId?.name)}
+        </p>
+      ),
+    },
   {
     head: "Profile Name",
     accessor: "reviewerName",

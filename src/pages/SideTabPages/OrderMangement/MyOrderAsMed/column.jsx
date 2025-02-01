@@ -25,16 +25,106 @@ export const getColumn = (
     },
   },
   {
-    head: "Order id",
-    accessor: "orderIdOfPlatForm",
+    head: "Date || Time ",
+    accessor: "createdAt",
+    component: (item, key, arr) => (
+      <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
+    ),
+  },
+  
+  {
+    head: "Status",
+    accessor: "orderFormStatus",
+    component: (item) => (
+      <p
+        className={`${
+          item.orderFormStatus === "reviewFormSubmitted"
+            ? "bg-success "
+            : item.orderFormStatus === "accepted"
+            ? "bg-primary "
+            : item.orderFormStatus === "rejected"
+            ? "bg-danger"
+            : "bg-warning"
+        } d-flex justify-content-start pb-0 rounded px-2 text-white `}
+        style={{
+          width: "fit-content",
+        }}
+      >
+        {orderStatusObj[item.orderFormStatus]}
+      </p>
+    ),
+  },
+
+
+  {
+    head: "User Name",
+    accessor: "reviewerName",
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold">
+        {capitalizedFirstAlphaBet(item?.userId?.name)}
+      </p>
+    ),
+  },
+
+  {
+    head: "Profile Name",
+    accessor: "reviewerName",
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold">
+        {capitalizedFirstAlphaBet(item?.reviewerName)}
+      </p>
+    ),
   },
   {
-    head: "Deal Name",
+    head: "Brand",
+    accessor: "brand",
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold">
+        {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.brand?.name)}
+      </p>
+    ),
+  },
+
+  {
+    head: "Product Name",
     accessor: "productName",
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
         {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.productName)}
         {/* {item?.dealId?.uniqueIdentifier || ""} */}
+      </p>
+    ),
+  },
+
+  {
+    head: "Order id",
+    accessor: "orderIdOfPlatForm",
+  },
+
+  {
+    head: "Price",
+    accessor: "",
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+        {item?.dealId?.parentDealId?.actualPrice}
+      </p>
+    ),
+  },
+  {
+    head: "Less",
+    accessor: "",
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+        {item?.dealId?.lessAmount || "-"}
+      </p>
+    ),
+  },
+  {
+    head: "Commission",
+    accessor: "",
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+        {item?.dealId?.commissionValue || "-"}
       </p>
     ),
   },
@@ -54,46 +144,30 @@ export const getColumn = (
     ),
   },
 
+  
+  
+  // {
+  //   head: "Platform",
+  //   accessor: "platForm",
+  //   component: (item, key, arr) => (
+  //     <p className="m-0 themeBlue fw-sbold">
+  //       {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.platForm?.name)}
+  //     </p>
+  //   ),
+  // },
+  // {
+  //   head: "Deal Category",
+  //   accessor: "dealCategory",
+  //   component: (item, key, arr) => (
+  //     <p className="m-0 themeBlue fw-sbold">
+  //       {capitalizedFirstAlphaBet(
+  //         item?.dealId?.parentDealId?.dealCategory?.name
+  //       )}
+  //     </p>
+  //   ),
+  // },
   {
-    head: "Reviewer Name",
-    accessor: "reviewerName",
-    component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">
-        {capitalizedFirstAlphaBet(item?.reviewerName)}
-      </p>
-    ),
-  },
-  {
-    head: "Brand",
-    accessor: "brand",
-    component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">
-        {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.brand?.name)}
-      </p>
-    ),
-  },
-  {
-    head: "Platform",
-    accessor: "platForm",
-    component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">
-        {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.platForm?.name)}
-      </p>
-    ),
-  },
-  {
-    head: "Deal Category",
-    accessor: "dealCategory",
-    component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">
-        {capitalizedFirstAlphaBet(
-          item?.dealId?.parentDealId?.dealCategory?.name
-        )}
-      </p>
-    ),
-  },
-  {
-    head: "Admin Commission",
+    head: "Platform Fee",
     accessor: "",
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
@@ -102,13 +176,58 @@ export const getColumn = (
     ),
   },
 
+ 
+
+ 
+
   {
-    head: "Date || Time ",
-    accessor: "createdAt",
+    head: "order SS",
+    accessor: "image",
     component: (item, key, arr) => (
-      <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
+      <img
+        onClick={() => SetPopUpImage(item.orderScreenShot || noImg)}
+        src={item.orderScreenShot || noImg}
+        style={{ width: 100, height: 80, objectFit: "contain" }}
+      />
     ),
   },
+
+  {
+    head: "delivered SS",
+    accessor: "image",
+    component: (item, key, arr) => (
+      <img
+        onClick={() => SetPopUpImage(item.deliveredScreenShot || noImg)}
+        src={item.deliveredScreenShot || noImg}
+        style={{ width: 100, height: 80, objectFit: "contain" }}
+      />
+    ),
+  },
+
+  {
+    head: "Review/Rating SS",
+    accessor: "image",
+    component: (item, key, arr) => (
+      <img
+        onClick={() => SetPopUpImage(item.reviewScreenShot || noImg)}
+        src={item.reviewScreenShot || noImg}
+        style={{ width: 100, height: 80, objectFit: "contain" }}
+      />
+    ),
+  },
+
+  {
+    head: "Seller Feedback SS",
+    accessor: "image",
+    component: (item, key, arr) => (
+      <img
+        onClick={() => SetPopUpImage(item.sellerFeedback || noImg)}
+        src={item.sellerFeedback || noImg}
+        style={{ width: 100, height: 80, objectFit: "contain" }}
+      />
+    ),
+  },
+ 
 
   {
     head: "Payment Status",
@@ -134,63 +253,6 @@ export const getColumn = (
         }}
         value={item.paymentStatus}
       />
-    ),
-  },
-
-  {
-    head: "order ScreenShot",
-    accessor: "image",
-    component: (item, key, arr) => (
-      <img
-        onClick={() => SetPopUpImage(item.orderScreenShot || noImg)}
-        src={item.orderScreenShot || noImg}
-        style={{ width: 100, height: 80, objectFit: "contain" }}
-      />
-    ),
-  },
-
-  {
-    head: "delivered ScreenShot",
-    accessor: "image",
-    component: (item, key, arr) => (
-      <img
-        onClick={() => SetPopUpImage(item.deliveredScreenShot || noImg)}
-        src={item.deliveredScreenShot || noImg}
-        style={{ width: 100, height: 80, objectFit: "contain" }}
-      />
-    ),
-  },
-  {
-    head: "Review ScreenShot",
-    accessor: "image",
-    component: (item, key, arr) => (
-      <img
-        onClick={() => SetPopUpImage(item.reviewScreenShot || noImg)}
-        src={item.reviewScreenShot || noImg}
-        style={{ width: 100, height: 80, objectFit: "contain" }}
-      />
-    ),
-  },
-  {
-    head: "Order Status",
-    accessor: "orderFormStatus",
-    component: (item) => (
-      <p
-        className={`${
-          item.orderFormStatus === "reviewFormSubmitted"
-            ? "bg-success "
-            : item.orderFormStatus === "accepted"
-            ? "bg-primary "
-            : item.orderFormStatus === "rejected"
-            ? "bg-danger"
-            : "bg-warning"
-        } d-flex justify-content-start pb-0 rounded px-2 text-white `}
-        style={{
-          width: "fit-content",
-        }}
-      >
-        {orderStatusObj[item.orderFormStatus]}
-      </p>
     ),
   },
 
