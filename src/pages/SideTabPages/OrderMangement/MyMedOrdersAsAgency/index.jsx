@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import TableLayout from "../../../../components/TableLayout";
 
@@ -21,6 +21,7 @@ import BulkPaymentStatusChange from "../BulkPaymentStatusChange";
 import Filter from "../Filter/Filter";
 import { getColumn } from "./column";
 import ExportExcel from "../exportExcel/ExportExcel";
+import { useSearchParams } from "react-router-dom";
 
 const MyMedOrdersAsAgency = () => {
   const {
