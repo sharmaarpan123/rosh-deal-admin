@@ -43,10 +43,44 @@ const MyAgencyDealsAsMed = () => {
         return <>{body.limit * (body.page - 1) + key + 1}</>;
       },
     },
+
     {
-      head: "_id",
-      accessor: "_id",
+      head: "Status",
+      accessor: "isDeleted",
+      component: (item, index) => (
+        <p
+          className={`mb-0 ${
+            !item.isActive ? "bg-danger text-white" : "bg-success text-white"
+          } d-flex justify-content-start pb-0 rounded px-2 `}
+          style={{
+            width: "fit-content",
+          }}
+        >
+          {item.isActive ? "Active" : "InActive"}
+        </p>
+      ),
     },
+    {
+      head: "Date || Time ",
+      accessor: "createdAt",
+      component: (item, key, arr) => (
+        <>{moment(item?.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
+      ),
+    },
+
+    {
+      head: "Agency  Name",
+      accessor: "adminId",
+      component: (item, key, arr) => (
+        <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
+          <p className="m-0 themeBlue fw-sbold">
+            {capitalizedFirstAlphaBet(item?.adminId?.name)} (
+            {item?.adminId?.userName})
+          </p>
+        </div>
+      ),
+    },
+
     {
       head: "Name",
       accessor: "productName",
@@ -83,7 +117,12 @@ const MyAgencyDealsAsMed = () => {
     },
 
     {
-      head: "Less Value",
+      head: "Price",
+      accessor: "actualPrice",
+    },
+
+    {
+      head: "Less",
       accessor: "lessAmount",
       component: (item) => (
         <>{!item?.isCommissionDeal ? item?.lessAmount : "-"}</>
@@ -91,22 +130,13 @@ const MyAgencyDealsAsMed = () => {
     },
 
     {
-      head: "Commission Value",
+      head: "Commission",
       accessor: "commissionValue",
       component: (item) => (
         <>{item?.isCommissionDeal ? item?.commissionValue : "-"}</>
       ),
     },
 
-    // {
-    //   head: "unique slug",
-    //   accessor: "unique slug",
-    //   component: (item, key, arr) => (
-    //     <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
-    //       {capitalizedFirstAlphaBet(item.uniqueIdentifier)}
-    //     </p>
-    //   ),
-    // },
     {
       head: "Brand",
       accessor: "brand",
@@ -126,7 +156,7 @@ const MyAgencyDealsAsMed = () => {
       ),
     },
     {
-      head: "Deal Category",
+      head: "Deal Type",
       accessor: "dealCategory",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
@@ -134,54 +164,9 @@ const MyAgencyDealsAsMed = () => {
         </p>
       ),
     },
-    {
-      head: "Price",
-      accessor: "actualPrice",
-    },
 
     {
-      head: "Date || Time ",
-      accessor: "createdAt",
-      component: (item, key, arr) => (
-        <>{moment(item?.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
-      ),
-    },
-    {
-      head: "Status",
-      accessor: "isDeleted",
-      component: (item, index) => (
-        <p
-          className={`mb-0 ${
-            !item.isActive ? "bg-danger text-white" : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
-          style={{
-            width: "fit-content",
-          }}
-        >
-          {item.isActive ? "Active" : "InActive"}
-        </p>
-      ),
-    },
-    // {
-    //   head: "Payment Status",
-    //   accessor: "payment Status",
-    //   component: (item, index) => (
-    //     <p
-    //       className={`mb-0 ${
-    //         !(item.paymentStatus === "paid")
-    //           ? "bg-danger text-white"
-    //           : "bg-success text-white"
-    //       } d-flex justify-content-start pb-0 rounded px-2 `}
-    //       style={{
-    //         width: "fit-content",
-    //       }}
-    //     >
-    //       {item.paymentStatus === "paid" ? "Paid" : "No Paid Yet"}
-    //     </p>
-    //   ),
-    // },
-    {
-      head: "Is slot Completed",
+      head: "Slot",
       accessor: "isSlotCompleted",
       component: (item) => (
         <p
@@ -212,11 +197,6 @@ const MyAgencyDealsAsMed = () => {
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
-            {/* <Col lg="12">
-              <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                Deal Management
-              </h4>
-            </Col> */}
             <Col lg="12">
               <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
                 <div className="left">

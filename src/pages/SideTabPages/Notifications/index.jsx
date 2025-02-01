@@ -10,21 +10,14 @@ import TableLayout from "../../../components/TableLayout";
 import moment from "moment";
 
 const Notification = () => {
-  const {
-    setBody,
-    body,
-    data,
-    loader,
-    deleteModel,
-    setDeleteModel,
-    paginationHandler,
-    searchHandler,
-    total,
-    deleteHandler,
-    statusChangeHandler,
-  } = dataHandler({
-    api: GET_ALL_NOTIFICATIONS,
-  });
+  const { setBody, body, data, loader, paginationHandler, total } = dataHandler(
+    {
+      extraBody: {
+        limit: 20,
+      },
+      api: GET_ALL_NOTIFICATIONS,
+    }
+  );
 
   const column = [
     {
@@ -37,7 +30,9 @@ const Notification = () => {
     {
       head: "Time",
       component: (item) => {
-        return <>{moment(item?.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>;
+        return (
+          <>{moment(item?.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
+        );
       },
     },
     {

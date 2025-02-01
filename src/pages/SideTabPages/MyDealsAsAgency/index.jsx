@@ -58,6 +58,39 @@ const DealManagement = () => {
       accessor: "_id",
     },
     {
+      head: "Status",
+      accessor: "",
+      component: (item, index) => (
+        <TableToggle
+          Options={activeInActiveOptions}
+          value={item?.isActive ? "active" : "inactive"}
+          style={{
+            color: item?.isActive ? "green" : "red",
+            width: 120,
+          }}
+          onChange={(e) =>
+            statusChangeHandler(
+              () =>
+                DEAL_UPDATE_STATUS({
+                  dealId: item._id,
+                  status: e.target.value === "active",
+                }),
+              index,
+              "isActive",
+              !item.isActive
+            )
+          }
+        />
+      ),
+    },
+    {
+      head: "Date || Time ",
+      accessor: "createdAt",
+      component: (item, key, arr) => (
+        <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
+      ),
+    },
+    {
       head: "Name",
       accessor: "productName",
       component: (item, key, arr) => (
@@ -91,15 +124,7 @@ const DealManagement = () => {
         </div>
       ),
     },
-    // {
-    //   head: "unique slug",
-    //   accessor: "unique slug",
-    //   component: (item, key, arr) => (
-    //     <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
-    //       {capitalizedFirstAlphaBet(item.uniqueIdentifier)}
-    //     </p>
-    //   ),
-    // },
+
     {
       head: "Brand",
       accessor: "brand",
@@ -119,7 +144,7 @@ const DealManagement = () => {
       ),
     },
     {
-      head: "Deal Category",
+      head: "Deal Type",
       accessor: "dealCategory",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
@@ -132,28 +157,28 @@ const DealManagement = () => {
       accessor: "actualPrice",
     },
     {
-      head: "Less Value",
+      head: "Less",
       accessor: "lessAmount",
       component: (item) => (
         <>{item?.isCommissionDeal ? "-" : item?.lessAmount}</>
       ),
     },
     {
-      head: "Less Value To Med",
+      head: "Mediator Less",
       accessor: "lessAmountToSubAdmin",
       component: (item) => (
         <>{item?.isCommissionDeal ? "-" : item?.lessAmountToSubAdmin}</>
       ),
     },
     {
-      head: "commissionValue",
+      head: "Commission",
       accessor: "commissionValue",
       component: (item) => (
         <>{item?.isCommissionDeal ? item.commissionValue : "-"}</>
       ),
     },
     {
-      head: "Commission To Med",
+      head: "Mediator Commission",
       accessor: "commissionValueToSubAdmin",
       component: (item) => (
         <>{item?.isCommissionDeal ? item.commissionValueToSubAdmin : "-"}</>
@@ -163,78 +188,9 @@ const DealManagement = () => {
       head: "Platform Fee",
       accessor: "adminCommission",
     },
-    {
-      head: "Date || Time ",
-      accessor: "createdAt",
-      component: (item, key, arr) => (
-        <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
-      ),
-    },
-    {
-      head: "Status",
-      accessor: "isDeleted",
-      component: (item, index) => (
-        // <p
-        //   className={`mb-0 ${
-        //     !item.isActive ? "bg-danger text-white" : "bg-success text-white"
-        //   } d-flex justify-content-start pb-0 rounded px-2 `}
-        //   style={{
-        //     width: "fit-content",
-        //   }}
-        // >
-        //   {item.isActive ? "Active" : "InActive"}
-        // </p>
 
-        <TableToggle
-          Options={activeInActiveOptions}
-          value={item?.isActive ? "active" : "inactive"}
-          style={{
-            color: item?.isActive ? "green" : "red",
-            width: 120,
-          }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                DEAL_UPDATE_STATUS({
-                  dealId: item._id,
-                  status: e.target.value === "active",
-                }),
-              index,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
-      ),
-    },
-    // {
-    //   head: "Payment Status",
-    //   accessor: "payment Status",
-    //   component: (item, index) => (
-    //     <TableToggle
-    //       Options={paymentStatusOptions.slice(1)}
-    //       value={item.paymentStatus}
-    //       style={{
-    //         color: item.paymentStatus === "pending" ? "red" : "pending",
-    //         width: 120,
-    //       }}
-    //       onChange={(e) =>
-    //         statusChangeHandler(
-    //           () =>
-    //             DEAL_UPDATE_PAYMENT_STATUS({
-    //               dealId: item._id,
-    //               status: e.target.value,
-    //             }),
-    //           index,
-    //           "paymentStatus",
-    //           item.paymentStatus === "pending" ? "paid" : "pending"
-    //         )
-    //       }
-    //     />
-    //   ),
-    // },
     {
-      head: "Is slot Completed",
+      head: "Slot",
       accessor: "isSlotCompleted",
       component: (item) => (
         <p

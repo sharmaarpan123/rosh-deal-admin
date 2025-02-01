@@ -111,6 +111,7 @@ export const checkResponse = ({
   navigate,
   navigateUrl,
   showError = true,
+  fallBackMessage = "",
 }) => {
   if (res?.data?.success) {
     setData && setData(dataToSet || res?.data?.data);
@@ -122,7 +123,16 @@ export const checkResponse = ({
   } else {
     console.log(res, "Res");
     toast.dismiss();
-    showError && toast.error(res?.response?.data?.message);
+    if (res.code === "ERR_NETWORK") {
+      showError &&
+        toast.error(
+          fallBackMessage ||
+            "Server is taking to long time to respond please try after some time , or Please Try to check your internet connection"
+        );
+      setLoader && setLoader(false);
+      return false;
+    }
+    showError && toast.error(res?.response?.data?.message || "NET WORK ERROR");
     setLoader && setLoader(false);
     return false;
   }

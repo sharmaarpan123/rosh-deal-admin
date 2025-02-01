@@ -56,7 +56,7 @@ const MyMedDealsAsAgency = () => {
     },
 
     {
-      head: "Mediator",
+      head: "Mediator  Name",
       accessor: "adminId",
       component: (item, key, arr) => (
         <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
@@ -65,6 +65,13 @@ const MyMedDealsAsAgency = () => {
             {item?.adminId?.userName})
           </p>
         </div>
+      ),
+    },
+    {
+      head: "Date || Time ",
+      accessor: "createdAt",
+      component: (item, key, arr) => (
+        <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
       ),
     },
     {
@@ -121,7 +128,7 @@ const MyMedDealsAsAgency = () => {
       ),
     },
     {
-      head: "Deal Category",
+      head: "Deal Type",
       accessor: "dealCategory",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
@@ -139,19 +146,33 @@ const MyMedDealsAsAgency = () => {
       ),
     },
     {
+      head: "Mediator Less",
+      accessor: "actualPrice",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(item?.parentDealId?.lessAmountToSubAdmin) ||
+            "-"}
+        </p>
+      ),
+    },
+    {
+      head: "Mediator Commission",
+      accessor: "actualPrice",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(
+            item?.parentDealId?.commissionValueToSubAdmin
+          ) || "-"}
+        </p>
+      ),
+    },
+    {
       head: "Refund",
       accessor: "finalCashBackForUser",
     },
     {
       head: "Platform Fee",
       accessor: "adminCommission",
-    },
-    {
-      head: "Date || Time ",
-      accessor: "createdAt",
-      component: (item, key, arr) => (
-        <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
-      ),
     },
     {
       head: "Status",
@@ -169,26 +190,9 @@ const MyMedDealsAsAgency = () => {
         </p>
       ),
     },
-    // {
-    //   head: "Payment Status",
-    //   accessor: "payment Status",
-    //   component: (item, index) => (
-    //     <p
-    //       className={`mb-0 ${
-    //         !(item.paymentStatus === "paid")
-    //           ? "bg-danger text-white"
-    //           : "bg-success text-white"
-    //       } d-flex justify-content-start pb-0 rounded px-2 `}
-    //       style={{
-    //         width: "fit-content",
-    //       }}
-    //     >
-    //       {item.paymentStatus === "paid" ? "Paid" : "No Paid Yet"}
-    //     </p>
-    //   ),
-    // },
+
     {
-      head: "Is slot Completed",
+      head: "Slot",
       accessor: "isSlotCompleted",
       component: (item) => (
         <p
@@ -205,13 +209,6 @@ const MyMedDealsAsAgency = () => {
         </p>
       ),
     },
-    // {
-    //   head: "Action",
-    //   accessor: "Action",
-    //   component: (item) => (
-    //     <TableActions viewLink={`/deal/details/${item._id}`} />
-    //   ),
-    // },
   ];
 
   return (
