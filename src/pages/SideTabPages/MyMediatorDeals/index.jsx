@@ -8,24 +8,17 @@ import copyIcon from "../../../Assets/images/copyIcon.png";
 import share from "../../../Assets/images/share.png";
 import CustomPagination from "../../../components/Common/CustomPagination";
 import Filter from "../../../components/Common/Filter";
-import TableActions from "../../../components/Common/TableActions";
-import TableToggle from "../../../components/Common/TableToggle";
 import dataHandler from "../../../hooks/dataHandler";
 import {
-  DEAL_UPDATE_PAYMENT_STATUS,
-  DEAL_UPDATE_STATUS,
-  DEALS_LIST,
-  MY_MED_DEALS_AS_AGENCY,
+  MY_MED_DEALS_AS_AGENCY
 } from "../../../services/ApiCalls";
 import {
-  activeInactiveOptions,
-  paymentStatusOptions,
+  activeInactiveOptions
 } from "../../../utilities/const";
 import {
-  activeInActiveOptions,
   capitalizedFirstAlphaBet,
   copyClipboard,
-  handleShare,
+  handleShare
 } from "../../../utilities/utilities";
 
 const MyMedDealsAsAgency = () => {

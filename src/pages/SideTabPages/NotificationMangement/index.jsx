@@ -2,7 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import Select from "react-select";
+import AsyncSelect from "react-select/async";
+import { toast } from "react-toastify";
 import { z } from "zod";
 import {
   BRAND_LIST,
@@ -24,9 +27,6 @@ import {
   checkResponse,
   textAreaAdjust,
 } from "../../../utilities/utilities";
-import { useSelector } from "react-redux";
-import AsyncSelect from "react-select/async";
-import { toast } from "react-toastify";
 
 const schema = z
   .object({
