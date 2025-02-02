@@ -69,17 +69,17 @@ const PlatForm = () => {
     },
     { head: "Email", accessor: "email" },
     { head: "Phone Number", accessor: "phoneNumber" },
-    {
-      head: "Roles",
-      accessor: "Roles",
-      component: (item, key, arr) => (
-        <p className={`text-warning m-0 fw-sbold text-capitalize`}>
-          {item?.roles?.join(",")}
-        </p>
-      ),
-    },
     ...(admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)
       ? [
+          {
+            head: "Roles",
+            accessor: "Roles",
+            component: (item, key, arr) => (
+              <p className={`text-warning m-0 fw-sbold text-capitalize`}>
+                {item?.roles?.join(",")}
+              </p>
+            ),
+          },
           {
             head: "Status",
             accessor: "status",

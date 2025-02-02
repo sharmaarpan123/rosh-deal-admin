@@ -13,13 +13,11 @@ import TableActions from "../../../components/Common/TableActions";
 import TableToggle from "../../../components/Common/TableToggle";
 import dataHandler from "../../../hooks/dataHandler";
 import {
-  DEAL_UPDATE_PAYMENT_STATUS,
   DEAL_UPDATE_STATUS,
-  DEALS_LIST,
+  DEALS_LIST
 } from "../../../services/ApiCalls";
 import {
-  activeInactiveOptions,
-  paymentStatusOptions,
+  activeInactiveOptions
 } from "../../../utilities/const";
 import {
   activeInActiveOptions,
@@ -34,12 +32,9 @@ const DealManagement = () => {
     body,
     data,
     loader,
-    deleteModel,
-    setDeleteModel,
     paginationHandler,
     searchHandler,
     total,
-    deleteHandler,
     statusChangeHandler,
   } = dataHandler({
     api: DEALS_LIST,
