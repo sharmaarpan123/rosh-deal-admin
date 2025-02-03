@@ -1,9 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
-// img
-// import i1 from "@/Assets/images/authBg.png";
-import i1 from "../../../../Assets/images/authBg.png";
+
 
 import React, { useEffect, useState } from "react";
 
@@ -11,12 +9,12 @@ import React, { useEffect, useState } from "react";
 // import i1 from "@/Assets/images/authBg.png";
 
 import moment from "moment";
-import { BRAND_BY_ID, GET_DEAL_VIEW } from "../../../../services/ApiCalls";
+import { GET_DEAL_VIEW } from "../../../../../services/ApiCalls";
 import {
   catchAsync,
   checkResponse,
   removeUnderScoreAndCapitalizeFirstLetter,
-} from "../../../../utilities/utilities";
+} from "../../../../../utilities/utilities";
 
 const DealDetails = () => {
   const [userDetails, setUserUserDetails] = useState();

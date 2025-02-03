@@ -1,32 +1,27 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import TableLayout from "../../../components/TableLayout";
+import TableLayout from "../../../../components/TableLayout";
 
 // img
 import moment from "moment";
-import { Link } from "react-router-dom";
-import copyIcon from "../../../Assets/images/copyIcon.png";
-import share from "../../../Assets/images/share.png";
-import CustomPagination from "../../../components/Common/CustomPagination";
-import Filter from "../../../components/Common/Filter";
-import TableActions from "../../../components/Common/TableActions";
-import TableToggle from "../../../components/Common/TableToggle";
-import dataHandler from "../../../hooks/dataHandler";
+import copyIcon from "../../../../Assets/images/copyIcon.png";
+import share from "../../../../Assets/images/share.png";
+import CustomPagination from "../../../../components/Common/CustomPagination";
+import Filter from "../../../../components/Common/Filter";
+import dataHandler from "../../../../hooks/dataHandler";
 import {
-  DEAL_UPDATE_STATUS,
-  DEALS_LIST
-} from "../../../services/ApiCalls";
+  MY_MED_DEALS_AS_AGENCY
+} from "../../../../services/ApiCalls";
 import {
   activeInactiveOptions
-} from "../../../utilities/const";
+} from "../../../../utilities/const";
 import {
-  activeInActiveOptions,
   capitalizedFirstAlphaBet,
   copyClipboard,
-  handleShare,
-} from "../../../utilities/utilities";
+  handleShare
+} from "../../../../utilities/utilities";
 
-const DealManagement = () => {
+const MyMedDealsAsAgency = () => {
   const {
     setBody,
     body,
@@ -37,7 +32,7 @@ const DealManagement = () => {
     total,
     statusChangeHandler,
   } = dataHandler({
-    api: DEALS_LIST,
+    api: MY_MED_DEALS_AS_AGENCY,
   });
 
   const column = [
@@ -52,30 +47,17 @@ const DealManagement = () => {
       head: "_id",
       accessor: "_id",
     },
+
     {
-      head: "Status",
-      accessor: "",
-      component: (item, index) => (
-        <TableToggle
-          Options={activeInActiveOptions}
-          value={item?.isActive ? "active" : "inactive"}
-          style={{
-            color: item?.isActive ? "green" : "red",
-            width: 120,
-          }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                DEAL_UPDATE_STATUS({
-                  dealId: item._id,
-                  status: e.target.value === "active",
-                }),
-              index,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
+      head: "Mediator  Name",
+      accessor: "adminId",
+      component: (item, key, arr) => (
+        <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
+          <p className="m-0 themeBlue fw-sbold">
+            {capitalizedFirstAlphaBet(item?.adminId?.name)}(
+            {item?.adminId?.userName})
+          </p>
+        </div>
       ),
     },
     {
@@ -86,12 +68,12 @@ const DealManagement = () => {
       ),
     },
     {
-      head: "Name",
+      head: "Product Name",
       accessor: "productName",
       component: (item, key, arr) => (
         <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
           <p className="m-0 themeBlue fw-sbold">
-            {capitalizedFirstAlphaBet(item.productName)}
+            {capitalizedFirstAlphaBet(item?.parentDealId?.productName)}
           </p>
           <button
             className="share-button"
@@ -125,7 +107,7 @@ const DealManagement = () => {
       accessor: "brand",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item?.brand?.name)}
+          {capitalizedFirstAlphaBet(item?.parentDealId?.brand?.name)}
         </p>
       ),
     },
@@ -134,7 +116,7 @@ const DealManagement = () => {
       accessor: "platForm",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item?.platForm?.name)}
+          {capitalizedFirstAlphaBet(item?.parentDealId?.platForm?.name)}
         </p>
       ),
     },
@@ -143,45 +125,63 @@ const DealManagement = () => {
       accessor: "dealCategory",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item?.dealCategory?.name)}
+          {capitalizedFirstAlphaBet(item?.parentDealId?.dealCategory?.name)}
         </p>
       ),
     },
     {
       head: "Price",
       accessor: "actualPrice",
-    },
-    {
-      head: "Less",
-      accessor: "lessAmount",
-      component: (item) => (
-        <>{item?.isCommissionDeal ? "-" : item?.lessAmount}</>
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(item?.parentDealId?.actualPrice)}
+        </p>
       ),
     },
     {
       head: "Mediator Less",
-      accessor: "lessAmountToSubAdmin",
-      component: (item) => (
-        <>{item?.isCommissionDeal ? "-" : item?.lessAmountToSubAdmin}</>
-      ),
-    },
-    {
-      head: "Commission",
-      accessor: "commissionValue",
-      component: (item) => (
-        <>{item?.isCommissionDeal ? item.commissionValue : "-"}</>
+      accessor: "actualPrice",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(item?.parentDealId?.lessAmountToSubAdmin) ||
+            "-"}
+        </p>
       ),
     },
     {
       head: "Mediator Commission",
-      accessor: "commissionValueToSubAdmin",
-      component: (item) => (
-        <>{item?.isCommissionDeal ? item.commissionValueToSubAdmin : "-"}</>
+      accessor: "actualPrice",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(
+            item?.parentDealId?.commissionValueToSubAdmin
+          ) || "-"}
+        </p>
       ),
+    },
+    {
+      head: "Refund",
+      accessor: "finalCashBackForUser",
     },
     {
       head: "Platform Fee",
       accessor: "adminCommission",
+    },
+    {
+      head: "Status",
+      accessor: "isDeleted",
+      component: (item, index) => (
+        <p
+          className={`mb-0 ${
+            !item.isActive ? "bg-danger text-white" : "bg-success text-white"
+          } d-flex justify-content-start pb-0 rounded px-2 `}
+          style={{
+            width: "fit-content",
+          }}
+        >
+          {item.isActive ? "Active" : "InActive"}
+        </p>
+      ),
     },
 
     {
@@ -190,7 +190,7 @@ const DealManagement = () => {
       component: (item) => (
         <p
           className={`mb-0 ${
-            !item.isSlotCompleted
+            !item?.parentDealId?.isSlotCompleted
               ? "bg-danger text-white"
               : "bg-success text-white"
           } d-flex justify-content-start pb-0 rounded px-2 `}
@@ -198,18 +198,8 @@ const DealManagement = () => {
             width: "fit-content",
           }}
         >
-          {item.isSlotCompleted ? "Completed" : "Ongoing"}
+          {item?.parentDealId?.isSlotCompleted ? "Completed" : "Ongoing"}
         </p>
-      ),
-    },
-    {
-      head: "Action",
-      accessor: "Action",
-      component: (item) => (
-        <TableActions
-          editUrl={`/deal/edit/${item._id}`}
-          viewLink={`/deal/details/${item._id}`}
-        />
       ),
     },
   ];
@@ -238,28 +228,7 @@ const DealManagement = () => {
                     />
                   </ul>
                 </div>
-                <div className="right">
-                  <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
-                    <li className="">
-                      <Link
-                        to={"/deal/bulk-add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Bulk Add
-                      </Link>
-                    </li>
-                    <li className="">
-                      <Link
-                        to={"/deal/add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Add New
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
+                <div className="right"></div>
               </div>
             </Col>
             <Col lg="12" className="my-2">
@@ -278,4 +247,4 @@ const DealManagement = () => {
   );
 };
 
-export default DealManagement;
+export default MyMedDealsAsAgency;

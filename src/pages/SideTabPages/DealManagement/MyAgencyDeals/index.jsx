@@ -1,22 +1,22 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import TableLayout from "../../../components/TableLayout";
+import TableLayout from "../../../../components/TableLayout";
 
 // img
 import moment from "moment";
-import copyIcon from "../../../Assets/images/copyIcon.png";
-import share from "../../../Assets/images/share.png";
-import CustomPagination from "../../../components/Common/CustomPagination";
-import Filter from "../../../components/Common/Filter";
-import TableActions from "../../../components/Common/TableActions";
-import dataHandler from "../../../hooks/dataHandler";
-import { MY_AGENCY_DEALS_AS_MED } from "../../../services/ApiCalls";
-import { activeInactiveOptions } from "../../../utilities/const";
+import copyIcon from "../../../../Assets/images/copyIcon.png";
+import share from "../../../../Assets/images/share.png";
+import CustomPagination from "../../../../components/Common/CustomPagination";
+import Filter from "../../../../components/Common/Filter";
+import TableActions from "../../../../components/Common/TableActions";
+import dataHandler from "../../../../hooks/dataHandler";
+import { MY_AGENCY_DEALS_AS_MED } from "../../../../services/ApiCalls";
+import { activeInactiveOptions } from "../../../../utilities/const";
 import {
   capitalizedFirstAlphaBet,
   copyClipboard,
   handleShare,
-} from "../../../utilities/utilities";
+} from "../../../../utilities/utilities";
 
 const MyAgencyDealsAsMed = () => {
   const {

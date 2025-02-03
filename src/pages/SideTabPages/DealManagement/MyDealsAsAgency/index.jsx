@@ -1,47 +1,43 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import TableLayout from "../../../components/TableLayout";
+import TableLayout from "../../../../components/TableLayout";
 
 // img
 import moment from "moment";
-import copyIcon from "../../../Assets/images/copyIcon.png";
-import share from "../../../Assets/images/share.png";
-import CustomPagination from "../../../components/Common/CustomPagination";
-import Filter from "../../../components/Common/Filter";
-import TableActions from "../../../components/Common/TableActions";
-import TableToggle from "../../../components/Common/TableToggle";
-import dataHandler from "../../../hooks/dataHandler";
+import { Link } from "react-router-dom";
+import copyIcon from "../../../../Assets/images/copyIcon.png";
+import share from "../../../../Assets/images/share.png";
+import CustomPagination from "../../../../components/Common/CustomPagination";
+import Filter from "../../../../components/Common/Filter";
+import TableActions from "../../../../components/Common/TableActions";
+import TableToggle from "../../../../components/Common/TableToggle";
+import dataHandler from "../../../../hooks/dataHandler";
 import {
-  DEAL_UPDATE_PAYMENT_STATUS,
   DEAL_UPDATE_STATUS,
-  My_DEAL_AS_MED,
-} from "../../../services/ApiCalls";
+  DEALS_LIST
+} from "../../../../services/ApiCalls";
 import {
-  activeInactiveOptions,
-  paymentStatusOptions,
-} from "../../../utilities/const";
+  activeInactiveOptions
+} from "../../../../utilities/const";
 import {
   activeInActiveOptions,
   capitalizedFirstAlphaBet,
   copyClipboard,
   handleShare,
-} from "../../../utilities/utilities";
+} from "../../../../utilities/utilities";
 
-const MyDealsAsMed = () => {
+const DealManagement = () => {
   const {
     setBody,
     body,
     data,
     loader,
-    deleteModel,
-    setDeleteModel,
     paginationHandler,
     searchHandler,
     total,
-    deleteHandler,
     statusChangeHandler,
   } = dataHandler({
-    api: My_DEAL_AS_MED,
+    api: DEALS_LIST,
   });
 
   const column = [
@@ -52,23 +48,19 @@ const MyDealsAsMed = () => {
         return <>{body.limit * (body.page - 1) + key + 1}</>;
       },
     },
-
     {
-      head: "Date || Time ",
-      accessor: "createdAt",
-      component: (item, key, arr) => (
-        <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
-      ),
+      head: "_id",
+      accessor: "_id",
     },
     {
       head: "Status",
-      accessor: "isDeleted",
+      accessor: "",
       component: (item, index) => (
         <TableToggle
           Options={activeInActiveOptions}
-          value={item.isActive ? "active" : "inactive"}
+          value={item?.isActive ? "active" : "inactive"}
           style={{
-            color: item.isActive ? "green" : "red",
+            color: item?.isActive ? "green" : "red",
             width: 120,
           }}
           onChange={(e) =>
@@ -87,12 +79,19 @@ const MyDealsAsMed = () => {
       ),
     },
     {
+      head: "Date || Time ",
+      accessor: "createdAt",
+      component: (item, key, arr) => (
+        <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
+      ),
+    },
+    {
       head: "Name",
       accessor: "productName",
       component: (item, key, arr) => (
         <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
           <p className="m-0 themeBlue fw-sbold">
-            {capitalizedFirstAlphaBet(item?.parentDealId?.productName)}
+            {capitalizedFirstAlphaBet(item.productName)}
           </p>
           <button
             className="share-button"
@@ -126,7 +125,7 @@ const MyDealsAsMed = () => {
       accessor: "brand",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item?.parentDealId?.brand?.name)}
+          {capitalizedFirstAlphaBet(item?.brand?.name)}
         </p>
       ),
     },
@@ -135,48 +134,50 @@ const MyDealsAsMed = () => {
       accessor: "platForm",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item?.parentDealId?.platForm?.name)}
+          {capitalizedFirstAlphaBet(item?.platForm?.name)}
         </p>
       ),
     },
     {
-      head: "Deal type",
+      head: "Deal Type",
       accessor: "dealCategory",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item?.parentDealId?.dealCategory?.name)}
+          {capitalizedFirstAlphaBet(item?.dealCategory?.name)}
         </p>
       ),
     },
     {
       head: "Price",
       accessor: "actualPrice",
-      component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item?.parentDealId?.actualPrice)}
-        </p>
-      ),
     },
-
     {
       head: "Less",
       accessor: "lessAmount",
       component: (item) => (
-        <>{!item?.isCommissionDeal ? item?.lessAmount : "-"}</>
+        <>{item?.isCommissionDeal ? "-" : item?.lessAmount}</>
       ),
     },
-
+    {
+      head: "Mediator Less",
+      accessor: "lessAmountToSubAdmin",
+      component: (item) => (
+        <>{item?.isCommissionDeal ? "-" : item?.lessAmountToSubAdmin}</>
+      ),
+    },
     {
       head: "Commission",
       accessor: "commissionValue",
       component: (item) => (
-        <>{item?.isCommissionDeal ? item?.commissionValue : "-"}</>
+        <>{item?.isCommissionDeal ? item.commissionValue : "-"}</>
       ),
     },
-
     {
-      head: "Refund",
-      accessor: "finalCashBackForUser",
+      head: "Mediator Commission",
+      accessor: "commissionValueToSubAdmin",
+      component: (item) => (
+        <>{item?.isCommissionDeal ? item.commissionValueToSubAdmin : "-"}</>
+      ),
     },
     {
       head: "Platform Fee",
@@ -189,7 +190,7 @@ const MyDealsAsMed = () => {
       component: (item) => (
         <p
           className={`mb-0 ${
-            !item?.parentDealId?.isSlotCompleted
+            !item.isSlotCompleted
               ? "bg-danger text-white"
               : "bg-success text-white"
           } d-flex justify-content-start pb-0 rounded px-2 `}
@@ -197,7 +198,7 @@ const MyDealsAsMed = () => {
             width: "fit-content",
           }}
         >
-          {item?.parentDealId?.isSlotCompleted ? "Completed" : "Ongoing"}
+          {item.isSlotCompleted ? "Completed" : "Ongoing"}
         </p>
       ),
     },
@@ -205,7 +206,10 @@ const MyDealsAsMed = () => {
       head: "Action",
       accessor: "Action",
       component: (item) => (
-        <TableActions viewLink={`/myDealsAsMed/details/${item._id}`} />
+        <TableActions
+          editUrl={`/deal/edit/${item._id}`}
+          viewLink={`/deal/details/${item._id}`}
+        />
       ),
     },
   ];
@@ -234,7 +238,28 @@ const MyDealsAsMed = () => {
                     />
                   </ul>
                 </div>
-                <div className="right"></div>
+                <div className="right">
+                  <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
+                    <li className="">
+                      <Link
+                        to={"/deal/bulk-add"}
+                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
+                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
+                      >
+                        Bulk Add
+                      </Link>
+                    </li>
+                    <li className="">
+                      <Link
+                        to={"/deal/add"}
+                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
+                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
+                      >
+                        Add New
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </Col>
             <Col lg="12" className="my-2">
@@ -253,4 +278,4 @@ const MyDealsAsMed = () => {
   );
 };
 
-export default MyDealsAsMed;
+export default DealManagement;

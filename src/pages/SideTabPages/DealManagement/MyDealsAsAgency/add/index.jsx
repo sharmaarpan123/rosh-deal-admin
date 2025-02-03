@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import { toast } from "react-toastify";
-import noImg from "../../../../Assets/images/no-img.png";
+import noImg from "../../../../../Assets/images/no-img.png";
 import {
   ADD_DEAL,
   BRAND_LIST,
@@ -19,16 +19,16 @@ import {
   EDIT_DEAL,
   GET_DEAL_VIEW,
   PLATFORM_LIST,
-} from "../../../../services/ApiCalls";
-import fileUploader from "../../../../utilities/fileUploader";
+} from "../../../../../services/ApiCalls";
+import fileUploader from "../../../../../utilities/fileUploader";
 import {
   catchAsync,
   checkResponse,
   textAreaAdjust,
-} from "../../../../utilities/utilities";
+} from "../../../../../utilities/utilities";
 import { addEditDealSchema } from "./schema";
 import TagsInput from "./TagsInput";
-import { superAdminCommission } from "../../../../utilities/const";
+import { superAdminCommission } from "../../../../../utilities/const";
 
 const makeOptions = (data, extraKey, extraKeyValueKey) => {
   return data?.map((item) => ({

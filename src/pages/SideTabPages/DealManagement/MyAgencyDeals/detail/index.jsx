@@ -9,15 +9,15 @@ import React, { useEffect, useState } from "react";
 // img
 // import i1 from "@/Assets/images/authBg.png";
 
-import Title from "../../../../components/Common/Title";
-import DealDetailView from "../../../../components/Deal/DealDetailView";
+import Title from "../../../../../components/Common/Title";
+import DealDetailView from "../../../../../components/Deal/DealDetailView";
 import {
   CLONE_DEAL,
   MY_AGENCY_DEAL_DETAIL_AS_MED,
-} from "../../../../services/ApiCalls";
-import { catchAsync, checkResponse } from "../../../../utilities/utilities";
+} from "../../../../../services/ApiCalls";
+import { catchAsync, checkResponse } from "../../../../../utilities/utilities";
 import { z } from "zod";
-import { superAdminCommission } from "../../../../utilities/const";
+import { superAdminCommission } from "../../../../../utilities/const";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 

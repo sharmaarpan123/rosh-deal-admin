@@ -18,12 +18,12 @@ import {
   DEAL_CATEGORY_LIST,
   PLATFORM_LIST,
   SCRAPPER_IMAGE,
-} from "../../../../services/ApiCalls";
+} from "../../../../../services/ApiCalls";
 import {
   catchAsync,
   checkResponse,
   isStringOnlyContainSpaces,
-} from "../../../../utilities/utilities";
+} from "../../../../../utilities/utilities";
 import TagsInput from "../add/TagsInput";
 import styles from "./BulkAdd.module.scss";
 

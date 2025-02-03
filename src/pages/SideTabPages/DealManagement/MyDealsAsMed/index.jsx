@@ -1,38 +1,47 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import TableLayout from "../../../components/TableLayout";
+import TableLayout from "../../../../components/TableLayout";
 
 // img
 import moment from "moment";
-import copyIcon from "../../../Assets/images/copyIcon.png";
-import share from "../../../Assets/images/share.png";
-import CustomPagination from "../../../components/Common/CustomPagination";
-import Filter from "../../../components/Common/Filter";
-import dataHandler from "../../../hooks/dataHandler";
+import copyIcon from "../../../../Assets/images/copyIcon.png";
+import share from "../../../../Assets/images/share.png";
+import CustomPagination from "../../../../components/Common/CustomPagination";
+import Filter from "../../../../components/Common/Filter";
+import TableActions from "../../../../components/Common/TableActions";
+import TableToggle from "../../../../components/Common/TableToggle";
+import dataHandler from "../../../../hooks/dataHandler";
 import {
-  MY_MED_DEALS_AS_AGENCY
-} from "../../../services/ApiCalls";
+  DEAL_UPDATE_PAYMENT_STATUS,
+  DEAL_UPDATE_STATUS,
+  My_DEAL_AS_MED,
+} from "../../../../services/ApiCalls";
 import {
-  activeInactiveOptions
-} from "../../../utilities/const";
+  activeInactiveOptions,
+  paymentStatusOptions,
+} from "../../../../utilities/const";
 import {
+  activeInActiveOptions,
   capitalizedFirstAlphaBet,
   copyClipboard,
-  handleShare
-} from "../../../utilities/utilities";
+  handleShare,
+} from "../../../../utilities/utilities";
 
-const MyMedDealsAsAgency = () => {
+const MyDealsAsMed = () => {
   const {
     setBody,
     body,
     data,
     loader,
+    deleteModel,
+    setDeleteModel,
     paginationHandler,
     searchHandler,
     total,
+    deleteHandler,
     statusChangeHandler,
   } = dataHandler({
-    api: MY_MED_DEALS_AS_AGENCY,
+    api: My_DEAL_AS_MED,
   });
 
   const column = [
@@ -43,23 +52,7 @@ const MyMedDealsAsAgency = () => {
         return <>{body.limit * (body.page - 1) + key + 1}</>;
       },
     },
-    {
-      head: "_id",
-      accessor: "_id",
-    },
 
-    {
-      head: "Mediator  Name",
-      accessor: "adminId",
-      component: (item, key, arr) => (
-        <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
-          <p className="m-0 themeBlue fw-sbold">
-            {capitalizedFirstAlphaBet(item?.adminId?.name)}(
-            {item?.adminId?.userName})
-          </p>
-        </div>
-      ),
-    },
     {
       head: "Date || Time ",
       accessor: "createdAt",
@@ -68,7 +61,33 @@ const MyMedDealsAsAgency = () => {
       ),
     },
     {
-      head: "Product Name",
+      head: "Status",
+      accessor: "isDeleted",
+      component: (item, index) => (
+        <TableToggle
+          Options={activeInActiveOptions}
+          value={item.isActive ? "active" : "inactive"}
+          style={{
+            color: item.isActive ? "green" : "red",
+            width: 120,
+          }}
+          onChange={(e) =>
+            statusChangeHandler(
+              () =>
+                DEAL_UPDATE_STATUS({
+                  dealId: item._id,
+                  status: e.target.value === "active",
+                }),
+              index,
+              "isActive",
+              !item.isActive
+            )
+          }
+        />
+      ),
+    },
+    {
+      head: "Name",
       accessor: "productName",
       component: (item, key, arr) => (
         <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
@@ -121,7 +140,7 @@ const MyMedDealsAsAgency = () => {
       ),
     },
     {
-      head: "Deal Type",
+      head: "Deal type",
       accessor: "dealCategory",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">
@@ -138,27 +157,23 @@ const MyMedDealsAsAgency = () => {
         </p>
       ),
     },
+
     {
-      head: "Mediator Less",
-      accessor: "actualPrice",
-      component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item?.parentDealId?.lessAmountToSubAdmin) ||
-            "-"}
-        </p>
+      head: "Less",
+      accessor: "lessAmount",
+      component: (item) => (
+        <>{!item?.isCommissionDeal ? item?.lessAmount : "-"}</>
       ),
     },
+
     {
-      head: "Mediator Commission",
-      accessor: "actualPrice",
-      component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(
-            item?.parentDealId?.commissionValueToSubAdmin
-          ) || "-"}
-        </p>
+      head: "Commission",
+      accessor: "commissionValue",
+      component: (item) => (
+        <>{item?.isCommissionDeal ? item?.commissionValue : "-"}</>
       ),
     },
+
     {
       head: "Refund",
       accessor: "finalCashBackForUser",
@@ -166,22 +181,6 @@ const MyMedDealsAsAgency = () => {
     {
       head: "Platform Fee",
       accessor: "adminCommission",
-    },
-    {
-      head: "Status",
-      accessor: "isDeleted",
-      component: (item, index) => (
-        <p
-          className={`mb-0 ${
-            !item.isActive ? "bg-danger text-white" : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
-          style={{
-            width: "fit-content",
-          }}
-        >
-          {item.isActive ? "Active" : "InActive"}
-        </p>
-      ),
     },
 
     {
@@ -200,6 +199,13 @@ const MyMedDealsAsAgency = () => {
         >
           {item?.parentDealId?.isSlotCompleted ? "Completed" : "Ongoing"}
         </p>
+      ),
+    },
+    {
+      head: "Action",
+      accessor: "Action",
+      component: (item) => (
+        <TableActions viewLink={`/myDealsAsMed/details/${item._id}`} />
       ),
     },
   ];
@@ -247,4 +253,4 @@ const MyMedDealsAsAgency = () => {
   );
 };
 
-export default MyMedDealsAsAgency;
+export default MyDealsAsMed;
