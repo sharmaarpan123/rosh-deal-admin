@@ -52,7 +52,7 @@ const Header = ({ sidebar, setSidebar, title }) => {
         }
       />
       <header
-        className={`${styles.siteHeader}  siteHeader bg-white  sticky-top pt-lg-3 py-1 w-100`}
+        className={`${styles.siteHeader}  siteHeader bg-white  sticky-top  w-100`}
         style={{ zIndex: 99 }}
       >
         <Container>

@@ -7,19 +7,15 @@ import moment from "moment";
 import copyIcon from "../../../../Assets/images/copyIcon.png";
 import share from "../../../../Assets/images/share.png";
 import CustomPagination from "../../../../components/Common/CustomPagination";
-import Filter from "../../../../components/Common/Filter";
 import dataHandler from "../../../../hooks/dataHandler";
-import {
-  MY_MED_DEALS_AS_AGENCY
-} from "../../../../services/ApiCalls";
-import {
-  activeInactiveOptions
-} from "../../../../utilities/const";
+import { MY_MED_DEALS_AS_AGENCY } from "../../../../services/ApiCalls";
+import { activeInactiveOptions } from "../../../../utilities/const";
 import {
   capitalizedFirstAlphaBet,
   copyClipboard,
-  handleShare
+  handleShare,
 } from "../../../../utilities/utilities";
+import Filter from "../Components/Filters";
 
 const MyMedDealsAsAgency = () => {
   const {
@@ -30,9 +26,13 @@ const MyMedDealsAsAgency = () => {
     paginationHandler,
     searchHandler,
     total,
-    statusChangeHandler,
   } = dataHandler({
     api: MY_MED_DEALS_AS_AGENCY,
+    dependencies: ["selectedPlatformFilter", "selectedBrandFilter"],
+    extraBody: {
+      selectedPlatformFilter: [],
+      selectedBrandFilter: [],
+    },
   });
 
   const column = [

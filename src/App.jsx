@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import "./Assets/css/responsive.css";
@@ -9,12 +9,17 @@ import MainLayout from "./layout/MainLayout/MainLayout";
 import { privateRoutes, publicRoutes, routes } from "./pages/index";
 import requestNotificationPermission from "./firebase";
 import { useEffect } from "react";
+import { getPlatforms } from "./store/Platform/actions";
 
 function App() {
   const isAuthenticated = useSelector((s) => s.login.token);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    isAuthenticated && requestNotificationPermission();
+    if (isAuthenticated) {
+      requestNotificationPermission();
+      dispatch(getPlatforms());
+    }
   }, [isAuthenticated]);
 
   return (

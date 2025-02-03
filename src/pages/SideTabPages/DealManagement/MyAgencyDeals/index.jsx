@@ -7,7 +7,7 @@ import moment from "moment";
 import copyIcon from "../../../../Assets/images/copyIcon.png";
 import share from "../../../../Assets/images/share.png";
 import CustomPagination from "../../../../components/Common/CustomPagination";
-import Filter from "../../../../components/Common/Filter";
+import Filter from "../Components/Filters/index";
 import TableActions from "../../../../components/Common/TableActions";
 import dataHandler from "../../../../hooks/dataHandler";
 import { MY_AGENCY_DEALS_AS_MED } from "../../../../services/ApiCalls";
@@ -24,15 +24,16 @@ const MyAgencyDealsAsMed = () => {
     body,
     data,
     loader,
-    deleteModel,
-    setDeleteModel,
     paginationHandler,
     searchHandler,
     total,
-    deleteHandler,
-    statusChangeHandler,
   } = dataHandler({
     api: MY_AGENCY_DEALS_AS_MED,
+    dependencies: ["selectedPlatformFilter", "selectedBrandFilter"],
+    extraBody: {
+      selectedPlatformFilter: [],
+      selectedBrandFilter: [],
+    },
   });
 
   const column = [

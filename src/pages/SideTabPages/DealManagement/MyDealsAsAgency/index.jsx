@@ -8,17 +8,12 @@ import { Link } from "react-router-dom";
 import copyIcon from "../../../../Assets/images/copyIcon.png";
 import share from "../../../../Assets/images/share.png";
 import CustomPagination from "../../../../components/Common/CustomPagination";
-import Filter from "../../../../components/Common/Filter";
+import Filter from "../Components/Filters";
 import TableActions from "../../../../components/Common/TableActions";
 import TableToggle from "../../../../components/Common/TableToggle";
 import dataHandler from "../../../../hooks/dataHandler";
-import {
-  DEAL_UPDATE_STATUS,
-  DEALS_LIST
-} from "../../../../services/ApiCalls";
-import {
-  activeInactiveOptions
-} from "../../../../utilities/const";
+import { DEAL_UPDATE_STATUS, DEALS_LIST } from "../../../../services/ApiCalls";
+import { activeInactiveOptions } from "../../../../utilities/const";
 import {
   activeInActiveOptions,
   capitalizedFirstAlphaBet,
@@ -38,6 +33,11 @@ const DealManagement = () => {
     statusChangeHandler,
   } = dataHandler({
     api: DEALS_LIST,
+    dependencies: ["selectedPlatformFilter", "selectedBrandFilter"],
+    extraBody: {
+      selectedPlatformFilter: [],
+      selectedBrandFilter: [],
+    },
   });
 
   const column = [
@@ -219,27 +219,10 @@ const DealManagement = () => {
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
-            {/* <Col lg="12">
-              <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                Deal Management
-              </h4>
-            </Col> */}
-            <Col lg="12">
-              <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
-                <div className="left">
-                  <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
-                    <Filter
-                      body={body}
-                      searchHandler={searchHandler}
-                      setBody={setBody}
-                      statusFilterOptionArr={activeInactiveOptions}
-                      ShowPaymentStatus={true}
-                      ShowSlotStatus={true}
-                    />
-                  </ul>
-                </div>
-                <div className="right">
-                  <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
+            <Col lg="12" className="px-0 ">
+              <div className="tableFilter d-flex flex-column gap-10 mb-1">
+                <div className="">
+                  <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center justify-content-end gap-10 flex-wrap">
                     <li className="">
                       <Link
                         to={"/deal/bulk-add"}
@@ -259,6 +242,18 @@ const DealManagement = () => {
                       </Link>
                     </li>
                   </ul>
+                </div>
+                <div className="">
+                  {/* <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap"> */}
+                  <Filter
+                    body={body}
+                    searchHandler={searchHandler}
+                    setBody={setBody}
+                    statusFilterOptionArr={activeInactiveOptions}
+                    ShowPaymentStatus={true}
+                    ShowSlotStatus={true}
+                  />
+                  {/* </ul> */}
                 </div>
               </div>
             </Col>

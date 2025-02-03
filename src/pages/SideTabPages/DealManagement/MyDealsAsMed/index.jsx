@@ -7,19 +7,15 @@ import moment from "moment";
 import copyIcon from "../../../../Assets/images/copyIcon.png";
 import share from "../../../../Assets/images/share.png";
 import CustomPagination from "../../../../components/Common/CustomPagination";
-import Filter from "../../../../components/Common/Filter";
+import Filter from "../Components/Filters";
 import TableActions from "../../../../components/Common/TableActions";
 import TableToggle from "../../../../components/Common/TableToggle";
 import dataHandler from "../../../../hooks/dataHandler";
 import {
-  DEAL_UPDATE_PAYMENT_STATUS,
   DEAL_UPDATE_STATUS,
   My_DEAL_AS_MED,
 } from "../../../../services/ApiCalls";
-import {
-  activeInactiveOptions,
-  paymentStatusOptions,
-} from "../../../../utilities/const";
+import { activeInactiveOptions } from "../../../../utilities/const";
 import {
   activeInActiveOptions,
   capitalizedFirstAlphaBet,
@@ -42,6 +38,11 @@ const MyDealsAsMed = () => {
     statusChangeHandler,
   } = dataHandler({
     api: My_DEAL_AS_MED,
+    dependencies: ["selectedPlatformFilter", "selectedBrandFilter"],
+    extraBody: {
+      selectedPlatformFilter: [],
+      selectedBrandFilter: [],
+    },
   });
 
   const column = [

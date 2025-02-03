@@ -315,3 +315,7 @@ header .dropdown:has(.dropdown-menu.show) .position-fixed {
 .linkWrpper .accordion-header {
   margin-bottom: 2px !important;
 }
+
+.width-fit-content {
+  max-width: 10px !important;
+}

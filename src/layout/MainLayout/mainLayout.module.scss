@@ -1,9 +1,10 @@
 .mainLayout {
   background: #005fd9;
-  padding: 10px;
+  padding-left: 10px;
+  // padding-top: 0;
   main.MainBody {
     border-radius: 15px;
-    height: calc(100vh - 20px);
+    height: calc(100vh );
     overflow: auto;
     scrollbar-width: none;
     width: calc(100% - 256px);
