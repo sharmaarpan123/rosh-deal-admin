@@ -107,22 +107,6 @@ const Filter = ({ statusFilterOptionArr, setBody, body, searchHandler }) => {
             statusFilterOptionArr={slotCompletedStatusOptions}
           />
         </li>
-
-        <li className="d-flex align-items-center flex-column ">
-          <label
-            htmlFor=""
-            className="form-label m-0 fw-sbold text-muted"
-            style={{ whiteSpace: "nowrap" }}
-          >
-            Slot Completed Status
-          </label>
-          <StatusFilter
-            body={body}
-            setBody={setBody}
-            statusKey={"isSlotCompleted"}
-            statusFilterOptionArr={slotCompletedStatusOptions}
-          />
-        </li>
       </ul>
 
       <ul className="list-unstyled ps-0 mb-0 d-flex align-items-end gap-10 flex-wrap">
