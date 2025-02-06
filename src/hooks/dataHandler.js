@@ -116,7 +116,7 @@ const dataHandler = ({ api, extraBody, dependencies }) => {
   ];
   if (dependencies && dependencies.length > 0) {
     dependencies.forEach((item) => {
-      depArr.push(body[item]);
+      depArr.push(JSON.stringify(body[item] || ""));
     });
   }
   useEffect(() => {

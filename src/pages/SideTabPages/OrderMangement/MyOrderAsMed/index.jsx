@@ -14,6 +14,7 @@ import {
   ORDER_LIST,
 } from "../../../../services/ApiCalls";
 import {
+  DealByBrandIdApiAccessingAsEnum,
   defaultDeleteModelState,
   OrderFromStatusOptionArr,
 } from "../../../../utilities/const";
@@ -40,7 +41,12 @@ const MyOrderAsMed = () => {
       dealId: [],
       orderFormStatus: "",
     },
-    dependencies: ["brandId", "dealId", "orderFormStatus"],
+    dependencies: [
+      "brandId",
+      "dealId",
+      "orderFormStatus",
+      "selectedPlatformFilter",
+    ],
   });
   const [rejectReason, setRejectedReason] = useState("");
   const [rejectedModel, setRejectedModel] = useState({
@@ -107,6 +113,9 @@ const MyOrderAsMed = () => {
                       statusFilterOptionArr={OrderFromStatusOptionArr}
                       body={body}
                       setBody={setBody}
+                      dealByBrandIdApiAccessingAs={
+                        DealByBrandIdApiAccessingAsEnum.dealAsMed
+                      }
                     />
                   </ul>
                 </div>

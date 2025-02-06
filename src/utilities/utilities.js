@@ -236,3 +236,13 @@ export const copyClipboard = (productId) => {
 
 export const isSuperAdmin = (admin) =>
   admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM?.SUPERADMIN);
+
+export const errorToast = ({ message }) => {
+  toast.dismiss();
+  toast.error(message);
+};
+
+export const successToast = ({ message }) => {
+  toast.dismiss();
+  toast.success(message);
+};

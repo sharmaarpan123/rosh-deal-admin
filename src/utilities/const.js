@@ -136,3 +136,9 @@ export const orderStatusOptions = [
   { label: "Review Form Rejected", value: "reviewFormRejected" },
   { label: "Review Form Accepted", value: "reviewFormAccepted" },
 ];
+
+export const DealByBrandIdApiAccessingAsEnum = {
+  dealsAsAgency: "dealsAsAgency",
+  medDealsAsAgency: "medDealsAsAgency",
+  dealAsMed: "dealAsMed",
+};

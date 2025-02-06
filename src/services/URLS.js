@@ -50,7 +50,7 @@ export default {
   MY_MED_DEALS_AS_AGENCY: "subAdmin/myMedDealsAsAgency/getWithFilters",
   DEALS_LIST: "/admin/deal/all/withFilters",
   MY_AGENCY_DEALS_AS_MED: "subAdmin/myAgencyDealAsMed/getWithFilters",
-  DEAL_BY_BRAND_ID: "/admin/deal/getDealWithBrandId/",
+  DEAL_BY_BRAND_ID: "/admin/deal/getDealWithBrandId",
   DEAL_UPDATE_PAYMENT_STATUS: "/admin/deal/updatePaymentStatus",
   DEAL_UPDATE_STATUS: "/admin/deal/updateStatus",
   ALL_DEALS: "/admin/deal/all/allDeals",

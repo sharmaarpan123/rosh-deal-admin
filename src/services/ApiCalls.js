@@ -72,7 +72,7 @@ export const My_DEAL_AS_MED = (data) =>
 export const GET_DEAL_VIEW = (data) => Axios.get(API_URL.GET_DEAL_VIEW + data);
 
 export const DEAL_BY_BRAND_ID = (body) =>
-  Axios.get(API_URL.DEAL_BY_BRAND_ID + body);
+  Axios.post(API_URL.DEAL_BY_BRAND_ID , body);
 export const DEAL_UPDATE_PAYMENT_STATUS = (data) =>
   Axios.post(API_URL.DEAL_UPDATE_PAYMENT_STATUS, data);
 export const DEAL_UPDATE_STATUS = (data) =>

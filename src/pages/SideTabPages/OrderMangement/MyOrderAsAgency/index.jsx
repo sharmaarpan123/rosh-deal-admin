@@ -10,6 +10,7 @@ import SetReasonModel from "../../../../components/Modals/SetReasonModel";
 import dataHandler from "../../../../hooks/dataHandler";
 import { ACCEPT_REJECT_ORDER, ORDER_LIST } from "../../../../services/ApiCalls";
 import {
+  DealByBrandIdApiAccessingAsEnum,
   defaultDeleteModelState,
   OrderFromStatusOptionArr,
 } from "../../../../utilities/const";
@@ -38,7 +39,12 @@ const MyOrderAsAgency = () => {
       dealId: [],
       orderFormStatus: "",
     },
-    dependencies: ["brandId", "dealId", "orderFormStatus"],
+    dependencies: [
+      "brandId",
+      "dealId",
+      "orderFormStatus",
+      "selectedPlatformFilter",
+    ],
   });
   const [rejectReason, setRejectedReason] = useState("");
   const [rejectedModel, setRejectedModel] = useState({
@@ -105,6 +111,9 @@ const MyOrderAsAgency = () => {
                       statusFilterOptionArr={OrderFromStatusOptionArr}
                       body={body}
                       setBody={setBody}
+                      dealByBrandIdApiAccessingAs={
+                        DealByBrandIdApiAccessingAsEnum.dealsAsAgency
+                      }
                     />
                   </ul>
                 </div>
