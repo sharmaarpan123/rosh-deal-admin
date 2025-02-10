@@ -280,7 +280,6 @@ const AddBulkDeal = () => {
                       />
                     </svg>
                   </Link>
-
                 </div>
                 <div className="right d-flex gap-10">
                   <a target="_blank" href="/sampleBulk.csv">

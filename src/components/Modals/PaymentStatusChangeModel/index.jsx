@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { BULK_PAYMENT_STATUS_CHANGE } from "../../../services/ApiCalls";
 import TableToggle from "../../Common/TableToggle";
 import { paymentStatusOptions } from "../../../utilities/const";
+import * as XLSX from "xlsx";
 
 // img
 
@@ -19,41 +20,43 @@ const PaymentStatusChangeModel = ({ show, setModal, refetch }) => {
     setModal(false);
   };
 
-  const onCSvSelect = (e) => {
+  const onCSVSelect = (e) => {
     const file = e.target.files[0];
-    if (!file) {
-      return;
-    }
+
+    if (!file) return;
+
     console.log(file, "file");
-    Papa.parse(file, {
-      header: true,
-      dynamicTyping: true,
-      complete: (result) => {
-        const data = [];
-        result.data.pop();
-        result?.data?.forEach((row) => {
-          const arr = Object.keys(row);
-          let _idKeyName = "_id"; // this to sure if any space include in the key name  in csv file
-          arr.forEach((item) => {
-            if (item.includes("_id")) {
-              _idKeyName = item;
-            }
-          });
-          if (arr.length > 0) {
-            data.push(row[_idKeyName]);
-          }
-        });
-        setIds(data);
-      },
-      error: (error) => {
-        toast.error(error.message);
-      },
-    });
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const binaryStr = event.target.result;
+      const workbook = XLSX.read(binaryStr, { type: "binary" });
+
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+
+      let parsedData = XLSX.utils.sheet_to_json(sheet);
+
+      const data = [];
+      let _idKeyIndex = "";
+      parsedData.forEach((row) => {
+        const arr = Object.keys(row);
+        if (String(arr[0]).includes("_id")) {
+          _idKeyIndex = arr[0];
+        }
+        data.push(row[_idKeyIndex]);
+      });
+
+      setIds(data);
+    };
+
+    reader.readAsArrayBuffer(file);
   };
 
   const confirmHandler = catchAsync(async () => {
     if (!!!ids.length) {
-      toast.error("please select csv!");
+      return toast.error("please select csv!");
     }
     const res = await BULK_PAYMENT_STATUS_CHANGE({ orderIds: ids, status });
     const success = checkResponse({ res, showSuccess: true });
@@ -78,7 +81,7 @@ const PaymentStatusChangeModel = ({ show, setModal, refetch }) => {
           <div className="px-md-5 text-center mx-auto ">
             <h6 className="m-0 fw-bold themeBlue">Select csv</h6>
             <Button className="commonBtn position-relative">
-              <input type="file" accept=".csv" onChange={onCSvSelect} />
+              <input type="file" accept=".xls,.xlsx" onChange={onCSVSelect} />
             </Button>
 
             <Row>
@@ -88,7 +91,7 @@ const PaymentStatusChangeModel = ({ show, setModal, refetch }) => {
                 </Col>
               ))}
             </Row>
-            <Row>
+            <Row className="d-flex justify-content-center mt-2">
               <TableToggle
                 Options={paymentStatusOptions.slice(1)}
                 onChange={(e) => {

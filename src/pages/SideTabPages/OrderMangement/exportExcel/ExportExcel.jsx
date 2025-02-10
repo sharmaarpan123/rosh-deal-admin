@@ -16,7 +16,7 @@ function makeHyperLink(row, cellKey, text, hyperValue) {
   cell.font = { color: { argb: "FF0000FF" }, underline: true };
 }
 
-const ExportExcel = ({ body , api }) => {
+const ExportExcel = ({ body, api }) => {
   const [loader, setLoader] = useState(false);
   const handleExport = catchAsync(async () => {
     setLoader(true);
@@ -24,9 +24,9 @@ const ExportExcel = ({ body , api }) => {
 
     const customizeBody = { ...body };
 
-    // delete customizeBody.page;
-    // delete customizeBody.offset;
-    // delete customizeBody.limit;
+    delete customizeBody.page;
+    delete customizeBody.offset;
+    delete customizeBody.limit;
 
     const res = await api(customizeBody);
 
@@ -115,7 +115,7 @@ const ExportExcel = ({ body , api }) => {
   return (
     <div>
       <h6 className="text-muted">Export to Excel</h6>
-      <Button onClick={handleExport} className="commonBtn" >
+      <Button onClick={handleExport} className="commonBtn">
         {loader ? <ButtonLoader /> : "Download Excel"}
       </Button>
     </div>
