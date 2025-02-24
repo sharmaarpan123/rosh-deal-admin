@@ -38,9 +38,6 @@ const makeOptions = (data, extraKey, extraKeyValueKey) => {
   }));
 };
 
-const getAdminCommission = (actualPrice, lessAmount, adminPercentage = 5) => {
-  return Math.ceil(((actualPrice - lessAmount) * adminPercentage) / 100);
-};
 const AddEditDeal = () => {
   const navigate = useNavigate();
   const [brandOptions, setBrandOptions] = useState([]);

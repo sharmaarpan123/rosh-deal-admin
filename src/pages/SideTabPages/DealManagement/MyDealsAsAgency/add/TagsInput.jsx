@@ -27,21 +27,6 @@ const TagsInput = ({ setValue, watch, fieldName }) => {
     setInputValue("");
   };
 
-  // const handleKeyDown = (event) => {
-  //   if (event.key === "Enter" && event.ctrlKey && inputValue.trim() !== "") {
-  //     setValue(fieldName, [...watch(fieldName), inputValue.trim()]);
-  //     setInputValue("");
-  //   } else if (
-  //     event.key === "Enter" &&
-  //     event.ctrlKey &&
-  //     inputValue.trim() === ""
-  //   ) {
-  //     // just fun
-  //     toast.dismiss();
-  //     toast.warning("abe chutiye kuch likh to sahi!");
-  //     return;
-  //   }
-  // };
 
   const handleRemoveTag = (indexToRemove) => {
     setValue(
@@ -85,7 +70,6 @@ const TagsInput = ({ setValue, watch, fieldName }) => {
             className="form-control border-white focus-border-none"
             value={inputValue}
             onChange={handleInputChange}
-            // onKeyDown={handleKeyDown}
             style={{
               height: 30,
             }}

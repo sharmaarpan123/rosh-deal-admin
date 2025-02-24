@@ -26,6 +26,9 @@ import {
 } from "../../../../../utilities/utilities";
 import TagsInput from "../add/TagsInput";
 import styles from "./BulkAdd.module.scss";
+import noImg from "../../../../../Assets/images/no-img.png";
+import BackIcon from "../../../../../components/icons/svg/BackIcon";
+import SingleDealBox from "./SingleDealBox.jsx";
 
 const makeOptions = (data) => {
   return data?.map((item) => ({ label: item.name, value: item._id }));
@@ -43,77 +46,175 @@ const objectIdSchema = (fieldName) =>
     }
   );
 
-const schema = z.object({
-  brand: objectIdSchema("brand"),
-  platForm: objectIdSchema("Plat form"),
-  dealCategory: objectIdSchema("Deal Category"),
-  csvData: z
-    .array(
-      z.object(
-        {
-          productName: z
-            .string({ required_error: "This is Required" })
-            .min(1, { message: "Name is required" }),
-          productCategories: z
-            .array(z.string())
-            .refine((data) => !data.some((item) => item.trim() === ""), {
-              message: "Product categories must contain at least one letter",
-            })
-            .optional(),
-          postUrl: z.string().url({ invalid_type_error: "inValid post url" }),
-          actualPrice: z
-            .string({ required_error: "Actual Price is required" })
-            .min(1, { message: "Actual Price is required" })
-            .refine((data) => !isNaN(data), {
-              message: "Actual Price must be numeric",
-              paths: ["actualPrice"],
-            }),
-          cashBack: z
-            .string({ required_error: "Cashback is required" })
-            .min(1, { message: "Cashback is required" })
-            .refine((data) => !isNaN(data), {
-              message: "cashback must be numeric",
-              paths: ["cashBack"],
-            }),
-          adminCommission: z
-            .string({ required_error: "Admin commission required" })
-            .min(1, { message: "admin commission is required" })
-            .refine((data) => !isNaN(data), {
-              message: "Admin  commission should be numeric",
-            }),
-          slotAlloted: z
-            .string({
-              invalid_type_error: "invalid slotAlloted",
-              required_error: "slot Alloted is required",
-            })
-            .min(1, { message: "Slot Alloted is required" }),
-          termsAndCondition: z
-            .string({
-              required_error: "Terms and condition is required",
-            })
-            .min(1, { message: "This  is required" }),
-          uniqueIdentifier: z
-            .string({
-              required_error: "unique Identifier is required",
-            })
-            .min(1, { message: "unique Identifier  is required" }),
-          imageUrl: z.string().optional(),
-        },
-        {
-          invalid_type_error: "CSv Data is not imported or invalid",
-          required_error: "Please add the csv Data",
-        }
+const schema = ({ isExchangeDeal }) =>
+  z.object({
+    brand: objectIdSchema("brand"),
+    platForm: objectIdSchema("Plat form"),
+    dealCategory: objectIdSchema("Deal Category"),
+    csvData: z
+      .array(
+        z
+          .object({
+            productName: z
+              .string({ required_error: "This is Required" })
+              .min(1, { message: "Name is required" }),
+            productCategories: z
+              .array(z.string())
+              .refine((data) => !data.some((item) => item.trim() === ""), {
+                message: "Product categories must contain at least one letter",
+              })
+              .optional(),
+            postUrl: z.string().url({ invalid_type_error: "inValid post url" }),
+            actualPrice: z
+              .string({ required_error: "Actual Price is required" })
+              .min(1, { message: "Actual Price is required" })
+              .refine((data) => !isNaN(data), {
+                message: "Actual Price must be numeric",
+                paths: ["actualPrice"],
+              }),
+            lessAmount: z
+              .string()
+              .refine(
+                (data) => {
+                  if (!data) return true;
+                  return !isNaN(data);
+                },
+                {
+                  message: "Less Amount must be numeric",
+                  paths: ["lessAmount"],
+                }
+              )
+              .optional(),
+            lessAmountToSubAdmin: z.string().optional(),
+            adminCommission: z
+              .string({ required_error: "Admin commission required" })
+              .min(1, { message: "admin commission is required" })
+              .refine((data) => !isNaN(data), {
+                message: "Admin  commission should be numeric",
+              }),
+            slotAlloted: z
+              .string({
+                invalid_type_error: "invalid slotAlloted",
+                required_error: "slot Alloted is required",
+              })
+              .min(1, { message: "Slot Alloted is required" })
+              .refine((data) => !isNaN(data), {
+                message: "slot Alloted should be numeric",
+              }),
+            finalCashBackForUser: z
+              .string({
+                invalid_type_error: "invalid finalCashBackForUser",
+                required_error: "final Cash Back ForUser is required",
+              })
+              .min(1, { message: "final Cash Back ForUser is required" }),
+            commissionValue: z.string().refine(
+              (data) => {
+                if (data && isNaN(data)) {
+                  return false;
+                }
+                return true;
+              },
+              {
+                message: "commission should be numeric",
+                path: ["commissionValue"],
+              }
+            ),
+            commissionValueToSubAdmin: z.string().optional(),
+            refundDays: z
+              .string({
+                invalid_type_error: "invalid Refund Days",
+                required_error: "Refund Days is required",
+              })
+              .min(1, { message: "Refund Days is required" })
+              .refine((data) => !isNaN(data), {
+                message: "Refund Days should be Numeric",
+              }),
+            termsAndCondition: z
+              .string({
+                required_error: "Terms and condition is required",
+              })
+              .min(1, { message: "This  is required" }),
+            uniqueIdentifier: z
+              .string({
+                required_error: "unique Identifier is required",
+              })
+              .min(1, { message: "unique Identifier  is required" }),
+            imageUrl: z.string().optional(),
+            exchangeDealProducts: z.array(z.string()).optional(),
+            isCommissionDeal: z.boolean(),
+            showToSubAdmins: z.boolean(),
+            showToUsers: z.boolean(),
+          })
+          .refine(
+            (data) => {
+              if (
+                isExchangeDeal &&
+                (!data.exchangeDealProducts || !data.exchangeDealProducts[0])
+              ) {
+                return false;
+              }
+              return true;
+            },
+            {
+              message:
+                "If your deal is exchange deal , then please provide the exchange deals products fields",
+              path: ["exchangeDealProducts"],
+            }
+          )
+          .refine(
+            (data) => {
+              if (!data?.lessAmount && !data?.commissionValue) {
+                return false;
+              }
+              return true;
+            },
+            {
+              message: "Please fill either less Amount or commission",
+              path: ["lessAmount"],
+            }
+          )
+          .refine(
+            (data) => {
+              if (
+                data?.showToSubAdmins &&
+                data?.lessAmount &&
+                !data?.lessAmountToSubAdmin
+              ) {
+                return false;
+              }
+              return true;
+            },
+            {
+              message: "Please fill less Amount for the Mediator",
+              path: ["lessAmountToSubAdmin"],
+            }
+          )
+          .refine(
+            (data) => {
+              if (
+                data?.showToSubAdmins &&
+                data?.commissionValue &&
+                !data?.commissionValueToSubAdmin
+              ) {
+                return false;
+              }
+              return true;
+            },
+            {
+              message: "Please fill commission for the Mediator",
+              path: ["commissionValueToSubAdmin"],
+            }
+          )
       )
-    )
-    .min(1, { message: "At least one deal must be added." }),
-});
+      .min(1, { message: "At least one deal must be added." }),
+  });
 
 const AddBulkDeal = () => {
   const navigate = useNavigate();
   const [brandOptions, setBrandOptions] = useState([]);
   const [dealCategoryOptions, setDealCategoryOptions] = useState([]);
   const [platFormOptions, setPlatFormOptions] = useState([]);
-  const { id } = useParams();
+  const [isExchangeDeal, setIsExChangeDeal] = useState(false);
 
   const {
     register,
@@ -127,18 +228,21 @@ const AddBulkDeal = () => {
     defaultValues: {
       csvData: [],
     },
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema({ isExchangeDeal })),
     mode: "onChange",
     reValidateMode: "onChange",
   });
 
+  console.log(errors, "context");
+
   const { fields, remove, prepend } = useFieldArray({
     control,
     name: "csvData",
-    shouldUnregister: false,
   });
 
   const submitHandler = catchAsync(async (data) => {
+    console.log(data, "data");
+
     const res = await BULK_ADD_DEAL(
       data?.csvData?.map((item, index) => ({
         dealCategory: data.dealCategory.value,
@@ -146,9 +250,9 @@ const AddBulkDeal = () => {
         brand: data.brand.value,
         ...item,
         slotAlloted: +item.slotAlloted,
+        isCommissionDeal: item?.commissionValue ? true : false,
       }))
     );
-
     checkResponse({
       res,
       navigate,
@@ -194,7 +298,6 @@ const AddBulkDeal = () => {
           result?.data?.forEach((row) => {
             if (Object.keys(row).length > 1) {
               const item = { ...row };
-              console.log(row, "item");
               item.productCategories =
                 String(item?.productCategories)?.split(",") || [];
               item.productCategories = item?.productCategories?.filter(
@@ -204,7 +307,6 @@ const AddBulkDeal = () => {
               item.cashBack = String(item.cashBack);
               item.slotAlloted = String(item.slotAlloted);
               item.adminCommission = String(item.adminCommission);
-              console.log(item, "items");
               data.push(item);
             }
           });
@@ -230,28 +332,22 @@ const AddBulkDeal = () => {
       productCategories: [],
       postUrl: "",
       actualPrice: "",
-      cashBack: "",
+      lessAmount: "",
+      lessAmountToSubAdmin: "",
+      commissionValue: "",
+      commissionValueToSubAdmin: "",
+      finalCashBackForUser: "",
+      adminCommission: "",
+      refundDays: "",
+      showToUsers: false,
+      showToSubAdmins: false,
       slotAlloted: "",
       termsAndCondition: "",
-      adminCommission: "",
       imageUrl: "",
+      isCommissionDeal: false,
+      exchangeDealProducts: [],
     });
   };
-
-  const scrapHandler = catchAsync(async (index) => {
-    if (!getValues("csvData." + index + "." + "postUrl"))
-      return toast.error("abe post url to daa!");
-    const res = await SCRAPPER_IMAGE(
-      getValues("csvData." + index + "." + "postUrl")
-    );
-    if (res.status === 200) {
-      setValue("csvData." + index + "." + "imageUrl", res.data.image_url, {
-        shouldValidate: true,
-      });
-    } else {
-      toast.error(res.response.data.error);
-    }
-  });
 
   return (
     <>
@@ -265,20 +361,7 @@ const AddBulkDeal = () => {
                     to="/deal"
                     className="border d-flex align-items-center p-2 rounded"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="12"
-                      height="12"
-                      viewBox="0 0 10 16"
-                      fill="none"
-                    >
-                      <path
-                        d="M8.64707 0.473344C8.55514 0.381188 8.44594 0.308072 8.32572 0.258184C8.20549 0.208296 8.07661 0.182617 7.94644 0.182617C7.81628 0.182617 7.68739 0.208296 7.56717 0.258184C7.44694 0.308072 7.33774 0.381188 7.24582 0.473344L0.667065 7.05209C0.593675 7.12533 0.53545 7.21233 0.495723 7.3081C0.455996 7.40387 0.435547 7.50654 0.435547 7.61022C0.435547 7.7139 0.455996 7.81657 0.495723 7.91234C0.53545 8.00811 0.593675 8.0951 0.667065 8.16834L7.24582 14.7471C7.63373 15.135 8.25915 15.135 8.64707 14.7471C9.03498 14.3592 9.03498 13.7338 8.64707 13.3458L2.9154 7.60626L8.65498 1.86668C9.03498 1.48668 9.03498 0.853344 8.64707 0.473344Z"
-                        fill="#1E232C"
-                        stroke="#1E232C"
-                        strokeWidth="0.2"
-                      />
-                    </svg>
+                    <BackIcon />
                   </Link>
                 </div>
                 <div className="right d-flex gap-10">
@@ -345,6 +428,14 @@ const AddBulkDeal = () => {
                               <Select
                                 {...field}
                                 options={dealCategoryOptions}
+                                onChange={(value) => {
+                                  if (value?.isExchangeDeal) {
+                                    setIsExChangeDeal((p) => true);
+                                  } else {
+                                    setIsExChangeDeal((p) => false);
+                                  }
+                                  field.onChange(value);
+                                }}
                               />
                             );
                           }}
@@ -396,96 +487,17 @@ const AddBulkDeal = () => {
                     <div className={`${styles.csvDataListing}`}>
                       {fields.map((item, index) => {
                         return (
-                          <Row
-                            className={` ${styles.singleData}`}
-                            key={item.id}
-                          >
-                            <Col lg="12" className="mt-2">
-                              <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
-                                <li className=" d-flex flex-column align-items-center justify-content-center">
-                                  <p className="m-0  fw-bold text-center">
-                                    Deal Details No.
-                                  </p>
-
-                                  <h6 className="m-0 text-muted fw-bold">
-                                    {index + 1}
-                                  </h6>
-                                </li>
-                              </ul>
-                            </Col>
-                            {Object.keys(item)?.map((itm, i) => {
-                              if (itm === "id" || itm === "imageUrl") {
-                                return;
-                              }
-
-                              return (
-                                <Col lg="4" md="6" className="my-2">
-                                  <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
-                                    <li className="py-1 align-items-center gap-10">
-                                      <p className="m-0 themeBlue fw-sbold ">
-                                        {itm} :
-                                      </p>
-
-                                      {itm === "postUrl" && (
-                                        <button
-                                          type="button"
-                                          onClick={() => scrapHandler(index)}
-                                        >
-                                          scrap image
-                                        </button>
-                                      )}
-
-                                      {itm === "productCategories" ? (
-                                        <TagsInput
-                                          setValue={setValue}
-                                          watch={watch}
-                                          fieldName={`csvData.${index}.${itm}`}
-                                        />
-                                      ) : (
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          {...register(
-                                            `csvData.${index}.${itm}`
-                                          )}
-                                        />
-                                      )}
-
-                                      <p className="mb-0 text-danger">
-                                        {errors?.csvData &&
-                                          errors?.csvData[index] &&
-                                          errors?.csvData[index][itm]?.message}
-                                      </p>
-                                    </li>
-                                  </ul>
-                                </Col>
-                              );
-                            })}
-
-                            <Col lg="4" md="6" className="my-2">
-                              <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
-                                <li className="py-1 align-items-center gap-10">
-                                  <img
-                                    src={watch(`csvData.${index}.imageUrl`)}
-                                    style={{
-                                      width: 100,
-                                      height: 100,
-                                    }}
-                                    alt=""
-                                  />
-                                </li>
-                              </ul>
-                            </Col>
-
-                            <Col className="4 d-flex align-items-end py-4">
-                              <Button
-                                type="button"
-                                onClick={() => remove(index)}
-                              >
-                                Delete
-                              </Button>
-                            </Col>
-                          </Row>
+                          <SingleDealBox
+                            errors={errors}
+                            index={index}
+                            setValue={setValue}
+                            item={item}
+                            register={register}
+                            watch={watch}
+                            key={index}
+                            remove={remove}
+                            control={control}
+                          />
                         );
                       })}
                     </div>
