@@ -113,6 +113,7 @@ export const checkResponse = ({
   showError = true,
   fallBackMessage = "",
 }) => {
+  console.log(res, "res");
   if (res?.data?.success) {
     setData && setData(dataToSet || res?.data?.data);
     setTotal && setTotal(totalCount || res?.data?.total);
@@ -123,7 +124,7 @@ export const checkResponse = ({
   } else {
     console.log(res, "Res");
     toast.dismiss();
-    if (res.code === "ERR_NETWORK") {
+    if (res?.code === "ERR_NETWORK") {
       showError &&
         toast.error(
           fallBackMessage ||

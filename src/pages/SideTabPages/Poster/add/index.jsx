@@ -19,7 +19,7 @@ import {
   DEAL_CATEGORY_LIST,
   POSTER_ADD,
   POSTER_EDIT,
-  POSTER_GET_BY_ID
+  POSTER_GET_BY_ID,
 } from "../../../../services/ApiCalls";
 import { POSTER_ENUM } from "../../../../utilities/const";
 import fileUploader from "../../../../utilities/fileUploader";
@@ -220,25 +220,29 @@ const AddEditPoster = () => {
       setData: (data) =>
         setDealCategoryOptions((p) => makeOptions(data, "name")),
     });
-    checkResponse({
-      res: res[3],
-      setData: (data) => {
-        if (data.brand) {
-          data.brand = { label: data.brand.name, value: data.brand._id };
-        }
-        if (data.deal) {
-          data.deal = { label: data.deal.productName, value: data.deal._id };
-        }
-        if (data.dealCategory) {
-          data.dealCategory = {
-            label: data.dealCategory.name,
-            value: data.dealCategory._id,
+    id &&
+      checkResponse({
+        res: res[3],
+        setData: (data) => {
+          if (data.brand) {
+            data.brand = { label: data.brand.name, value: data.brand._id };
+          }
+          if (data.deal) {
+            data.deal = { label: data.deal.productName, value: data.deal._id };
+          }
+          if (data.dealCategory) {
+            data.dealCategory = {
+              label: data.dealCategory.name,
+              value: data.dealCategory._id,
+            };
+          }
+          data.posterType = {
+            label: data?.posterType,
+            value: data?.posterType,
           };
-        }
-        data.posterType = { label: data?.posterType, value: data?.posterType };
-        setData(data);
-      },
-    });
+          setData(data);
+        },
+      });
   });
 
   useEffect(() => {
@@ -271,7 +275,6 @@ const AddEditPoster = () => {
                     />
                   </svg>
                 </Link>
-               
               </div>
             </Col>
             <Col lg="12" className="my-2">

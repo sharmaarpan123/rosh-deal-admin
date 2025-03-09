@@ -143,7 +143,7 @@ export const adminItems = [
   // },
   {
     path: "/system-access",
-    name: "System Access",
+    name: "Mediators",
     icon: CommonNavIcon,
   },
 ];
@@ -247,7 +247,7 @@ export const adminSubAdminItems = [
   // },
   {
     path: "/system-access",
-    name: "System Access",
+    name: "Mediators",
     icon: CommonNavIcon,
   },
 ];

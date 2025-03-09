@@ -7,6 +7,28 @@ import noImg from "../../../../../Assets/images/no-img.png";
 import { errorToast } from "../../../../../utilities/utilities";
 import { Controller } from "react-hook-form";
 
+const fieldLabelObj = {
+  productName: "Product Name",
+  uniqueIdentifier: "Unique Identifier",
+  productCategories: "Product Categories",
+  postUrl: "Post URL",
+  actualPrice: "Actual Price",
+  lessAmount: "Less Amount",
+  lessAmountToSubAdmin: "Less Amount to Mediators",
+  commissionValue: "Commission Value",
+  commissionValueToSubAdmin: "Commission Value to Mediators",
+  finalCashBackForUser: "Final Cashback for User",
+  adminCommission: "Admin Commission",
+  refundDays: "Refund Days",
+  showToUsers: "Show to Users",
+  showToSubAdmins: "Show to Mediators",
+  slotAlloted: "Slot Allotted",
+  termsAndCondition: "Terms and Conditions",
+  imageUrl: "Image URL",
+  isCommissionDeal: "Is Commission Deal",
+  exchangeDealProducts: "Exchange Deal Products",
+};
+
 const SingleDealBox = ({
   register,
   index,
@@ -132,7 +154,9 @@ const SingleDealBox = ({
             <Col lg="4" md="6" className="my-2">
               <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
                 <li className="py-1 align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold ">{itm} :</p>
+                  <p className="m-0 themeBlue fw-sbold ">
+                    {fieldLabelObj[itm]} :
+                  </p>
 
                   <TagsInput
                     setValue={setValue}
@@ -156,7 +180,7 @@ const SingleDealBox = ({
             <Col lg="4" md="6" className="my-2">
               <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
                 <li className="py-1 align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold ">{itm} :</p>
+                  <p className="m-0 themeBlue fw-sbold "> {fieldLabelObj[itm]} :</p>
                   <p className="form-label fw-sbold  ps-2 m-0 text-success">
                     {watch(`csvData.${index}.${itm}`)}
                   </p>
@@ -170,7 +194,7 @@ const SingleDealBox = ({
           <Col lg="4" md="6" className="my-2">
             <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
               <li className="py-1 align-items-center gap-10">
-                <p className="m-0 themeBlue fw-sbold ">{itm} :</p>
+                <p className="m-0 themeBlue fw-sbold "> {fieldLabelObj[itm]} :</p>
 
                 {itm === "productCategories" ? (
                   <TagsInput

@@ -106,9 +106,9 @@ export const orderStatusObj = {
   pending: "Pending",
   rejected: "Rejected",
   accepted: "Accepted",
-  reviewFormSubmitted: "Review Form Submitted",
-  reviewFormRejected: "Review Form Rejected",
-  reviewFormAccepted: "Review Form Accepted",
+  reviewFormSubmitted: "Review Submitted",
+  reviewFormRejected: "Review Rejected",
+  reviewFormAccepted: "Review Accepted",
 };
 
 export const commonSendNotificationTypes = [

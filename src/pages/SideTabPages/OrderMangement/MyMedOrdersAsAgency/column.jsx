@@ -57,13 +57,16 @@ export const getColumn = (
     ),
   },
 
-
-
   {
     head: "Profile Name",
     accessor: "reviewerName",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">
+      <p
+        className="m-0 themeBlue fw-sbold text-break"
+        style={{
+          maxWidth: 250,
+        }}
+      >
         {capitalizedFirstAlphaBet(item?.reviewerName)}
       </p>
     ),
@@ -92,6 +95,16 @@ export const getColumn = (
   {
     head: "Order id",
     accessor: "orderIdOfPlatForm",
+    component: (item, key, arr) => (
+      <p
+        className="m-0 themeBlue fw-sbold  text-break "
+        style={{
+          maxWidth: 250,
+        }}
+      >
+        {capitalizedFirstAlphaBet(item?.orderIdOfPlatForm)}
+      </p>
+    ),
   },
 
   {
@@ -153,7 +166,7 @@ export const getColumn = (
   },
 
   {
-    head: "Selected Exchange Products",
+    head: "Exchange Product",
     accessor: "",
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>

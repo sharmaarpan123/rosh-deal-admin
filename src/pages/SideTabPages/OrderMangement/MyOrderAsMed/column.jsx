@@ -7,7 +7,10 @@ import TableActions from "../../../../components/Common/TableActions";
 import TableToggle from "../../../../components/Common/TableToggle";
 import noImg from "../../../../components/Common/noImg";
 import { PAYMENT_STATUS_CHANGE } from "../../../../services/ApiCalls";
-import { orderStatusObj, paymentStatusOptions } from "../../../../utilities/const";
+import {
+  orderStatusObj,
+  paymentStatusOptions,
+} from "../../../../utilities/const";
 import { capitalizedFirstAlphaBet } from "../../../../utilities/utilities";
 
 export const getColumn = (
@@ -31,7 +34,7 @@ export const getColumn = (
       <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
     ),
   },
-  
+
   {
     head: "Status",
     accessor: "orderFormStatus",
@@ -59,7 +62,12 @@ export const getColumn = (
     head: "Profile Name",
     accessor: "reviewerName",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">
+      <p
+        className="m-0 themeBlue fw-sbold text-break "
+        style={{
+          maxWidth: 250,
+        }}
+      >
         {capitalizedFirstAlphaBet(item?.reviewerName)}
       </p>
     ),
@@ -88,6 +96,16 @@ export const getColumn = (
   {
     head: "Order id",
     accessor: "orderIdOfPlatForm",
+    component: (item, key, arr) => (
+      <p
+        className="m-0 themeBlue fw-sbold  text-break "
+        style={{
+          maxWidth: 250,
+        }}
+      >
+        {item?.orderIdOfPlatForm}
+      </p>
+    ),
   },
 
   {
@@ -119,7 +137,7 @@ export const getColumn = (
   },
 
   {
-    head: "Selected Exchange Products",
+    head: "Exchange Product",
     accessor: "",
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
@@ -133,8 +151,6 @@ export const getColumn = (
     ),
   },
 
-  
-  
   // {
   //   head: "Platform",
   //   accessor: "platForm",
@@ -164,10 +180,6 @@ export const getColumn = (
       </p>
     ),
   },
-
- 
-
- 
 
   {
     head: "order SS",
@@ -216,7 +228,6 @@ export const getColumn = (
       />
     ),
   },
- 
 
   {
     head: "Payment Status",
