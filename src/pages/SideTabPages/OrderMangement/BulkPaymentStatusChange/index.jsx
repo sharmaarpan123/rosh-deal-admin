@@ -13,7 +13,7 @@ const BulkPaymentStatusChange = ({ refetch }) => {
         refetch={refetch}
       />
       <div>
-        <h6 className="text-muted">Payment status </h6>
+        <h6 className="text-muted mb-1">Payment status </h6>
         <Button className="commonBtn" onClick={() => setModel(true)}>
           Import Excel
         </Button>

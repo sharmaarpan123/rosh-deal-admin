@@ -83,14 +83,14 @@ const DealDetailView = ({
                     </p>
                   </h6>
                 </li>
-                <li className="py-3 d-flex align-items-center gap-10">
+                {/* <li className="py-3 d-flex align-items-center gap-10">
                   <p className="m-0 themeBlue fw-sbold w-25">
                     Admin Commission
                   </p>
                   <h6 className="m-0 text-muted fw-bold w-50">
                     {DealDetails?.adminCommission}
                   </h6>
-                </li>
+                </li> */}
               </ul>
             </Col>
             <Col md={6} className="my-2">
@@ -168,18 +168,18 @@ const DealDetailView = ({
                   <p className="m-0 themeBlue fw-sbold w-25">Created at:</p>
                   <h6 className="m-0 text-muted fw-bold w-50">
                     {moment(DealDetails?.createdAt).format(
-                      "DD-MM-YYYY ||  hh:mm:ss A"
+                      "DD-MM-YYYY  hh:mm:ss A"
                     )}
                   </h6>
                 </li>
-                <li className="py-3 d-flex align-items-center gap-10">
+                {/* <li className="py-3 d-flex align-items-center gap-10">
                   <p className="m-0 themeBlue fw-sbold w-25">Deleted</p>
                   <h6 className="m-0 text-muted fw-bold w-50">
                     {removeUnderScoreAndCapitalizeFirstLetter(
                       DealDetails?.isDeleted ? "yes" : "no"
                     )}
                   </h6>
-                </li>
+                </li> */}
               </ul>
             </Col>
             <Col lg="12">

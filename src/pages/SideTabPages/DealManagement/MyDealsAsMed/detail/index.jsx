@@ -215,7 +215,7 @@ const MyDealsDetailsAsMed = () => {
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           {moment(dealDetails?.parentDealId?.createdAt).format(
-                            "DD-MM-YYYY ||  hh:mm:ss A"
+                            "DD-MM-YYYY  hh:mm:ss A"
                           )}
                         </h6>
                       </li>

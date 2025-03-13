@@ -12,10 +12,10 @@ export const ADMIN_ROLE_TYPE_ENUM = {
 };
 
 export const adminRoleLabel = {
-  superAdmin: "SUPER ADMIN",
-  superSubAdmin: "SUPER SUB ADMIN",
-  admin: "ADMIN",
-  subadmin: "SUB ADMIN",
+  superAdmin: "Super Admin",
+  superSubAdmin: "Sub Admin",
+  admin: "Agency",
+  subadmin: "Mediator",
 };
 
 export const defaultDeleteModelState = {
@@ -56,12 +56,12 @@ export const activeInActiveStatusOptions = [
 
 export const OrderFromStatusOptionArr = [
   { label: "All", value: "" },
-  { label: "Pending", value: "pending" },
-  { label: "Accepted", value: "accepted" },
-  { label: "Rejected", value: "rejected" },
-  { label: "ReviewFormSubmitted", value: "reviewFormSubmitted" },
-  { label: "ReviewForm  Rejected", value: "reviewFormRejected" },
-  { label: "ReviewFormAccepted", value: "reviewFormAccepted" },
+  { label: "Order Pending", value: "pending" },
+  { label: "Order Accepted", value: "accepted" },
+  { label: "Order Rejected", value: "rejected" },
+  { label: "Review Submitted", value: "reviewFormSubmitted" },
+  { label: "Review Rejected", value: "reviewFormRejected" },
+  { label: "Review Accepted", value: "reviewFormAccepted" },
 ];
 
 export const paymentStatusOptions = [

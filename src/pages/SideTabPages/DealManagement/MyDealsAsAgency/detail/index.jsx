@@ -11,11 +11,7 @@ import React, { useEffect, useState } from "react";
 
 import moment from "moment";
 import { GET_DEAL_VIEW } from "../../../../../services/ApiCalls";
-import {
-  catchAsync,
-  checkResponse,
-  removeUnderScoreAndCapitalizeFirstLetter,
-} from "../../../../../utilities/utilities";
+import { catchAsync, checkResponse } from "../../../../../utilities/utilities";
 
 const DealDetails = () => {
   const [userDetails, setUserUserDetails] = useState();
@@ -81,54 +77,109 @@ const DealDetails = () => {
                   </Col> */}
                   <Col md={6} className="my-2">
                     <ul className="list-unstyled ps-0 mb-0 notLastBorder pe-lg-3">
-                      <li className="py-3 d-flex align-items-center gap-10">
+                      <li className="py-2 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">
-                          Full Name:
+                          Created at:
+                        </p>
+                        <h6 className="m-0 text-muted fw-bold w-50">
+                          {moment(userDetails?.createdAt).format(
+                            "DD-MM-YYYY  hh:mm:ss A"
+                          )}
+                        </h6>
+                      </li>
+                      <li className="py-2 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">Brand</p>
+                        <h6 className="m-0 text-muted fw-bold w-50">
+                          {userDetails?.brand?.name}
+                        </h6>
+                      </li>
+                      <li className="py-2 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">
+                          Product Name:
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           {userDetails?.productName}
                         </h6>
                       </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
+                      <li className="py-2 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">
-                          brand Name
+                          Product Price
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.brand?.name}
+                          {userDetails?.actualPrice}
                         </h6>
                       </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">Plat Form</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.platForm?.name}
-                        </h6>
-                      </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
+                      {userDetails?.isCommissionDeal ? (
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Commission
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50">
+                            {userDetails?.commissionValue}
+                          </h6>
+                        </li>
+                      ) : (
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">Less</p>
+                          <h6 className="m-0 text-muted fw-bold w-50">
+                            {userDetails?.lessAmount}
+                          </h6>
+                        </li>
+                      )}
+                      <li className="py-2 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">
-                          Deal Category
+                          Product Link
                         </p>
+                        <h6 className="m-0 text-muted fw-bold w-50">
+                          <a
+                            href={userDetails?.postUrl}
+                            target="_blank"
+                            style={{}}
+                          >
+                            {userDetails?.postUrl}
+                          </a>
+                        </h6>
+                      </li>
+                      <li className="py-2 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">Deal Type</p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           {userDetails?.dealCategory?.name}
                         </h6>
                       </li>
-                      {/* <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          Product categories
-                        </p>
+                    </ul>
+                  </Col>
+                  <Col md={6} className="my-2">
+                    <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
+                      <li className="py-2 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">Platform</p>
                         <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.productCategories?.map(
-                            (item) => `${item}, `
-                          )}
+                          {userDetails?.platForm?.name}
                         </h6>
-                      </li> */}
-
-                      <li className="py-3 d-flex align-items-center gap-10">
+                      </li>
+                      <li className="py-2 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">
-                          payment Status
+                          Slot Alloted
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
+                          {userDetails?.slotAlloted}
+                        </h6>
+                      </li>
+                      <li className="py-2 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">
+                          Slot Completed
+                        </p>
+                        <h6 className="m-0 text-muted fw-bold w-50">
+                          {userDetails?.slotCompletedCount}
+                        </h6>
+                      </li>
+
+                      <li className="py-2 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">
+                          Payment Status
+                        </p>
+                        <h6 className="m-0 text-muted fw-bold ">
                           <p
-                            className={`text-white rounded text-center ${
+                            className={`text-white px-4  mb-0 text-capitalize rounded text-center ${
                               userDetails?.paymentStatus === "paid"
                                 ? "bg-success"
                                 : userDetails?.paymentStatus === "pending"
@@ -140,11 +191,13 @@ const DealDetails = () => {
                           </p>
                         </h6>
                       </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">isActive</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                      <li className="py-2 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">
+                          Deal Status
+                        </p>
+                        <h6 className="m-0 text-muted fw-bold ">
                           <p
-                            className={` rounded  text-center text-white ${
+                            className={` rounded text-capitalize mb-0  px-4 text-center text-white ${
                               userDetails?.isActive ? "bg-success" : "bg-danger"
                             }`}
                           >
@@ -152,9 +205,9 @@ const DealDetails = () => {
                           </p>
                         </h6>
                       </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
+                      <li className="py-2 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">
-                          Admin Commission
+                          Platform Fee
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           {userDetails?.adminCommission}
@@ -162,109 +215,12 @@ const DealDetails = () => {
                       </li>
                     </ul>
                   </Col>
-                  <Col md={6} className="my-2">
-                    <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">Post Url</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          <a
-                            href={userDetails?.postUrl}
-                            target="_blank"
-                            style={{}}
-                          >
-                            CLICK HERE
-                          </a>
-                        </h6>
-                      </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          Actual Price
-                        </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.actualPrice}
-                        </h6>
-                      </li>
-                      {userDetails?.isCommissionDeal ? (
-                        <li className="py-3 d-flex align-items-center gap-10">
-                          <p className="m-0 themeBlue fw-sbold w-25">
-                            Commission Amount
-                          </p>
-                          <h6 className="m-0 text-muted fw-bold w-50">
-                            {userDetails?.commissionValue}
-                          </h6>
-                        </li>
-                      ) : (
-                        <li className="py-3 d-flex align-items-center gap-10">
-                          <p className="m-0 themeBlue fw-sbold w-25">
-                            Less Amount
-                          </p>
-                          <h6 className="m-0 text-muted fw-bold w-50">
-                            {userDetails?.lessAmount}
-                          </h6>
-                        </li>
-                      )}
-
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          Slot Alloted
-                        </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.slotAlloted}
-                        </h6>
-                      </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          slot Completed Count
-                        </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          {userDetails?.slotCompletedCount}
-                        </h6>
-                      </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          is Slot Completed
-                        </p>
-                        <h6 className={`m-0 text-muted fw-bold w-50 `}>
-                          <p
-                            className={` rounded  text-center text-white ${
-                              userDetails?.isSlotCompleted
-                                ? "bg-success"
-                                : "bg-danger"
-                            }`}
-                          >
-                            {userDetails?.isSlotCompleted
-                              ? "completed"
-                              : "uncompleted"}
-                          </p>
-                        </h6>
-                      </li>
-
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          Created at:
-                        </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          {moment(userDetails?.createdAt).format(
-                            "DD-MM-YYYY ||  hh:mm:ss A"
-                          )}
-                        </h6>
-                      </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">Deleted</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          {removeUnderScoreAndCapitalizeFirstLetter(
-                            userDetails?.isDeleted ? "yes" : "no"
-                          )}
-                        </h6>
-                      </li>
-                    </ul>
-                  </Col>
                   <Col lg="12">
-                    <li className="py-3 d-flex align-items-center gap-10">
+                    <li className="py-2 d-flex align-items-center gap-10">
                       <p className="m-0 themeBlue fw-sbold w-25">
                         Terms And Condition
                       </p>
-                      <h6 className="m-0 text-muted fw-bold w-50">
+                      <h6 className="m-0 text-muted fw-bold">
                         {userDetails?.termsAndCondition}
                       </h6>
                     </li>

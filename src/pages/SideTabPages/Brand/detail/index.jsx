@@ -102,7 +102,7 @@ const BrandDetails = () => {
                         </p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           {moment(userDetails?.date_created_utc).format(
-                            "DD-MM-YYYY ||  hh:mm:ss A"
+                            "DD-MM-YYYY  hh:mm:ss A"
                           )}
                         </h6>
                       </li>

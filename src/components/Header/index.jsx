@@ -119,7 +119,7 @@ const Header = ({ sidebar, setSidebar, title }) => {
                   />
                   <div className="content">
                     <p className="m-0 themeClr fw-sbold">{admin?.name}</p>
-                    <p className="m-0 text-muted fw-sbold">{admin?.email}</p>
+                    <p className="m-0 text-muted fw-sbold">{admin?.userName}</p>
                   </div>
                 </Link>
                 <Button

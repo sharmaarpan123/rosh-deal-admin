@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import ButtonLoader from "../../../../components/Common/ButtonLoader";
 import { catchAsync, checkResponse } from "../../../../utilities/utilities";
+import { orderStatusObj } from "../../../../utilities/const";
 
 function makeHyperLink(row, cellKey, text, hyperValue) {
   const cell = row.getCell(cellKey);
@@ -43,11 +44,18 @@ const ExportExcel = ({ body, api }) => {
     sheet.columns = [
       // reviewerName
       { header: "_id", key: "_id", width: 32 },
-      { header: "name", key: "userName", width: 32 },
-      { header: "Reviewer Name", key: "reviewerName", width: 32 },
+      { header: "Product name", key: "productName", width: 32 },
+      { header: "Brand name", key: "brand", width: 32 },
+      { header: "Deal Type", key: "dealType", width: 32 },
+      { header: "Product price", key: "productPrice", width: 32 },
       {
         header: "Less",
-        key: "cashbackAmount",
+        key: "lessAmount",
+        width: 32,
+      },
+      {
+        header: "Link",
+        key: "link",
         width: 32,
       },
       {
@@ -55,27 +63,39 @@ const ExportExcel = ({ body, api }) => {
         key: "Commission",
         width: 32,
       },
-      { header: "Product name", key: "productName", width: 32 },
-      { header: "Product price", key: "productPrice", width: 32 },
+      { header: "Reviewer Name", key: "reviewerName", width: 32 },
       { header: "Order ss", key: "orderSs", width: 32 },
       { header: "Review ss", key: "reviewSs", width: 32 },
       { header: "Seller feedback ss", key: "sellerFeedback" },
       { header: "Delivered ss", key: "deliveredScreenShot", width: 32 },
-      { header: "Exchange Products", key: "deliveredSs", width: 32 },
+      { header: "Review Link", key: "reviewLink", width: 32 },
+      { header: "Exchange Products", key: "exchangeDealProducts", width: 32 },
+      { header: "Payment Status", key: "paymentStatus", width: 32 },
+      { header: "Order Status", key: "orderFormStatus", width: 32 },
     ];
 
     data?.map(async (item, index) => {
       const row = sheet.addRow({
         _id: item?._id,
-        userName: item?.userId.name,
-        reviewerName: item?.reviewerName,
-        cashbackAmount: item?.dealId?.lessAmount,
-        Commission: item?.dealId?.commissionValue,
         productName: item?.dealId?.productName,
+        brand: item?.dealId?.brand?.name,
+        dealType: item?.dealId?.dealCategory?.name,
         productPrice: item?.dealId.actualPrice,
+        lessAmount: item?.dealId?.lessAmount || "-",
+        Commission: item?.dealId?.commissionValue || "-",
+        link: item?.dealId?.postUrl,
+        reviewerName: item?.reviewerName,
         sellerFeedback: item?.sellerFeedback,
         orderSs: item.orderScreenShot,
+        reviewSs: item.reviewScreenShot,
+        reviewLink: item.reviewLink,
         deliveredScreenShot: item?.deliveredScreenShot,
+        exchangeDealProducts:
+          item?.exchangeDealProducts?.length > 0
+            ? item?.exchangeDealProducts?.join(",")
+            : "",
+        paymentStatus: item?.paymentStatus,
+        orderFormStatus: orderStatusObj[item?.orderFormStatus],
       });
 
       if (item?.orderScreenShot) {
@@ -134,7 +154,7 @@ const ExportExcel = ({ body, api }) => {
 
   return (
     <div>
-      <h6 className="text-muted">Export to Excel</h6>
+      <h6 className="text-muted mb-1">Export to Excel</h6>
       <Button onClick={handleExport} className="commonBtn">
         {loader ? <ButtonLoader /> : "Download Excel"}
       </Button>

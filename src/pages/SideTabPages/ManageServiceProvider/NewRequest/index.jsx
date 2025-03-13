@@ -53,7 +53,7 @@ const ServiceProviderRequest = () => {
       head: "Date || Time ",
       accessor: "createdAt",
       component: (item, key, arr) => (
-        <>{moment(item.date_created_utc).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
+        <>{moment(item.date_created_utc).format("DD-MM-YYYY  hh:mm:ss A")}</>
       ),
     },
     {

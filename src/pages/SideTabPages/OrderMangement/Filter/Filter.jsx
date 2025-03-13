@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import Select from "react-select";
+import AsyncSelect from "react-select/async";
 import StatusFilter from "../../../../components/Common/StatusFilter";
 import { BRAND_LIST, DEAL_BY_BRAND_ID } from "../../../../services/ApiCalls";
-import AsyncSelect from "react-select/async";
-import Select from "react-select";
+import { errorToast } from "../../../../utilities/utilities";
 import styles from "./Filter.module.scss";
-import {
-  catchAsync,
-  checkResponse,
-  errorToast,
-} from "../../../../utilities/utilities";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 
 const Filter = ({
   statusFilterOptionArr,
@@ -121,7 +116,7 @@ const Filter = ({
 
   return (
     <ul className="list-unstyled ps-0 mb-0 d-flex align-items-end gap-10 flex-wrap">
-      <li className="d-flex flex-column align-items-center gap-10">
+      <li className="d-flex flex-column align-items-center">
         <label
           htmlFor=""
           className="form-label m-0 fw-sbold text-muted"
@@ -145,8 +140,13 @@ const Filter = ({
           PlatForms
         </label>
         <Select
+         components={{
+          DropdownIndicator: () => null,
+          IndicatorSeparator: () => null,
+        }}
           options={platformsOptions}
           isMulti
+          placeholder="Search Platform"
           className={`${styles.select}`}
           isClearable
           value={
@@ -162,15 +162,20 @@ const Filter = ({
           }
         />
       </li>
-      <li className="d-flex flex-column align-items-center gap-10">
+      <li className="d-flex flex-column align-items-center ">
         <label
           htmlFor=""
           className="form-label m-0 fw-sbold text-muted"
           style={{ whiteSpace: "nowrap" }}
         >
-          Search your Brand to filter
+          Brand
         </label>
         <AsyncSelect
+          components={{
+            DropdownIndicator: () => null,
+            IndicatorSeparator: () => null,
+          }}
+          placeholder="Search Brand"
           loadOptions={loadOptions}
           onChange={handleChange}
           value={selectedOption}
@@ -179,19 +184,25 @@ const Filter = ({
         />
       </li>
 
-      <li className="d-flex flex-column align-items-center gap-10">
+      <li className="d-flex flex-column align-items-center">
         <label
           htmlFor=""
           className="form-label m-0 fw-sbold text-muted"
           style={{ whiteSpace: "nowrap" }}
         >
-          Brand's Deals
+          Deals
         </label>
         <AsyncSelect
+          components={{
+            DropdownIndicator: () => null,
+            IndicatorSeparator: () => null,
+          }}
+          className={`${styles.select}`}
           loadOptions={loadDealOptions}
           value={selectedDealOption}
           isMulti
           isClearable
+          placeholder="Search Deal"
           onChange={(value) => {
             setSelectedDealOption(value);
             setBody((p) => ({

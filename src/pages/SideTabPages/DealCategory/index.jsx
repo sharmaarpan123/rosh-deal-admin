@@ -76,7 +76,7 @@ const DealCategory = () => {
       head: "Date || Time ",
       accessor: "createdAt",
       component: (item, key, arr) => (
-        <>{moment(item.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
+        <>{moment(item.createdAt).format("DD-MM-YYYY  hh:mm:ss A")}</>
       ),
     },
     ...(isSuperAdmin(admin)

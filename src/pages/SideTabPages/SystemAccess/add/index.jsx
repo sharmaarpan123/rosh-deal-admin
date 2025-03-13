@@ -142,10 +142,11 @@ const AddEditUser = () => {
         },
       });
 
-    checkResponse({
-      res: isSuperAdminAccessing ? res[1] : res[0],
-      setData: setUserUserDetails,
-    });
+    adminId &&
+      checkResponse({
+        res: isSuperAdminAccessing ? res[1] : res[0],
+        setData: setUserUserDetails,
+      });
   });
 
   useEffect(() => {

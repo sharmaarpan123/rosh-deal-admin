@@ -190,11 +190,11 @@ const MyAgencyDealDetailsAsMed = () => {
         <Container>
           <Row>
             <Title
-              title={" Deal Information"}
+              // title={" Deal Information"}
               BackPath={"/myAgencyDealsAsMed"}
             />
             <Col lg="12">
-              <h5 className="text-warning mb-0">
+              <h5 className="text-success mb-0">
                 {dealDetails?.isClonedAlready &&
                   "This Deals is Already Posted By You"}
               </h5>

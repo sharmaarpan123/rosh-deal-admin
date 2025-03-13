@@ -65,7 +65,7 @@ const MyAgencyDealsAsMed = () => {
       head: "Date || Time ",
       accessor: "createdAt",
       component: (item, key, arr) => (
-        <>{moment(item?.createdAt).format("DD-MM-YYYY ||  hh:mm:ss A")}</>
+        <>{moment(item?.createdAt).format("DD-MM-YYYY  hh:mm:ss A")}</>
       ),
     },
 
@@ -126,7 +126,7 @@ const MyAgencyDealsAsMed = () => {
       head: "Less",
       accessor: "lessAmount",
       component: (item) => (
-        <>{!item?.isCommissionDeal ? item?.lessAmount : "-"}</>
+        <>{!item?.isCommissionDeal ? item?.lessAmountToSubAdmin : "-"}</>
       ),
     },
 
@@ -134,7 +134,7 @@ const MyAgencyDealsAsMed = () => {
       head: "Commission",
       accessor: "commissionValue",
       component: (item) => (
-        <>{item?.isCommissionDeal ? item?.commissionValue : "-"}</>
+        <>{item?.isCommissionDeal ? item?.commissionValueToSubAdmin : "-"}</>
       ),
     },
 

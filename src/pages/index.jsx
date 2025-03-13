@@ -198,7 +198,7 @@ export const privateRoutes = [
   {
     path: "/system-access/add",
     component: <AddSubAdmin />,
-    title: "Add Sub Admin",
+    title: "Add New Member",
   },
   {
     path: "/system-access/linkedMed",

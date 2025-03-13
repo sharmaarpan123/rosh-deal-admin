@@ -130,13 +130,7 @@ const LinkedSubAdmin = () => {
                     </Col>
 
                     <Col lg="12" className="my-2">
-                      <div className="d-flex align-items-center justify-content-center gap-10">
-                        <Button
-                          className="d-flex align-items-center justify-content-center commonBtn GreyBtn"
-                          type="button"
-                        >
-                          Cancel
-                        </Button>
+                      <div className="d-flex align-items-center  gap-10">
                         <Button
                           className="d-flex align-items-center justify-content-center commonBtn "
                           type="submit"
