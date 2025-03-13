@@ -65,108 +65,116 @@ const Dashboard = () => {
   }, [DatesFilter]);
 
   return (
-    <>
-      <section className="position-relative py-2">
-        <Container>
-          <Row>
-            <Col lg="12">
-              <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize d-flex justify-content-between">
-                {loader && (
-                  <div
-                    style={{
-                      width: 25,
-                      height: 25,
-                    }}
-                  >
-                    <Loading fullSize={true} />
-                  </div>
-                )}
-              </h4>
-            </Col>
-            <Col lg="12" className="my-2">
-              <FeatureCard data={data} />
-            </Col>
-            <Col md="6" className="my-2">
-              <div className="cardCstm p-3 border h-100 rounded">
-                <div className="cardHead m-0 pb-2">
-                  <h6 className="m-0 fw-sbold themeClr d-flex justify-content-between">
-                    Revenue{" "}
-                    {showFilters && (
-                      <Button
-                        onClick={() =>
-                          setDateFilter((p) => ({
-                            startDate: "",
-                            endDate: "",
-                          }))
-                        }
+    <section className="dashboard-container py-4">
+      <Container fluid>
+        {/* Header Section */}
+        <Row className="mb-4">
+          <Col xs={12} className="d-flex justify-content-between align-items-center">
+            <h3 className="dashboard-title mb-0">Dashboard Overview</h3>
+            <div className="d-flex gap-3 align-items-center">
+              {loader && (
+                <div className="spinner-container">
+                  <Loading fullSize={true} />
+                </div>
+              )}
+              <Button 
+                variant="outline-primary"
+                className="filter-toggle-btn"
+                onClick={() => setShowFilters(p => !p)}
+              >
+                <i className="fas fa-filter me-2"></i>
+                {showFilters ? 'Hide Filters' : 'Show Filters'}
+              </Button>
+            </div>
+          </Col>
+        </Row>
+
+        {/* Filters Section */}
+        {showFilters && (
+          <Row className="mb-4">
+            <Col xs={12}>
+              <div className="filter-container p-3 bg-light rounded">
+                <Row className="g-3">
+                  {!DatesFilter.startDate || !DatesFilter.endDate ? (
+                    <Col md={4}>
+                      <label className="form-label">Report Time Type</label>
+                      <Select
+                        options={dashboardTypeOptions}
+                        value={selectedReportType}
+                        onChange={setSelectedReportedType}
+                        className="filter-select"
+                      />
+                    </Col>
+                  ) : null}
+                  <Col md={4}>
+                    <label className="form-label">Start Date</label>
+                    <DatePicker
+                      selected={DatesFilter?.startDate}
+                      onChange={date => setDateFilter(p => ({ ...p, startDate: date }))}
+                      className="form-control"
+                      isClearable
+                      placeholderText="Select start date"
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <label className="form-label">End Date</label>
+                    <DatePicker
+                      selected={DatesFilter?.endDate}
+                      onChange={date => setDateFilter(p => ({ ...p, endDate: date }))}
+                      className="form-control"
+                      isClearable
+                      placeholderText="Select end date"
+                    />
+                  </Col>
+                  {DatesFilter.startDate && DatesFilter.endDate && (
+                    <Col xs={12}>
+                      <Button 
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={() => setDateFilter({ startDate: "", endDate: "" })}
                       >
-                        Clear dates
+                        Clear Dates
                       </Button>
-                    )}
-                    <Button onClick={() => setShowFilters((p) => !p)}>
-                      Toggle show Filters
-                    </Button>
-                  </h6>
-                </div>
-                {showFilters && (
-                  <div>
-                    {DatesFilter.startDate && DatesFilter.endDate ? (
-                      <></>
-                    ) : (
-                      <>
-                        <label htmlFor="">Report Time Type</label>
-                        <Select
-                          options={dashboardTypeOptions}
-                          value={selectedReportType}
-                          onChange={setSelectedReportedType}
-                        />
-                      </>
-                    )}
-                    <div className="d-flex justify-content-between">
-                      <Row>
-                        <label htmlFor="">Start Date</label>
-                        <DatePicker
-                          className="w-100"
-                          selected={DatesFilter?.startDate}
-                          onChange={(date) =>
-                            setDateFilter((p) => ({ ...p, startDate: date }))
-                          }
-                          isClearable
-                        />
-                      </Row>
-                      <Row>
-                        <label htmlFor="">End Date</label>
-                        <DatePicker
-                          className="w-100"
-                          selected={DatesFilter?.endDate}
-                          onChange={(date) =>
-                            setDateFilter((p) => ({ ...p, endDate: date }))
-                          }
-                          isClearable
-                        />
-                      </Row>
-                    </div>
-                  </div>
-                )}
-                <div className="cardBody">
-                  <AreaChart data={data} />
-                </div>
-              </div>
-            </Col>
-            <Col md="6" className="my-2">
-              <div className="cardCstm p-3 border h-100 rounded">
-                <div className="cardHead m-0 pb-2">
-                  <h6 className="m-0 fw-sbold">Booking Status</h6>
-                </div>
-                <div className="cardBody">
-                  <PieChart data={data} />
-                </div>
+                    </Col>
+                  )}
+                </Row>
               </div>
             </Col>
           </Row>
-        </Container>
-      </section>
-    </>
+        )}
+
+        {/* Feature Cards */}
+        <Row className="mb-4">
+          <Col xs={12}>
+            <FeatureCard data={data} />
+          </Col>
+        </Row>
+
+        {/* Charts Section */}
+        <Row className="g-4">
+          <Col lg={7}>
+            <div className="dashboard-card h-100">
+              <div className="card-header">
+                <h5 className="mb-0">Revenue Overview</h5>
+              </div>
+              <div className="card-body">
+                <AreaChart data={data} />
+              </div>
+            </div>
+          </Col>
+          <Col lg={5}>
+            <div className="dashboard-card h-100">
+              <div className="card-header">
+                <h5 className="mb-0">Booking Status</h5>
+              </div>
+              <div className="card-body">
+                <PieChart data={data} />
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </section>
   );
 };
 
