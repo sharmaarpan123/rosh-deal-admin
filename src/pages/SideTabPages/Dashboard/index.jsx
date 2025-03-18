@@ -168,7 +168,7 @@ const Dashboard = () => {
         </Row>
 
         {/* Charts Section */}
-        <Row className="g-4">
+        {/* <Row className="g-4">
           <Col lg={7}>
             <div className="dashboard-card h-100">
               <div className="card-header">
@@ -189,7 +189,7 @@ const Dashboard = () => {
               </div>
             </div>
           </Col>
-        </Row>
+        </Row> */}
       </Container>
     </section>
   );

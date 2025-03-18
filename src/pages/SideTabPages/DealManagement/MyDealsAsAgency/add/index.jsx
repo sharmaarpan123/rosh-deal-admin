@@ -543,7 +543,7 @@ const AddEditDeal = () => {
                               htmlFor=""
                               className="form-label fw-sbold text-muted ps-2 m-0"
                             >
-                              Actual Price
+                              Product Price
                             </label>
                             <Controller
                               control={control}

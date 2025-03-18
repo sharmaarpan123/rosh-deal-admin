@@ -49,6 +49,15 @@ const PieChart = ({ data }) => {
         options: {
           ...prevOptions.options,
           labels: orderStatusNames,
+          dataLabels: {
+            enabled: true,
+            formatter: (val, { seriesIndex }) => orderStatusCount[seriesIndex], // Show actual count
+          },
+          tooltip: {
+            y: {
+              formatter: (value) => value, // Show actual count in tooltip
+            },
+          },
         },
       }));
     }
