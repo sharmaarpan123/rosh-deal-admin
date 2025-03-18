@@ -14,12 +14,16 @@ import {
   makingOptionsFromArr,
   removeUnderScoreAndCapitalizeFirstLetter,
 } from "../../../utilities/utilities";
-import { DASHBOARD } from "../../../services/ApiCalls";
+import {
+  AGENCY_AND_MED_DASHBOARD,
+  DASHBOARD,
+} from "../../../services/ApiCalls";
 import Select from "react-select";
 import { dashboardReportTypeArr } from "../../../utilities/const";
 import Loading from "../../../components/Common/Loading";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useSelector } from "react-redux";
 
 const dashboardTypeOptions = makingOptionsFromArr(dashboardReportTypeArr);
 
@@ -38,6 +42,8 @@ const Dashboard = () => {
     value: dashboardReportTypeArr[0],
   });
 
+  const { admin } = useSelector((s) => s.login);
+
   const getDashBoardData = catchAsync(async () => {
     setLoader(true);
 
@@ -50,7 +56,9 @@ const Dashboard = () => {
         }),
     };
 
-    const res = await DASHBOARD(body);
+    const res = await (admin?.roles?.includes("superAdmin")
+      ? DASHBOARD(body)
+      : AGENCY_AND_MED_DASHBOARD(body));
 
     checkResponse({ res, setData, setLoader });
   }, setLoader);
@@ -69,21 +77,24 @@ const Dashboard = () => {
       <Container fluid>
         {/* Header Section */}
         <Row className="mb-4">
-          <Col xs={12} className="d-flex justify-content-between align-items-center">
+          <Col
+            xs={12}
+            className="d-flex justify-content-between align-items-center"
+          >
             <h3 className="dashboard-title mb-0">Dashboard Overview</h3>
             <div className="d-flex gap-3 align-items-center">
               {loader && (
-                <div className="spinner-container">
+                <div className={`${styles.spinnerContainer}`}>
                   <Loading fullSize={true} />
                 </div>
               )}
-              <Button 
+              <Button
                 variant="outline-primary"
                 className="filter-toggle-btn"
-                onClick={() => setShowFilters(p => !p)}
+                onClick={() => setShowFilters((p) => !p)}
               >
                 <i className="fas fa-filter me-2"></i>
-                {showFilters ? 'Hide Filters' : 'Show Filters'}
+                {showFilters ? "Hide Filters" : "Show Filters"}
               </Button>
             </div>
           </Col>
@@ -110,7 +121,9 @@ const Dashboard = () => {
                     <label className="form-label">Start Date</label>
                     <DatePicker
                       selected={DatesFilter?.startDate}
-                      onChange={date => setDateFilter(p => ({ ...p, startDate: date }))}
+                      onChange={(date) =>
+                        setDateFilter((p) => ({ ...p, startDate: date }))
+                      }
                       className="form-control"
                       isClearable
                       placeholderText="Select start date"
@@ -120,7 +133,9 @@ const Dashboard = () => {
                     <label className="form-label">End Date</label>
                     <DatePicker
                       selected={DatesFilter?.endDate}
-                      onChange={date => setDateFilter(p => ({ ...p, endDate: date }))}
+                      onChange={(date) =>
+                        setDateFilter((p) => ({ ...p, endDate: date }))
+                      }
                       className="form-control"
                       isClearable
                       placeholderText="Select end date"
@@ -128,10 +143,12 @@ const Dashboard = () => {
                   </Col>
                   {DatesFilter.startDate && DatesFilter.endDate && (
                     <Col xs={12}>
-                      <Button 
+                      <Button
                         variant="outline-secondary"
                         size="sm"
-                        onClick={() => setDateFilter({ startDate: "", endDate: "" })}
+                        onClick={() =>
+                          setDateFilter({ startDate: "", endDate: "" })
+                        }
                       >
                         Clear Dates
                       </Button>

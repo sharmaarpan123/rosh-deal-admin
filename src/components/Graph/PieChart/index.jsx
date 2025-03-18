@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
+import React, { useEffect, useState } from "react";
+import ReactApexChart from "react-apexcharts";
+import { orderStatusObj, orderStatusOptions } from "../../../utilities/const";
 
 const PieChart = ({ data }) => {
   const [chartOptions, setChartOptions] = useState({
     series: [],
     options: {
       chart: {
-        type: 'pie',
-        width: '100%',
+        type: "pie",
+        width: "100%",
       },
       labels: [],
-      colors: ['#005FD9', '#FFA84A', '#9B88ED', '#FB67CA'],
+      colors: ["#005FD9", "#FFA84A", "#9B88ED", "#FB67CA"],
       responsive: [
         {
           breakpoint: 480,
           options: {
             chart: {
-              width: '100%',
+              width: "100%",
             },
             legend: {
-              position: 'bottom',
+              position: "bottom",
             },
           },
         },
@@ -38,7 +39,9 @@ const PieChart = ({ data }) => {
   useEffect(() => {
     if (data?.orderStatus) {
       const orderStatusCount = data.orderStatus.map((item) => item.count);
-      const orderStatusNames = data.orderStatus.map((item) => item._id);
+      const orderStatusNames = data.orderStatus.map(
+        (item) => orderStatusObj[item._id] || ""
+      );
 
       setChartOptions((prevOptions) => ({
         ...prevOptions,

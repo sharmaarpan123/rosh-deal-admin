@@ -17,6 +17,7 @@ export const UPLOAD_FILE = (data) => Axios.post(API_URL.UPLOAD_FILE, data);
 // dasbhoard
 
 export const DASHBOARD = (data) => Axios.post(API_URL.DASHBOARD, data);
+export const AGENCY_AND_MED_DASHBOARD = (data) => Axios.post(API_URL.AGENCY_AND_MED_DASHBOARD, data);
 
 // PLATFORM
 

@@ -14,6 +14,7 @@ export default {
   // dashboard
 
   DASHBOARD: "admin/dashboard",
+  AGENCY_AND_MED_DASHBOARD: "subAdmin/dashboard",
 
   // UPLOAD FILE
 
