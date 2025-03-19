@@ -49,10 +49,6 @@ const DealManagement = () => {
       },
     },
     {
-      head: "_id",
-      accessor: "_id",
-    },
-    {
       head: "Status",
       accessor: "",
       component: (item, index) => (

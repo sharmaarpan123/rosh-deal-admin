@@ -15,7 +15,7 @@ import Dashboard from "./SideTabPages/Dashboard";
 import DealCategory from "./SideTabPages/DealCategory";
 import AddEditDealCategory from "./SideTabPages/DealCategory/add";
 import DealCategoryDetails from "./SideTabPages/DealCategory/detail";
-import Earnings from "./SideTabPages/Earnings";
+import Earnings from "./SideTabPages/DealManagement/MyMediatorDeals/Earnings";
 import Faq from "./SideTabPages/Faq";
 import AddFaq from "./SideTabPages/Faq/add";
 import Help from "./SideTabPages/Help";

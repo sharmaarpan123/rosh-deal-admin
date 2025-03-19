@@ -81,6 +81,15 @@ export const getColumn = (
       </p>
     ),
   },
+   {
+    head: "Platform",
+    accessor: "platForm",
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold">
+        {capitalizedFirstAlphaBet(item?.dealId?.platForm?.name)}
+      </p>
+    ),
+  },
   {
     head: "Product Name",
     accessor: "productName",
@@ -158,15 +167,7 @@ export const getColumn = (
     ),
   },
 
-  // {
-  //   head: "Platform",
-  //   accessor: "platForm",
-  //   component: (item, key, arr) => (
-  //     <p className="m-0 themeBlue fw-sbold">
-  //       {capitalizedFirstAlphaBet(item?.dealId?.platForm?.name)}
-  //     </p>
-  //   ),
-  // },
+ 
   // {
   //   head: "Deal Category",
   //   accessor: "dealCategory",
@@ -228,66 +229,72 @@ export const getColumn = (
   {
     head: "Payment Status",
     accessor: "payment Status",
-    component: (item, index) => (
-      <TableToggle
-        Options={paymentStatusOptions.slice(1)}
-        onChange={(e) =>
-          statusChangeHandler(
-            () =>
-              PAYMENT_STATUS_CHANGE({
-                orderId: item._id,
-                status: e.target.value,
-              }),
-            index,
-            "paymentStatus",
-            item.paymentStatus === "paid" ? "pending" : "paid"
-          )
-        }
-        style={{
-          color: item.paymentStatus === "pending" ? "red" : "green",
-          width: 120,
-        }}
-        value={item.paymentStatus}
-      />
-    ),
+    component: (item, index) => {
+      return (
+        <TableToggle
+          Options={paymentStatusOptions.slice(1)}
+          onChange={(e) =>
+            statusChangeHandler(
+              () =>
+                PAYMENT_STATUS_CHANGE({
+                  orderId: item._id,
+                  status: e.target.value,
+                }),
+              index,
+              "paymentStatus",
+              item.paymentStatus === "paid" ? "pending" : "paid"
+            )
+          }
+          style={{
+            color: item.paymentStatus === "pending" ? "red" : "green",
+            width: 120,
+          }}
+          value={item.paymentStatus}
+        />
+      );
+    },
   },
 
   {
     head: "Action",
     accessor: "Action",
-    component: (item, ind) => (
-      <TableActions
-        acceptHandler={
-          ["pending"].includes(item?.orderFormStatus) &&
-          (() => acceptRejectHandler(item._id, ind, "accepted"))
-        }
-        rejectHandler={
-          ["pending", "accepted"].includes(item?.orderFormStatus) &&
-          (() =>
-            setRejectedModel({
-              show: true,
-              dumpId: item?._id,
-              ind: ind,
-              status: "rejected",
-            }))
-        }
-        reviewAcceptHandler={
-          ["reviewFormSubmitted"].includes(item.orderFormStatus) &&
-          (() => acceptRejectHandler(item._id, ind, "reviewFormAccepted"))
-        }
-        reviewRejectHandler={
-          ["reviewFormSubmitted", "reviewFormAccepted"].includes(
-            item.orderFormStatus
-          ) &&
-          (() =>
-            setRejectedModel({
-              show: true,
-              dumpId: item?._id,
-              ind: ind,
-              status: "reviewFormRejected",
-            }))
-        }
-      />
-    ),
+    component: (item, ind) => {
+      return item?.paymentStatus !== "paid" ? (
+        <TableActions
+          acceptHandler={
+            ["pending"].includes(item?.orderFormStatus) &&
+            (() => acceptRejectHandler(item._id, ind, "accepted"))
+          }
+          rejectHandler={
+            ["pending", "accepted"].includes(item?.orderFormStatus) &&
+            (() =>
+              setRejectedModel({
+                show: true,
+                dumpId: item?._id,
+                ind: ind,
+                status: "rejected",
+              }))
+          }
+          reviewAcceptHandler={
+            ["reviewFormSubmitted"].includes(item.orderFormStatus) &&
+            (() => acceptRejectHandler(item._id, ind, "reviewFormAccepted"))
+          }
+          reviewRejectHandler={
+            ["reviewFormSubmitted", "reviewFormAccepted"].includes(
+              item.orderFormStatus
+            ) &&
+            (() =>
+              setRejectedModel({
+                show: true,
+                dumpId: item?._id,
+                ind: ind,
+                status: "reviewFormRejected",
+              }))
+          }
+        />
+      ) : (
+        <></>
+      );
+    },
   },
 ];

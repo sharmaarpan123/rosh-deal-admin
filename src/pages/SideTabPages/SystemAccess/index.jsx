@@ -29,6 +29,11 @@ import {
 } from "../../../utilities/utilities";
 import Filter from "../../../components/Common/Filter";
 
+const roleLabelEnum = {
+  subadmin: "Mediator",
+  admin: "Agency",
+};
+
 const PlatForm = () => {
   const {
     setBody,
@@ -61,7 +66,7 @@ const PlatForm = () => {
       ),
     },
     {
-      head: "userName",
+      head: "User Name",
       accessor: "userName",
       component: (item, key, arr) => (
         <p className="m-0 fw-sbold">{item.userName}</p>
@@ -76,7 +81,7 @@ const PlatForm = () => {
             accessor: "Roles",
             component: (item, key, arr) => (
               <p className={`text-warning m-0 fw-sbold text-capitalize`}>
-                {item?.roles?.join(",")}
+                {item?.roles?.map((item) => roleLabelEnum[item])?.join(",")}
               </p>
             ),
           },

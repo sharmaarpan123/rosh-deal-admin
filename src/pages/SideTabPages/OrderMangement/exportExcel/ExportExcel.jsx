@@ -77,13 +77,23 @@ const ExportExcel = ({ body, api }) => {
     data?.map(async (item, index) => {
       const row = sheet.addRow({
         _id: item?._id,
-        productName: item?.dealId?.productName,
-        brand: item?.dealId?.brand?.name,
-        dealType: item?.dealId?.dealCategory?.name,
-        productPrice: item?.dealId.actualPrice,
-        lessAmount: item?.dealId?.lessAmount || "-",
-        Commission: item?.dealId?.commissionValue || "-",
-        link: item?.dealId?.postUrl,
+        productName:
+          item?.dealId?.parentDealId?.productName || item?.dealId?.productName,
+        brand:
+          item?.dealId?.parentDealId?.brand?.name || item?.dealId?.brand?.name,
+        dealType:
+          item?.dealId?.parentDealId?.dealCategory?.name ||
+          item?.dealId?.dealCategory?.name,
+        productPrice: item?.dealId?.parentDealId?.actualPrice || item?.dealId.actualPrice,
+        lessAmount:
+          item?.dealId?.parentDealId?.actualPrice ||
+          item?.dealId?.lessAmount ||
+          "-",
+        Commission:
+          item?.dealId?.parentDealId?.actualPrice ||
+          item?.dealId?.commissionValue ||
+          "-",
+        link: item?.dealId?.parentDealId?.actualPrice || item?.dealId?.postUrl,
         reviewerName: item?.reviewerName,
         sellerFeedback: item?.sellerFeedback,
         orderSs: item.orderScreenShot,

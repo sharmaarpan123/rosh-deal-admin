@@ -44,11 +44,6 @@ const MyMedDealsAsAgency = () => {
       },
     },
     {
-      head: "_id",
-      accessor: "_id",
-    },
-
-    {
       head: "Mediator  Name",
       accessor: "adminId",
       component: (item, key, arr) => (

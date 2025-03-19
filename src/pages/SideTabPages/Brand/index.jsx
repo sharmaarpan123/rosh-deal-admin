@@ -50,10 +50,7 @@ const Brand = () => {
         return <>{body.limit * (body.page - 1) + key + 1}</>;
       },
     },
-    {
-      head: "_id",
-      accessor: "_id",
-    },
+
     {
       head: "Name",
       accessor: "name",
