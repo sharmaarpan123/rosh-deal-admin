@@ -28,6 +28,13 @@ export const getColumn = (
     },
   },
   {
+    head: "Mediator Name",
+    accessor: "createdAt",
+    component: (item, key, arr) => (
+      <>{item?.dealId?.adminId?.name}</>
+    ),
+  },
+  {
     head: "Date || Time ",
     accessor: "createdAt",
     component: (item, key, arr) => (
@@ -181,7 +188,7 @@ export const getColumn = (
   },
 
   {
-    head: "order SS",
+    head: "Order SS",
     accessor: "image",
     component: (item, key, arr) => (
       <img
@@ -193,7 +200,7 @@ export const getColumn = (
   },
 
   {
-    head: "delivered SS",
+    head: "Delivered SS",
     accessor: "image",
     component: (item, key, arr) => (
       <img

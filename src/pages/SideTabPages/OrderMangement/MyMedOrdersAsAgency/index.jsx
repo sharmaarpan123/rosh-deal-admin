@@ -40,12 +40,14 @@ const MyMedOrdersAsAgency = () => {
       brandId: "",
       dealId: [],
       orderFormStatus: "",
+      mediatorId: "",
     },
     dependencies: [
       "brandId",
       "dealId",
       "orderFormStatus",
       "selectedPlatformFilter",
+      "mediatorId",
     ],
   });
   const [rejectReason, setRejectedReason] = useState("");
@@ -110,6 +112,7 @@ const MyMedOrdersAsAgency = () => {
                 <div className="left">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
                     <Filter
+                      showMediatorFilter={true}
                       statusFilterOptionArr={OrderFromStatusOptionArr}
                       body={body}
                       setBody={setBody}

@@ -179,7 +179,7 @@ export const getColumn = (
   // },
 
   {
-    head: "order SS",
+    head: "Order SS",
     accessor: "image",
     component: (item, key, arr) => (
       <img
@@ -191,7 +191,7 @@ export const getColumn = (
   },
 
   {
-    head: "delivered SS",
+    head: "Delivered SS",
     accessor: "image",
     component: (item, key, arr) => (
       <img

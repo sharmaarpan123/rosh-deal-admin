@@ -9,17 +9,18 @@ import React, { useEffect, useState } from "react";
 // img
 // import i1 from "@/Assets/images/authBg.png";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import moment from "moment";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import Loading from "../../../../../components/Common/Loading";
 import Title from "../../../../../components/Common/Title";
-import DealDetailView from "../../../../../components/Deal/DealDetailView";
 import {
   CLONE_DEAL,
   MY_AGENCY_DEAL_DETAIL_AS_MED,
 } from "../../../../../services/ApiCalls";
-import { catchAsync, checkResponse } from "../../../../../utilities/utilities";
-import { z } from "zod";
 import { superAdminCommission } from "../../../../../utilities/const";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { catchAsync, checkResponse } from "../../../../../utilities/utilities";
 
 export const cloneDealSchema = z
   .object({
@@ -200,11 +201,159 @@ const MyAgencyDealDetailsAsMed = () => {
               </h5>
             </Col>
 
-            <DealDetailView
-              DealDetails={dealDetails}
-              loader={initialLoader}
-              isSubAdminWatchingDetails={true}
-            />
+            <Col lg="12" className="my-2 position-relative">
+      <div
+        className="formWrpper px-lg-5 p-md-4 p-3 rounded position-relative"
+        style={{ background: "#EEEEEE" }}
+      >
+        {initialLoader ? (
+          <div
+            className="position-absolute "
+            style={{
+              right: 12,
+              top: 12,
+              width: 30,
+            }}
+          >
+            <Loading fullSize={true} />
+          </div>
+        ) : (
+          <Row className="justify-content-between">
+            <Col md={6} className="my-2">
+              <ul className="list-unstyled ps-0 mb-0 notLastBorder pe-lg-3">
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Created at:</p>
+                  <h6 className="m-0 text-muted fw-bold w-50">
+                    {moment(dealDetails?.createdAt).format(
+                      "DD-MM-YYYY  hh:mm:ss A"
+                    )}
+                  </h6>
+                </li>
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Brand</p>
+                  <h6 className="m-0 text-muted fw-bold w-50">
+                    {dealDetails?.brand?.name}
+                  </h6>
+                </li>
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Product Name:</p>
+                  <h6 className="m-0 text-muted fw-bold w-50">
+                    {dealDetails?.productName}
+                  </h6>
+                </li>
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Product Price</p>
+                  <h6 className="m-0 text-muted fw-bold w-50">
+                    {dealDetails?.actualPrice}
+                  </h6>
+                </li>
+                {dealDetails?.isCommissionDeal ? (
+                  <li className="py-2 d-flex align-items-center gap-10">
+                    <p className="m-0 themeBlue fw-sbold w-25">Commission</p>
+                    <h6 className="m-0 text-muted fw-bold w-50">
+                      {dealDetails?.commissionValueToSubAdmin}
+                    </h6>
+                  </li>
+                ) : (
+                  <li className="py-2 d-flex align-items-center gap-10">
+                    <p className="m-0 themeBlue fw-sbold w-25">Less</p>
+                    <h6 className="m-0 text-muted fw-bold w-50">
+                      {dealDetails?.lessAmountToSubAdmin}
+                    </h6>
+                  </li>
+                )}
+              
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Deal Type</p>
+                  <h6 className="m-0 text-muted fw-bold w-50">
+                    {dealDetails?.dealCategory?.name}
+                  </h6>
+                </li>
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25 text-break">Product Link</p>
+                  <h6 className="m-0 text-muted fw-bold w-50 text-truncate text-wrap">
+                    <a
+                      href={dealDetails?.postUrl}
+                      target="_blank"
+                      
+                    >
+                      {dealDetails?.postUrl}
+                    </a>
+                  </h6>
+                </li>
+              </ul>
+            </Col>
+            <Col md={6} className="my-2">
+              <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Platform</p>
+                  <h6 className="m-0 text-muted fw-bold w-50">
+                    {dealDetails?.platForm?.name}
+                  </h6>
+                </li>
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Slot Alloted</p>
+                  <h6 className="m-0 text-muted fw-bold w-50">
+                    {dealDetails?.slotAlloted}
+                  </h6>
+                </li>
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Slot Completed</p>
+                  <h6 className="m-0 text-muted fw-bold w-50">
+                    {dealDetails?.slotCompletedCount}
+                  </h6>
+                </li>
+
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Payment Status</p>
+                  <h6 className="m-0 text-muted fw-bold ">
+                    <p
+                      className={`text-white px-4  mb-0 text-capitalize rounded text-center ${
+                        dealDetails?.paymentStatus === "paid"
+                          ? "bg-success"
+                          : dealDetails?.paymentStatus === "pending"
+                          ? "bg-warning"
+                          : "bg-pending"
+                      }`}
+                    >
+                      {dealDetails?.paymentStatus}
+                    </p>
+                  </h6>
+                </li>
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Deal Status</p>
+                  <h6 className="m-0 text-muted fw-bold ">
+                    <p
+                      className={` rounded text-capitalize mb-0  px-4 text-center text-white ${
+                        dealDetails?.isActive ? "bg-success" : "bg-danger"
+                      }`}
+                    >
+                      {dealDetails?.isActive ? "active" : "inactive"}
+                    </p>
+                  </h6>
+                </li>
+                <li className="py-2 d-flex align-items-center gap-10">
+                  <p className="m-0 themeBlue fw-sbold w-25">Platform Fee</p>
+                  <h6 className="m-0 text-muted fw-bold w-50">
+                    {dealDetails?.adminCommission}
+                  </h6>
+                </li>
+              </ul>
+            </Col>
+            <Col lg="12">
+              <li className="py-2 d-flex align-items-center gap-10">
+                <p className="m-0 themeBlue fw-sbold w-25">
+                  Terms And Condition
+                </p>
+                <h6 className="m-0 text-muted fw-bold">
+                  {dealDetails?.termsAndCondition}
+                </h6>
+              </li>
+            </Col>
+          </Row>
+        )}
+      </div>
+    </Col>
             {dealDetails && !dealDetails?.isClonedAlready && (
               <Col lg="12" className="my-2">
                 <div

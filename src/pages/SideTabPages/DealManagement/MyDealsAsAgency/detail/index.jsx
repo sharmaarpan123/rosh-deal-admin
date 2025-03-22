@@ -126,24 +126,26 @@ const DealDetails = () => {
                           </h6>
                         </li>
                       )}
-                      <li className="py-2 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">
-                          Product Link
-                        </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
-                          <a
-                            href={userDetails?.postUrl}
-                            target="_blank"
-                            style={{}}
-                          >
-                            {userDetails?.postUrl}
-                          </a>
-                        </h6>
-                      </li>
+                      
                       <li className="py-2 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Deal Type</p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           {userDetails?.dealCategory?.name}
+                        </h6>
+                      </li>
+                      <li className="py-2 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">
+                          Product Link
+                        </p>
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break ">
+                          <a
+                            href={userDetails?.postUrl}
+                            target="_blank"
+                            style={{}}
+                            className=""
+                          >
+                            {userDetails?.postUrl}
+                          </a>
                         </h6>
                       </li>
                     </ul>

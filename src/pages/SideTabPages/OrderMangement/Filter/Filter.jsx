@@ -4,7 +4,12 @@ import { useSelector } from "react-redux";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import StatusFilter from "../../../../components/Common/StatusFilter";
-import { BRAND_LIST, DEAL_BY_BRAND_ID } from "../../../../services/ApiCalls";
+import CrossIcon from "../../../../components/icons/svg/CrossIcon";
+import {
+  BRAND_LIST,
+  DEAL_BY_BRAND_ID,
+  SUB_ADMIN_LIST,
+} from "../../../../services/ApiCalls";
 import { errorToast } from "../../../../utilities/utilities";
 import styles from "./Filter.module.scss";
 
@@ -12,12 +17,20 @@ const Filter = ({
   statusFilterOptionArr,
   setBody,
   body,
+  showMediatorFilter = false,
   dealByBrandIdApiAccessingAs,
 }) => {
   const [selectedOption, setSelectedOption] = useState({
     label: "",
     value: "",
   });
+
+  const [selectedMediator, setSelectedMediator] = useState({
+    label: "",
+    value: "",
+  });
+
+  console.log(selectedMediator, "asfl;dsakj");
 
   const [selectedDealOption, setSelectedDealOption] = useState([]);
 
@@ -54,6 +67,31 @@ const Filter = ({
         brandId: "",
       }));
       setSelectedOption({});
+    }
+  };
+
+  const loadMediatorsOptions = async (inputValue, callback) => {
+    const response = await SUB_ADMIN_LIST({ search: inputValue });
+    if (response) {
+      const options = response?.data?.data?.map((item) => ({
+        value: item._id,
+        label: item.name,
+      }));
+      callback(options);
+      if (!!!options.length) {
+        setBody((p) => ({
+          ...p,
+          mediatorId: "",
+        }));
+        setSelectedMediator({ label: "", value: "" });
+      }
+    } else {
+      callback([]);
+      setBody((p) => ({
+        ...p,
+        mediatorId: "",
+      }));
+      setSelectedMediator({});
     }
   };
 
@@ -98,10 +136,19 @@ const Filter = ({
     }));
   };
 
+  const handleMediatorChange = (option) => {
+    setSelectedMediator(option);
+    setBody((p) => ({
+      ...p,
+      mediatorId: option?.value,
+    }));
+  };
+
   const clearFilter = () => {
     setBody((p) => ({
       ...p,
       brandId: "",
+      mediatorId: "",
       dealId: [],
       status: "",
       page: 1,
@@ -111,6 +158,7 @@ const Filter = ({
     }));
 
     setSelectedOption({ label: "", value: "" });
+    setSelectedMediator({ label: "", value: "" });
     setSelectedDealOption([]);
   };
 
@@ -140,10 +188,10 @@ const Filter = ({
           PlatForms
         </label>
         <Select
-         components={{
-          DropdownIndicator: () => null,
-          IndicatorSeparator: () => null,
-        }}
+          components={{
+            DropdownIndicator: () => null,
+            IndicatorSeparator: () => null,
+          }}
           options={platformsOptions}
           isMulti
           placeholder="Search Platform"
@@ -162,6 +210,31 @@ const Filter = ({
           }
         />
       </li>
+
+      {showMediatorFilter && (
+        <li className="d-flex flex-column align-items-center ">
+          <label
+            htmlFor=""
+            className="form-label m-0 fw-sbold text-muted"
+            style={{ whiteSpace: "nowrap" }}
+          >
+            Mediator
+          </label>
+          <AsyncSelect
+            components={{
+              DropdownIndicator: () => null,
+              IndicatorSeparator: () => null,
+            }}
+            placeholder="Search Mediator"
+            loadOptions={loadMediatorsOptions}
+            onChange={handleMediatorChange}
+            value={selectedMediator}
+            className={`${styles.select}`}
+            isClearable
+          />
+        </li>
+      )}
+
       <li className="d-flex flex-column align-items-center ">
         <label
           htmlFor=""
@@ -214,8 +287,16 @@ const Filter = ({
       </li>
 
       <li>
-        <Button className="commonBtn" type="button" onClick={clearFilter}>
-          Clear
+        <Button
+          className="commonBtn px-0"
+          type="button"
+          style={{
+            minWidth: 40,
+            height: 40,
+          }}
+          onClick={clearFilter}
+        >
+          <CrossIcon />
         </Button>
       </li>
     </ul>
