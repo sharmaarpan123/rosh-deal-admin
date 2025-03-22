@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // css
 import styles from "../../../layout/Auth/Auth.module.scss";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { z } from "zod";
 import { loginAdmin } from "../../../store/actions";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch, useSelector } from "react-redux";
-import requestNotificationPermission from "../../../firebase";
 
 const schema = z.object({
   phoneNumber: z
@@ -18,10 +17,22 @@ const schema = z.object({
       required_error: "Phone Number is required",
       invalid_type_error: "Phone Number should be valid",
     })
+    .trim()
+    .min(1, { message: "Please enter your mobile number" })
     .min(10, { message: "Phone Number should contain 10 digit" })
-    .max(10, { message: "Phone Number should contain max 10 digit" })
-    .refine((data) => !isNaN(data), { message: "Number should be numeric" }),
-  password: z.string().min(1, { message: "Password is required" }),
+    .max(10, { message: "Phone Number should contain max 10 digit" }),
+  password: z
+    .string()
+    .min(1, {
+      message:
+        "Password must include a lowercase letter, an uppercase letter, a number, and a special character or symbol",
+    })
+    .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
+    .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
+    .regex(/[0-9]/, { message: "Password must include a number" })
+    .regex(/[^A-Za-z0-9]/, {
+      message: "Password must include a special character or symbol",
+    }),
 });
 
 const Login = () => {
@@ -93,7 +104,7 @@ const Login = () => {
                 <div className="position-relative iconWithText">
                   <input
                     type={pass ? "text" : "password"}
-                    className={`${styles.formControl} form-control`}
+                    className={`${styles.formControl} form-control pe-5`}
                     placeholder="*************"
                     {...register("password")}
                   />

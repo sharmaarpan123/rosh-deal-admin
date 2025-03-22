@@ -37,6 +37,7 @@ const AddEditDealCategory = () => {
   const [image, setImage] = useState("");
   const [detailsCategory, setDealCategoryList] = useState();
   const { id } = useParams();
+  const [loader, setLoader] = useState(false);
 
   const {
     register,
@@ -55,6 +56,7 @@ const AddEditDealCategory = () => {
 
   const submitHandler = catchAsync(async (data) => {
     let res;
+    setLoader(true);
 
     if (id) {
       res = await UPDATE_DEAL_CATEGORY({
@@ -70,17 +72,22 @@ const AddEditDealCategory = () => {
       showSuccess: true,
       navigate: navigate,
       navigateUrl: "/category",
+      setLoader,
     });
   });
 
   const imageChangeHandler = catchAsync(async (e) => {
+    setLoader(true);
     const url = await fileUploader(e.target.files[0]);
 
     if (!url) {
+      setLoader(false);
+
       return;
     }
-
     setImage(url);
+    setLoader(false);
+
   });
 
   const getData = catchAsync(async () => {
@@ -119,7 +126,6 @@ const AddEditDealCategory = () => {
                     />
                   </svg>
                 </Link>
-               
               </div>
             </Col>
             <Col lg="12" className="my-2">
@@ -233,8 +239,9 @@ const AddEditDealCategory = () => {
                         <Button
                           className="d-flex align-items-center justify-content-center commonBtn"
                           type="submit"
+                          disabled={loader}
                         >
-                          Submit
+                          {loader ? "loading..." : "Submit"}
                         </Button>
                       </div>
                     </Col>

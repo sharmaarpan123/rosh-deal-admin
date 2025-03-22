@@ -21,7 +21,10 @@ import { catchAsync, checkResponse } from "../../../../utilities/utilities";
 import fileUploader from "../../../../utilities/fileUploader";
 
 const schema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
+  name: z
+    .string()
+    .min(1, { message: "Name is required" })
+    .max(30, { message: "To Long Name" }),
 });
 
 const AddPlatForm = () => {
@@ -196,6 +199,7 @@ const AddPlatForm = () => {
                         <Button
                           disabled={loader}
                           className="d-flex align-items-center justify-content-center commonBtn GreyBtn"
+                          onClick={() => navigate(-1)}
                         >
                           Cancel
                         </Button>

@@ -1,8 +1,97 @@
-import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { CHANGE_PASSWORD } from "../../../../services/ApiCalls";
+import { catchAsync, checkResponse } from "../../../../utilities/utilities";
+
+const schema = z
+  .object({
+    oldPassword: z
+      .string()
+      .min(1, {
+        message:
+          "Password must include a lowercase letter, an uppercase letter, a number, and a special character or symbol",
+      })
+      .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
+      .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
+      .regex(/[0-9]/, { message: "Password must include a number" })
+      .regex(/[^A-Za-z0-9]/, {
+        message: "Password must include a special character or symbol",
+      }),
+    newPassword: z
+      .string()
+      .min(1, {
+        message:
+          "Password must include a lowercase letter, an uppercase letter, a number, and a special character or symbol",
+      })
+      .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
+      .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
+      .regex(/[0-9]/, { message: "Password must include a number" })
+      .regex(/[^A-Za-z0-9]/, {
+        message: "Password must include a special character or symbol",
+      }),
+    confirmPassword: z
+      .string()
+      .min(1, {
+        message:
+          "Password must include a lowercase letter, an uppercase letter, a number, and a special character or symbol",
+      })
+      .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
+      .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
+      .regex(/[0-9]/, { message: "Password must include a number" })
+      .regex(/[^A-Za-z0-9]/, {
+        message: "Password must include a special character or symbol",
+      }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Confirm Password should be same as password.",
+  });
 
 const ManagePassword = () => {
+  const navigate = useNavigate();
+
+  const [showPassWord, setShowPassword] = useState({
+    oldPassword: false,
+    newPassword: false,
+    confirmPassword: false,
+  });
+
+  const toggleShowPassword = (key) => {
+    setShowPassword((p) => ({
+      ...p,
+      [key]: !p[key],
+    }));
+  };
+
+  const submitHandler = catchAsync(async (data) => {
+    const res = await CHANGE_PASSWORD({
+      ...data,
+    });
+
+    const success = checkResponse({
+      res,
+      showSuccess: true,
+    });
+
+    if (success) {
+      localStorage.clear();
+      window.location.replace("/");
+    }
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+    reValidateMode: "onChange",
+    mode: "onChange",
+  });
   return (
     <>
       <section className="managePassword py-3 position-relative">
@@ -39,7 +128,7 @@ const ManagePassword = () => {
                 className="formWrpper px-lg-5 p-md-4 p-3 rounded"
                 style={{ background: "#EEEEEE" }}
               >
-                <Form>
+                <Form onSubmit={handleSubmit(submitHandler)}>
                   <Row className="justify-content-between">
                     <Col lg="12" className="my-2">
                       <label
@@ -51,6 +140,7 @@ const ManagePassword = () => {
                       <div className="position-relative iconWithText">
                         <Button
                           style={{ right: 10 }}
+                          onClick={() => toggleShowPassword("oldPassword")}
                           variant="transparent"
                           className="icn border-0 p-0 position-absolute"
                         >
@@ -68,11 +158,17 @@ const ManagePassword = () => {
                           </svg>
                         </Button>
                         <input
-                          type="password"
+                          type={!showPassWord?.oldPassword ? "password" : ""}
                           placeholder="*************"
                           className="form-control"
+                          {...register("oldPassword")}
                         />
                       </div>
+                      {
+                        <p className="text-danger">
+                          {errors?.oldPassword && errors.oldPassword.message}
+                        </p>
+                      }
                     </Col>
                     <Col lg="12" className="my-2">
                       <label
@@ -86,6 +182,7 @@ const ManagePassword = () => {
                           style={{ right: 10 }}
                           variant="transparent"
                           className="icn border-0 p-0 position-absolute"
+                          onClick={() => toggleShowPassword("newPassword")}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -101,11 +198,17 @@ const ManagePassword = () => {
                           </svg>
                         </Button>
                         <input
-                          type="password"
+                          type={!showPassWord?.newPassword ? "password" : ""}
+                          {...register("newPassword")}
                           placeholder="*************"
                           className="form-control"
                         />
                       </div>
+                      {
+                        <p className="text-danger">
+                          {errors?.newPassword && errors.newPassword.message}
+                        </p>
+                      }
                     </Col>
                     <Col lg="12" className="my-2">
                       <label
@@ -118,6 +221,7 @@ const ManagePassword = () => {
                         <Button
                           style={{ right: 10 }}
                           variant="transparent"
+                          onClick={() => toggleShowPassword("confirmPassword")}
                           className="icn border-0 p-0 position-absolute"
                         >
                           <svg
@@ -134,18 +238,33 @@ const ManagePassword = () => {
                           </svg>
                         </Button>
                         <input
-                          type="password"
+                          type={
+                            !showPassWord?.confirmPassword ? "password" : ""
+                          }
+                          {...register("confirmPassword")}
                           placeholder="*************"
                           className="form-control"
                         />
                       </div>
+                      {
+                        <p className="text-danger">
+                          {errors?.confirmPassword &&
+                            errors.confirmPassword.message}
+                        </p>
+                      }
                     </Col>
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10 mt-4">
-                        <Button className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
+                        <Button
+                          className="d-flex align-items-center justify-content-center commonBtn GreyBtn"
+                          onClick={() => navigate(-1)}
+                        >
                           Cancel
                         </Button>
-                        <Button className="d-flex align-items-center justify-content-center commonBtn ">
+                        <Button
+                          type="submit"
+                          className="d-flex align-items-center justify-content-center commonBtn "
+                        >
                           Submit
                         </Button>
                       </div>

@@ -3,7 +3,7 @@ import styles from "./Sidebar.module.scss";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 // img
-import logo from "../../../Assets/images/logo.png";
+import logo from "../../../Assets/images/logo.jpeg";
 import { Accordion, Button } from "react-bootstrap";
 
 import { useSelector } from "react-redux";

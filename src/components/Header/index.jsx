@@ -14,7 +14,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
 
 // img
-import logo from "../../Assets/images/logo.png";
+import logo from "../../Assets/images/logo.jpeg";
 import user from "../../Assets/images/authBg.png";
 import ConfirmationPop from "../Modals/ConfirmationPop";
 import Axios from "../../services/Axios";

@@ -6,7 +6,7 @@ import { Link, Outlet } from "react-router-dom";
 import styles from "./Auth.module.scss";
 
 // img
-import logo from "../../Assets/images/logo.png";
+import logo from "../../Assets/images/logo.jpeg";
 import AuthBg from "../../Assets/images/authBg.png";
 import g1 from "../../Assets/images/bub.png";
 

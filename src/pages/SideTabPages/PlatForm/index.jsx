@@ -145,7 +145,7 @@ const PlatForm = () => {
                         className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
                         style={{ height: 40, minWidth: 100, fontSize: 12 }}
                       >
-                        Add New
+                        Add New Platform
                       </Link>
                     </li>
                   </ul>

@@ -30,9 +30,7 @@ const Notification = () => {
     {
       head: "Time",
       component: (item) => {
-        return (
-          <>{moment(item?.createdAt).format("DD-MM-YYYY  hh:mm:ss A")}</>
-        );
+        return <>{moment(item?.createdAt).format("DD-MM-YYYY  hh:mm:ss A")}</>;
       },
     },
     {

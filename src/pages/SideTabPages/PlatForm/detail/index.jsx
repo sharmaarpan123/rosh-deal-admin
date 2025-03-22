@@ -106,14 +106,14 @@ const PlatFormDetail = () => {
                           )}
                         </h6>
                       </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
+                      {/* <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Deleted</p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           {removeUnderScoreAndCapitalizeFirstLetter(
                             userDetails?.isDeleted ? "yes" : "no"
                           )}
                         </h6>
-                      </li>
+                      </li> */}
                     </ul>
                   </Col>
                 </Row>

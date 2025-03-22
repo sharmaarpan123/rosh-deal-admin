@@ -7,17 +7,44 @@ import styles from "../../layout/Auth/Auth.module.scss";
 // css
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { RESET_PASSWORD } from "../../services/ApiCalls";
 import { catchAsync, checkResponse } from "../../utilities/utilities";
+import OTPInput from "react-otp-input";
 
 const schema = z
   .object({
-    password: z.string().min(1, { message: "Password is required" }),
+    password: z
+      .string()
+      .min(1, {
+        message:
+          "Password must include a lowercase letter, an uppercase letter, a number, and a special character or symbol",
+      })
+      .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
+      .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
+      .regex(/[0-9]/, { message: "Password must include a number" })
+      .regex(/[^A-Za-z0-9]/, {
+        message: "Password must include a special character or symbol",
+      }),
     confirmPassword: z
       .string()
-      .min(1, { message: "Confirm Password is required" }),
+      .min(1, {
+        message:
+          "Password must include a lowercase letter, an uppercase letter, a number, and a special character or symbol",
+      })
+      .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
+      .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
+      .regex(/[0-9]/, { message: "Password must include a number" })
+      .regex(/[^A-Za-z0-9]/, {
+        message: "Password must include a special character or symbol",
+      }),
+    otp: z
+      .string()
+      .min(4, { message: "otp is required" })
+      .refine((data) => !isNaN(data), {
+        message: "Otp only contain a Numeric value",
+      }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
@@ -26,19 +53,25 @@ const schema = z
 const ResetPassword = ({ email }) => {
   const navigate = useNavigate();
   const [pass, setPass] = useState();
+  const [pass2, setPass2] = useState();
   const handlePass = () => {
-    setPass(!pass);
+    setPass((p) => !p);
+  };
+  const handlePass2 = () => {
+    setPass2((p) => !p);
   };
 
   const submitHandler = catchAsync(async (data) => {
     console.log(data, "Data");
     const res = await RESET_PASSWORD({
       email,
+      ...data,
       password: data.password,
       confirmPassword: data.confirmPassword,
     });
     const success = checkResponse({
       res,
+      showSuccess: true,
     });
 
     if (success) {
@@ -72,6 +105,27 @@ const ResetPassword = ({ email }) => {
           >
             <Row className="justify-content-center">
               <Col lg="12" className="my-2">
+                <div className="otpWrp">
+                  <Controller
+                    control={control}
+                    name="otp"
+                    render={({ field }) => (
+                      <OTPInput
+                        value={field.value}
+                        onChange={field.onChange}
+                        numInputs={4}
+                        renderInput={(props) => <input {...props} />}
+                      />
+                    )}
+                  />
+                  {
+                    <p className="text-danger">
+                      {errors?.otp && errors.otp.message}
+                    </p>
+                  }
+                </div>
+              </Col>
+              <Col lg="12" className="my-2">
                 <label
                   htmlFor=""
                   className="form-label m-0 pb-1 themeClr fw-sbold"
@@ -85,7 +139,7 @@ const ResetPassword = ({ email }) => {
                     placeholder="*************"
                     {...register("password")}
                   />
-                 
+
                   <Button
                     onClick={handlePass}
                     className="border-0 p-0 position-absolute icn"
@@ -107,10 +161,10 @@ const ResetPassword = ({ email }) => {
                   </Button>
                 </div>
                 {
-                    <p className="text-danger">
-                      {errors?.password && errors.password?.message}
-                    </p>
-                  }
+                  <p className="text-danger">
+                    {errors?.password && errors.password?.message}
+                  </p>
+                }
               </Col>
               <Col lg="12" className="my-2">
                 <label
@@ -121,14 +175,14 @@ const ResetPassword = ({ email }) => {
                 </label>
                 <div className="position-relative iconWithText">
                   <input
-                    type={pass ? "text" : "password"}
+                    type={pass2 ? "text" : "password"}
                     className={`${styles.formControl} form-control`}
                     placeholder="*************"
                     {...register("confirmPassword")}
                   />
-                
+
                   <Button
-                    onClick={handlePass}
+                    onClick={handlePass2}
                     className="border-0 p-0 position-absolute icn"
                     variant="transparent"
                     style={{ right: 10 }}
@@ -148,11 +202,10 @@ const ResetPassword = ({ email }) => {
                   </Button>
                 </div>
                 {
-                    <p className="text-danger">
-                      {errors?.confirmPassword &&
-                        errors.confirmPassword?.message}
-                    </p>
-                  }
+                  <p className="text-danger">
+                    {errors?.confirmPassword && errors.confirmPassword?.message}
+                  </p>
+                }
               </Col>
               <Col lg="8" className="my-2">
                 <div

@@ -1,18 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 // css
 import styles from "../../layout/Auth/Auth.module.scss";
 import { FORGET_PASSWORD_ADMIN } from "../../services/ApiCalls";
-
 // css
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import { forgetPasswordScreenEnum } from "../../pages/AuthPages/forgotPassword/Index";
+import ButtonLoader from "../Common/ButtonLoader";
+import { checkResponse } from "../../utilities/utilities";
 
 const schema = z.object({
   email: z
@@ -28,18 +27,22 @@ const ForgetPassword = ({ setScreen, setEmail }) => {
   } = useForm({
     resolver: zodResolver(schema),
   });
+  const [loader, setLoader] = useState(false);
   const onSubmit = async (data) => {
+    setLoader(true);
     try {
       const res = await FORGET_PASSWORD_ADMIN(data);
 
-      if (res?.data?.success) {
-        toast.success(res?.data?.message);
-        setScreen(forgetPasswordScreenEnum.otp);
+      if (checkResponse({ res, showSuccess: true })) {
+        setScreen(forgetPasswordScreenEnum.resetPassword);
         setEmail(data?.email);
+        setLoader(false);
       } else {
+        setLoader(false);
         toast.error(res?.data?.message);
       }
     } catch (error) {
+      setLoader(false);
       toast.error("something went wrong");
     }
   };
@@ -48,7 +51,7 @@ const ForgetPassword = ({ setScreen, setEmail }) => {
       <div className="formInner position-relative px-lg-3">
         <div className="w-100 inner">
           <div className="top py-2">
-            <div className="d-flex align-items-center gap-10">
+            <div className="d-flex justify-content-start gap-10 pb-4 ">
               <Link
                 to="/login"
                 className="d-inline-flex align-items-center justify-content-center border py-2  broder-light btn "
@@ -68,11 +71,11 @@ const ForgetPassword = ({ setScreen, setEmail }) => {
                   />
                 </svg>
               </Link>
-              <h4 className="m-0 fw-sbold themeClr">Forgot Password</h4>
             </div>
+            <h4 className="m-0 fw-sbold themeClr">Forgot Password</h4>
           </div>
           <Form
-            className={`${styles.form} pt-lg-4 pt-2`}
+            className={`${styles.form} pt-lg-4 pt-1`}
             onSubmit={handleSubmit(onSubmit)}
           >
             <Row className="justify-content-center">
@@ -100,8 +103,9 @@ const ForgetPassword = ({ setScreen, setEmail }) => {
                   <Button
                     type="submit"
                     className="d-flex align-items-center justify-content-center w-100 commonBtn"
+                    disabled={loader}
                   >
-                    Save
+                    {loader ? <ButtonLoader /> : "Save"}
                   </Button>
                 </div>
               </Col>

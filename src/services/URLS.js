@@ -5,9 +5,9 @@ export default {
   // ADMIN
   LOGIN_ADMIN: "auth/admin/singIn",
   ME_QUERY: "admin/me",
-  FORGET_PASSWORD_ADMIN: "auth/forgetPassword",
-  RESET_PASSWORD: "auth/resetPassword",
-  CHANGE_PASSWORD: "/api/v1/admin/changePassword",
+  FORGET_PASSWORD_ADMIN: "auth/admin/forgetPassword",
+  RESET_PASSWORD: "auth/admin/resetPassword",
+  CHANGE_PASSWORD: "auth/admin/changePassword",
   ADMIN_UPDATE: "admin/editAdmin",
   GET_ADMIN_BY_ID: "/admin/getUserById/",
 
@@ -80,7 +80,7 @@ export default {
 
   // push notification
 
-  GET_ALL_NOTIFICATIONS :"/commonApi/getAllNotifications",
+  GET_ALL_NOTIFICATIONS: "/commonApi/getAllNotifications",
 
   //scrapper
 

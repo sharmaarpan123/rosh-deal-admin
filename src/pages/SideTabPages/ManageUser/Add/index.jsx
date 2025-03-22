@@ -11,15 +11,15 @@ import PhoneInput from "react-phone-input-2";
 import { z } from "zod";
 import Toggle from "../../../../components/Common/Toggle";
 import { GET_USER_BY_ID, UPDATE_USER } from "../../../../services/ApiCalls";
-import {
-  catchAsync,
-  checkResponse
-} from "../../../../utilities/utilities";
+import { catchAsync, checkResponse } from "../../../../utilities/utilities";
 
 const getSchema = (editMode) =>
   z
     .object({
-      name: z.string().min(1, { message: "Name is required" }),
+      name: z
+        .string()
+        .min(1, { message: "Name is required" })
+        .max(35, { message: "To Long Name" }),
       email: z
         .string()
         .min(1, { message: "Email is required" })
@@ -87,6 +87,10 @@ const AddEditUser = () => {
       phoneNumber: data.phoneNumber.replace("91", ""),
     };
 
+    if (!body.passwordToggle) {
+      delete body.password;
+    }
+
     delete body.passwordToggle;
 
     const res = await UPDATE_USER(body);
@@ -134,7 +138,6 @@ const AddEditUser = () => {
                     />
                   </svg>
                 </Link>
-                
               </div>
             </Col>
             <Col lg="12" className="my-2">
@@ -154,7 +157,7 @@ const AddEditUser = () => {
                         </label>
                         <input
                           type="text"
-                          placeholder="Annette Black"
+                          placeholder="Enter Name"
                           className="form-control"
                           {...register("name")}
                         />
@@ -214,7 +217,7 @@ const AddEditUser = () => {
                             <input
                               type={!showPassWord && "password"}
                               placeholder="*******************"
-                              className="form-control"
+                              className="form-control pe-4"
                               {...register("password")}
                             />
                             {errors?.password && (
@@ -224,9 +227,9 @@ const AddEditUser = () => {
                             )}
                             <Button
                               variant="transparent"
-                              style={{ right: 10 }}
+                              style={{ right: 8, top: 22 }}
                               onClick={() => setShowPassword((p) => !p)}
-                              className="border-0 p-0 position-absolute icn"
+                              className="border-0 p-0 position-absolute icn "
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -290,13 +293,21 @@ const AddEditUser = () => {
                         >
                           Status
                         </label>
-                        <div className="iconWithText position-relative">
+                        <div
+                          className="  d-flex align-items-center border px-2 pt-1  rounded w-auto"
+                          style={{
+                            width: "fitContent",
+                          }}
+                        >
                           <Toggle
                             isChecked={watch("status")}
                             onChange={(e) =>
                               setValue("status", e.target.checked)
                             }
                           />
+                          <p className="mb-0 pb-1">
+                            {watch("status") ? "Active" : "Inactive"}
+                          </p>
                         </div>
                       </div>
                     </Col>
@@ -306,6 +317,7 @@ const AddEditUser = () => {
                         <Button
                           className="d-flex align-items-center justify-content-center commonBtn GreyBtn"
                           type="button"
+                          onClick={() => navigate(-1)}
                         >
                           Cancel
                         </Button>

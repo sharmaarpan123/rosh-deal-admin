@@ -44,7 +44,7 @@ const ManageUser = () => {
       head: "User Name",
       accessor: "name",
       component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold">{item.name}</p>
+        <p className="m-0 themeBlue fw-sbold text-wrap">{item.name}</p>
       ),
     },
     { head: "Email", accessor: "email" },

@@ -1,29 +1,38 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { CstmPagination } from "../../../components/Common/Common";
-import { Link } from "react-router-dom";
 
 // css
-import styles from "./Dashboard.module.scss";
-import FeatureCard from "./components/FeatureCard";
-import AreaChart from "../../../components/Graph/AreaChart";
-import PieChart from "../../../components/Graph/PieChart";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useSelector } from "react-redux";
+import Select from "react-select";
+import Loading from "../../../components/Common/Loading";
+import CrossIcon from "../../../components/icons/svg/CrossIcon";
+import {
+  AGENCY_AND_MED_DASHBOARD,
+  DASHBOARD,
+} from "../../../services/ApiCalls";
+import { dashboardReportTypeArr } from "../../../utilities/const";
 import {
   catchAsync,
   checkResponse,
   makingOptionsFromArr,
   removeUnderScoreAndCapitalizeFirstLetter,
 } from "../../../utilities/utilities";
-import {
-  AGENCY_AND_MED_DASHBOARD,
-  DASHBOARD,
-} from "../../../services/ApiCalls";
-import Select from "react-select";
-import { dashboardReportTypeArr } from "../../../utilities/const";
-import Loading from "../../../components/Common/Loading";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useSelector } from "react-redux";
+import styles from "./Dashboard.module.scss";
+import FeatureCard from "./components/FeatureCard";
+import Calendar from "../../../components/icons/svg/Calendar";
+
+const CustomInput = ({ value, onClick }) => (
+  <button
+    type="button"
+    className="border p-2 rounded d-flex justify-content-between align-items-center gap-2 w-100 pe-4"
+    onClick={onClick}
+  >
+    {value || "Select Date"}
+    <Calendar />
+  </button>
+);
 
 const dashboardTypeOptions = makingOptionsFromArr(dashboardReportTypeArr);
 
@@ -117,19 +126,20 @@ const Dashboard = () => {
                       />
                     </Col>
                   ) : null}
-                  <Col md={4}>
+                  <Col md={3}>
                     <label className="form-label">Start Date</label>
                     <DatePicker
                       selected={DatesFilter?.startDate}
                       onChange={(date) =>
                         setDateFilter((p) => ({ ...p, startDate: date }))
                       }
+                      customInput={<CustomInput />}
                       className="form-control"
                       isClearable
                       placeholderText="Select start date"
                     />
                   </Col>
-                  <Col md={4}>
+                  <Col md={3}>
                     <label className="form-label">End Date</label>
                     <DatePicker
                       selected={DatesFilter?.endDate}
@@ -142,9 +152,10 @@ const Dashboard = () => {
                     />
                   </Col>
                   {DatesFilter.startDate && DatesFilter.endDate && (
-                    <Col xs={12}>
+                    <Col xs={2} className="d-flex align-items-end">
                       <Button
-                        variant="outline-secondary"
+                    
+                        className="commonBtn"
                         size="sm"
                         onClick={() =>
                           setDateFilter({ startDate: "", endDate: "" })
