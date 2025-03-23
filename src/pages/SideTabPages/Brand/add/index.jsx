@@ -190,7 +190,7 @@ const AddEditBrand = () => {
 
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10">
-                        <Button className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
+                        <Button onClick={() => navigate(-1)} className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
                           Cancel
                         </Button>
                         <Button
