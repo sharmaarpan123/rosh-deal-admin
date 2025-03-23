@@ -136,11 +136,11 @@ export const adminItems = [
       },
     ],
   },
-  // {
-  //   path: "/notification-management",
-  //   name: "Notification Management",
-  //   icon: CommonNavIcon,
-  // },
+  {
+    path: "/notification-management",
+    name: "Notification Management",
+    icon: CommonNavIcon,
+  },
   {
     path: "/system-access",
     name: "Mediators",
@@ -180,11 +180,11 @@ export const subAdminItems = [
       },
     ],
   },
-  // {
-  //   path: "/notification-management",
-  //   name: "Notification Management",
-  //   icon: CommonNavIcon,
-  // },
+  {
+    path: "/notification-management",
+    name: "Notification Management",
+    icon: CommonNavIcon,
+  },
 ];
 export const adminSubAdminItems = [
   ...commonItems,
@@ -240,11 +240,11 @@ export const adminSubAdminItems = [
       },
     ],
   },
-  // {
-  //   path: "/notification-management",
-  //   name: "Notification Management",
-  //   icon: CommonNavIcon,
-  // },
+  {
+    path: "/notification-management",
+    name: "Notification Management",
+    icon: CommonNavIcon,
+  },
   {
     path: "/system-access",
     name: "Mediators",

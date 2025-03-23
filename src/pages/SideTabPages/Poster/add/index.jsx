@@ -54,7 +54,7 @@ const schema = z
     image: z
       .string()
       .trim()
-      .min(1, { message: "image url should have at least one character" })
+      .min(1, { message: "Image should not be empty" })
       .optional(),
     posterType: optionObjectSchema("poster type").refine((data) => data.value),
     brand: optionObjectSchema("brand"),
@@ -344,7 +344,7 @@ const AddEditPoster = () => {
                         </label>
                         <input
                           type="text"
-                          placeholder="Annette Black"
+                          placeholder="Enter Name"
                           className="form-control"
                           {...register("name")}
                         />
@@ -365,7 +365,7 @@ const AddEditPoster = () => {
                         </label>
                         <input
                           type="text"
-                          placeholder="Annette Black"
+                          placeholder="Enter Title"
                           className="form-control"
                           {...register("title")}
                         />
@@ -386,7 +386,7 @@ const AddEditPoster = () => {
                         </label>
                         <input
                           type="text"
-                          placeholder="Annette Black"
+                          placeholder="Enter Redirect Url"
                           className="form-control"
                           {...register("redirectUrl")}
                         />
@@ -403,7 +403,7 @@ const AddEditPoster = () => {
                           htmlFor=""
                           className="form-label fw-sbold text-muted ps-2 m-0"
                         >
-                          Select Poster Type
+                          Select Banner Type
                         </label>
 
                         <Controller
@@ -492,7 +492,7 @@ const AddEditPoster = () => {
 
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10">
-                        <Button className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
+                        <Button onClick={()=>navigate(-1)} className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
                           Cancel
                         </Button>
                         <Button

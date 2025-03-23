@@ -62,7 +62,7 @@ const Poster = () => {
       accessor: "title",
     },
     {
-      head: "Poster Type",
+      head: "Banner Type",
       accessor: "posterType",
       component: (item, key, arr) => (
         <p className="m-0 themeBlue fw-sbold">

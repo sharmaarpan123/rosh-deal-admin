@@ -113,16 +113,12 @@ export const orderStatusObj = {
 
 export const commonSendNotificationTypes = [
   {
-    label: "All",
-    value: "all",
-  },
-  {
     label: "Deal Order Status",
     value: "dealOrderStatus",
   },
   {
     label: "Users",
-    value: "toUser",
+    value: "all",
   },
 ];
 

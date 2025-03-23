@@ -114,17 +114,17 @@ export const privateRoutes = [
     component: <BrandDetails />,
     title: "Brand Details",
   },
-  { path: "/poster", component: <Poster />, title: "Posters" },
-  { path: "/poster/add", component: <AddEditPoster />, title: "Add Poster" },
+  { path: "/poster", component: <Poster />, title: "Banners" },
+  { path: "/poster/add", component: <AddEditPoster />, title: "Add Banner" },
   {
     path: "/poster/edit/:id",
     component: <AddEditPoster />,
-    title: "Edit Poster",
+    title: "Edit Banner",
   },
   {
     path: "/poster/details/:id",
     component: <PosterDetails />,
-    title: "Poster Details",
+    title: "Banner Details",
   },
   {
     path: "/myDealsAsAgency",

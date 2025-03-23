@@ -564,6 +564,7 @@ const AddEditUser = () => {
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10">
                         <Button
+                          onClick={() => navigate(-1)}
                           className="d-flex align-items-center justify-content-center commonBtn GreyBtn"
                           type="button"
                         >
