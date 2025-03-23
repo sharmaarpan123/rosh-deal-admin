@@ -23,8 +23,8 @@ import fileUploader from "../../../../utilities/fileUploader";
 const schema = z.object({
   name: z
     .string()
-    .min(1, { message: "Name is required" })
-    .max(30, { message: "To Long Name" }),
+    .min(1, { message: "Platform Name is required" })
+    .max(30, { message: "Platform Name must be less than 30 characters" }),
 });
 
 const AddPlatForm = () => {
@@ -176,13 +176,13 @@ const AddPlatForm = () => {
                       <div className="py-2">
                         <label
                           htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
+                          className="form-label fw-sbold text-muted ps-0 m-0"
                         >
                           Name
                         </label>
                         <input
                           type="text"
-                          placeholder="Annette Black"
+                          placeholder="Add Platform Name"
                           className="form-control"
                           {...register("name")}
                         />

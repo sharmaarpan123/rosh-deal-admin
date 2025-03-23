@@ -85,7 +85,7 @@ const Dashboard = () => {
     <section className="dashboard-container py-4">
       <Container fluid>
         {/* Header Section */}
-        <Row className="mb-4">
+        {/* <Row className="mb-4">
           <Col
             xs={12}
             className="d-flex justify-content-between align-items-center"
@@ -107,10 +107,10 @@ const Dashboard = () => {
               </Button>
             </div>
           </Col>
-        </Row>
+        </Row> */}
 
         {/* Filters Section */}
-        {showFilters && (
+        {/* {showFilters && (
           <Row className="mb-4">
             <Col xs={12}>
               <div className="filter-container p-3 bg-light rounded">
@@ -170,7 +170,7 @@ const Dashboard = () => {
               </div>
             </Col>
           </Row>
-        )}
+        )} */}
 
         {/* Feature Cards */}
         <Row className="mb-4">

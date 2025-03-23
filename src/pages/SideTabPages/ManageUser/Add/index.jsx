@@ -19,7 +19,7 @@ const getSchema = (editMode) =>
       name: z
         .string()
         .min(1, { message: "Name is required" })
-        .max(35, { message: "To Long Name" }),
+        .max(35, { message: "Name must be less than 35 characters" }),
       email: z
         .string()
         .min(1, { message: "Email is required" })

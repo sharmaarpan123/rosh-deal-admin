@@ -27,8 +27,8 @@ import Toggle from "../../../../components/Common/Toggle";
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   isExchangeDeal: z.boolean({
-    required_error: "Is Exchange Deal   is required",
-    invalid_type_error: "Is Exchange Deal   should be boolean",
+    required_error: "Is Exchange Category   is required",
+    invalid_type_error: "Is Exchange Category   should be boolean",
   }),
 });
 
@@ -183,7 +183,7 @@ const AddEditDealCategory = () => {
                       <div className="py-2">
                         <label
                           htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
+                          className="form-label fw-sbold text-muted ps-0 m-0"
                         >
                           Name
                         </label>
@@ -204,9 +204,9 @@ const AddEditDealCategory = () => {
                       <div className="py-2">
                         <label
                           htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
+                          className="form-label fw-sbold text-muted ps-0 m-0"
                         >
-                          Is Exchange Deal
+                          Is Exchange Category?
                         </label>
                         <Controller
                           control={control}
