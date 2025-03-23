@@ -81,7 +81,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Created at:
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {moment(userDetails?.createdAt).format(
                             "DD-MM-YYYY  hh:mm:ss A"
                           )}
@@ -89,7 +89,7 @@ const DealDetails = () => {
                       </li>
                       <li className="py-2 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Brand</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {userDetails?.brand?.name}
                         </h6>
                       </li>
@@ -97,7 +97,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Product Name:
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break ">
                           {userDetails?.productName}
                         </h6>
                       </li>
@@ -105,7 +105,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Product Price
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {userDetails?.actualPrice}
                         </h6>
                       </li>
@@ -114,14 +114,14 @@ const DealDetails = () => {
                           <p className="m-0 themeBlue fw-sbold w-25">
                             Commission
                           </p>
-                          <h6 className="m-0 text-muted fw-bold w-50">
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
                             {userDetails?.commissionValue}
                           </h6>
                         </li>
                       ) : (
                         <li className="py-2 d-flex align-items-center gap-10">
                           <p className="m-0 themeBlue fw-sbold w-25">Less</p>
-                          <h6 className="m-0 text-muted fw-bold w-50">
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break" >
                             {userDetails?.lessAmount}
                           </h6>
                         </li>
@@ -219,10 +219,10 @@ const DealDetails = () => {
                   </Col>
                   <Col lg="12">
                     <li className="py-2 d-flex align-items-center gap-10">
-                      <p className="m-0 themeBlue fw-sbold w-25">
+                      <p className="m-0 themeBlue fw-sbold w-25 text-break">
                         Terms And Condition
                       </p>
-                      <h6 className="m-0 text-muted fw-bold">
+                      <h6 className="m-0 text-muted fw-bold text-break">
                         {userDetails?.termsAndCondition}
                       </h6>
                     </li>

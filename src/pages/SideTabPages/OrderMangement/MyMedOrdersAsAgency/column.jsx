@@ -101,7 +101,7 @@ export const getColumn = (
     head: "Product Name",
     accessor: "productName",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+      <p className="m-0 themeBlue fw-sbold">
         {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.productName)}
       </p>
     ),
@@ -112,9 +112,10 @@ export const getColumn = (
     accessor: "orderIdOfPlatForm",
     component: (item, key, arr) => (
       <p
-        className="m-0 themeBlue fw-sbold  text-break "
+        className="m-0 themeBlue fw-sbold "
         style={{
           maxWidth: 250,
+          minWidth: 140,
         }}
       >
         {capitalizedFirstAlphaBet(item?.orderIdOfPlatForm)}
@@ -126,7 +127,7 @@ export const getColumn = (
     head: "Price",
     accessor: "",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+      <p className="m-0 themeBlue fw-sbold" >
         {item?.dealId?.parentDealId?.actualPrice}
       </p>
     ),
@@ -135,7 +136,7 @@ export const getColumn = (
     head: "Less",
     accessor: "",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+      <p className="m-0 themeBlue fw-sbold" >
         {item?.dealId?.lessAmount || "-"}
       </p>
     ),
@@ -144,7 +145,7 @@ export const getColumn = (
     head: "Commission",
     accessor: "",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+      <p className="m-0 themeBlue fw-sbold" >
         {item?.dealId?.commissionValue || "-"}
       </p>
     ),
@@ -176,7 +177,7 @@ export const getColumn = (
     head: "Exchange Product",
     accessor: "",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold" style={{ minWidth: 200 }}>
+      <p className="m-0 themeBlue fw-sbold" >
         {item?.exchangeDealProducts?.map((item) => {
           return `${capitalizedFirstAlphaBet(item)} , `;
         })}

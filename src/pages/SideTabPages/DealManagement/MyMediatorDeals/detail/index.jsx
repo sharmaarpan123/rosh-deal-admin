@@ -84,7 +84,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Full Name:
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {userDetails?.productName}
                         </h6>
                       </li>
@@ -92,13 +92,13 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           brand Name
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {userDetails?.brand?.name}
                         </h6>
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Plat Form</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {userDetails?.platForm?.name}
                         </h6>
                       </li>
@@ -106,7 +106,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Deal Category
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {userDetails?.dealCategory?.name}
                         </h6>
                       </li>
@@ -125,7 +125,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           payment Status
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           <p
                             className={`text-white rounded text-center ${
                               userDetails?.paymentStatus === "paid"
@@ -141,7 +141,7 @@ const DealDetails = () => {
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">isActive</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           <p
                             className={` rounded  text-center text-white ${
                               userDetails?.isActive ? "bg-success" : "bg-danger"
@@ -155,7 +155,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Admin Commission
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {userDetails?.adminCommission}
                         </h6>
                       </li>
@@ -165,7 +165,7 @@ const DealDetails = () => {
                     <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Post Url</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           <a
                             href={userDetails?.postUrl}
                             target="_blank"
@@ -179,7 +179,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Actual Price
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {userDetails?.actualPrice}
                         </h6>
                       </li>
@@ -188,7 +188,7 @@ const DealDetails = () => {
                           <p className="m-0 themeBlue fw-sbold w-25">
                             Commission Amount
                           </p>
-                          <h6 className="m-0 text-muted fw-bold w-50">
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
                             {userDetails?.commissionValue}
                           </h6>
                         </li>
@@ -197,7 +197,7 @@ const DealDetails = () => {
                           <p className="m-0 themeBlue fw-sbold w-25">
                             Less Amount
                           </p>
-                          <h6 className="m-0 text-muted fw-bold w-50">
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
                             {userDetails?.lessAmount}
                           </h6>
                         </li>
@@ -207,7 +207,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Slot Alloted
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {userDetails?.slotAlloted}
                         </h6>
                       </li>
@@ -215,7 +215,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           slot Completed Count
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {userDetails?.slotCompletedCount}
                         </h6>
                       </li>
@@ -242,7 +242,7 @@ const DealDetails = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Created at:
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {moment(userDetails?.createdAt).format(
                             "DD-MM-YYYY  hh:mm:ss A"
                           )}
@@ -250,7 +250,7 @@ const DealDetails = () => {
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Deleted</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {removeUnderScoreAndCapitalizeFirstLetter(
                             userDetails?.isDeleted ? "yes" : "no"
                           )}
@@ -263,7 +263,7 @@ const DealDetails = () => {
                       <p className="m-0 themeBlue fw-sbold w-25">
                         Terms And Condition
                       </p>
-                      <h6 className="m-0 text-muted fw-bold w-50">
+                      <h6 className="m-0 text-muted fw-bold w-50 text-break">
                         {userDetails?.termsAndCondition}
                       </h6>
                     </li>

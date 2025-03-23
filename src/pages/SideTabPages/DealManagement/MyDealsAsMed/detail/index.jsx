@@ -62,7 +62,7 @@ const MyDealsDetailsAsMed = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Created at:
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {moment(dealDetails?.createdAt).format(
                             "DD-MM-YYYY  hh:mm:ss A"
                           )}
@@ -70,7 +70,7 @@ const MyDealsDetailsAsMed = () => {
                       </li>
                       <li className="py-2 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Brand</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {dealDetails?.parentDealId?.brand?.name}
                         </h6>
                       </li>
@@ -78,7 +78,7 @@ const MyDealsDetailsAsMed = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Product Name:
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {dealDetails?.parentDealId?.productName}
                         </h6>
                       </li>
@@ -86,7 +86,7 @@ const MyDealsDetailsAsMed = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Product Price
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {dealDetails?.parentDealId?.actualPrice}
                         </h6>
                       </li>
@@ -95,14 +95,14 @@ const MyDealsDetailsAsMed = () => {
                           <p className="m-0 themeBlue fw-sbold w-25">
                             Commission
                           </p>
-                          <h6 className="m-0 text-muted fw-bold w-50">
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
                             {dealDetails?.commissionValue}
                           </h6>
                         </li>
                       ) : (
                         <li className="py-2 d-flex align-items-center gap-10">
                           <p className="m-0 themeBlue fw-sbold w-25">Less</p>
-                          <h6 className="m-0 text-muted fw-bold w-50">
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
                             {dealDetails?.lessAmount}
                           </h6>
                         </li>
@@ -110,7 +110,7 @@ const MyDealsDetailsAsMed = () => {
 
                       <li className="py-2 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Deal Type</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {dealDetails?.parentDealId?.dealCategory?.name}
                         </h6>
                       </li>
@@ -134,7 +134,7 @@ const MyDealsDetailsAsMed = () => {
                     <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
                       <li className="py-2 d-flex align-items-center gap-10">
                         <p className="m-0 themeBlue fw-sbold w-25">Platform</p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {dealDetails?.parentDealId?.platForm?.name}
                         </h6>
                       </li>
@@ -142,7 +142,7 @@ const MyDealsDetailsAsMed = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Slot Alloted
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {dealDetails?.parentDealId?.slotAlloted}
                         </h6>
                       </li>
@@ -150,7 +150,7 @@ const MyDealsDetailsAsMed = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Slot Completed
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {dealDetails?.parentDealId?.slotCompletedCount}
                         </h6>
                       </li>
@@ -159,7 +159,7 @@ const MyDealsDetailsAsMed = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Payment Status
                         </p>
-                        <h6 className="m-0 text-muted fw-bold ">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           <p
                             className={`text-white px-4  mb-0 text-capitalize rounded text-center ${
                               dealDetails?.paymentStatus === "paid"
@@ -177,7 +177,7 @@ const MyDealsDetailsAsMed = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Deal Status
                         </p>
-                        <h6 className="m-0 text-muted fw-bold ">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           <p
                             className={` rounded text-capitalize mb-0  px-4 text-center text-white ${
                               dealDetails?.isActive ? "bg-success" : "bg-danger"
@@ -191,7 +191,7 @@ const MyDealsDetailsAsMed = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Platform Fee
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50">
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
                           {dealDetails?.adminCommission}
                         </h6>
                       </li>
@@ -202,7 +202,7 @@ const MyDealsDetailsAsMed = () => {
                       <p className="m-0 themeBlue fw-sbold w-25">
                         Terms And Condition
                       </p>
-                      <h6 className="m-0 text-muted fw-bold">
+                      <h6 className="m-0 text-muted fw-bold text-break">
                         {dealDetails?.parentDealId?.termsAndCondition}
                       </h6>
                     </li>
