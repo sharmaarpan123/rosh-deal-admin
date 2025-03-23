@@ -27,7 +27,7 @@ const MyDealsDetailsAsMed = () => {
             <Col lg="12">
               <div className="d-flex align-items-center gap-10">
                 <Link
-                  to="/deal"
+                  to="/myDealsAsMed"
                   className="border d-flex align-items-center p-2 rounded"
                 >
                   <svg
