@@ -160,7 +160,7 @@ const ManagePassword = () => {
                         <input
                           type={!showPassWord?.oldPassword ? "password" : ""}
                           placeholder="*************"
-                          className="form-control"
+                          className="form-control pe-5"
                           {...register("oldPassword")}
                         />
                       </div>
@@ -175,7 +175,7 @@ const ManagePassword = () => {
                         htmlFor=""
                         className="form-label fw-sbold text-muted ps-2 m-0"
                       >
-                        Enter Current Password
+                        Enter New Password
                       </label>
                       <div className="position-relative iconWithText">
                         <Button
@@ -201,7 +201,7 @@ const ManagePassword = () => {
                           type={!showPassWord?.newPassword ? "password" : ""}
                           {...register("newPassword")}
                           placeholder="*************"
-                          className="form-control"
+                          className="form-control pe-5"
                         />
                       </div>
                       {
@@ -215,7 +215,7 @@ const ManagePassword = () => {
                         htmlFor=""
                         className="form-label fw-sbold text-muted ps-2 m-0"
                       >
-                        Enter Current Password
+                        Confirm New Password
                       </label>
                       <div className="position-relative iconWithText">
                         <Button
@@ -243,7 +243,7 @@ const ManagePassword = () => {
                           }
                           {...register("confirmPassword")}
                           placeholder="*************"
-                          className="form-control"
+                          className="form-control pe-5"
                         />
                       </div>
                       {
