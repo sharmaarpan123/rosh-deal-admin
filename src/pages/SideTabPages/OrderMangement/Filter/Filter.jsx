@@ -185,7 +185,7 @@ const Filter = ({
           className="form-label m-0 fw-sbold text-muted"
           style={{ whiteSpace: "nowrap" }}
         >
-          PlatForms
+          Platforms
         </label>
         <Select
           components={{

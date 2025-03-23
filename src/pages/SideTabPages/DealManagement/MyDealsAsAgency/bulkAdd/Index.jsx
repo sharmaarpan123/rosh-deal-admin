@@ -454,7 +454,7 @@ const AddBulkDeal = () => {
                           htmlFor=""
                           className="form-label fw-sbold text-muted ps-2 m-0"
                         >
-                          Select Plat Form
+                          Select Platform
                         </label>
                         <Controller
                           control={control}

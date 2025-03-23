@@ -116,7 +116,7 @@ const Filter = ({ statusFilterOptionArr, setBody, body, searchHandler }) => {
             className="form-label m-0 fw-sbold text-muted"
             style={{ whiteSpace: "nowrap" }}
           >
-            PlatForms
+            Platforms
           </label>
           <Select
             options={platformsOptions}

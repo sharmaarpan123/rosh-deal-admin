@@ -113,6 +113,7 @@ const AddEditDeal = () => {
         refundDays: +data.refundDays,
         lessAmount: data?.lessAmount || "",
         isCommissionDeal: data?.commissionValue ? true : false,
+        shouldScrapProductImage: !!data?.imageUrl ? false : true,
       });
     } else {
       res = await ADD_DEAL({
@@ -361,7 +362,7 @@ const AddEditDeal = () => {
                             htmlFor=""
                             className="form-label fw-sbold text-muted ps-2 m-0"
                           >
-                            Select Plat Form
+                            Select Platform
                           </label>
                           <Controller
                             control={control}
