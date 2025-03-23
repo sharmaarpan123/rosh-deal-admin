@@ -358,7 +358,7 @@ const AddBulkDeal = () => {
               <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
                 <div className=" left d-flex gap-10 align-items-center">
                   <Link
-                    to="/deal"
+                    to={-1}
                     className="border d-flex align-items-center p-2 rounded"
                   >
                     <BackIcon />
@@ -515,7 +515,7 @@ const AddBulkDeal = () => {
                     </Col>
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10">
-                        <Button className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
+                        <Button onClick={() => navigate(-1)} className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
                           Cancel
                         </Button>
                         <Button
