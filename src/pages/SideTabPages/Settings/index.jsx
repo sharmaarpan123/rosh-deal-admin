@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 
 // img
-import i1 from "../../../Assets/images/authBg.png";
+import i1 from "../../../Assets/images/authBg.jpeg";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -76,7 +76,7 @@ const Settings = () => {
                       >
                         Manage Password
                       </Link>
-                      <Link
+                      {/* <Link
                         to="/settings/edit-profile"
                         // to={"#"}
                         // onClick={(e) => {
@@ -87,7 +87,7 @@ const Settings = () => {
                         className="d-flex btn btn-primary align-items-center justify-content-center commonBtn"
                       >
                         Edit Profile
-                      </Link>
+                      </Link> */}
                     </div>
                   </Col>
                 </Row>

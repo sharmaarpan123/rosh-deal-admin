@@ -3,7 +3,7 @@ import { Button, Col, Container, Row, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 // img
-import i1 from "../../../../Assets/images/authBg.png";
+import i1 from "../../../../Assets/images/authBg.jpeg";
 
 const EditProfile = () => {
   return (

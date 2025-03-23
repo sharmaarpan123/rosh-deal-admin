@@ -2,12 +2,12 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
 // img
-// import i1 from "@/Assets/images/authBg.png";
+// import i1 from "@/Assets/images/authBg.jpeg";
 
 import React, { useEffect, useState } from "react";
 
 // img
-// import i1 from "@/Assets/images/authBg.png";
+// import i1 from "@/Assets/images/authBg.jpeg";
 
 import moment from "moment";
 import { GET_DEAL_VIEW } from "../../../../../services/ApiCalls";

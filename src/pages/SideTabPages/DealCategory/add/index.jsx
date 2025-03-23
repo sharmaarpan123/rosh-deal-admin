@@ -87,7 +87,6 @@ const AddEditDealCategory = () => {
     }
     setImage(url);
     setLoader(false);
-
   });
 
   const getData = catchAsync(async () => {
@@ -233,7 +232,10 @@ const AddEditDealCategory = () => {
 
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10">
-                        <Button className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
+                        <Button
+                          className="d-flex align-items-center justify-content-center commonBtn GreyBtn"
+                          onClick={() => navigate(-1)}
+                        >
                           Cancel
                         </Button>
                         <Button

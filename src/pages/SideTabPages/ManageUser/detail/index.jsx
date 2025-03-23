@@ -2,13 +2,13 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
 // img
-// import i1 from "@/Assets/images/authBg.png";
-import i1 from "../../../../Assets/images/authBg.png";
+// import i1 from "@/Assets/images/authBg.jpeg";
+import i1 from "../../../../Assets/images/authBg.jpeg";
 
 import React, { useEffect, useState } from "react";
 
 // img
-// import i1 from "@/Assets/images/authBg.png";
+// import i1 from "@/Assets/images/authBg.jpeg";
 
 import { GET_USER_BY_ID } from "../../../../services/ApiCalls";
 import {

@@ -6,7 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 // img
-// import i1 from "@/Assets/images/authBg.png";
+// import i1 from "@/Assets/images/authBg.jpeg";
 
 import moment from "moment";
 import { GET_DEAL_VIEW } from "../../../../../services/ApiCalls";

@@ -454,7 +454,7 @@ const AddEditDeal = () => {
                             htmlFor=""
                             className="form-label fw-sbold text-muted ps-2 m-0"
                           >
-                            Product Categories
+                            Product Categories (Optional)
                           </label>
                           <TagsInput
                             setValue={setValue}

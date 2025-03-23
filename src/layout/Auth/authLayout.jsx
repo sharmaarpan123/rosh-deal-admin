@@ -7,7 +7,7 @@ import styles from "./Auth.module.scss";
 
 // img
 import logo from "../../Assets/images/logo.jpeg";
-import AuthBg from "../../Assets/images/authBg.png";
+import AuthBg from "../../Assets/images/authBg.jpeg";
 import g1 from "../../Assets/images/bub.png";
 
 const AuthLayout = () => {

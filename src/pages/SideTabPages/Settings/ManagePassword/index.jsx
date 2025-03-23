@@ -119,7 +119,7 @@ const ManagePassword = () => {
                   </svg>
                 </Link>
                 <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                  Edit Admin Profile
+                  Change Password
                 </h4>
               </div>
             </Col>

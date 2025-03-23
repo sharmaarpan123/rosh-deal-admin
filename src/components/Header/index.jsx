@@ -15,7 +15,7 @@ import styles from "./Header.module.scss";
 
 // img
 import logo from "../../Assets/images/logo.jpeg";
-import user from "../../Assets/images/authBg.png";
+import user from "../../Assets/images/authBg.jpeg";
 import ConfirmationPop from "../Modals/ConfirmationPop";
 import Axios from "../../services/Axios";
 import { useSelector } from "react-redux";
@@ -112,7 +112,7 @@ const Header = ({ sidebar, setSidebar, title }) => {
                   to="/settings"
                 >
                   <img
-                    src={user}
+                    src={logo}
                     style={{ aspectRatio: 1, height: 40, width: 40 }}
                     alt=""
                     className="img-fluid rounded-circle object-fit-cover flex-shrink-0"

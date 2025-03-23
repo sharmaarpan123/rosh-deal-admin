@@ -6,7 +6,7 @@ import Select from "react-select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import i1 from "../../../../../Assets/images/authBg.png";
+import i1 from "../../../../../Assets/images/authBg.jpeg";
 import { accountType } from "../../../../../utilities/const";
 import {  activeInActiveArr } from "../../../../../utilities/utilities";
 
@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 // img
-// import i1 from "@/Assets/images/authBg.png";
+// import i1 from "@/Assets/images/authBg.jpeg";
 
 import { toast } from "react-toastify";
 import Loading from "../../../../../components/Common/Loading";

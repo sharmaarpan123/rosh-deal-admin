@@ -2,13 +2,13 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
 // img
-// import i1 from "@/Assets/images/authBg.png";
-import i1 from "../../../../Assets/images/authBg.png";
+// import i1 from "@/Assets/images/authBg.jpeg";
+import i1 from "../../../../Assets/images/authBg.jpeg";
 
 import React, { useEffect, useState } from "react";
 
 // img
-// import i1 from "@/Assets/images/authBg.png";
+// import i1 from "@/Assets/images/authBg.jpeg";
 
 import { GET_USER_BY_ID, PLATFORM_BY_ID } from "../../../../services/ApiCalls";
 import {
@@ -106,14 +106,14 @@ const PlatFormDetail = () => {
                           )}
                         </h6>
                       </li>
-                      {/* <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">Deleted</p>
+                      <li className="py-3 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">Status</p>
                         <h6 className="m-0 text-muted fw-bold w-50">
                           {removeUnderScoreAndCapitalizeFirstLetter(
-                            userDetails?.isDeleted ? "yes" : "no"
+                            userDetails?.isActive ? "Active" : "Inactive"
                           )}
                         </h6>
-                      </li> */}
+                      </li>
                     </ul>
                   </Col>
                 </Row>

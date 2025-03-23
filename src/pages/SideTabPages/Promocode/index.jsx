@@ -3,7 +3,7 @@ import { Button, Col, Container, Dropdown, Form, Row } from "react-bootstrap";
 import TableLayout from "../../../components/TableLayout";
 
 // img
-import u1 from "../../../Assets/images/authBg.png";
+import u1 from "../../../Assets/images/authBg.jpeg";
 import { Link } from "react-router-dom";
 import { CstmPagination } from "../../../components/Common/Common";
 import ConfirmationPop from "../../../components/Modals/ConfirmationPop";

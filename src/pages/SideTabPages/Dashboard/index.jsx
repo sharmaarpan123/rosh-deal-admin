@@ -146,6 +146,7 @@ const Dashboard = () => {
                       onChange={(date) =>
                         setDateFilter((p) => ({ ...p, endDate: date }))
                       }
+                      customInput={<CustomInput />}
                       className="form-control"
                       isClearable
                       placeholderText="Select end date"
