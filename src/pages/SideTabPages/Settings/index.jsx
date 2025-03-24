@@ -17,7 +17,7 @@ const Settings = () => {
           <Row className="justify-content-center">
             <Col lg="12">
               <h4 className="mb-0 py-3 fw-bold themeBlue text-capitalize">
-                Admin Profile
+                Profile
               </h4>
             </Col>
             <Col lg="7" md="9" sm="11" className="my-2">
@@ -63,7 +63,7 @@ const Settings = () => {
                         </h6>
                       </li>
                       <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">UserName:</p>
+                        <p className="m-0 themeBlue fw-sbold w-25">User Name:</p>
                         <h6 className="m-0 text-muted fw-bold w-75">
                           {admin?.userName}
                         </h6>
