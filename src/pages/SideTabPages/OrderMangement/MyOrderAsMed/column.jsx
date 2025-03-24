@@ -41,13 +41,11 @@ export const getColumn = (
     component: (item) => (
       <p
         className={`${
-          item.orderFormStatus === "reviewFormSubmitted"
+          ["accepted", "reviewFormAccepted"]?.includes(item.orderFormStatus)
             ? "bg-success "
-            : item.orderFormStatus === "accepted"
-            ? "bg-primary "
-            : item.orderFormStatus === "rejected"
-            ? "bg-danger"
-            : "bg-warning"
+            : ["rejected", "reviewFormRejected"]?.includes(item.orderFormStatus)
+            ? "bg-danger "
+            : "bg-warning "
         } d-flex justify-content-start pb-0 rounded px-2 text-white `}
         style={{
           width: "fit-content",
@@ -160,7 +158,6 @@ export const getColumn = (
     ),
   },
 
-  
   // {
   //   head: "Deal Category",
   //   accessor: "dealCategory",
