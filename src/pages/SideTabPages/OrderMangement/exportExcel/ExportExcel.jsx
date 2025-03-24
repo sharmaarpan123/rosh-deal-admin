@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import ButtonLoader from "../../../../components/Common/ButtonLoader";
 import { catchAsync, checkResponse } from "../../../../utilities/utilities";
 import { orderStatusObj } from "../../../../utilities/const";
+import moment from "moment/moment";
 
 function makeHyperLink(row, cellKey, text, hyperValue) {
   const cell = row.getCell(cellKey);
@@ -44,8 +45,11 @@ const ExportExcel = ({ body, api }) => {
     sheet.columns = [
       // reviewerName
       { header: "_id", key: "_id", width: 32 },
+      { header: "Order Date Time", key: "OrderDateTime", width: 32 },
+      
       { header: "Product name", key: "productName", width: 32 },
       { header: "Brand name", key: "brand", width: 32 },
+      { header: "Platform name", key: "platform", width: 32 },
       { header: "Deal Type", key: "dealType", width: 32 },
       { header: "Product price", key: "productPrice", width: 32 },
       {
@@ -79,21 +83,26 @@ const ExportExcel = ({ body, api }) => {
         _id: item?._id,
         productName:
           item?.dealId?.parentDealId?.productName || item?.dealId?.productName,
+        OrderDateTime: moment(item?.createdAt).format("DD-MM-YYYY  hh:mm:ss A") || "-",
         brand:
           item?.dealId?.parentDealId?.brand?.name || item?.dealId?.brand?.name,
+        platform:
+          item?.dealId?.parentDealId?.platForm?.name ||
+          item?.dealId?.platForm?.name,
         dealType:
           item?.dealId?.parentDealId?.dealCategory?.name ||
           item?.dealId?.dealCategory?.name,
-        productPrice: item?.dealId?.parentDealId?.actualPrice || item?.dealId.actualPrice,
+        productPrice:
+          item?.dealId?.parentDealId?.actualPrice || item?.dealId.actualPrice,
         lessAmount:
-          item?.dealId?.parentDealId?.actualPrice ||
+          item?.dealId?.parentDealId?.lessAmount ||
           item?.dealId?.lessAmount ||
           "-",
         Commission:
-          item?.dealId?.parentDealId?.actualPrice ||
+          item?.dealId?.parentDealId?.commissionValue ||
           item?.dealId?.commissionValue ||
           "-",
-        link: item?.dealId?.parentDealId?.actualPrice || item?.dealId?.postUrl,
+        link: item?.dealId?.parentDealId?.postUrl || item?.dealId?.postUrl,
         reviewerName: item?.reviewerName,
         sellerFeedback: item?.sellerFeedback,
         orderSs: item.orderScreenShot,
