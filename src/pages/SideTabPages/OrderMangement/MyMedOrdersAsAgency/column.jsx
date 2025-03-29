@@ -30,9 +30,7 @@ export const getColumn = (
   {
     head: "Mediator Name",
     accessor: "createdAt",
-    component: (item, key, arr) => (
-      <>{item?.dealId?.adminId?.name}</>
-    ),
+    component: (item, key, arr) => <>{item?.dealId?.adminId?.name}</>,
   },
   {
     head: "Date || Time ",
@@ -47,13 +45,11 @@ export const getColumn = (
     component: (item) => (
       <p
         className={`${
-          item.orderFormStatus === "reviewFormSubmitted"
+          ["accepted", "reviewFormAccepted"]?.includes(item.orderFormStatus)
             ? "bg-success "
-            : item.orderFormStatus === "accepted"
-            ? "bg-primary "
-            : item.orderFormStatus === "rejected"
-            ? "bg-danger"
-            : "bg-warning"
+            : ["rejected", "reviewFormRejected"]?.includes(item.orderFormStatus)
+            ? "bg-danger "
+            : "bg-warning "
         } d-flex justify-content-start pb-0 rounded px-2 text-white `}
         style={{
           width: "fit-content",
@@ -127,7 +123,7 @@ export const getColumn = (
     head: "Price",
     accessor: "",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold" >
+      <p className="m-0 themeBlue fw-sbold">
         {item?.dealId?.parentDealId?.actualPrice}
       </p>
     ),
@@ -136,7 +132,7 @@ export const getColumn = (
     head: "Less",
     accessor: "",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold" >
+      <p className="m-0 themeBlue fw-sbold">
         {item?.dealId?.lessAmount || "-"}
       </p>
     ),
@@ -145,12 +141,11 @@ export const getColumn = (
     head: "Commission",
     accessor: "",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold" >
+      <p className="m-0 themeBlue fw-sbold">
         {item?.dealId?.commissionValue || "-"}
       </p>
     ),
   },
-
 
   // {
   //   head: "Deal Type",
@@ -177,7 +172,7 @@ export const getColumn = (
     head: "Exchange Product",
     accessor: "",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold" >
+      <p className="m-0 themeBlue fw-sbold">
         {item?.exchangeDealProducts?.map((item) => {
           return `${capitalizedFirstAlphaBet(item)} , `;
         })}

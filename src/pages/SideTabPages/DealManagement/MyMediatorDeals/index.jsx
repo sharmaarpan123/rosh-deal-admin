@@ -133,16 +133,16 @@ const MyMedDealsAsAgency = () => {
         </p>
       ),
     },
-    {
-      head: "Mediator Less",
-      accessor: "actualPrice",
-      component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item?.parentDealId?.lessAmountToSubAdmin) ||
-            "-"}
-        </p>
-      ),
-    },
+    // {
+    //   head: "Mediator Less",
+    //   accessor: "actualPrice",
+    //   component: (item, key, arr) => (
+    //     <p className="m-0 themeBlue fw-sbold">
+    //       {capitalizedFirstAlphaBet(item?.parentDealId?.lessAmountToSubAdmin) ||
+    //         "-"}
+    //     </p>
+    //   ),
+    // },
     {
       head: "Mediator Commission",
       accessor: "actualPrice",
@@ -158,10 +158,10 @@ const MyMedDealsAsAgency = () => {
       head: "Refund",
       accessor: "finalCashBackForUser",
     },
-    {
-      head: "Platform Fee",
-      accessor: "adminCommission",
-    },
+    // {
+    //   head: "Platform Fee",
+    //   accessor: "adminCommission",
+    // },
     {
       head: "Status",
       accessor: "isDeleted",

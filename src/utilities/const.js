@@ -118,7 +118,7 @@ export const commonSendNotificationTypes = [
   },
   {
     label: "Users",
-    value: "all",
+    value: "users",
   },
 ];
 

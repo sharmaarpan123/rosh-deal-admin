@@ -89,6 +89,7 @@ const NotificationManagement = () => {
     watch,
     control,
     setValue,
+    reset,
   } = useForm({
     reValidateMode: "onChange",
     mode: "onChange",
@@ -148,10 +149,14 @@ const NotificationManagement = () => {
 
     const res = await SEND_NOTIFICATION(body);
 
-    checkResponse({
+    const success = checkResponse({
       res,
       showSuccess: true,
     });
+
+    if (success) {
+      reset({});
+    }
   });
 
   useEffect(() => {
@@ -387,6 +392,11 @@ const NotificationManagement = () => {
                             loadOptions={loadBrandOptions}
                             onChange={(option) => {
                               setBrandIdToFilterDeal(option?.value || "");
+                              setValue(
+                                "dealId",
+                                { label: "", value: "" },
+                                { shouldValidate: true }
+                              );
                             }}
                           />
                         </Col>
@@ -406,11 +416,8 @@ const NotificationManagement = () => {
                                 <AsyncSelect
                                   placeholder="Please Type To see the Deals"
                                   loadOptions={loadDealOptions}
-                                  // onChange={(option) => {}}
                                   {...field}
                                 />
-
-                                // <Select {...field} options={dealsOptions} />
                               );
                             }}
                           />

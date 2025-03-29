@@ -40,14 +40,11 @@ export const getColumn = (
     component: (item) => (
       <p
         className={` text-nowrap mb-0 ${
-          item.orderFormStatus === "reviewFormSubmitted"
+          ["accepted", "reviewFormAccepted"]?.includes(item.orderFormStatus)
             ? "bg-success "
-            : item.orderFormStatus === "accepted"
-            ? "bg-primary "
-            : item.orderFormStatus === "rejected" ||
-              item.orderFormStatus === "reviewFormRejected"
-            ? "bg-danger"
-            : "bg-warning"
+            : ["rejected", "reviewFormRejected"]?.includes(item.orderFormStatus)
+            ? "bg-danger "
+            : "bg-warning "
         } d-flex justify-content-start pb-0 rounded px-2 text-white `}
         style={{
           width: "fit-content",
@@ -81,7 +78,7 @@ export const getColumn = (
       </p>
     ),
   },
-   {
+  {
     head: "Platform",
     accessor: "platForm",
     component: (item, key, arr) => (
@@ -120,9 +117,7 @@ export const getColumn = (
     head: "Price",
     accessor: "",
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">
-        {item?.dealId?.actualPrice}
-      </p>
+      <p className="m-0 themeBlue fw-sbold">{item?.dealId?.actualPrice}</p>
     ),
   },
   {
@@ -168,7 +163,6 @@ export const getColumn = (
     ),
   },
 
- 
   // {
   //   head: "Deal Category",
   //   accessor: "dealCategory",
