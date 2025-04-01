@@ -19,6 +19,7 @@ import Filter from "../../../components/Common/Filter";
 import {
   activeInactiveOptions,
   activeInActiveStatusOptions,
+  ADMIN_ROLE_TYPE_ENUM,
 } from "../../../utilities/const";
 import TableToggle from "../../../components/Common/TableToggle";
 import { useSelector } from "react-redux";
@@ -125,7 +126,6 @@ const Brand = () => {
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
-           
             <Col lg="12" className="my-2">
               <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
                 <div className="left">
@@ -140,15 +140,19 @@ const Brand = () => {
                 </div>
                 <div className="right">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
-                    <li className="">
-                      <Link
-                        to={"/brand/add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Add New
-                      </Link>
-                    </li>
+                    {admin?.roles?.includes(
+                      ADMIN_ROLE_TYPE_ENUM.SUPERADMIN
+                    ) && (
+                      <li className="">
+                        <Link
+                          to={"/brand/add"}
+                          className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
+                          style={{ height: 40, minWidth: 100, fontSize: 12 }}
+                        >
+                          Add New
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </div>

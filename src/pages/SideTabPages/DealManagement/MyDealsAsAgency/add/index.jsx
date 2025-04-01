@@ -28,7 +28,10 @@ import {
 } from "../../../../../utilities/utilities";
 import { addEditDealSchema } from "./schema";
 import TagsInput from "./TagsInput";
-import { superAdminCommission } from "../../../../../utilities/const";
+import {
+  superAdminCommission,
+  superAdminCommissionOnFullRefund,
+} from "../../../../../utilities/const";
 
 const makeOptions = (data, extraKey, extraKeyValueKey) => {
   return data?.map((item) => ({
@@ -190,7 +193,26 @@ const AddEditDeal = () => {
     const actualPrice = watch("actualPrice");
     const lessAmount = watch("lessAmount");
     const commissionValue = watch("commissionValue");
-    if (actualPrice && (lessAmount || commissionValue)) {
+
+    if (
+      actualPrice &&
+      (lessAmount === 0 ||
+        commissionValue === 0 ||
+        lessAmount === "0" ||
+        commissionValue === "0")
+    ) {
+      console.log(lessAmount, commissionValue, "asl");
+
+      const adminCommission = Math.ceil(
+        (superAdminCommissionOnFullRefund * actualPrice) / 100
+      );
+      setValue("adminCommission", String(adminCommission), {
+        shouldValidate: true,
+      });
+      setValue("finalCashBackForUser", actualPrice - adminCommission, {
+        shouldValidate: true,
+      });
+    } else if (actualPrice && (lessAmount || commissionValue)) {
       const adminCommission = Math.ceil(
         (superAdminCommission * (lessAmount || commissionValue)) / 100
       );

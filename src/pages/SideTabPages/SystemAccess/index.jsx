@@ -32,6 +32,7 @@ import Filter from "../../../components/Common/Filter";
 const roleLabelEnum = {
   subadmin: "Mediator",
   admin: "Agency",
+  superAdmin: "King",
 };
 
 const PlatForm = () => {
