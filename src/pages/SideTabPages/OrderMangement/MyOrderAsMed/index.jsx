@@ -54,6 +54,7 @@ const MyOrderAsMed = () => {
     status: "",
   });
   const [popUpImage, SetPopUpImage] = useState("");
+  const [exportedKeys, setExportedKeys] = useState({});
 
   const acceptRejectHandler = (_id, ind, status) => {
     statusChangeHandler(
@@ -78,12 +79,20 @@ const MyOrderAsMed = () => {
     }));
   };
 
+  const setExportedKeysHandler = (key, value) => {
+    setExportedKeys((p) => ({
+      ...p,
+      [key]: value,
+    }));
+  };
+
   const column = getColumn(
     body,
     statusChangeHandler,
     SetPopUpImage,
     acceptRejectHandler,
-    setRejectedModel
+    setRejectedModel,
+    setExportedKeysHandler
   );
 
   return (
@@ -121,7 +130,11 @@ const MyOrderAsMed = () => {
                 </div>
                 <div className="right">
                   <div className="d-flex gap-10">
-                    <ExportExcel body={body} api={MY_ORDER_LIST_MED} />
+                    <ExportExcel
+                      body={body}
+                      api={MY_ORDER_LIST_MED}
+                      exportedKeys={exportedKeys}
+                    />
                     <BulkPaymentStatusChange refetch={refetch} />
                   </div>
                 </div>

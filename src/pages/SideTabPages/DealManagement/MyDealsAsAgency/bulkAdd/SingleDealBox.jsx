@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import TagsInput from "../add/TagsInput";
 import { Button, Col, Row } from "react-bootstrap";
-import { superAdminCommission } from "../../../../../utilities/const";
+import {
+  superAdminCommission,
+  superAdminCommissionOnFullRefund,
+} from "../../../../../utilities/const";
 import styles from "./BulkAdd.module.scss";
 import noImg from "../../../../../Assets/images/no-img.png";
 import { errorToast } from "../../../../../utilities/utilities";
@@ -43,7 +46,22 @@ const SingleDealBox = ({
     const actualPrice = watch(`csvData.${index}.actualPrice`);
     const lessAmount = watch(`csvData.${index}.lessAmount`);
     const commissionValue = watch(`csvData.${index}.commissionValue`);
-    if (actualPrice && (lessAmount || commissionValue)) {
+
+    if (actualPrice && (lessAmount === "0" || commissionValue === "0")) {
+      const adminCommission = Math.ceil(
+        (superAdminCommissionOnFullRefund * actualPrice) / 100
+      );
+      setValue(`csvData.${index}.adminCommission`, String(adminCommission), {
+        shouldValidate: true,
+      });
+      setValue(
+        `csvData.${index}.finalCashBackForUser`,
+        actualPrice - adminCommission,
+        {
+          shouldValidate: true,
+        }
+      );
+    } else if (actualPrice && (lessAmount || commissionValue)) {
       const adminCommission = Math.ceil(
         (superAdminCommission * (lessAmount || commissionValue)) / 100
       );
@@ -180,7 +198,10 @@ const SingleDealBox = ({
             <Col lg="4" md="6" className="my-2">
               <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
                 <li className="py-1 align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold "> {fieldLabelObj[itm]} :</p>
+                  <p className="m-0 themeBlue fw-sbold ">
+                    {" "}
+                    {fieldLabelObj[itm]} :
+                  </p>
                   <p className="form-label fw-sbold  ps-2 m-0 text-success">
                     {watch(`csvData.${index}.${itm}`)}
                   </p>
@@ -194,7 +215,10 @@ const SingleDealBox = ({
           <Col lg="4" md="6" className="my-2">
             <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
               <li className="py-1 align-items-center gap-10">
-                <p className="m-0 themeBlue fw-sbold "> {fieldLabelObj[itm]} :</p>
+                <p className="m-0 themeBlue fw-sbold ">
+                  {" "}
+                  {fieldLabelObj[itm]} :
+                </p>
 
                 {itm === "productCategories" ? (
                   <TagsInput
@@ -224,6 +248,18 @@ const SingleDealBox = ({
                               itm
                             ) && {
                               onChange: (e) => {
+                                if (
+                                  e?.target?.value[0] === "0" &&
+                                  e?.target?.value?.length > 1
+                                ) {
+                                  return errorToast({
+                                    message: `INVALID ${
+                                      itm === "commissionValue"
+                                        ? "COMMISSION VALUE"
+                                        : "LESS AMOUNT"
+                                    }`,
+                                  });
+                                }
                                 if (
                                   itm === "commissionValue" &&
                                   e.target.value &&

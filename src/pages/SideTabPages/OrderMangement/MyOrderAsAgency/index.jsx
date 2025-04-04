@@ -38,6 +38,7 @@ const MyOrderAsAgency = () => {
       brandId: "",
       dealId: [],
       orderFormStatus: "",
+      selectedPlatformFilter: [],
     },
     dependencies: [
       "brandId",
@@ -46,6 +47,9 @@ const MyOrderAsAgency = () => {
       "selectedPlatformFilter",
     ],
   });
+
+  const [exportedKeys, setExportedKeys] = useState({});
+
   const [rejectReason, setRejectedReason] = useState("");
   const [rejectedModel, setRejectedModel] = useState({
     ...defaultDeleteModelState,
@@ -76,12 +80,20 @@ const MyOrderAsAgency = () => {
     }));
   };
 
+  const setExportedKeysHandler = (key, value) => {
+    setExportedKeys((p) => ({
+      ...p,
+      [key]: value,
+    }));
+  };
+
   const column = getColumn(
     body,
     statusChangeHandler,
     SetPopUpImage,
     acceptRejectHandler,
-    setRejectedModel
+    setRejectedModel,
+    setExportedKeysHandler
   );
 
   return (
@@ -119,7 +131,13 @@ const MyOrderAsAgency = () => {
                 </div>
                 <div className="right">
                   <div className="d-flex gap-10">
-                    <ExportExcel body={body} api={ORDER_LIST} />
+                    {!!data?.length && (
+                      <ExportExcel
+                        body={body}
+                        api={ORDER_LIST}
+                        exportedKeys={exportedKeys}
+                      />
+                    )}
                     <BulkPaymentStatusChange refetch={refetch} />
                   </div>
                 </div>

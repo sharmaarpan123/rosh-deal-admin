@@ -2,9 +2,14 @@ import ExcelJS from "exceljs";
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import ButtonLoader from "../../../../components/Common/ButtonLoader";
-import { catchAsync, checkResponse } from "../../../../utilities/utilities";
+import {
+  catchAsync,
+  checkResponse,
+  errorToast,
+} from "../../../../utilities/utilities";
 import { orderStatusObj } from "../../../../utilities/const";
 import moment from "moment/moment";
+import { orderColumnEnum } from "../utils/const";
 
 function makeHyperLink(row, cellKey, text, hyperValue) {
   const cell = row.getCell(cellKey);
@@ -16,9 +21,12 @@ function makeHyperLink(row, cellKey, text, hyperValue) {
   cell.font = { color: { argb: "FF0000FF" }, underline: true };
 }
 
-const ExportExcel = ({ body, api }) => {
+const ExportExcel = ({ body, api, exportedKeys = {} }) => {
   const [loader, setLoader] = useState(false);
   const handleExport = catchAsync(async () => {
+    if (!body?.brandId) {
+      return errorToast({ message: "Please select the brand" });
+    }
     setLoader(true);
     let data = [];
 
@@ -42,40 +50,13 @@ const ExportExcel = ({ body, api }) => {
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet("My Sheet");
 
+    const exportedColumnsArr = Object.keys(exportedKeys)
+      ?.filter((item) => exportedKeys[item])
+      ?.map((item) => orderColumnEnum[item]);
+
     sheet.columns = [
-      // reviewerName
       { header: "_id", key: "_id", width: 32 },
-      { header: "Order Date Time", key: "OrderDateTime", width: 32 },
-      
-      { header: "Product name", key: "productName", width: 32 },
-      { header: "Brand name", key: "brand", width: 32 },
-      { header: "Platform name", key: "platform", width: 32 },
-      { header: "Deal Type", key: "dealType", width: 32 },
-      { header: "Product price", key: "productPrice", width: 32 },
-      {
-        header: "Less",
-        key: "lessAmount",
-        width: 32,
-      },
-      {
-        header: "Link",
-        key: "link",
-        width: 32,
-      },
-      {
-        header: "Commission",
-        key: "Commission",
-        width: 32,
-      },
-      { header: "Reviewer Name", key: "reviewerName", width: 32 },
-      { header: "Order ss", key: "orderSs", width: 32 },
-      { header: "Review ss", key: "reviewSs", width: 32 },
-      { header: "Seller feedback ss", key: "sellerFeedback" },
-      { header: "Delivered ss", key: "deliveredScreenShot", width: 32 },
-      { header: "Review Link", key: "reviewLink", width: 32 },
-      { header: "Exchange Products", key: "exchangeDealProducts", width: 32 },
-      { header: "Payment Status", key: "paymentStatus", width: 32 },
-      { header: "Order Status", key: "orderFormStatus", width: 32 },
+      ...exportedColumnsArr,
     ];
 
     data?.map(async (item, index) => {
@@ -83,7 +64,10 @@ const ExportExcel = ({ body, api }) => {
         _id: item?._id,
         productName:
           item?.dealId?.parentDealId?.productName || item?.dealId?.productName,
-        OrderDateTime: moment(item?.createdAt).format("DD-MM-YYYY  hh:mm:ss A") || "-",
+        mediator: item?.dealId?.adminId?.name,
+        orderId: item?.orderIdOfPlatForm,
+        orderDateTime:
+          moment(item?.createdAt).format("DD-MM-YYYY  hh:mm:ss A") || "-",
         brand:
           item?.dealId?.parentDealId?.brand?.name || item?.dealId?.brand?.name,
         platform:
@@ -98,7 +82,7 @@ const ExportExcel = ({ body, api }) => {
           item?.dealId?.parentDealId?.lessAmount ||
           item?.dealId?.lessAmount ||
           "-",
-        Commission:
+        commission:
           item?.dealId?.parentDealId?.commissionValue ||
           item?.dealId?.commissionValue ||
           "-",

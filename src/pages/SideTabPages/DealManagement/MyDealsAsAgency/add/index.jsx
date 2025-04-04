@@ -24,6 +24,7 @@ import fileUploader from "../../../../../utilities/fileUploader";
 import {
   catchAsync,
   checkResponse,
+  errorToast,
   textAreaAdjust,
 } from "../../../../../utilities/utilities";
 import { addEditDealSchema } from "./schema";
@@ -67,8 +68,8 @@ const AddEditDeal = () => {
       dealCategory: data?.dealCategory || "",
       productCategories: data?.productCategories || [],
       postUrl: data?.postUrl || "",
-      actualPrice: data?.actualPrice || "",
-      lessAmount: data?.lessAmount || "",
+      actualPrice: data?.actualPrice ? String(data?.actualPrice) : "",
+      lessAmount: data?.lessAmount ? String(data?.lessAmount) : "",
       finalCashBackForUser: data?.finalCashBackForUser
         ? data?.finalCashBackForUser
         : "",
@@ -194,24 +195,20 @@ const AddEditDeal = () => {
     const lessAmount = watch("lessAmount");
     const commissionValue = watch("commissionValue");
 
-    if (
-      actualPrice &&
-      (lessAmount === 0 ||
-        commissionValue === 0 ||
-        lessAmount === "0" ||
-        commissionValue === "0")
-    ) {
-      console.log(lessAmount, commissionValue, "asl");
-
+    if (actualPrice && (lessAmount === "0" || commissionValue === "0")) {
       const adminCommission = Math.ceil(
         (superAdminCommissionOnFullRefund * actualPrice) / 100
       );
       setValue("adminCommission", String(adminCommission), {
         shouldValidate: true,
       });
-      setValue("finalCashBackForUser", actualPrice - adminCommission, {
-        shouldValidate: true,
-      });
+      setValue(
+        "finalCashBackForUser",
+        String(Number(actualPrice) - Number(adminCommission)),
+        {
+          shouldValidate: true,
+        }
+      );
     } else if (actualPrice && (lessAmount || commissionValue)) {
       const adminCommission = Math.ceil(
         (superAdminCommission * (lessAmount || commissionValue)) / 100
@@ -252,6 +249,8 @@ const AddEditDeal = () => {
       });
     }
   }, [watch("actualPrice"), watch("lessAmount"), watch("commissionValue")]);
+
+  console.log(errors, "errors");
 
   return (
     <>
@@ -609,6 +608,16 @@ const AddEditDeal = () => {
                                   <input
                                     {...field}
                                     onChange={(e) => {
+                                      if (
+                                        e?.target?.value[0] === "0" &&
+                                        e?.target?.value?.length > 1
+                                      ) {
+                                        errorToast({
+                                          message: "INVALID LESS AMOUNT",
+                                        });
+                                        return;
+                                      }
+
                                       if (getValues("commissionValue")) {
                                         toast.dismiss();
                                         toast.error(
@@ -650,6 +659,15 @@ const AddEditDeal = () => {
                                   <input
                                     {...field}
                                     onChange={(e) => {
+                                      if (
+                                        e?.target?.value[0] === "0" &&
+                                        e?.target?.value?.length > 1
+                                      ) {
+                                        errorToast({
+                                          message: "INVALID COMMISSION VALUE",
+                                        });
+                                        return;
+                                      }
                                       if (getValues("lessAmount")) {
                                         toast.dismiss();
                                         toast.error(
@@ -775,7 +793,7 @@ const AddEditDeal = () => {
                                 htmlFor=""
                                 className="form-label fw-sbold text-muted ps-2 m-0"
                               >
-                                Less Amount To SubAdmins
+                                Less Amount To Mediators
                               </label>
                               <Controller
                                 control={control}
@@ -808,7 +826,7 @@ const AddEditDeal = () => {
                                   htmlFor=""
                                   className="form-label fw-sbold text-muted ps-2 m-0"
                                 >
-                                  commission To SubAdmins
+                                  commission To Mediator
                                 </label>
                                 <Controller
                                   control={control}

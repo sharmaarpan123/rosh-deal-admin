@@ -12,13 +12,15 @@ import {
   paymentStatusOptions,
 } from "../../../../utilities/const";
 import { capitalizedFirstAlphaBet } from "../../../../utilities/utilities";
+import TableHeaderCheckbox from "../../../../components/Common/TableHeaderCheckbox";
 
 export const getColumn = (
   body,
   statusChangeHandler,
   SetPopUpImage,
   acceptRejectHandler,
-  setRejectedModel
+  setRejectedModel,
+  setExportedKeysHandler
 ) => [
   {
     head: "#",
@@ -30,11 +32,27 @@ export const getColumn = (
   {
     head: "Mediator Name",
     accessor: "createdAt",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Mediator Name"
+        id={key}
+        onChange={(e) => setExportedKeysHandler("mediator", e.target.checked)}
+      />
+    ),
     component: (item, key, arr) => <>{item?.dealId?.adminId?.name}</>,
   },
   {
     head: "Date || Time ",
     accessor: "createdAt",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Date || Time"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("orderDateTime", e.target.checked)
+        }
+      />
+    ),
     component: (item, key, arr) => (
       <>{moment(item.createdAt).format("DD-MM-YYYY  hh:mm:ss A")}</>
     ),
@@ -42,6 +60,15 @@ export const getColumn = (
   {
     head: "Status",
     accessor: "orderFormStatus",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Status"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("orderFormStatus", e.target.checked)
+        }
+      />
+    ),
     component: (item) => (
       <p
         className={`${
@@ -63,6 +90,15 @@ export const getColumn = (
   {
     head: "Profile Name",
     accessor: "reviewerName",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Profile Name"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("reviewerName", e.target.checked)
+        }
+      />
+    ),
     component: (item, key, arr) => (
       <p
         className="m-0 themeBlue fw-sbold text-break"
@@ -78,6 +114,13 @@ export const getColumn = (
   {
     head: "Brand",
     accessor: "brand",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Brand"
+        id={key}
+        onChange={(e) => setExportedKeysHandler("brand", e.target.checked)}
+      />
+    ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.brand?.name)}
@@ -87,6 +130,13 @@ export const getColumn = (
   {
     head: "Platform",
     accessor: "platForm",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Platform"
+        id={key}
+        onChange={(e) => setExportedKeysHandler("platform", e.target.checked)}
+      />
+    ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.platForm?.name)}
@@ -96,6 +146,15 @@ export const getColumn = (
   {
     head: "Product Name",
     accessor: "productName",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Product Name"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("productName", e.target.checked)
+        }
+      />
+    ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.productName)}
@@ -106,6 +165,15 @@ export const getColumn = (
   {
     head: "Order id",
     accessor: "orderIdOfPlatForm",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Order id"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("orderIdOfPlatForm", e.target.checked)
+        }
+      />
+    ),
     component: (item, key, arr) => (
       <p
         className="m-0 themeBlue fw-sbold "
@@ -122,6 +190,15 @@ export const getColumn = (
   {
     head: "Price",
     accessor: "",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Price"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("productPrice", e.target.checked)
+        }
+      />
+    ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {item?.dealId?.parentDealId?.actualPrice}
@@ -131,6 +208,13 @@ export const getColumn = (
   {
     head: "Less",
     accessor: "",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Less"
+        id={key}
+        onChange={(e) => setExportedKeysHandler("lessAmount", e.target.checked)}
+      />
+    ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {item?.dealId?.lessAmount || "-"}
@@ -140,6 +224,13 @@ export const getColumn = (
   {
     head: "Commission",
     accessor: "",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Commission"
+        id={key}
+        onChange={(e) => setExportedKeysHandler("commission", e.target.checked)}
+      />
+    ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {item?.dealId?.commissionValue || "-"}
@@ -147,20 +238,36 @@ export const getColumn = (
     ),
   },
 
-  // {
-  //   head: "Deal Type",
-  //   accessor: "dealCategory",
-  //   component: (item, key, arr) => (
-  //     <p className="m-0 themeBlue fw-sbold">
-  //       {capitalizedFirstAlphaBet(
-  //         item?.dealId?.parentDealId?.dealCategory?.name
-  //       )}
-  //     </p>
-  //   ),
-  // },
+  {
+    head: "Deal Type",
+    accessor: "dealCategory",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Deal Type"
+        id={key}
+        onChange={(e) => setExportedKeysHandler("dealType", e.target.checked)}
+      />
+    ),
+    component: (item, key, arr) => (
+      <p className="m-0 themeBlue fw-sbold">
+        {capitalizedFirstAlphaBet(
+          item?.dealId?.parentDealId?.dealCategory?.name
+        )}
+      </p>
+    ),
+  },
   {
     head: "Platform Fee",
     accessor: "",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Platform Fee"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("platformFee", e.target.checked)
+        }
+      />
+    ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {capitalizedFirstAlphaBet(item?.dealId?.adminCommission)}
@@ -171,6 +278,15 @@ export const getColumn = (
   {
     head: "Exchange Product",
     accessor: "",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Exchange Product"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("exchangeDealProducts", e.target.checked)
+        }
+      />
+    ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {item?.exchangeDealProducts?.map((item) => {
@@ -186,6 +302,13 @@ export const getColumn = (
   {
     head: "Order SS",
     accessor: "image",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Order SS"
+        id={key}
+        onChange={(e) => setExportedKeysHandler("orderSs", e.target.checked)}
+      />
+    ),
     component: (item, key, arr) => (
       <img
         onClick={() => SetPopUpImage(item.orderScreenShot || noImg)}
@@ -198,6 +321,15 @@ export const getColumn = (
   {
     head: "Delivered SS",
     accessor: "image",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Delivered SS"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("deliveredScreenShot", e.target.checked)
+        }
+      />
+    ),
     component: (item, key, arr) => (
       <img
         onClick={() => SetPopUpImage(item.deliveredScreenShot || noImg)}
@@ -210,6 +342,13 @@ export const getColumn = (
   {
     head: "Review/Rating SS",
     accessor: "image",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Review/Rating SS"
+        id={key}
+        onChange={(e) => setExportedKeysHandler("reviewSs", e.target.checked)}
+      />
+    ),
     component: (item, key, arr) => (
       <img
         onClick={() => SetPopUpImage(item.reviewScreenShot || noImg)}
@@ -222,6 +361,15 @@ export const getColumn = (
   {
     head: "Seller Feedback SS",
     accessor: "image",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Seller Feedback SS"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("sellerFeedback", e.target.checked)
+        }
+      />
+    ),
     component: (item, key, arr) => (
       <img
         onClick={() => SetPopUpImage(item.sellerFeedback || noImg)}
@@ -234,6 +382,15 @@ export const getColumn = (
   {
     head: "Payment Status",
     accessor: "payment Status",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Payment Status"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("paymentStatus", e.target.checked)
+        }
+      />
+    ),
     component: (item, index) => (
       <TableToggle
         Options={paymentStatusOptions.slice(1)}

@@ -27,11 +27,13 @@ const TableLayout = ({ column, data, loader }) => {
               {column &&
                 column?.length > 0 &&
                 column?.map((item, key) => {
-                  if (item.headComponent) {
+                  if (item?.headComponent) {
                     return (
-                      <td className="border-bottom border-secondary">
-                        {item.headComponent(data, key, data)}
-                      </td>
+                      <>
+                        <th className="text-muted fw-bold">
+                          {item?.headComponent(data, key, data)}
+                        </th>
+                      </>
                     );
                   }
                   return (

@@ -364,7 +364,7 @@ const AddBulkDeal = () => {
                     <BackIcon />
                   </Link>
                 </div>
-                {/* <div className="right d-flex gap-10">
+                <div className="right d-flex gap-10">
                   <a target="_blank" href="/sampleBulk.csv">
                     <Button className="d-block align-items-center justify-content-center commonBtn  rounded text-white">
                       Download Sample csv
@@ -380,7 +380,7 @@ const AddBulkDeal = () => {
                       accept=".csv"
                     />
                   </Button>
-                </div> */}
+                </div>
               </div>
             </Col>
             <Col lg="12" className="my-2">
@@ -515,7 +515,10 @@ const AddBulkDeal = () => {
                     </Col>
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10">
-                        <Button onClick={() => navigate(-1)} className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
+                        <Button
+                          onClick={() => navigate(-1)}
+                          className="d-flex align-items-center justify-content-center commonBtn GreyBtn"
+                        >
                           Cancel
                         </Button>
                         <Button
