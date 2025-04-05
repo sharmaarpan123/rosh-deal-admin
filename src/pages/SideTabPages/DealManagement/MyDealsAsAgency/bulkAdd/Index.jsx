@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Accordion, Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 
 //img
@@ -22,6 +22,7 @@ import {
 import {
   catchAsync,
   checkResponse,
+  errorToast,
   isStringOnlyContainSpaces,
 } from "../../../../../utilities/utilities";
 import TagsInput from "../add/TagsInput";
@@ -29,7 +30,17 @@ import styles from "./BulkAdd.module.scss";
 import noImg from "../../../../../Assets/images/no-img.png";
 import BackIcon from "../../../../../components/icons/svg/BackIcon";
 import SingleDealBox from "./SingleDealBox.jsx";
-
+import * as XLSX from "xlsx";
+import { ErrorMessage } from "./utils/errorMessage.js";
+import { isExcelHeaderAreValid } from "./utils/ValidationFunction.js";
+import {
+  excelHeaderBodyKeys,
+  excelHeaderValidationEnum,
+} from "./utils/const.js";
+import {
+  superAdminCommission,
+  superAdminCommissionOnFullRefund,
+} from "../../../../../utilities/const.js";
 const makeOptions = (data) => {
   return data?.map((item) => ({ label: item.name, value: item._id }));
 };
@@ -58,12 +69,6 @@ const schema = ({ isExchangeDeal }) =>
             productName: z
               .string({ required_error: "This is Required" })
               .min(1, { message: "Name is required" }),
-            productCategories: z
-              .array(z.string())
-              .refine((data) => !data.some((item) => item.trim() === ""), {
-                message: "Product categories must contain at least one letter",
-              })
-              .optional(),
             postUrl: z.string().url({ invalid_type_error: "inValid post url" }),
             actualPrice: z
               .string({ required_error: "Actual Price is required" })
@@ -215,14 +220,14 @@ const AddBulkDeal = () => {
   const [dealCategoryOptions, setDealCategoryOptions] = useState([]);
   const [platFormOptions, setPlatFormOptions] = useState([]);
   const [isExchangeDeal, setIsExChangeDeal] = useState(false);
-
+  const [excelImportError, setExcelImportError] = useState("");
+  const [loader, setLoader] = useState(false);
   const {
     register,
     control,
     handleSubmit,
     watch,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -233,16 +238,13 @@ const AddBulkDeal = () => {
     reValidateMode: "onChange",
   });
 
-  console.log(errors, "context");
-
   const { fields, remove, prepend } = useFieldArray({
     control,
     name: "csvData",
   });
 
   const submitHandler = catchAsync(async (data) => {
-    console.log(data, "data");
-
+    setLoader(true);
     const res = await BULK_ADD_DEAL(
       data?.csvData?.map((item, index) => ({
         dealCategory: data.dealCategory.value,
@@ -251,15 +253,17 @@ const AddBulkDeal = () => {
         ...item,
         slotAlloted: +item.slotAlloted,
         isCommissionDeal: item?.commissionValue ? true : false,
+        isExchangeDeal,
       }))
     );
     checkResponse({
       res,
       navigate,
       showSuccess: true,
-      navigateUrl: "/deal",
+      navigateUrl: "/myDealsAsAgency",
+      setLoader,
     });
-  });
+  }, setLoader);
 
   const getData = catchAsync(async () => {
     const apis = [BRAND_LIST(), PLATFORM_LIST(), DEAL_CATEGORY_LIST()];
@@ -275,7 +279,14 @@ const AddBulkDeal = () => {
     });
     checkResponse({
       res: res[2],
-      setData: (data) => setDealCategoryOptions((p) => makeOptions(data)),
+      setData: (data) =>
+        setDealCategoryOptions((p) =>
+          data?.map((item) => ({
+            label: item.name,
+            value: item._id,
+            isExchangeDeal: item?.isExchangeDeal,
+          }))
+        ),
     });
   });
 
@@ -283,53 +294,231 @@ const AddBulkDeal = () => {
     getData();
   }, []);
 
-  const csvImportHandler = catchAsync((e) => {
-    const file = e.target.files[0];
+  const csvImportHandler = (e) => {
+    let file = e.target.files[0];
 
-    if (!file) {
-      return;
-    }
-    Papa.parse(file, {
-      header: true,
-      dynamicTyping: true,
-      complete: (result) => {
-        try {
-          const data = [];
-          result?.data?.forEach((row) => {
-            if (Object.keys(row).length > 1) {
-              const item = { ...row };
-              item.productCategories =
-                String(item?.productCategories)?.split(",") || [];
-              item.productCategories = item?.productCategories?.filter(
-                (str) => !isStringOnlyContainSpaces(str)
-              );
-              item.actualPrice = String(item.actualPrice);
-              item.cashBack = String(item.cashBack);
-              item.slotAlloted = String(item.slotAlloted);
-              item.adminCommission = String(item.adminCommission);
-              data.push(item);
-            }
-          });
+    e.target.value = "";
 
-          if (data.length) {
-            setValue("csvData", data, { shouldValidate: true });
-          }
-        } catch (error) {
-          toast.error(error.message);
+    if (!file) return;
+
+    setExcelImportError((p) => "");
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const data = new Uint8Array(event.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+
+      const sheetName = workbook.SheetNames[0]; // Get the first sheet
+      const worksheet = workbook.Sheets[sheetName];
+      let jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // Use {header: 1} for raw rows
+
+      const headerArr = jsonData && jsonData[0];
+
+      if (!headerArr && !headerArr?.length) {
+        // validating the headers info are complete or not
+        setExcelImportError((p) => ErrorMessage.inCompleteHeader);
+        return errorToast({
+          message: ErrorMessage.inCompleteHeader,
+        });
+      }
+
+      if (!isExcelHeaderAreValid(jsonData && jsonData[0])) {
+        // validating the header spelling;
+        setExcelImportError((p) => ErrorMessage.inValidHeader);
+        return;
+      }
+
+      // removing extra empty data
+      jsonData = jsonData?.filter((item) => {
+        if (item?.length > 1) {
+          return true;
         }
-      },
-      error: (error) => {
-        console.log(error, "error");
-        toast.error(error.message);
-      },
-    });
-  });
+        return false;
+      });
+
+      console.log(jsonData, "json data"); // Now you have your data
+
+      let finalData = [];
+
+      for (let i = 0; i < jsonData?.length; i++) {
+        if (i === 0) continue; // escape the first row ,  that is header
+
+        const row = jsonData[i];
+
+        const singleRow = {};
+
+        for (let k = 0; k < excelHeaderValidationEnum?.length; k++) {
+          if (k === 0) continue; // escape the first col ,  that is SR.NO we don't need this
+
+          const singleRowKeyName =
+            excelHeaderBodyKeys[excelHeaderValidationEnum[k]];
+
+          if (
+            !row[k] &&
+            row[k] !== 0 &&
+            ![
+              "commissionValue",
+              "lessAmount",
+              "lessAmountToSubAdmin",
+              "commissionValueToSubAdmin",
+            ].includes(singleRowKeyName) // this values can be empty conditionally ,  we will validate below
+          ) {
+            // validation to sure every column has value
+            errorToast({
+              message: ErrorMessage.columnShouldNotBeEmpty,
+            });
+            setExcelImportError(
+              (p) => "Sr no." + i + " " + ErrorMessage.columnShouldNotBeEmpty
+            );
+            return;
+          }
+
+          if (["showToUsers", "showToSubAdmins"].includes(singleRowKeyName)) {
+            // add the boolean value to this keys
+            singleRow[singleRowKeyName] = row[k] === "Yes";
+          } else {
+            singleRow[excelHeaderBodyKeys[excelHeaderValidationEnum[k]]] =
+              String(row[k] || "")?.trim();
+          }
+        }
+
+        console.log(singleRow, "single row");
+        // ==== start =====
+        // validation for the below keys
+        // ===>  "commissionValue", ===>  "lessAmount", "lessAmountToSubAdmin", "commissionValueToSubAdmin",
+        // ==== start =====
+        if (!singleRow.lessAmount && !singleRow.commissionValue) {
+          errorToast({
+            message: ErrorMessage.pleaseEnterEitherLessOrCommission,
+          });
+          setExcelImportError(
+            (p) =>
+              "Sr no." +
+              i +
+              " " +
+              ErrorMessage.pleaseEnterEitherLessOrCommission
+          );
+          return;
+        }
+
+        if (singleRow.lessAmount && singleRow.commissionValue) {
+          errorToast({
+            message: ErrorMessage.enterOnlyOneLessOrCommission,
+          });
+          setExcelImportError(
+            (p) =>
+              "Sr no." + i + " " + ErrorMessage.enterOnlyOneLessOrCommission
+          );
+          return;
+        }
+
+        if (
+          singleRow.showToSubAdmins &&
+          singleRow.lessAmount &&
+          !singleRow.lessAmountToSubAdmin
+        ) {
+          errorToast({
+            message: ErrorMessage.pleaseFillTheLessAmountToMediator,
+          });
+          setExcelImportError(
+            (p) =>
+              "Sr no." +
+              i +
+              " " +
+              ErrorMessage.pleaseFillTheLessAmountToMediator
+          );
+          return;
+        }
+        if (
+          singleRow.showToSubAdmins &&
+          singleRow.commissionValue &&
+          !singleRow.commissionValueToSubAdmin
+        ) {
+          errorToast({
+            message: ErrorMessage.pleaseFillTheCommissionAmountToMediator,
+          });
+          setExcelImportError(
+            (p) =>
+              "Sr no." +
+              i +
+              " " +
+              ErrorMessage.pleaseFillTheCommissionAmountToMediator
+          );
+          return;
+        }
+        // ==== end =====
+        // validation for the below keys
+        // ===>  "commissionValue", ===>  "lessAmount", "lessAmountToSubAdmin", "commissionValueToSubAdmin",
+        // ==== end =====
+
+        //////////////////////
+
+        /// setting the AdminCommission and finalCashbackToUser
+        const actualPrice = singleRow.actualPrice;
+        const lessAmount = singleRow.lessAmount;
+        const commissionValue = singleRow.commissionValue;
+
+        if (actualPrice && (lessAmount === "0" || commissionValue === "0")) {
+          // if less amount and commission is 0 then admin commission will be
+          // the ${superAdminCommissionOnFullRefund} % on the actual price
+          const adminCommission = Math.ceil(
+            (superAdminCommissionOnFullRefund * actualPrice) / 100
+          );
+          singleRow.adminCommission = String(adminCommission);
+          singleRow.finalCashBackForUser = String(
+            Number(actualPrice) - Number(adminCommission)
+          );
+        } else if (actualPrice && (lessAmount || commissionValue)) {
+          // if less amount and commission is not 0 then admin commission will be
+          // the ${superAdminCommission} % on the (less || commission) price
+          const adminCommission = Math.ceil(
+            (superAdminCommission * (lessAmount || commissionValue)) / 100
+          );
+
+          singleRow.adminCommission = String(adminCommission);
+          if (commissionValue) {
+            singleRow.finalCashBackForUser = String(
+              Number(actualPrice) +
+                Number(commissionValue) -
+                Number(adminCommission)
+            );
+          } else {
+            singleRow.finalCashBackForUser = String(
+              Number(actualPrice) - Number(lessAmount) - Number(adminCommission)
+            );
+          }
+        }
+
+        /////////////////////
+
+        singleRow.isCommissionDeal = Boolean(singleRow?.commissionValue); // set is deal is commission or not
+        singleRow.exchangeDealProducts = []; // the user will enter the exchange Products if deal is exchange deal
+        finalData.push(singleRow);
+      }
+      console.log(finalData, "final data");
+
+      /// convert some numeric values into string as html dom will  works in strings
+      finalData = finalData.map((item) => ({
+        ...item,
+        actualPrice: String(item?.actualPrice),
+        slotAlloted: String(item?.slotAlloted),
+        lessAmount: String(item?.lessAmount),
+        lessAmountToSubAdmin: String(item?.lessAmountToSubAdmin),
+        commissionValueToSubAdmin: String(item?.commissionValueToSubAdmin),
+        commissionValue: String(item?.commissionValue),
+        refundDays: String(item?.refundDays),
+      }));
+
+      setValue("csvData", finalData, { shouldValidate: true });
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
 
   const appendField = () => {
     prepend({
       productName: "",
       uniqueIdentifier: "",
-      productCategories: [],
       postUrl: "",
       actualPrice: "",
       lessAmount: "",
@@ -371,18 +560,24 @@ const AddBulkDeal = () => {
                     </Button>
                   </a>
                   <Button className="d-flex align-items-center justify-content-center commonBtn position-relative">
-                    Import Csv
+                    Import sheet
                     <input
                       type="file"
                       className="file position-absolute h-100 w-100"
                       placeholder=""
                       onChange={csvImportHandler}
-                      accept=".csv"
+                      accept=".xlsx"
                     />
                   </Button>
                 </div>
               </div>
             </Col>
+            {excelImportError && (
+              <Col lg="12">
+                <p className="text-danger">{excelImportError}</p>
+              </Col>
+            )}
+
             <Col lg="12" className="my-2">
               <div
                 className="formWrpper px-lg-5 p-md-4 p-3 rounded"
@@ -497,6 +692,7 @@ const AddBulkDeal = () => {
                             key={index}
                             remove={remove}
                             control={control}
+                            isExchangeDeal={isExchangeDeal}
                           />
                         );
                       })}
@@ -525,8 +721,9 @@ const AddBulkDeal = () => {
                           className="d-flex align-items-center justify-content-center commonBtn"
                           type="button"
                           onClick={handleSubmit(submitHandler)}
+                          disabled={loader}
                         >
-                          Submit
+                          {loader ? "loading..." : "Submit"}
                         </Button>
                       </div>
                     </Col>

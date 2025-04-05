@@ -20,12 +20,6 @@ export const addEditDealSchema = z
     brand: objectIdSchema("brand"),
     platForm: objectIdSchema("Plat form"),
     dealCategory: objectIdSchema("Deal Category"),
-    productCategories: z
-      .array(z.string())
-      .refine((data) => !data.some((item) => item.trim() === ""), {
-        message: "Product categories must contain at least one letter",
-      })
-      .optional(),
     postUrl: z.string().url({ invalid_type_error: "inValid post url" }),
     actualPrice: z
       .string({ required_error: "Actual Price is required" })

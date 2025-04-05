@@ -66,7 +66,6 @@ const AddEditDeal = () => {
       brand: data?.brand || "",
       platForm: data?.platForm || "",
       dealCategory: data?.dealCategory || "",
-      productCategories: data?.productCategories || [],
       postUrl: data?.postUrl || "",
       actualPrice: data?.actualPrice ? String(data?.actualPrice) : "",
       lessAmount: data?.lessAmount ? String(data?.lessAmount) : "",
@@ -74,7 +73,9 @@ const AddEditDeal = () => {
         ? data?.finalCashBackForUser
         : "",
       isCommissionDeal: data?.isCommissionDeal || false,
-      commissionValue: data?.commissionValue ? data?.commissionValue : "",
+      commissionValue: data?.commissionValue
+        ? String(data?.commissionValue)
+        : "",
       refundDays: data?.refundDays ? String(data?.refundDays) : "",
       slotAlloted: data?.slotAlloted ? String(data?.slotAlloted) : "",
       termsAndCondition: data?.termsAndCondition || "",
@@ -82,8 +83,12 @@ const AddEditDeal = () => {
       imageUrl: data?.imageUrl,
       showToSubAdmins: Boolean(data?.showToSubAdmins),
       showToUsers: Boolean(data?.showToUsers),
-      commissionValueToSubAdmin: data?.commissionValueToSubAdmin || "",
-      lessAmountToSubAdmin: data?.lessAmountToSubAdmin || "",
+      commissionValueToSubAdmin: data?.commissionValueToSubAdmin
+        ? String(data?.commissionValueToSubAdmin)
+        : "",
+      lessAmountToSubAdmin: data?.lessAmountToSubAdmin
+        ? String(data?.lessAmountToSubAdmin)
+        : "",
       isExchangeDeal: data?.dealCategory?.isExchangeDeal ? true : false,
       exchangeDealProducts: data?.exchangeDealProducts
         ? data?.exchangeDealProducts
@@ -141,6 +146,7 @@ const AddEditDeal = () => {
   });
 
   const getData = catchAsync(async () => {
+    setLoader(true);
     const apis = [BRAND_LIST(), PLATFORM_LIST(), DEAL_CATEGORY_LIST()];
 
     if (id) {
@@ -184,7 +190,8 @@ const AddEditDeal = () => {
           }));
         },
       });
-  });
+    setLoader(false);
+  }, setLoader);
 
   useEffect(() => {
     getData();
@@ -466,26 +473,6 @@ const AddEditDeal = () => {
                           {errors?.uniqueIdentifier && (
                             <p className="text-danger m-0">
                               {errors.uniqueIdentifier.message}
-                            </p>
-                          )}
-                        </div>
-                      </Col>
-                      <Col lg="4" md="6" className="my-2">
-                        <div className="py-2">
-                          <label
-                            htmlFor=""
-                            className="form-label fw-sbold text-muted ps-2 m-0"
-                          >
-                            Product Categories (Optional)
-                          </label>
-                          <TagsInput
-                            setValue={setValue}
-                            watch={watch}
-                            fieldName={"productCategories"}
-                          />
-                          {errors?.productCategories && (
-                            <p className="text-danger m-0">
-                              {errors.productCategories.message}
                             </p>
                           )}
                         </div>

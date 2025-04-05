@@ -41,7 +41,9 @@ const SingleDealBox = ({
   watch,
   remove,
   control,
+  isExchangeDeal,
 }) => {
+  console.log(isExchangeDeal, "isExchangeDeal");
   useEffect(() => {
     const actualPrice = watch(`csvData.${index}.actualPrice`);
     const lessAmount = watch(`csvData.${index}.lessAmount`);
@@ -157,17 +159,11 @@ const SingleDealBox = ({
           return;
         }
 
-        if (
-          itm === "exchangeDealProducts" &&
-          !watch(`csvData.${index}.isExchangeDeal`)
-        ) {
+        if (itm === "exchangeDealProducts" && !isExchangeDeal) {
           return;
         }
 
-        if (
-          itm === "exchangeDealProducts" &&
-          watch(`csvData.${index}.isExchangeDeal`)
-        ) {
+        if (itm === "exchangeDealProducts" && isExchangeDeal) {
           return (
             <Col lg="4" md="6" className="my-2">
               <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
@@ -220,85 +216,82 @@ const SingleDealBox = ({
                   {fieldLabelObj[itm]} :
                 </p>
 
-                {itm === "productCategories" ? (
-                  <TagsInput
-                    setValue={setValue}
-                    watch={watch}
-                    fieldName={`csvData.${index}.${itm}`}
-                  />
-                ) : (
-                  <Controller
-                    control={control}
-                    name={`csvData.${index}.${itm}`}
-                    render={({ field }) => {
-                      return (
-                        <input
-                          type={
-                            ["showToUsers", "showToSubAdmins"].includes(itm)
-                              ? "checkbox"
-                              : "text"
-                          }
-                          className={
-                            !["showToUsers", "showToSubAdmins"].includes(itm) &&
-                            "form-control"
-                          }
-                          {...field}
-                          {...{
-                            ...(["commissionValue", "lessAmount"].includes(
-                              itm
-                            ) && {
-                              onChange: (e) => {
-                                if (
-                                  e?.target?.value[0] === "0" &&
-                                  e?.target?.value?.length > 1
-                                ) {
-                                  return errorToast({
-                                    message: `INVALID ${
-                                      itm === "commissionValue"
-                                        ? "COMMISSION VALUE"
-                                        : "LESS AMOUNT"
-                                    }`,
-                                  });
-                                }
-                                if (
-                                  itm === "commissionValue" &&
-                                  e.target.value &&
-                                  watch(`csvData.${index}.lessAmount`)
-                                ) {
-                                  return errorToast({
-                                    message:
-                                      "You cannot add both  less and commission value",
-                                  });
-                                } else if (
-                                  itm === "lessAmount" &&
-                                  e.target.value &&
-                                  watch(`csvData.${index}.commissionValue`)
-                                ) {
-                                  return errorToast({
-                                    message:
-                                      "You cannot add both  less and commission value",
-                                  });
-                                } else {
-                                  setValue(
-                                    `csvData.${index}.${itm}`,
-                                    ["showToUsers", "showToSubAdmins"].includes(
-                                      item
-                                    )
-                                      ? e.target.checked
-                                      : e.target.value,
-                                    {
-                                      shouldValidate: true,
-                                    }
-                                  );
-                                }
-                              },
-                            }),
-                          }}
-                        />
-                      );
-                    }}
-                  />
-                )}
+                <Controller
+                  control={control}
+                  name={`csvData.${index}.${itm}`}
+                  render={({ field }) => {
+                    return (
+                      <input
+                        type={
+                          ["showToUsers", "showToSubAdmins"].includes(itm)
+                            ? "checkbox"
+                            : "text"
+                        }
+                        className={
+                          !["showToUsers", "showToSubAdmins"].includes(itm) &&
+                          "form-control"
+                        }
+                        {...field}
+                        {...{
+                          ...(["showToUsers", "showToSubAdmins"].includes(
+                            itm
+                          ) && { checked: field.value }),
+                        }}
+                        {...{
+                          ...(["commissionValue", "lessAmount"].includes(
+                            itm
+                          ) && {
+                            onChange: (e) => {
+                              if (
+                                e?.target?.value[0] === "0" &&
+                                e?.target?.value?.length > 1
+                              ) {
+                                return errorToast({
+                                  message: `INVALID ${
+                                    itm === "commissionValue"
+                                      ? "COMMISSION VALUE"
+                                      : "LESS AMOUNT"
+                                  }`,
+                                });
+                              }
+                              if (
+                                itm === "commissionValue" &&
+                                e.target.value &&
+                                watch(`csvData.${index}.lessAmount`)
+                              ) {
+                                return errorToast({
+                                  message:
+                                    "You cannot add both  less and commission value",
+                                });
+                              } else if (
+                                itm === "lessAmount" &&
+                                e.target.value &&
+                                watch(`csvData.${index}.commissionValue`)
+                              ) {
+                                return errorToast({
+                                  message:
+                                    "You cannot add both  less and commission value",
+                                });
+                              } else {
+                                setValue(
+                                  `csvData.${index}.${itm}`,
+                                  ["showToUsers", "showToSubAdmins"].includes(
+                                    item
+                                  )
+                                    ? e.target.checked
+                                    : e.target.value,
+                                  {
+                                    shouldValidate: true,
+                                  }
+                                );
+                              }
+                            },
+                          }),
+                        }}
+                      />
+                    );
+                  }}
+                />
 
                 <p className="mb-0 text-danger">
                   {errors?.csvData &&
