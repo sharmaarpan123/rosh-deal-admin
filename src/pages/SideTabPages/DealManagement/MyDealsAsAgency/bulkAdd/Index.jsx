@@ -554,7 +554,7 @@ const AddBulkDeal = () => {
                   </Link>
                 </div>
                 <div className="right d-flex gap-10">
-                  <a target="_blank" href="/sampleBulk.csv">
+                  <a target="_blank" href="/SampleBulkTemplate.xlsx">
                     <Button className="d-block align-items-center justify-content-center commonBtn  rounded text-white">
                       Download Sample csv
                     </Button>
