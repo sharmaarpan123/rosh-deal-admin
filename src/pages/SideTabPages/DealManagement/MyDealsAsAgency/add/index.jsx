@@ -80,7 +80,7 @@ const AddEditDeal = () => {
       slotAlloted: data?.slotAlloted ? String(data?.slotAlloted) : "",
       termsAndCondition: data?.termsAndCondition || "",
       adminCommission: data?.adminCommission || "",
-      imageUrl: data?.imageUrl,
+      imageUrl: data?.imageUrl || "",
       showToSubAdmins: Boolean(data?.showToSubAdmins),
       showToUsers: Boolean(data?.showToUsers),
       commissionValueToSubAdmin: data?.commissionValueToSubAdmin
