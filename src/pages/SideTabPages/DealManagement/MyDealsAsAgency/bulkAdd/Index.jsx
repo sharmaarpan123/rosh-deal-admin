@@ -378,7 +378,7 @@ const AddBulkDeal = () => {
             singleRow[singleRowKeyName] = row[k] === "Yes";
           } else {
             singleRow[excelHeaderBodyKeys[excelHeaderValidationEnum[k]]] =
-              String(row[k] || "")?.trim();
+              String(row[k] === 0 ? row[k] : row[k] || "")?.trim();
           }
         }
 

@@ -18,9 +18,9 @@ const fieldLabelObj = {
   actualPrice: "Actual Price",
   lessAmount: "Less Amount",
   lessAmountToSubAdmin: "Less Amount to Mediators",
-  commissionValue: "Commission Value",
-  commissionValueToSubAdmin: "Commission Value to Mediators",
-  finalCashBackForUser: "Final Cashback for User",
+  commissionValue: "Buyer Commission",
+  commissionValueToSubAdmin: "Commission to Mediator",
+  finalCashBackForUser: "Final Refund for Buyer",
   adminCommission: "Admin Commission",
   refundDays: "Refund Days",
   showToUsers: "Show to Users",
@@ -113,9 +113,9 @@ const SingleDealBox = ({
       <Col lg="12" className="mt-2">
         <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
           <li className=" d-flex flex-column align-items-center justify-content-center">
-            <p className="m-0  fw-bold text-center">Deal Details No.</p>
-
-            <h6 className="m-0 text-muted fw-bold">{index + 1}</h6>
+            <p className="m-0  fw-bold text-center">
+              Deal Details No. {index + 1}
+            </p>
           </li>
         </ul>
       </Col>

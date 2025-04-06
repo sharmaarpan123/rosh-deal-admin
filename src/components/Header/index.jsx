@@ -20,6 +20,9 @@ import ConfirmationPop from "../Modals/ConfirmationPop";
 import Axios from "../../services/Axios";
 import { useSelector } from "react-redux";
 import Notification from "../icons/svg/Notification";
+import { LOGOUT_ADMIN } from "../../store/Login/actionTypes";
+import { LOG_OUT } from "../../services/ApiCalls";
+import { catchAsync, checkResponse } from "../../utilities/utilities";
 
 const Header = ({ sidebar, setSidebar, title }) => {
   const navigate = useNavigate();
@@ -37,19 +40,33 @@ const Header = ({ sidebar, setSidebar, title }) => {
     setSidebar(!sidebar);
   };
 
+  const logoutHandler = catchAsync(async () => {
+    try {
+      const res = await LOG_OUT({
+        fcmToken: localStorage.getItem("fireBaseToken") || "",
+      });
+      checkResponse({ res, showSuccess: true });
+      Axios.LogoutUser({
+        response: {
+          status: 401,
+        },
+      });
+    } catch (error) {
+      Axios.LogoutUser({
+        response: {
+          status: 401,
+        },
+      });
+    }
+  });
+
   return (
     <>
       <ConfirmationPop
         confirmation={confirmation}
         setConfirmation={setConfirmation}
         type={"logout"}
-        confirmHandler={() =>
-          Axios.LogoutUser({
-            response: {
-              status: 401,
-            },
-          })
-        }
+        confirmHandler={logoutHandler}
       />
       <header
         className={`${styles.siteHeader}  siteHeader bg-white  sticky-top  w-100`}

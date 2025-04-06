@@ -11,7 +11,7 @@ export const excelHeaderValidationEnum = [
   "Buyer Less",
   "Mediator Less",
   "Mediator Comission",
-  "Comission",
+  "Buyer Comission",
   "Refund Days",
   "Terms & Condition",
 ];
@@ -28,7 +28,7 @@ export const excelHeaderBodyKeys = {
   "Buyer Less": "lessAmount",
   "Mediator Less": "lessAmountToSubAdmin",
   "Mediator Comission": "commissionValueToSubAdmin",
-  Comission: "commissionValue",
+  "Buyer Comission": "commissionValue",
   "Refund Days": "refundDays",
   "Terms & Condition": "termsAndCondition",
 };

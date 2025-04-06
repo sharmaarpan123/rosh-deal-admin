@@ -5,6 +5,7 @@ export default {
   // ADMIN
   LOGIN_ADMIN: "auth/admin/singIn",
   ME_QUERY: "admin/me",
+  LOG_OUT: "admin/logout",
   FORGET_PASSWORD_ADMIN: "auth/admin/forgetPassword",
   RESET_PASSWORD: "auth/admin/resetPassword",
   CHANGE_PASSWORD: "auth/admin/changePassword",
