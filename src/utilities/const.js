@@ -74,7 +74,7 @@ export const paymentStatusOptions = [
 export const slotCompletedStatusOptions = [
   { label: "All", value: "" },
   { label: "Completed", value: "completed" },
-  { label: "UnCompleted", value: "uncompleted" },
+  { label: "In Completed", value: "uncompleted" },
 ];
 
 export const csvImportEnum = {

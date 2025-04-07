@@ -16,6 +16,7 @@ import {
 import {
   activeInactiveOptions,
   activeInActiveStatusOptions,
+  ADMIN_ROLE_TYPE_ENUM,
 } from "../../../utilities/const";
 import {
   capitalizedFirstAlphaBet,
@@ -139,15 +140,19 @@ const PlatForm = () => {
                 </div>
                 <div className="right">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
-                    <li className="">
-                      <Link
-                        to={"/platform/add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Add New Platform
-                      </Link>
-                    </li>
+                    {admin?.roles?.includes(
+                      ADMIN_ROLE_TYPE_ENUM.SUPERADMIN
+                    ) && (
+                      <li className="">
+                        <Link
+                          to={"/platform/add"}
+                          className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
+                          style={{ height: 40, minWidth: 100, fontSize: 12 }}
+                        >
+                          Add New Platform
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </div>

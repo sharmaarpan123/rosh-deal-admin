@@ -17,6 +17,7 @@ import {
 import {
   activeInactiveOptions,
   activeInActiveStatusOptions,
+  ADMIN_ROLE_TYPE_ENUM,
 } from "../../../utilities/const";
 import {
   capitalizedFirstAlphaBet,
@@ -127,7 +128,6 @@ const DealCategory = () => {
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
-           
             <Col lg="12" className="my-2">
               <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
                 <div className="left">
@@ -142,15 +142,19 @@ const DealCategory = () => {
                 </div>
                 <div className="right">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
-                    <li className="">
-                      <Link
-                        to={"/category/add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Add New Category
-                      </Link>
-                    </li>
+                    {admin?.roles?.includes(
+                      ADMIN_ROLE_TYPE_ENUM.SUPERADMIN
+                    ) && (
+                      <li className="">
+                        <Link
+                          to={"/category/add"}
+                          className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
+                          style={{ height: 40, minWidth: 100, fontSize: 12 }}
+                        >
+                          Add New Category
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </div>
