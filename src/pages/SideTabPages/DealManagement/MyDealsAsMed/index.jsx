@@ -61,32 +61,7 @@ const MyDealsAsMed = () => {
         <>{moment(item.createdAt).format("DD-MM-YYYY  hh:mm:ss A")}</>
       ),
     },
-    {
-      head: "Status",
-      accessor: "isDeleted",
-      component: (item, index) => (
-        <TableToggle
-          Options={activeInActiveOptions}
-          value={item.isActive ? "active" : "inactive"}
-          style={{
-            color: item.isActive ? "green" : "red",
-            width: 120,
-          }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                DEAL_UPDATE_STATUS({
-                  dealId: item._id,
-                  status: e.target.value === "active",
-                }),
-              index,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
-      ),
-    },
+   
     {
       head: "Name",
       accessor: "productName",
@@ -200,6 +175,32 @@ const MyDealsAsMed = () => {
         >
           {item?.parentDealId?.isSlotCompleted ? "Completed" : "Ongoing"}
         </p>
+      ),
+    },
+    {
+      head: "Status",
+      accessor: "isDeleted",
+      component: (item, index) => (
+        <TableToggle
+          Options={activeInActiveOptions}
+          value={item.isActive ? "active" : "inactive"}
+          style={{
+            color: item.isActive ? "green" : "red",
+            width: 120,
+          }}
+          onChange={(e) =>
+            statusChangeHandler(
+              () =>
+                DEAL_UPDATE_STATUS({
+                  dealId: item._id,
+                  status: e.target.value === "active",
+                }),
+              index,
+              "isActive",
+              !item.isActive
+            )
+          }
+        />
       ),
     },
     {

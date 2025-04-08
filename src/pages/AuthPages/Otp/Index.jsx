@@ -46,6 +46,7 @@ const Otp = () => {
                     value={otp}
                     onChange={setOtp}
                     numInputs={4}
+                   
                     renderInput={(props) => <input {...props} />}
                   />
                 </div>

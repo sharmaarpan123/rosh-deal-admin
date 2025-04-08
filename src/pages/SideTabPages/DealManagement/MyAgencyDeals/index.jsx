@@ -45,22 +45,7 @@ const MyAgencyDealsAsMed = () => {
       },
     },
 
-    {
-      head: "Status",
-      accessor: "isDeleted",
-      component: (item, index) => (
-        <p
-          className={`mb-0 ${
-            !item.isActive ? "bg-danger text-white" : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
-          style={{
-            width: "fit-content",
-          }}
-        >
-          {item.isActive ? "Active" : "InActive"}
-        </p>
-      ),
-    },
+    
     {
       head: "Date || Time ",
       accessor: "createdAt",
@@ -181,6 +166,22 @@ const MyAgencyDealsAsMed = () => {
           }}
         >
           {item.isSlotCompleted ? "Completed" : "Ongoing"}
+        </p>
+      ),
+    },
+    {
+      head: "Status",
+      accessor: "isDeleted",
+      component: (item, index) => (
+        <p
+          className={`mb-0 ${
+            !item.isActive ? "bg-danger text-white" : "bg-success text-white"
+          } d-flex justify-content-start pb-0 rounded px-2 `}
+          style={{
+            width: "fit-content",
+          }}
+        >
+          {item.isActive ? "Active" : "InActive"}
         </p>
       ),
     },

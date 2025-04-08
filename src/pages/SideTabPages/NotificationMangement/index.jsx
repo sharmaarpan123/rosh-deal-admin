@@ -31,16 +31,16 @@ import {
 const schema = z
   .object({
     title: z
-      .string({ required_error: "title is required" })
+      .string({ required_error: "Title is required" })
       .trim()
-      .min(1, { message: "title is required" }),
+      .min(1, { message: "Title is required" }),
     body: z
-      .string({ required_error: "message is required" })
+      .string({ required_error: "Message is required" })
       .trim()
-      .min(1, { message: "message is required" }),
+      .min(1, { message: "Message is required" }),
     type: optionsSchema("Notification type"),
     dealId: optionalOptionSchema("Deal"),
-    orderStatus: optionalOptionSchema("order status"),
+    orderStatus: optionalOptionSchema("Order status"),
   })
   .refine(
     (data) => {
@@ -50,7 +50,7 @@ const schema = z
       return true;
     },
     {
-      message: "please select deal",
+      message: "Please select deal.",
       path: ["dealId"],
     }
   )
@@ -65,7 +65,7 @@ const schema = z
       return true;
     },
     {
-      message: "please select status  ",
+      message: "Please select status.",
       path: ["orderStatus"],
     }
   );
@@ -239,7 +239,7 @@ const NotificationManagement = () => {
     const response = await dealApi({ search: inputValue });
     const options = response?.data?.data?.map((item) => ({
       value: item._id,
-      label: item?.parentDealId?.item.productName || item?.productName,
+      label: item?.parentDealId.productName || item?.productName,
     }));
     callback(options || []);
   };
@@ -384,7 +384,7 @@ const NotificationManagement = () => {
                             htmlFor=""
                             className="form-label m-0 fw-sbold text-muted ps-2"
                           >
-                            select Brands
+                            Select Brands
                           </label>
 
                           <AsyncSelect
@@ -405,7 +405,7 @@ const NotificationManagement = () => {
                             htmlFor=""
                             className="form-label m-0 fw-sbold text-muted ps-2"
                           >
-                            select deals
+                            Select deals
                           </label>
 
                           <Controller
@@ -438,7 +438,7 @@ const NotificationManagement = () => {
                             htmlFor=""
                             className="form-label m-0 fw-sbold text-muted ps-2"
                           >
-                            select order status
+                            Select order status
                           </label>
 
                           <Controller

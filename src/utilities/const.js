@@ -35,7 +35,7 @@ export const activeInactiveOptions = [
     value: "1",
   },
   {
-    label: "InActive",
+    label: "Inactive",
     value: "0",
   },
   {

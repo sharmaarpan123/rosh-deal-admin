@@ -48,7 +48,7 @@ const schema = z
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     path: ["confirmPassword"],
-    message: "Confirm Password should be same as password.",
+    message: "New Password and Confirm Password must match.",
   });
 
 const ManagePassword = () => {

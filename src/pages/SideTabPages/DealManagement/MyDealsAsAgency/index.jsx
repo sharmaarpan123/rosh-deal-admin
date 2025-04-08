@@ -20,6 +20,7 @@ import {
   copyClipboard,
   handleShare,
 } from "../../../../utilities/utilities";
+import Toggle from "../../../../components/Common/Toggle";
 
 const DealManagement = () => {
   const {
@@ -48,32 +49,7 @@ const DealManagement = () => {
         return <>{body.limit * (body.page - 1) + key + 1}</>;
       },
     },
-    {
-      head: "Status",
-      accessor: "",
-      component: (item, index) => (
-        <TableToggle
-          Options={activeInActiveOptions}
-          value={item?.isActive ? "active" : "inactive"}
-          style={{
-            color: item?.isActive ? "green" : "red",
-            width: 120,
-          }}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                DEAL_UPDATE_STATUS({
-                  dealId: item._id,
-                  status: e.target.value === "active",
-                }),
-              index,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
-      ),
-    },
+
     {
       head: "Date || Time ",
       accessor: "createdAt",
@@ -196,6 +172,27 @@ const DealManagement = () => {
         >
           {item.isSlotCompleted ? "Completed" : "Ongoing"}
         </p>
+      ),
+    },
+    {
+      head: "Status",
+      accessor: "",
+      component: (item, index) => (
+        <Toggle
+          isChecked={item?.isActive}
+          onChange={(e) =>
+            statusChangeHandler(
+              () =>
+                DEAL_UPDATE_STATUS({
+                  dealId: item._id,
+                  status: e.target.checked,
+                }),
+              index,
+              "isActive",
+              !item.isActive
+            )
+          }
+        />
       ),
     },
     {

@@ -7,7 +7,7 @@ export default async (file) => {
     const fileType = file.type.split("/")[1]; // Get the file extension
     if (!allowedExtensions.includes(fileType)) {
       toast.error(
-        "Unsupported file type. Only SVG, JPG, PNG, and JPEG files are allowed."
+        "Unsupported file type. Please upload only SVG, JPG, JPEG, or PNG files."
       );
       return;
     }

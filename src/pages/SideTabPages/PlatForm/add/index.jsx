@@ -19,6 +19,7 @@ import {
 } from "../../../../services/ApiCalls";
 import { catchAsync, checkResponse } from "../../../../utilities/utilities";
 import fileUploader from "../../../../utilities/fileUploader";
+import Loading from "../../../../components/Common/Loading";
 
 const schema = z.object({
   name: z
@@ -33,6 +34,7 @@ const AddPlatForm = () => {
   const [platFormDetails, setPlatFormDetails] = useState();
   const { id } = useParams();
   const [loader, setLoader] = useState(false);
+  const [imageLoader, setImageLoader] = useState(false);
 
   const {
     register,
@@ -69,15 +71,15 @@ const AddPlatForm = () => {
   });
 
   const imageChangeHandler = catchAsync(async (e) => {
-    setLoader(true);
+    setImageLoader(true);
     const url = await fileUploader(e.target.files[0]);
 
     if (!url) {
-      setLoader(false);
+      setImageLoader(false);
 
       return;
     }
-    setLoader(false);
+    setImageLoader(false);
 
     setImage(url);
   });
@@ -129,46 +131,57 @@ const AddPlatForm = () => {
                   <Row className="d-flex justify-content-center">
                     <Col lg="12" className="my-2">
                       <div
-                        className="mx-auto position-relative upload text-center"
-                        style={{ maxWidth: "max-content" }}
+                        className="mx-auto position-relative upload text-center  rounded rounded-circle"
+                        style={{
+                          maxWidth: "max-content",
+                       border:"3px #005FD9 solid"
+                        }}
                       >
                         <input
                           type="file"
                           className="file position-absolute h-100 w-100 "
                           onChange={imageChangeHandler}
                         />
-                        <div className="imgWrp position-relative">
-                          <span
-                            className="icn position-absolute"
-                            style={{ right: 0, bottom: 10 }}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="22"
-                              height="22"
-                              viewBox="0 0 26 26"
-                              fill="none"
+                        <div className="imgWrp position-relative ">
+                          {!imageLoader && (
+                            <span
+                              className="icn position-absolute"
+                              style={{ right: 0, bottom: 10 }}
                             >
-                              <circle
-                                cx="13.2007"
-                                cy="12.9282"
-                                r="12.3872"
-                                fill="#3366FF"
-                              />
-                              <path
-                                d="M9.68021 16.69C9.79021 16.69 9.81221 16.679 9.91121 16.657L11.8912 16.261C12.1002 16.206 12.3092 16.107 12.4742 15.942L17.2702 11.146C18.0072 10.409 18.0072 9.14404 17.2702 8.40704L16.8632 7.97804C16.1262 7.24104 14.8502 7.24104 14.1132 7.97804L9.31721 12.785C9.16321 12.939 9.05321 13.159 8.99821 13.368L8.58021 15.37C8.52521 15.744 8.63521 16.107 8.89921 16.371C9.10821 16.58 9.41621 16.69 9.68021 16.69ZM10.0542 13.577L14.8502 8.77004C15.1692 8.45104 15.7522 8.45104 16.0602 8.77004L16.4782 9.18804C16.8522 9.56204 16.8522 10.09 16.4782 10.453L11.6932 15.26L9.65821 15.601L10.0542 13.577ZM17.2262 17.372H9.10821C8.78921 17.372 8.58021 17.581 8.58021 17.9C8.58021 18.219 8.84421 18.428 9.10821 18.428H17.1822C17.5012 18.428 17.7652 18.219 17.7652 17.9C17.7542 17.581 17.4902 17.372 17.2262 17.372Z"
-                                fill="#F2F2F7"
-                                stroke="#F8FAFC"
-                                stroke-width="0.3"
-                              />
-                            </svg>
-                          </span>
-                          <img
-                            style={{ height: 100, width: 100 }}
-                            src={image || noImg}
-                            alt=""
-                            className="img-fluid rounded-circle object-fit-contain"
-                          />
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="22"
+                                height="22"
+                                viewBox="0 0 26 26"
+                                fill="none"
+                              >
+                                <circle
+                                  cx="13.2007"
+                                  cy="12.9282"
+                                  r="12.3872"
+                                  fill="#3366FF"
+                                />
+                                <path
+                                  d="M9.68021 16.69C9.79021 16.69 9.81221 16.679 9.91121 16.657L11.8912 16.261C12.1002 16.206 12.3092 16.107 12.4742 15.942L17.2702 11.146C18.0072 10.409 18.0072 9.14404 17.2702 8.40704L16.8632 7.97804C16.1262 7.24104 14.8502 7.24104 14.1132 7.97804L9.31721 12.785C9.16321 12.939 9.05321 13.159 8.99821 13.368L8.58021 15.37C8.52521 15.744 8.63521 16.107 8.89921 16.371C9.10821 16.58 9.41621 16.69 9.68021 16.69ZM10.0542 13.577L14.8502 8.77004C15.1692 8.45104 15.7522 8.45104 16.0602 8.77004L16.4782 9.18804C16.8522 9.56204 16.8522 10.09 16.4782 10.453L11.6932 15.26L9.65821 15.601L10.0542 13.577ZM17.2262 17.372H9.10821C8.78921 17.372 8.58021 17.581 8.58021 17.9C8.58021 18.219 8.84421 18.428 9.10821 18.428H17.1822C17.5012 18.428 17.7652 18.219 17.7652 17.9C17.7542 17.581 17.4902 17.372 17.2262 17.372Z"
+                                  fill="#F2F2F7"
+                                  stroke="#F8FAFC"
+                                  stroke-width="0.3"
+                                />
+                              </svg>
+                            </span>
+                          )}
+                          {imageLoader ? (
+                            <div style={{ height: 50, width: 50 }}>
+                              <Loading fullSize={true} />
+                            </div>
+                          ) : (
+                            <img
+                              style={{ height: 100, width: 100 }}
+                              src={image || noImg}
+                              alt=""
+                              className="img-fluid rounded-circle object-fit-contain"
+                            />
+                          )}
                         </div>
                       </div>
                     </Col>
