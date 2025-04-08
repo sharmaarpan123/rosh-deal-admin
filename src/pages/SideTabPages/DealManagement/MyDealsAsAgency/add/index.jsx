@@ -722,7 +722,7 @@ const AddEditDeal = () => {
                                 htmlFor=""
                                 className="form-label fw-sbold text-muted ps-2 m-0"
                               >
-                                Final Refund amount To buyer
+                                Final Refund Amount to Buyer
                               </label>
 
                               <p className="form-label fw-sbold  ps-2 m-0 text-success">
