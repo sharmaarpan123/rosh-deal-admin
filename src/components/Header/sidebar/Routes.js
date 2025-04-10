@@ -87,11 +87,11 @@ export const superAdminItems = [
     name: "Notification",
     icon: CommonNavIcon,
   },
-  {
-    path: "/modules",
-    name: "Admin Modules",
-    icon: CommonNavIcon,
-  },
+  // {
+  //   path: "/modules",
+  //   name: "Admin Modules",
+  //   icon: CommonNavIcon,
+  // },
   {
     path: "/system-access",
     name: "System Access",

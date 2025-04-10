@@ -133,7 +133,7 @@ export const checkResponse = ({
       setLoader && setLoader(false);
       return false;
     }
-    showError && toast.error(res?.response?.data?.message || "NET WORK ERROR");
+    showError && toast.error(res?.response?.data?.message || "Network Error!");
     setLoader && setLoader(false);
     return false;
   }

@@ -19,7 +19,7 @@ import {
   CLONE_DEAL,
   MY_AGENCY_DEAL_DETAIL_AS_MED,
 } from "../../../../../services/ApiCalls";
-import { superAdminCommission } from "../../../../../utilities/const";
+import { superAdminCommission, superAdminCommissionOnFullRefund } from "../../../../../utilities/const";
 import { catchAsync, checkResponse } from "../../../../../utilities/utilities";
 
 export const cloneDealSchema = z
@@ -144,7 +144,21 @@ const MyAgencyDealDetailsAsMed = () => {
     const actualPrice = watch("actualPrice");
     const lessAmount = watch("lessAmount");
     const commissionValue = watch("commissionValue");
-    if (actualPrice && (lessAmount || commissionValue)) {
+    if (actualPrice && (lessAmount === "0" || commissionValue === "0")) {
+      const adminCommission = Math.ceil(
+        (superAdminCommissionOnFullRefund * actualPrice) / 100
+      );
+      setValue("adminCommission", String(adminCommission), {
+        shouldValidate: true,
+      });
+      setValue(
+        "finalCashBackForUser",
+        String(Number(actualPrice) - Number(adminCommission)),
+        {
+          shouldValidate: true,
+        }
+      );
+    } else if (actualPrice && (lessAmount || commissionValue)) {
       const adminCommission = Math.ceil(
         (superAdminCommission * (lessAmount || commissionValue)) / 100
       );
@@ -202,158 +216,180 @@ const MyAgencyDealDetailsAsMed = () => {
             </Col>
 
             <Col lg="12" className="my-2 position-relative">
-      <div
-        className="formWrpper px-lg-5 p-md-4 p-3 rounded position-relative"
-        style={{ background: "#EEEEEE" }}
-      >
-        {initialLoader ? (
-          <div
-            className="position-absolute "
-            style={{
-              right: 12,
-              top: 12,
-              width: 30,
-            }}
-          >
-            <Loading fullSize={true} />
-          </div>
-        ) : (
-          <Row className="justify-content-between">
-            <Col md={6} className="my-2">
-              <ul className="list-unstyled ps-0 mb-0 notLastBorder pe-lg-3">
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Created at:</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    {moment(dealDetails?.createdAt).format(
-                      "DD-MM-YYYY  hh:mm:ss A"
-                    )}
-                  </h6>
-                </li>
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Brand</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    {dealDetails?.brand?.name}
-                  </h6>
-                </li>
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Product Name:</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    {dealDetails?.productName}
-                  </h6>
-                </li>
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Product Price</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    {dealDetails?.actualPrice}
-                  </h6>
-                </li>
-                {dealDetails?.isCommissionDeal ? (
-                  <li className="py-2 d-flex align-items-center gap-10">
-                    <p className="m-0 themeBlue fw-sbold w-25">Commission</p>
-                    <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                      {dealDetails?.commissionValueToSubAdmin}
-                    </h6>
-                  </li>
+              <div
+                className="formWrpper px-lg-5 p-md-4 p-3 rounded position-relative"
+                style={{ background: "#EEEEEE" }}
+              >
+                {initialLoader ? (
+                  <div
+                    className="position-absolute "
+                    style={{
+                      right: 12,
+                      top: 12,
+                      width: 30,
+                    }}
+                  >
+                    <Loading fullSize={true} />
+                  </div>
                 ) : (
-                  <li className="py-2 d-flex align-items-center gap-10">
-                    <p className="m-0 themeBlue fw-sbold w-25">Less</p>
-                    <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                      {dealDetails?.lessAmountToSubAdmin}
-                    </h6>
-                  </li>
-                )}
-              
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Deal Type</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    {dealDetails?.dealCategory?.name}
-                  </h6>
-                </li>
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25 text-break">Product Link</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-truncate text-wrap">
-                    <a
-                      href={dealDetails?.postUrl}
-                      target="_blank"
-                      
-                    >
-                      {dealDetails?.postUrl}
-                    </a>
-                  </h6>
-                </li>
-              </ul>
-            </Col>
-            <Col md={6} className="my-2">
-              <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Platform</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    {dealDetails?.platForm?.name}
-                  </h6>
-                </li>
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Slot Alloted</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    {dealDetails?.slotAlloted}
-                  </h6>
-                </li>
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Slot Completed</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    {dealDetails?.slotCompletedCount}
-                  </h6>
-                </li>
+                  <Row className="justify-content-between">
+                    <Col md={6} className="my-2">
+                      <ul className="list-unstyled ps-0 mb-0 notLastBorder pe-lg-3">
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Created at:
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            {moment(dealDetails?.createdAt).format(
+                              "DD-MM-YYYY  hh:mm:ss A"
+                            )}
+                          </h6>
+                        </li>
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">Brand</p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            {dealDetails?.brand?.name}
+                          </h6>
+                        </li>
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Product Name:
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            {dealDetails?.productName}
+                          </h6>
+                        </li>
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Product Price
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            {dealDetails?.actualPrice}
+                          </h6>
+                        </li>
+                        {dealDetails?.isCommissionDeal ? (
+                          <li className="py-2 d-flex align-items-center gap-10">
+                            <p className="m-0 themeBlue fw-sbold w-25">
+                              Commission
+                            </p>
+                            <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                              {dealDetails?.commissionValueToSubAdmin}
+                            </h6>
+                          </li>
+                        ) : (
+                          <li className="py-2 d-flex align-items-center gap-10">
+                            <p className="m-0 themeBlue fw-sbold w-25">Less</p>
+                            <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                              {dealDetails?.lessAmountToSubAdmin}
+                            </h6>
+                          </li>
+                        )}
 
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Payment Status</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    <p
-                      className={`text-white px-4  mb-0 text-capitalize rounded text-center ${
-                        dealDetails?.paymentStatus === "paid"
-                          ? "bg-success"
-                          : dealDetails?.paymentStatus === "pending"
-                          ? "bg-warning"
-                          : "bg-pending"
-                      }`}
-                    >
-                      {dealDetails?.paymentStatus}
-                    </p>
-                  </h6>
-                </li>
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Deal Status</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    <p
-                      className={` rounded text-capitalize mb-0  px-4 text-center text-white ${
-                        dealDetails?.isActive ? "bg-success" : "bg-danger"
-                      }`}
-                    >
-                      {dealDetails?.isActive ? "active" : "inactive"}
-                    </p>
-                  </h6>
-                </li>
-                <li className="py-2 d-flex align-items-center gap-10">
-                  <p className="m-0 themeBlue fw-sbold w-25">Platform Fee</p>
-                  <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                    {dealDetails?.adminCommission}
-                  </h6>
-                </li>
-              </ul>
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Deal Type
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            {dealDetails?.dealCategory?.name}
+                          </h6>
+                        </li>
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25 text-break">
+                            Product Link
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-truncate text-wrap">
+                            <a href={dealDetails?.postUrl} target="_blank">
+                              {dealDetails?.postUrl}
+                            </a>
+                          </h6>
+                        </li>
+                      </ul>
+                    </Col>
+                    <Col md={6} className="my-2">
+                      <ul className="list-unstyled mb-0 notLastBorder ps-lg-3">
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Platform
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            {dealDetails?.platForm?.name}
+                          </h6>
+                        </li>
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Slot Alloted
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            {dealDetails?.slotAlloted}
+                          </h6>
+                        </li>
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Slot Completed
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            {dealDetails?.slotCompletedCount}
+                          </h6>
+                        </li>
+
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Payment Status
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            <p
+                              className={`text-white px-4  mb-0 text-capitalize rounded text-center ${
+                                dealDetails?.paymentStatus === "paid"
+                                  ? "bg-success"
+                                  : dealDetails?.paymentStatus === "pending"
+                                  ? "bg-warning"
+                                  : "bg-pending"
+                              }`}
+                            >
+                              {dealDetails?.paymentStatus}
+                            </p>
+                          </h6>
+                        </li>
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Deal Status
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            <p
+                              className={` rounded text-capitalize mb-0  px-4 text-center text-white ${
+                                dealDetails?.isActive
+                                  ? "bg-success"
+                                  : "bg-danger"
+                              }`}
+                            >
+                              {dealDetails?.isActive ? "active" : "inactive"}
+                            </p>
+                          </h6>
+                        </li>
+                        <li className="py-2 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            Platform Fee
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                            {dealDetails?.adminCommission}
+                          </h6>
+                        </li>
+                      </ul>
+                    </Col>
+                    <Col lg="12">
+                      <li className="py-2 d-flex align-items-center gap-10">
+                        <p className="m-0 themeBlue fw-sbold w-25">
+                          Terms And Condition
+                        </p>
+                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                          {dealDetails?.termsAndCondition}
+                        </h6>
+                      </li>
+                    </Col>
+                  </Row>
+                )}
+              </div>
             </Col>
-            <Col lg="12">
-              <li className="py-2 d-flex align-items-center gap-10">
-                <p className="m-0 themeBlue fw-sbold w-25">
-                  Terms And Condition
-                </p>
-                <h6 className="m-0 text-muted fw-bold w-50 text-break">
-                  {dealDetails?.termsAndCondition}
-                </h6>
-              </li>
-            </Col>
-          </Row>
-        )}
-      </div>
-    </Col>
             {dealDetails && !dealDetails?.isClonedAlready && (
               <Col lg="12" className="my-2">
                 <div

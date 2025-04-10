@@ -33,6 +33,8 @@ const AddEditUser = () => {
     },
   ]);
 
+  const [loader, setLoader] = useState(false);
+
   const schema = useMemo(() => getAdminSchema(adminId), [adminId]);
   const [showPassWord, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -75,6 +77,7 @@ const AddEditUser = () => {
   });
 
   const submitHandler = catchAsync(async (data) => {
+    setLoader(true);
     const body = {
       ...data,
       ...(adminId && { adminId }),
@@ -93,12 +96,12 @@ const AddEditUser = () => {
       ? await UPDATE_SUB_ADMIN(body)
       : await ADD_SUB_ADMIN(body);
 
-    const success = checkResponse({ res, showSuccess: true });
+    const success = checkResponse({ res, showSuccess: true, setLoader });
 
     if (success) {
       navigate("/system-access");
     }
-  });
+  }, setLoader);
 
   const getData = catchAsync(async () => {
     const apiArr = [];
@@ -573,8 +576,9 @@ const AddEditUser = () => {
                         <Button
                           className="d-flex align-items-center justify-content-center commonBtn "
                           type="submit"
+                          disabled={loader}
                         >
-                          Submit
+                          {loader ? "Loading..." : "Submit"}
                         </Button>
                       </div>
                     </Col>
