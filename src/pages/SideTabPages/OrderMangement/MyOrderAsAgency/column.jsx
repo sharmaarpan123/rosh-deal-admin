@@ -59,7 +59,7 @@ export const getColumn = (
     ),
     component: (item) => (
       <p
-        className={` text-nowrap mb-0 ${
+        className={`mb-0 text-nowrap mb-0 ${
           ["accepted", "reviewFormAccepted"]?.includes(item.orderFormStatus)
             ? "bg-success "
             : ["rejected", "reviewFormRejected"]?.includes(item.orderFormStatus)

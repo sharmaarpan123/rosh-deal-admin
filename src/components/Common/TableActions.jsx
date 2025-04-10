@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import styles from './common.module.scss'
 const TableActions = ({
   editUrl,
   setDeleteModel,
@@ -99,42 +99,41 @@ const TableActions = ({
         </Button>
       )}
       {acceptHandler && (
-        <p
+        <button
           onClick={acceptHandler}
-          className="text-success mb-0 px-3"
-          role="button"
+          className={`btn btn-success ${styles.btnXs} mx-1`}
         >
-          accept
-        </p>
+          Accept
+        </button>
       )}
+
       {rejectHandler && (
-        <p
+        <button
           onClick={rejectHandler}
-          className="text-danger mb-0 px-3"
-          role="button"
+          className={`btn btn-danger ${styles.btnXs} mx-1`}
         >
-          reject
-        </p>
+          Reject
+        </button>
       )}
 
       {reviewAcceptHandler && (
-        <p
+        <button
           onClick={reviewAcceptHandler}
-          className="text-success mb-0 px-3"
-          role="button"
+          className={`btn btn-outline-success ${styles.btnXs} mx-1`}
         >
-          accept review
-        </p>
+          Accept Review
+        </button>
       )}
+
       {reviewRejectHandler && (
-        <p
+        <button
           onClick={reviewRejectHandler}
-          className="text-danger mb-0 px-3"
-          role="button"
+          className={`btn btn-outline-danger ${styles.btnXs} mx-1`}
         >
-          reject review
-        </p>
+          Reject Review
+        </button>
       )}
+
     </div>
   );
 };
