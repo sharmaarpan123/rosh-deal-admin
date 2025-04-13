@@ -17,10 +17,13 @@ export const addEditDealSchema = z
     productName: z
       .string({ required_error: "This is Required" })
       .min(1, { message: "Name is required" }),
-    brand: objectIdSchema("brand"),
-    platForm: objectIdSchema("Plat form"),
+    brand: objectIdSchema("Brand"),
+    platForm: objectIdSchema("Platform"),
     dealCategory: objectIdSchema("Deal Category"),
-    postUrl: z.string().url({ invalid_type_error: "inValid post url" }),
+    postUrl: z
+      .string()
+      .min(1, { message: "Product link is required" })
+      .url({ invalid_type_error: "inValid post url" }),
     actualPrice: z
       .string({ required_error: "Actual Price is required" })
       .min(1, { message: "Actual Price is required" })
@@ -84,9 +87,9 @@ export const addEditDealSchema = z
       }),
     termsAndCondition: z
       .string({
-        required_error: "Terms and condition is required",
+        required_error: "Terms & Condition  is required",
       })
-      .min(1, { message: "This  is required" }),
+      .min(1, { message: "Terms & Condition  is required" }),
     uniqueIdentifier: z
       .string({
         required_error: "unique Identifier is required",
@@ -151,7 +154,7 @@ export const addEditDealSchema = z
         !data?.commissionValueToSubAdmin
       ) {
         return false;
-      } 
+      }
       return true;
     },
     {

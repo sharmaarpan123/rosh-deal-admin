@@ -13,7 +13,7 @@ const schema = z
       .string()
       .min(1, {
         message:
-          "Password must include a lowercase letter, an uppercase letter, a number, and a special character or symbol",
+          "Password is required",
       })
       .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
       .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
@@ -25,7 +25,7 @@ const schema = z
       .string()
       .min(1, {
         message:
-          "Password must include a lowercase letter, an uppercase letter, a number, and a special character or symbol",
+          "Password is required",
       })
       .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
       .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
@@ -37,7 +37,7 @@ const schema = z
       .string()
       .min(1, {
         message:
-          "Password must include a lowercase letter, an uppercase letter, a number, and a special character or symbol",
+          "Password is required",
       })
       .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
       .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })

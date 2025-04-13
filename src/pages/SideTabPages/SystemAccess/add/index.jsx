@@ -299,7 +299,7 @@ const AddEditUser = () => {
     };
 
     if (admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)) {
-      arrToUpdateRoles.push(superSubAdminObj);
+      // arrToUpdateRoles.push(superSubAdminObj);
       arrToUpdateRoles.push(adminObj);
       return setRolesArr((p) => [...p, ...arrToUpdateRoles]);
     }
@@ -419,7 +419,7 @@ const AddEditUser = () => {
                             <input
                               type={!showPassWord && "password"}
                               placeholder="Enter Password"
-                              className="form-control"
+                              className="form-control pe-5"
                               {...register("password")}
                             />
                             {errors?.password && (

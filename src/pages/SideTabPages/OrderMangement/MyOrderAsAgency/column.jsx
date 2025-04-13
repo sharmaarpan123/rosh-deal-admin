@@ -348,26 +348,6 @@ export const getColumn = (
   },
 
   {
-    head: "Review Link",
-    accessor: "image",
-    headComponent: (item, key, index) => (
-      <TableHeaderCheckbox
-        label="Review Link"
-        id={key}
-        onChange={(e) =>
-          setExportedKeysHandler("reviewLink", e.target.checked)
-        }
-      />
-    ),
-    component: (item, key, arr) =>
-      item?.reviewLink && (
-        <a target="_blank" href={item?.reviewLink}>
-          Click here
-        </a>
-      ),
-  },
-
-  {
     head: "Seller Feedback SS",
     accessor: "image",
     headComponent: (item, key, index) => (
@@ -387,6 +367,28 @@ export const getColumn = (
       />
     ),
   },
+
+  {
+    head: "Review Link",
+    accessor: "image",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Review Link"
+        id={key}
+        onChange={(e) =>
+          setExportedKeysHandler("reviewLink", e.target.checked)
+        }
+      />
+    ),
+    component: (item, key, arr) =>
+      item?.reviewLink && (
+        <a target="_blank" href={item?.reviewLink}>
+          Click here
+        </a>
+      ),
+  },
+
+
 
   {
     head: "Payment Status",

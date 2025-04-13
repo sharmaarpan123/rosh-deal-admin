@@ -126,24 +126,20 @@ const PlatForm = () => {
             head: "Action",
             accessor: "Action",
             component: (item, key, arr) => (
-              <TableToggle
-                Options={activeInActiveOptions}
-                onChange={(e) => {
-                  setStatusChangeModel((p) => ({
-                    dumpId: item?._id,
-                    show: true,
-                    body: {
-                      adminId: admin?._id,
-                      isActive: e?.target?.value === "active",
-                      ind: key,
-                    },
-                  }));
+              <Toggle
+                isChecked={item?.adminSubAdminLinkerInfo?.isActive}
+                onChange={({ target: { checked } }) => {
+                  statusChangeHandler(
+                    () =>
+                      MANAGE_ADMIN_SUB_ADMIN_RELATION({
+                        adminId: admin._id,
+                        subAdminId: item?._id,
+                        isActive: checked,
+                      }),
+                    key, // ind
+                    checked // value
+                  );
                 }}
-                value={
-                  item?.adminSubAdminLinkerInfo?.isActive
-                    ? "active"
-                    : "inactive"
-                }
               />
             ),
           },
@@ -153,27 +149,6 @@ const PlatForm = () => {
 
   return (
     <>
-      <ConfirmationPop
-        confirmHandler={() =>
-          statusChangeHandler(
-            () =>
-              MANAGE_ADMIN_SUB_ADMIN_RELATION({
-                adminId: statusChangeModel?.body?.adminId,
-                subAdminId: statusChangeModel?.body?.subAdminId,
-                isActive: statusChangeModel?.body?.isActive,
-                subAdminId: statusChangeModel?.dumpId,
-              }), // api
-            statusChangeModel?.body?.ind, // ind
-            "isActive", // key
-            statusChangeModel?.body?.isActive // value
-          )
-        }
-        confirmation={statusChangeModel.show}
-        setConfirmation={() => {
-          setStatusChangeModel((p) => defaultStatusModelState);
-        }}
-        type={"sure"}
-      />
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>

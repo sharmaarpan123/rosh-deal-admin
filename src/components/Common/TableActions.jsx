@@ -12,7 +12,7 @@ const TableActions = ({
   reviewRejectHandler,
 }) => {
   return (
-    <div className="actionBtn d-flex align-items-center gap-10 flex-wrap">
+    <div className="actionBtn d-flex align-items-center gap-10 ">
       {editUrl && (
         <Link to={editUrl} className="border-0 p-0">
           <svg

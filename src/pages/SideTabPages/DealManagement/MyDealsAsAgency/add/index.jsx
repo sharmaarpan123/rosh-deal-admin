@@ -100,6 +100,9 @@ const AddEditDeal = () => {
   });
 
   const imageChangeHandler = catchAsync(async (e) => {
+    if (!e.target.files[0]) {
+      return;
+    }
     const url = await fileUploader(e.target.files[0]);
 
     if (!url) {
@@ -295,22 +298,26 @@ const AddEditDeal = () => {
                 <Form onSubmit={handleSubmit(submitHandler)}>
                   <Row className="d-flex justify-content-center">
                     <div
-                      className="position-relative upload text-center"
-                      style={{ maxWidth: "max-content" }}
+                      className=" position-relative upload text-center  rounded rounded-circle"
+                      style={{
+                        maxWidth: "max-content",
+                        border: "3px #005FD9 solid",
+                        padding: "0",
+                      }}
                     >
-                      <label
-                        htmlFor=""
-                        className="form-label fw-sbold text-muted ps-2 m-0"
-                      >
-                        Product Image
-                      </label>
                       <input
                         type="file"
                         className="file position-absolute h-100 w-100 "
                         onChange={imageChangeHandler}
                       />
-                      <div className="imgWrp position-relative">
-                        <span className="icn position-absolute">
+                      <div className="imgWrp position-relative h-100 w-100">
+                        <span
+                          className="icn position-absolute"
+                          style={{
+                            bottom: "0%",
+                            right: "0%",
+                          }}
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
@@ -350,7 +357,7 @@ const AddEditDeal = () => {
                             htmlFor=""
                             className="form-label fw-sbold text-muted ps-2 m-0"
                           >
-                            Select DealCategory
+                            Select Deal Category
                           </label>
                           <Controller
                             control={control}

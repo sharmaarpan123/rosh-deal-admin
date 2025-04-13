@@ -113,7 +113,7 @@ const LinkedSubAdmin = () => {
                           htmlFor=""
                           className="form-label fw-sbold text-muted ps-2 m-0"
                         >
-                          Med User Name
+                          Mediator User Name
                         </label>
                         <input
                           type="text"

@@ -19,7 +19,10 @@ import {
   CLONE_DEAL,
   MY_AGENCY_DEAL_DETAIL_AS_MED,
 } from "../../../../../services/ApiCalls";
-import { superAdminCommission, superAdminCommissionOnFullRefund } from "../../../../../utilities/const";
+import {
+  superAdminCommission,
+  superAdminCommissionOnFullRefund,
+} from "../../../../../utilities/const";
 import { catchAsync, checkResponse } from "../../../../../utilities/utilities";
 
 export const cloneDealSchema = z
@@ -205,7 +208,7 @@ const MyAgencyDealDetailsAsMed = () => {
         <Container>
           <Row>
             <Title
-              // title={" Deal Information"}
+              title={" Deal Information"}
               BackPath={"/myAgencyDealsAsMed"}
             />
             <Col lg="12">
@@ -336,7 +339,12 @@ const MyAgencyDealDetailsAsMed = () => {
                           <p className="m-0 themeBlue fw-sbold w-25">
                             Payment Status
                           </p>
-                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                          <h6
+                            className="m-0 text-muted fw-bold  text-break"
+                            style={{
+                              width: "auto",
+                            }}
+                          >
                             <p
                               className={`text-white px-4  mb-0 text-capitalize rounded text-center ${
                                 dealDetails?.paymentStatus === "paid"
@@ -354,13 +362,16 @@ const MyAgencyDealDetailsAsMed = () => {
                           <p className="m-0 themeBlue fw-sbold w-25">
                             Deal Status
                           </p>
-                          <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                          <h6 className="m-0 text-muted fw-bold  text-break">
                             <p
                               className={` rounded text-capitalize mb-0  px-4 text-center text-white ${
                                 dealDetails?.isActive
                                   ? "bg-success"
                                   : "bg-danger"
                               }`}
+                              style={{
+                                width: "auto",
+                              }}
                             >
                               {dealDetails?.isActive ? "active" : "inactive"}
                             </p>

@@ -159,7 +159,7 @@ const MyDealsDetailsAsMed = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Payment Status
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                        <h6 className="m-0 text-muted fw-bold  text-break">
                           <p
                             className={`text-white px-4  mb-0 text-capitalize rounded text-center ${
                               dealDetails?.paymentStatus === "paid"
@@ -168,6 +168,9 @@ const MyDealsDetailsAsMed = () => {
                                 ? "bg-warning"
                                 : "bg-pending"
                             }`}
+                            style={{
+                              width: "auto",
+                            }}
                           >
                             {dealDetails?.paymentStatus}
                           </p>
@@ -177,11 +180,14 @@ const MyDealsDetailsAsMed = () => {
                         <p className="m-0 themeBlue fw-sbold w-25">
                           Deal Status
                         </p>
-                        <h6 className="m-0 text-muted fw-bold w-50 text-break">
+                        <h6 className="m-0 text-muted fw-bold  text-break">
                           <p
                             className={` rounded text-capitalize mb-0  px-4 text-center text-white ${
                               dealDetails?.isActive ? "bg-success" : "bg-danger"
                             }`}
+                            style={{
+                              width: "auto",
+                            }}
                           >
                             {dealDetails?.isActive ? "active" : "inactive"}
                           </p>

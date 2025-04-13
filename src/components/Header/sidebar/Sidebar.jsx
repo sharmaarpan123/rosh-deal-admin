@@ -1,18 +1,18 @@
 import React from "react";
-import styles from "./Sidebar.module.scss";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import styles from "./Sidebar.module.scss";
 
 // img
-import logo from "../../../Assets/images/logo.jpeg";
 import { Accordion, Button } from "react-bootstrap";
+import logo from "../../../Assets/images/logo.jpeg";
 
 import { useSelector } from "react-redux";
 import { ADMIN_ROLE_TYPE_ENUM } from "../../../utilities/const";
 import {
   adminItems,
+  adminSubAdminItems,
   subAdminItems,
   superAdminItems,
-  adminSubAdminItems,
 } from "./Routes";
 
 const Sidebar = ({ sidebar, setSidebar }) => {
@@ -82,7 +82,10 @@ const Sidebar = ({ sidebar, setSidebar }) => {
                       eventKey={ind}
                       className={`${styles?.accordionBtn}`}
                     >
-                      <Accordion.Header>{name}</Accordion.Header>
+                      <Accordion.Header>
+                        <Icon styles={styles} />
+                        {name}
+                      </Accordion.Header>
                       {subItems?.map(({ path, name, icon: Icon }) => {
                         return (
                           <Accordion.Body>
@@ -93,7 +96,6 @@ const Sidebar = ({ sidebar, setSidebar }) => {
                                 pageActive.includes(path) && styles.active
                               } d-flex align-items-center gap-10 text-white`}
                             >
-                              <Icon styles={styles} />
                               {name}
                             </NavLink>
                           </Accordion.Body>

@@ -233,13 +233,16 @@ const NotificationManagement = () => {
       dealApi = My_DEAL_AS_MED;
     } else {
       dealApi = async () => {};
-    }
+    } 
     /// api to call to fetch according to the role
 
-    const response = await dealApi({ search: inputValue });
+    const response = await dealApi({
+      search: inputValue,
+      selectedBrandFilter: [brandIdToFilterDeal],
+    });
     const options = response?.data?.data?.map((item) => ({
       value: item._id,
-      label: item?.parentDealId.productName || item?.productName,
+      label: item?.parentDealId?.productName || item?.productName,
     }));
     callback(options || []);
   };

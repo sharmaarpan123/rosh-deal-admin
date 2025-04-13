@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import SearchFilter from "../../../../../components/Common/SearchFilter";
-import StatusFilter from "../../../../../components/Common/StatusFilter";
-import { slotCompletedStatusOptions } from "../../../../../utilities/const";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
+import ReactSelectNoOptionMessage from "../../../../../components/Common/ReactSelectNoOptionMessage";
+import SearchFilter from "../../../../../components/Common/SearchFilter";
+import StatusFilter from "../../../../../components/Common/StatusFilter";
 import { BRAND_LIST } from "../../../../../services/ApiCalls";
+import { slotCompletedStatusOptions } from "../../../../../utilities/const";
 import styles from "../Filters/DealFilter.module.scss";
 
 const Filter = ({ statusFilterOptionArr, setBody, body, searchHandler }) => {
@@ -151,6 +152,14 @@ const Filter = ({ statusFilterOptionArr, setBody, body, searchHandler }) => {
             value={selectedBrandOptions}
             className={`${styles.select}`}
             isClearable
+            components={{
+              NoOptionsMessage: (props) => (
+                <ReactSelectNoOptionMessage
+                  message="Please search your Brand name here"
+                  {...props}
+                />
+              ),
+            }}
           />
         </li>
 

@@ -12,6 +12,7 @@ import {
 } from "../../../../services/ApiCalls";
 import { errorToast } from "../../../../utilities/utilities";
 import styles from "./Filter.module.scss";
+import ReactSelectNoOptionMessage from "../../../../components/Common/ReactSelectNoOptionMessage";
 
 const Filter = ({
   statusFilterOptionArr,
@@ -247,6 +248,12 @@ const Filter = ({
           components={{
             DropdownIndicator: () => null,
             IndicatorSeparator: () => null,
+            NoOptionsMessage: (props) => (
+              <ReactSelectNoOptionMessage
+                message="Please search your Brand name here"
+                {...props}
+              />
+            ),
           }}
           placeholder="Search Brand"
           loadOptions={loadOptions}
@@ -269,6 +276,12 @@ const Filter = ({
           components={{
             DropdownIndicator: () => null,
             IndicatorSeparator: () => null,
+            NoOptionsMessage: (props) => (
+              <ReactSelectNoOptionMessage
+                message="Please search your Deal name here"
+                {...props}
+              />
+            ),
           }}
           className={`${styles.select}`}
           loadOptions={loadDealOptions}

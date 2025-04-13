@@ -10,12 +10,12 @@ const commonItems = [
   },
   {
     path: "/manage-user",
-    name: "Manage User",
+    name: "Users",
     icon: ManageUserIcons,
   },
   {
     path: "/platform",
-    name: "Plat Form",
+    name: "Platform",
     icon: CommonNavIcon,
   },
   {
@@ -34,7 +34,7 @@ export const superAdminItems = [
   ...commonItems,
   {
     path: "/myDealsAsAgency",
-    name: "Deal Management",
+    name: "Deals",
     icon: CommonNavIcon,
     IsSubItems: true,
     subItems: [
@@ -102,7 +102,7 @@ export const adminItems = [
   ...commonItems,
   {
     path: "/myDealsAsAgency",
-    name: "Deal Management",
+    name: "Deals",
     icon: CommonNavIcon,
     IsSubItems: true,
     subItems: [
@@ -151,7 +151,7 @@ export const subAdminItems = [
   ...commonItems,
   {
     path: "/deal",
-    name: "Deal Management",
+    name: "Deals",
     icon: CommonNavIcon,
     IsSubItems: true,
     subItems: [
@@ -190,7 +190,7 @@ export const adminSubAdminItems = [
   ...commonItems,
   {
     path: "/myDealsAsAgency",
-    name: "Deal Management",
+    name: "Deals",
     icon: CommonNavIcon,
     IsSubItems: true,
     subItems: [
