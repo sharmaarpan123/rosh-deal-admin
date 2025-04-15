@@ -190,7 +190,10 @@ export const getColumn = (
     ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
-        {item?.dealId?.parentDealId?.actualPrice}
+     
+          {Number(item?.dealId?.parentDealId?.actualPrice) +
+            (Number(item?.deliveryFee) || 0)}
+    
       </p>
     ),
   },
@@ -375,9 +378,7 @@ export const getColumn = (
       <TableHeaderCheckbox
         label="Review Link"
         id={key}
-        onChange={(e) =>
-          setExportedKeysHandler("reviewLink", e.target.checked)
-        }
+        onChange={(e) => setExportedKeysHandler("reviewLink", e.target.checked)}
       />
     ),
     component: (item, key, arr) =>

@@ -21,10 +21,7 @@ const Filter = ({
   showMediatorFilter = false,
   dealByBrandIdApiAccessingAs,
 }) => {
-  const [selectedOption, setSelectedOption] = useState({
-    label: "",
-    value: "",
-  });
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const [selectedMediator, setSelectedMediator] = useState({
     label: "",
@@ -225,6 +222,12 @@ const Filter = ({
             components={{
               DropdownIndicator: () => null,
               IndicatorSeparator: () => null,
+              NoOptionsMessage: (props) => (
+                <ReactSelectNoOptionMessage
+                  message="search your Mediator name"
+                  {...props}
+                />
+              ),
             }}
             placeholder="Search Mediator"
             loadOptions={loadMediatorsOptions}
@@ -246,16 +249,16 @@ const Filter = ({
         </label>
         <AsyncSelect
           components={{
-            DropdownIndicator: () => null,
-            IndicatorSeparator: () => null,
+            // DropdownIndicator: () => null,
+            // IndicatorSeparator: () => null,
             NoOptionsMessage: (props) => (
               <ReactSelectNoOptionMessage
-                message="Please search your Brand name here"
+                message="Search Brands"
                 {...props}
               />
             ),
           }}
-          placeholder="Search Brand"
+         placeholder="Search Brands"
           loadOptions={loadOptions}
           onChange={handleChange}
           value={selectedOption}
@@ -278,7 +281,7 @@ const Filter = ({
             IndicatorSeparator: () => null,
             NoOptionsMessage: (props) => (
               <ReactSelectNoOptionMessage
-                message="Please search your Deal name here"
+                message="Search Deals"
                 {...props}
               />
             ),

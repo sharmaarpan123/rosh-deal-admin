@@ -201,7 +201,7 @@ export const getColumn = (
     ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
-        {item?.dealId?.parentDealId?.actualPrice}
+        {   Number(item?.dealId?.parentDealId?.actualPrice) + (Number(item?.deliveryFee) || 0)}
       </p>
     ),
   },

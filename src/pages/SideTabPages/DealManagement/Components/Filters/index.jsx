@@ -155,7 +155,7 @@ const Filter = ({ statusFilterOptionArr, setBody, body, searchHandler }) => {
             components={{
               NoOptionsMessage: (props) => (
                 <ReactSelectNoOptionMessage
-                  message="Please search your Brand name here"
+                  message="Search Brands"
                   {...props}
                 />
               ),

@@ -200,7 +200,33 @@ export const getColumn = (
       />
     ),
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">{item?.dealId?.actualPrice}</p>
+      <p className="m-0 themeBlue fw-sbold">
+        <p
+          className="m-0 themeBlue fw-sbold d-flex gap-10"
+          style={{
+            width: 80,
+          }}
+        >
+          <span className="text-muted"> Price :</span>
+          {Number(item?.dealId?.actualPrice)}
+        </p>
+        <p
+          className="m-0 themeBlue fw-sbold"
+          style={{
+            width: 120,
+          }}
+        >
+          <span className="text-muted"> Delivery Fee: </span>
+          {Number(item?.deliveryFee) || 0}
+        </p>
+
+        <p className="m-0 themeBlue fw-sbold">
+          <span className="text-muted"> Total: </span>
+          {Number(item?.dealId?.actualPrice) + (Number(item?.deliveryFee) || 0)}
+        </p>
+      
+       
+      </p>
     ),
   },
   {
@@ -261,7 +287,7 @@ export const getColumn = (
   {
     head: "Platform Fee",
     accessor: "",
-   
+
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {capitalizedFirstAlphaBet(item?.dealId?.adminCommission)}
@@ -333,9 +359,7 @@ export const getColumn = (
       <TableHeaderCheckbox
         label="Review/Rating SS"
         id={key}
-        onChange={(e) =>
-          setExportedKeysHandler("reviewSs", e.target.checked)
-        }
+        onChange={(e) => setExportedKeysHandler("reviewSs", e.target.checked)}
       />
     ),
     component: (item, key, arr) => (
@@ -375,9 +399,7 @@ export const getColumn = (
       <TableHeaderCheckbox
         label="Review Link"
         id={key}
-        onChange={(e) =>
-          setExportedKeysHandler("reviewLink", e.target.checked)
-        }
+        onChange={(e) => setExportedKeysHandler("reviewLink", e.target.checked)}
       />
     ),
     component: (item, key, arr) =>
@@ -387,8 +409,6 @@ export const getColumn = (
         </a>
       ),
   },
-
-
 
   {
     head: "Payment Status",
