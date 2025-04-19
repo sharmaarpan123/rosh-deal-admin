@@ -10,7 +10,7 @@ export const changePageToOne = (body, setBody) => {
 };
 
 export const changeBody = (body, setBody, key, value) => {
-  const newBody = {
+const newBody = {
     ...body,
     [key]: value,
   };
@@ -213,7 +213,7 @@ export const handleShare = (productId) => {
   }
 };
 
-export const copyClipboard = (productId) => {
+export const copyDealClipboard = (productId) => {
   const shareUrl = `${
     import.meta.env.VITE_APP_API_URL
   }?product_id=${productId}`;
@@ -221,6 +221,24 @@ export const copyClipboard = (productId) => {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard
       .writeText(shareUrl)
+      .then(() => {
+        toast.dismiss();
+        toast.success("Link copied to clipboard!");
+      })
+      .catch((error) => {
+        toast.dismiss();
+        toast.error("Failed to copy the link to clipboard. Please try again.");
+      });
+  } else {
+    toast.dismiss();
+    toast.warning("Clipboard functionality is not supported on this browser.");
+  }
+};
+
+export const copyToClipboard = (string) => {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard
+      .writeText(string)
       .then(() => {
         toast.dismiss();
         toast.success("Link copied to clipboard!");
@@ -247,3 +265,5 @@ export const successToast = ({ message }) => {
   toast.dismiss();
   toast.success(message);
 };
+
+

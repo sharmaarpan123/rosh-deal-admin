@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import styles from './common.module.scss'
+import styles from "./common.module.scss";
 const TableActions = ({
   editUrl,
   setDeleteModel,
@@ -133,7 +133,6 @@ const TableActions = ({
           Reject Review
         </button>
       )}
-
     </div>
   );
 };

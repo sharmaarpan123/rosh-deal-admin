@@ -87,6 +87,14 @@ export default {
 
   PARSE_HTML: "/scrapper/parseHtml",
 
+  //  SELLER
+  SELLER_LIST: "/admin/seller/getAllWithFilters",
+  AGENCY_SELLER_LIST: "/admin/seller/agency/getAllWithFilters",
+  GET_SELLER_BY_ID: "/admin/seller/getById",
+  ADD_SELLER: "/admin/seller/add",
+  UPDATE_SELLER: "/admin/add/subAdmin",
+  LINKED_SELLER_TO_ADMIN: "/admin/seller/link",
+
   //  subAdmin
 
   SUB_ADMIN_LIST: "/admin/subAdmin/getAllWithFilters",

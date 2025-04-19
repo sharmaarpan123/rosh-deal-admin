@@ -30,11 +30,11 @@ export const getColumn = (
     },
   },
   {
-    head: "Date || Time ",
+    head: "Order Date ",
     accessor: "createdAt",
     headComponent: (item, key, index) => (
       <TableHeaderCheckbox
-        label="Date || Time"
+        label="Order Date"
         id={key}
         onChange={(e) =>
           setExportedKeysHandler("orderDateTime", e.target.checked)
@@ -42,7 +42,7 @@ export const getColumn = (
       />
     ),
     component: (item, key, arr) => (
-      <>{moment(item.createdAt).format("DD-MM-YYYY  hh:mm:ss A")}</>
+      <>{moment(item.orderDate).format("DD-MM-YYYY")}</>
     ),
   },
 
@@ -148,6 +148,28 @@ export const getColumn = (
         {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.productName)}
         {/* {item?.dealId?.uniqueIdentifier || ""} */}
       </p>
+    ),
+  },
+
+  {
+    head: "Product Link",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Product Link"
+        id={key}
+        onChange={(e) => setExportedKeysHandler("link", e.target.checked)}
+      />
+    ),
+    component: (item, key, arr) => (
+      <a
+        target="_blank"
+        href={item?.dealId?.parentDealId?.postUrl}
+        style={{
+          color: "green",
+        }}
+      >
+        Click here
+      </a>
     ),
   },
 

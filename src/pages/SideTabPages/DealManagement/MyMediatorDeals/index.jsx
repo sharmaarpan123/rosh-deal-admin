@@ -12,7 +12,7 @@ import { MY_MED_DEALS_AS_AGENCY } from "../../../../services/ApiCalls";
 import { activeInactiveOptions } from "../../../../utilities/const";
 import {
   capitalizedFirstAlphaBet,
-  copyClipboard,
+  copyDealClipboard,
   handleShare,
 } from "../../../../utilities/utilities";
 import Filter from "../Components/Filters";
@@ -89,7 +89,7 @@ const MyMedDealsAsAgency = () => {
               border: "none",
               cursor: "pointer",
             }}
-            onClick={() => copyClipboard(item?._id)}
+            onClick={() => copyDealClipboard(item?._id)}
           >
             <img src={copyIcon} alt="Share" style={{ width: 15, height: 15 }} />
           </button>

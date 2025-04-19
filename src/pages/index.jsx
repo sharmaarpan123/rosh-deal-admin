@@ -60,6 +60,10 @@ import MyOrderAsAgency from "./SideTabPages/OrderMangement/MyOrderAsAgency";
 import MyMedOrdersAsAgency from "./SideTabPages/OrderMangement/MyMedOrdersAsAgency";
 import MyOrderAsMed from "./SideTabPages/OrderMangement/MyOrderAsMed";
 import Notification from "./SideTabPages/Notifications";
+import Sellers from "./SideTabPages/Seller";
+import AddEditSeller from "./SideTabPages/Seller/add";
+import ViewSeller from "./SideTabPages/Seller/viewDetails";
+import LinkedSeller from "./SideTabPages/Seller/LinkedSeller";
 export const publicRoutes = [
   { path: "privacy-policy", component: <PrivacyPolicy /> },
 ];
@@ -233,7 +237,32 @@ export const privateRoutes = [
   {
     path: "/notifications",
     component: <Notification />,
-    title :"Notifications"
+    title: "Notifications",
+  },
+  {
+    path: "/seller",
+    component: <Sellers />,
+    title: "Seller",
+  },
+  {
+    path: "/seller/add",
+    component: <AddEditSeller />,
+    title: "Add Seller",
+  },
+  {
+    path: "/seller/edit/:sellerId",
+    component: <AddEditSeller />,
+    title: "Edit Seller",
+  },
+  {
+    path: "/seller/view/:sellerId",
+    component: <ViewSeller />,
+    title: "Edit Seller",
+  },
+  {
+    path: "/seller/link",
+    component: <LinkedSeller />,
+    title: "Edit Seller",
   },
   // not used yet this /////////////////******************* */
   {

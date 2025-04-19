@@ -19,7 +19,7 @@ import { activeInactiveOptions } from "../../../../utilities/const";
 import {
   activeInActiveOptions,
   capitalizedFirstAlphaBet,
-  copyClipboard,
+  copyDealClipboard,
   handleShare,
 } from "../../../../utilities/utilities";
 
@@ -89,7 +89,7 @@ const MyDealsAsMed = () => {
               border: "none",
               cursor: "pointer",
             }}
-            onClick={() => copyClipboard(item?._id)}
+            onClick={() => copyDealClipboard(item?._id)}
           >
             <img src={copyIcon} alt="Share" style={{ width: 15, height: 15 }} />
           </button>

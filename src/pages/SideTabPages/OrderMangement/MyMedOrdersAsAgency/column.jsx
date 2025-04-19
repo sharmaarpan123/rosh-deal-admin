@@ -42,11 +42,11 @@ export const getColumn = (
     component: (item, key, arr) => <>{item?.dealId?.adminId?.name}</>,
   },
   {
-    head: "Date || Time ",
+    head: "Order Date",
     accessor: "createdAt",
     headComponent: (item, key, index) => (
       <TableHeaderCheckbox
-        label="Date || Time"
+        label="Order Date"
         id={key}
         onChange={(e) =>
           setExportedKeysHandler("orderDateTime", e.target.checked)
@@ -54,7 +54,7 @@ export const getColumn = (
       />
     ),
     component: (item, key, arr) => (
-      <>{moment(item.createdAt).format("DD-MM-YYYY  hh:mm:ss A")}</>
+      <>{moment(item.orderDate).format("DD-MM-YYYY")}</>
     ),
   },
   {
@@ -163,6 +163,28 @@ export const getColumn = (
   },
 
   {
+    head: "Product Link",
+    headComponent: (item, key, index) => (
+      <TableHeaderCheckbox
+        label="Product Link"
+        id={key}
+        onChange={(e) => setExportedKeysHandler("link", e.target.checked)}
+      />
+    ),
+    component: (item, key, arr) => (
+      <a
+        target="_blank"
+        href={item?.dealId?.parentDealId?.postUrl}
+        style={{
+          color: "green",
+        }}
+      >
+        Click here
+      </a>
+    ),
+  },
+
+  {
     head: "Order id",
     accessor: "orderIdOfPlatForm",
     headComponent: (item, key, index) => (
@@ -201,7 +223,8 @@ export const getColumn = (
     ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
-        {   Number(item?.dealId?.parentDealId?.actualPrice) + (Number(item?.deliveryFee) || 0)}
+        {Number(item?.dealId?.parentDealId?.actualPrice) +
+          (Number(item?.deliveryFee) || 0)}
       </p>
     ),
   },
@@ -386,9 +409,7 @@ export const getColumn = (
       <TableHeaderCheckbox
         label="Review Link"
         id={key}
-        onChange={(e) =>
-          setExportedKeysHandler("reviewLink", e.target.checked)
-        }
+        onChange={(e) => setExportedKeysHandler("reviewLink", e.target.checked)}
       />
     ),
     component: (item, key, arr) =>

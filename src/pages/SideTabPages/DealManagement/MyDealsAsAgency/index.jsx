@@ -8,19 +8,17 @@ import { Link } from "react-router-dom";
 import copyIcon from "../../../../Assets/images/copyIcon.png";
 import share from "../../../../Assets/images/share.png";
 import CustomPagination from "../../../../components/Common/CustomPagination";
-import Filter from "../Components/Filters";
 import TableActions from "../../../../components/Common/TableActions";
-import TableToggle from "../../../../components/Common/TableToggle";
+import Toggle from "../../../../components/Common/Toggle";
 import dataHandler from "../../../../hooks/dataHandler";
 import { DEAL_UPDATE_STATUS, DEALS_LIST } from "../../../../services/ApiCalls";
 import { activeInactiveOptions } from "../../../../utilities/const";
 import {
-  activeInActiveOptions,
   capitalizedFirstAlphaBet,
-  copyClipboard,
+  copyDealClipboard,
   handleShare,
 } from "../../../../utilities/utilities";
-import Toggle from "../../../../components/Common/Toggle";
+import Filter from "../Components/Filters";
 
 const DealManagement = () => {
   const {
@@ -84,7 +82,7 @@ const DealManagement = () => {
               border: "none",
               cursor: "pointer",
             }}
-            onClick={() => copyClipboard(item?._id)}
+            onClick={() => copyDealClipboard(item?._id)}
           >
             <img src={copyIcon} alt="Share" style={{ width: 15, height: 15 }} />
           </button>
@@ -202,6 +200,7 @@ const DealManagement = () => {
         <TableActions
           editUrl={`/deal/edit/${item._id}`}
           viewLink={`/deal/details/${item._id}`}
+        
         />
       ),
     },

@@ -14,7 +14,7 @@ import { MY_AGENCY_DEALS_AS_MED } from "../../../../services/ApiCalls";
 import { activeInactiveOptions } from "../../../../utilities/const";
 import {
   capitalizedFirstAlphaBet,
-  copyClipboard,
+  copyDealClipboard,
   handleShare,
 } from "../../../../utilities/utilities";
 
@@ -94,7 +94,7 @@ const MyAgencyDealsAsMed = () => {
               border: "none",
               cursor: "pointer",
             }}
-            onClick={() => copyClipboard(item?._id)}
+            onClick={() => copyDealClipboard(item?._id)}
           >
             <img src={copyIcon} alt="Share" style={{ width: 15, height: 15 }} />
           </button>

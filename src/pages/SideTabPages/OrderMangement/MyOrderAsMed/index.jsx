@@ -40,12 +40,16 @@ const MyOrderAsMed = () => {
       brandId: "",
       dealId: [],
       orderFormStatus: "",
+      startDate: "",
+      endDate: "",
     },
     dependencies: [
       "brandId",
       "dealId",
       "orderFormStatus",
       "selectedPlatformFilter",
+      "startDate",
+      "endDate",
     ],
   });
   const [rejectReason, setRejectedReason] = useState("");

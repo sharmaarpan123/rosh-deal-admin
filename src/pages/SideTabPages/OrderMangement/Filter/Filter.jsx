@@ -12,7 +12,11 @@ import {
 } from "../../../../services/ApiCalls";
 import { errorToast } from "../../../../utilities/utilities";
 import styles from "./Filter.module.scss";
+// css
+
 import ReactSelectNoOptionMessage from "../../../../components/Common/ReactSelectNoOptionMessage";
+import Calendar from "../../../../components/icons/svg/Calendar";
+import DateRangeModal from "../../../../components/Common/DateRangeModal";
 
 const Filter = ({
   statusFilterOptionArr,
@@ -35,6 +39,12 @@ const Filter = ({
   const [platformsOptions, setPlatFormsOptions] = useState([]);
 
   const platforms = useSelector((s) => s?.platform?.data);
+
+  const [showDateModal, setShowDateModal] = useState(false);
+  const [dateRange, setDateRange] = useState({
+    startDate: null,
+    endDate: null,
+  });
 
   useEffect(() => {
     const options =
@@ -142,6 +152,17 @@ const Filter = ({
     }));
   };
 
+  const handleApplyDateFilter = () => {
+    if (dateRange.startDate && dateRange.endDate) {
+      setBody((prev) => ({
+        ...prev,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+      }));
+    }
+    setShowDateModal(false);
+  };
+
   const clearFilter = () => {
     setBody((p) => ({
       ...p,
@@ -149,6 +170,8 @@ const Filter = ({
       mediatorId: "",
       dealId: [],
       status: "",
+      startDate: "",
+      endDate: "",
       page: 1,
       offset: 0,
       limit: 10,
@@ -158,6 +181,11 @@ const Filter = ({
     setSelectedOption({ label: "", value: "" });
     setSelectedMediator({ label: "", value: "" });
     setSelectedDealOption([]);
+    setDateRange({ startDate: null, endDate: null });
+  };
+
+  const handleDateFilterChange = (date, keyName) => {
+    setDateRange((prev) => ({ ...prev, [keyName]: date }));
   };
 
   return (
@@ -252,13 +280,10 @@ const Filter = ({
             // DropdownIndicator: () => null,
             // IndicatorSeparator: () => null,
             NoOptionsMessage: (props) => (
-              <ReactSelectNoOptionMessage
-                message="Search Brands"
-                {...props}
-              />
+              <ReactSelectNoOptionMessage message="Search Brands" {...props} />
             ),
           }}
-         placeholder="Search Brands"
+          placeholder="Search Brands"
           loadOptions={loadOptions}
           onChange={handleChange}
           value={selectedOption}
@@ -280,10 +305,7 @@ const Filter = ({
             DropdownIndicator: () => null,
             IndicatorSeparator: () => null,
             NoOptionsMessage: (props) => (
-              <ReactSelectNoOptionMessage
-                message="Search Deals"
-                {...props}
-              />
+              <ReactSelectNoOptionMessage message="Search Deals" {...props} />
             ),
           }}
           className={`${styles.select}`}
@@ -304,6 +326,29 @@ const Filter = ({
 
       <li>
         <Button
+          className="bg-transparent text-muted px-3 d-flex align-items-center gap-2"
+          type="button"
+          onClick={() => setShowDateModal(true)}
+          style={{
+            minWidth: 40,
+            height: 40,
+          }}
+        >
+          <Calendar />
+          {dateRange.startDate && dateRange.endDate ? (
+            <span style={{ fontSize: "12px" }}>
+              {`${dateRange.startDate.toLocaleDateString(
+                "en-GB"
+              )} - ${dateRange.endDate.toLocaleDateString("en-GB")}`}
+            </span>
+          ) : (
+            "Select Date"
+          )}
+        </Button>
+      </li>
+
+      <li>
+        <Button
           className="commonBtn px-0"
           type="button"
           style={{
@@ -315,6 +360,16 @@ const Filter = ({
           <CrossIcon />
         </Button>
       </li>
+
+      <DateRangeModal
+        show={showDateModal}
+        onHide={() => setShowDateModal(false)}
+        startDate={dateRange.startDate}
+        endDate={dateRange.endDate}
+        onStartDateChange={(date) => handleDateFilterChange(date, "startDate")}
+        onEndDateChange={(date) => handleDateFilterChange(date, "endDate")}
+        onApply={handleApplyDateFilter}
+      />
     </ul>
   );
 };

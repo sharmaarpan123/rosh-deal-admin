@@ -97,6 +97,11 @@ export const superAdminItems = [
     name: "System Access",
     icon: CommonNavIcon,
   },
+  {
+    path: "/seller",
+    name: "Sellers",
+    icon: CommonNavIcon,
+  },
 ];
 export const adminItems = [
   ...commonItems,
@@ -144,6 +149,11 @@ export const adminItems = [
   {
     path: "/system-access",
     name: "Mediators",
+    icon: CommonNavIcon,
+  },
+  {
+    path: "/seller",
+    name: "Sellers",
     icon: CommonNavIcon,
   },
 ];
@@ -248,6 +258,11 @@ export const adminSubAdminItems = [
   {
     path: "/system-access",
     name: "Mediators",
+    icon: CommonNavIcon,
+  },
+  {
+    path: "/seller",
+    name: "Sellers",
     icon: CommonNavIcon,
   },
 ];

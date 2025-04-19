@@ -41,6 +41,8 @@ const MyMedOrdersAsAgency = () => {
       dealId: [],
       orderFormStatus: "",
       mediatorId: "",
+      startDate: "",
+      endDate: "",
     },
     dependencies: [
       "brandId",
@@ -48,6 +50,8 @@ const MyMedOrdersAsAgency = () => {
       "orderFormStatus",
       "selectedPlatformFilter",
       "mediatorId",
+      "startDate",
+      "endDate"
     ],
   });
   const [rejectReason, setRejectedReason] = useState("");

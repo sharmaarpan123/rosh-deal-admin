@@ -17,7 +17,8 @@ export const UPLOAD_FILE = (data) => Axios.post(API_URL.UPLOAD_FILE, data);
 // dasbhoard
 
 export const DASHBOARD = (data) => Axios.post(API_URL.DASHBOARD, data);
-export const AGENCY_AND_MED_DASHBOARD = (data) => Axios.post(API_URL.AGENCY_AND_MED_DASHBOARD, data);
+export const AGENCY_AND_MED_DASHBOARD = (data) =>
+  Axios.post(API_URL.AGENCY_AND_MED_DASHBOARD, data);
 
 // PLATFORM
 
@@ -73,7 +74,7 @@ export const My_DEAL_AS_MED = (data) =>
 export const GET_DEAL_VIEW = (data) => Axios.get(API_URL.GET_DEAL_VIEW + data);
 
 export const DEAL_BY_BRAND_ID = (body) =>
-  Axios.post(API_URL.DEAL_BY_BRAND_ID , body);
+  Axios.post(API_URL.DEAL_BY_BRAND_ID, body);
 export const DEAL_UPDATE_PAYMENT_STATUS = (data) =>
   Axios.post(API_URL.DEAL_UPDATE_PAYMENT_STATUS, data);
 export const DEAL_UPDATE_STATUS = (data) =>
@@ -116,6 +117,22 @@ export const SEND_NOTIFICATION = (data) =>
 
 export const SCRAPPER_IMAGE = (data) =>
   Axios.get(API_URL.SCRAPPER_URL + "?url=" + data);
+
+// seller
+
+export const GET_SELLER_BY_ID = (data) =>
+  Axios.get(API_URL.GET_SELLER_BY_ID + data);
+
+export const ADD_SELLER = (data) => Axios.post(API_URL.ADD_SELLER, data);
+
+export const UPDATE_SELLER = (data) => Axios.post(API_URL.UPDATE_SELLER, data);
+
+export const LINKED_SELLER_TO_ADMIN = (data) =>
+  Axios.post(API_URL.LINKED_SELLER_TO_ADMIN, data);
+
+export const SELLER_LIST = (data) => Axios.post(API_URL.SELLER_LIST, data);
+export const AGENCY_SELLER_LIST = (data) =>
+  Axios.post(API_URL.AGENCY_SELLER_LIST, data);
 
 // SUB_ADMINS
 

@@ -7,13 +7,11 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CustomPagination from "../../../components/Common/CustomPagination";
 import Filter from "../../../components/Common/Filter";
-import TableActions from "../../../components/Common/TableActions";
 import Toggle from "../../../components/Common/Toggle";
 import dataHandler from "../../../hooks/dataHandler";
 import {
-  MANAGE_ADMIN_SUB_ADMIN_RELATION,
-  SUB_ADMIN_LIST,
-  UPDATE_SUB_ADMIN,
+  AGENCY_SELLER_LIST,
+  UPDATE_SUB_ADMIN
 } from "../../../services/ApiCalls";
 import {
   activeInactiveOptions,
@@ -29,7 +27,7 @@ const roleLabelEnum = {
   superAdmin: "King",
 };
 
-const PlatForm = () => {
+const Sellers = () => {
   const {
     setBody,
     statusChangeHandler,
@@ -42,7 +40,7 @@ const PlatForm = () => {
     total,
     searchHandler,
   } = dataHandler({
-    api: SUB_ADMIN_LIST,
+    api: AGENCY_SELLER_LIST,
   });
   const { admin } = useSelector((s) => s.login);
   const column = [
@@ -60,26 +58,10 @@ const PlatForm = () => {
         <p className="m-0 fw-sbold">{item.name}</p>
       ),
     },
-    {
-      head: "User Name",
-      accessor: "userName",
-      component: (item, key, arr) => (
-        <p className="m-0 fw-sbold">{item.userName}</p>
-      ),
-    },
     { head: "Email", accessor: "email" },
     { head: "Phone Number", accessor: "phoneNumber" },
     ...(admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)
       ? [
-          {
-            head: "Roles",
-            accessor: "Roles",
-            component: (item, key, arr) => (
-              <p className={`text-warning m-0 fw-sbold text-capitalize`}>
-                {item?.roles?.map((item) => roleLabelEnum[item])?.join(",")}
-              </p>
-            ),
-          },
           {
             head: "Status",
             accessor: "status",
@@ -100,38 +82,6 @@ const PlatForm = () => {
                     ind,
                     "isActive",
                     checked
-                  );
-                }}
-              />
-            ),
-          },
-          {
-            head: "Action",
-            accessor: "Action",
-            component: (item, key, arr) => (
-              <TableActions editUrl={"/system-access/edit/" + item?._id} />
-            ),
-          },
-        ]
-      : []),
-    ...(admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN)
-      ? [
-          {
-            head: "Action",
-            accessor: "Action",
-            component: (item, key, arr) => (
-              <Toggle
-                isChecked={item?.adminSubAdminLinkerInfo?.isActive}
-                onChange={({ target: { checked } }) => {
-                  statusChangeHandler(
-                    () =>
-                      MANAGE_ADMIN_SUB_ADMIN_RELATION({
-                        adminId: admin._id,
-                        subAdminId: item?._id,
-                        isActive: checked,
-                      }),
-                    key, // ind
-                    checked // value
                   );
                 }}
               />
@@ -159,26 +109,28 @@ const PlatForm = () => {
                 </div>
                 <div className="right">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
-                   
-                  <li className="">
-                      <Link
-                        to={"/system-access/linkedMed"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Link Mediator
-                      </Link>
-                    </li>
-                    <li className="">
-                      <Link
-                        to={"/system-access/add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Add New
-                      </Link>
-                    </li>
-                 
+                    {admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.ADMIN) && (
+                      <>
+                        <li className="">
+                          <Link
+                            to={"/seller/link"}
+                            className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
+                            style={{ height: 40, minWidth: 100, fontSize: 12 }}
+                          >
+                            Link Seller
+                          </Link>
+                        </li>{" "}
+                        <li className="">
+                          <Link
+                            to={"/seller/add"}
+                            className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
+                            style={{ height: 40, minWidth: 100, fontSize: 12 }}
+                          >
+                            Add New
+                          </Link>
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </div>
               </div>
@@ -199,4 +151,4 @@ const PlatForm = () => {
   );
 };
 
-export default PlatForm;
+export default Sellers;
