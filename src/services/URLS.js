@@ -4,6 +4,7 @@ export default {
 
   // ADMIN
   LOGIN_ADMIN: "auth/admin/singIn",
+  LOGIN_SELLER: "auth/seller/singIn",
   ME_QUERY: "admin/me",
   LOG_OUT: "admin/logout",
   FORGET_PASSWORD_ADMIN: "auth/admin/forgetPassword",
@@ -51,6 +52,7 @@ export default {
   MY_AGENCY_DEAL_DETAIL_AS_MED: "/subAdmin/myAgencyDealAsMed/detail/",
   MY_MED_DEALS_AS_AGENCY: "subAdmin/myMedDealsAsAgency/getWithFilters",
   DEALS_LIST: "/admin/deal/all/withFilters",
+  MY_SELLER_DEALS_LIST: "/admin//seller/getSellerDeals",
   MY_AGENCY_DEALS_AS_MED: "subAdmin/myAgencyDealAsMed/getWithFilters",
   DEAL_BY_BRAND_ID: "/admin/deal/getDealWithBrandId",
   DEAL_UPDATE_PAYMENT_STATUS: "/admin/deal/updatePaymentStatus",

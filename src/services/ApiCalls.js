@@ -3,6 +3,7 @@ import Axios from "./Axios";
 import API_URL from "./URLS";
 
 export const LOGIN_ADMIN = (data) => Axios.post(API_URL.LOGIN_ADMIN, data);
+export const LOGIN_SELLER = (data) => Axios.post(API_URL.LOGIN_SELLER, data);
 export const ME_QUERY = (data) => Axios.post(API_URL.ME_QUERY, data);
 export const LOG_OUT = (data) => Axios.post(API_URL.LOG_OUT, data);
 export const FORGET_PASSWORD_ADMIN = (data) =>
@@ -61,6 +62,7 @@ export const EDIT_DEAL = (data) => Axios.post(API_URL.EDIT_DEAL, data);
 export const CLONE_DEAL = (data) => Axios.post(API_URL.CLONE_DEAL, data);
 
 export const DEALS_LIST = (data) => Axios.post(API_URL.DEALS_LIST, data);
+export const MY_SELLER_DEALS_LIST = (data) => Axios.post(API_URL.MY_SELLER_DEALS_LIST, data);
 export const MY_AGENCY_DEALS_AS_MED = (data) =>
   Axios.post(API_URL.MY_AGENCY_DEALS_AS_MED, data);
 export const MY_MED_DEALS_AS_AGENCY = (data) =>

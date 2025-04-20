@@ -1,5 +1,6 @@
 /////////////-----------------Login Action------------------///////////
 export const LOGIN_ADMIN = "LOGIN_ADMIN";
+export const LOGIN_SELLER = "LOGIN_SELLER";
 export const LOGIN_ADMIN_SUCCESS = "LOGIN_ADMIN_SUCCESS";
 export const LOGIN_ADMIN_FAIL = "LOGIN_ADMIN_FAIL";
 

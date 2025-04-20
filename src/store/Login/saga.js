@@ -2,13 +2,13 @@ import { put, call, takeEvery } from "redux-saga/effects";
 import * as CONST from "./actionTypes";
 import * as ACTION from "./actions";
 import { toast } from "react-toastify";
-import { LOGIN_ADMIN, ME_QUERY } from "../../services/ApiCalls";
+import { LOGIN_ADMIN, LOGIN_SELLER, ME_QUERY } from "../../services/ApiCalls";
 import requestNotificationPermission from "../../firebase";
 
 function* loginUserSaga({ payload, callBack }) {
   try {
     const fcmToken = yield call(requestNotificationPermission);
-    const response = yield call(LOGIN_ADMIN, { ...payload, fcmToken });
+    const response = yield call(payload?.userType === "agency" ? LOGIN_ADMIN : LOGIN_SELLER, { ...payload, fcmToken });
     if (response?.data?.success) {
       toast.dismiss();
       toast.success(response?.data?.message);
@@ -54,6 +54,7 @@ function* meQuery() {
 
 function* LoginSaga() {
   yield takeEvery(CONST.LOGIN_ADMIN, loginUserSaga);
+  yield takeEvery(CONST.LOGIN_SELLER, loginUserSaga);
   yield takeEvery(CONST.GET_ADMIN_DETAILS, meQuery);
 }
 

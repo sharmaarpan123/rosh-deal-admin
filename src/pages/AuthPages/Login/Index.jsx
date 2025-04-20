@@ -9,9 +9,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { z } from "zod";
-import { loginAdmin } from "../../../store/actions";
-import OpenEye from "../../../components/Common/icon/svg/OpenEye";
 import CloseEye from "../../../components/Common/icon/svg/CloseEye";
+import OpenEye from "../../../components/Common/icon/svg/OpenEye";
+import { loginAdmin } from "../../../store/actions";
 
 const schema = z.object({
   phoneNumber: z
@@ -40,6 +40,7 @@ const schema = z.object({
 const Login = () => {
   const navigate = useNavigate();
   const [pass, setPass] = useState();
+  const [activeTab, setActiveTab] = useState("agency");
   const handlePass = () => {
     setPass(!pass);
   };
@@ -55,17 +56,43 @@ const Login = () => {
 
   const submitHandler = async (data) => {
     const callBack = (status) => {
-      navigate("/dashboard");
+      if (activeTab === "seller") {
+        navigate("/seller/deals");
+      } else {
+        navigate("/dashboard");
+      }
     };
-
-    dispatch(loginAdmin({ ...data }, callBack));
+    dispatch(loginAdmin({ ...data, userType: activeTab }, callBack));
   };
+
   return (
     <>
       <div className="formInner position-relative px-lg-3">
         <div className="w-100 inner">
           <div className="top py-2">
             <h4 className="m-0 fw-sbold themeClr">Log In</h4>
+          </div>
+          <div className="d-flex justify-content-center mb-3">
+            <div className="bg-light rounded-4 p-2 d-flex gap-2" style={{ width: '100%', maxWidth: '400px' }}>
+              <button
+                onClick={() => setActiveTab("agency")}
+                className={`btn border-0 px-4 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 flex-grow-1 ${
+                  activeTab === "agency" ? "bg-primary text-white" : "text-muted"
+                }`}
+              >
+                <i className="bi bi-building"></i>
+                <span>Agency/Mediator</span>
+              </button>
+              <button
+                onClick={() => setActiveTab("seller")}
+                className={`btn border-0 px-4 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 flex-grow-1 ${
+                  activeTab === "seller" ? "bg-primary text-white" : "text-muted"
+                }`}
+              >
+                <i className="bi bi-person"></i>
+                <span>Seller</span>
+              </button>
+            </div>
           </div>
           <Form
             className={`${styles.form} pt-lg-4 pt-2`}
