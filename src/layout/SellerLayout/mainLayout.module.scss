@@ -1,0 +1,17 @@
+.mainLayout {
+  background: #005fd9;
+  main.MainBody {
+    // border-radius: 15px;
+    height: calc(100vh);
+    overflow: auto;
+    scrollbar-width: none;
+    width: calc(100%);
+  }
+}
+@media (max-width: 992px) {
+  .mainLayout {
+    main.MainBody {
+      width: calc(100%);
+    }
+  }
+}

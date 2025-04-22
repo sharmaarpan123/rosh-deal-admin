@@ -6,10 +6,13 @@ export default {
   LOGIN_ADMIN: "auth/admin/singIn",
   LOGIN_SELLER: "auth/seller/singIn",
   ME_QUERY: "admin/me",
+  SELLER_ME_QUERY: "seller/me",
   LOG_OUT: "admin/logout",
+  LOG_OUT_AS_SELLER: "seller/logout",
   FORGET_PASSWORD_ADMIN: "auth/admin/forgetPassword",
   RESET_PASSWORD: "auth/admin/resetPassword",
   CHANGE_PASSWORD: "auth/admin/changePassword",
+  CHANGE_PASSWORD_AS_SELLER: "auth/seller/changePassword",
   ADMIN_UPDATE: "admin/editAdmin",
   GET_ADMIN_BY_ID: "/admin/getUserById/",
 
@@ -52,7 +55,9 @@ export default {
   MY_AGENCY_DEAL_DETAIL_AS_MED: "/subAdmin/myAgencyDealAsMed/detail/",
   MY_MED_DEALS_AS_AGENCY: "subAdmin/myMedDealsAsAgency/getWithFilters",
   DEALS_LIST: "/admin/deal/all/withFilters",
-  MY_SELLER_DEALS_LIST: "/admin//seller/getSellerDeals",
+  MY_SELLER_DEALS_LIST: "/seller/getSellerDeals",
+  MY_SELLER_DEALS_LIST_AS_AGENCY: "/admin/seller/getSellerDeals",
+  REMOVE_DEAL_FROM_SELLER: "/admin/seller/removeSellerDeal",
   MY_AGENCY_DEALS_AS_MED: "subAdmin/myAgencyDealAsMed/getWithFilters",
   DEAL_BY_BRAND_ID: "/admin/deal/getDealWithBrandId",
   DEAL_UPDATE_PAYMENT_STATUS: "/admin/deal/updatePaymentStatus",
@@ -63,6 +68,7 @@ export default {
   // orders
 
   ORDER_LIST: "/admin/orders/all", // as agency
+  SELLER_ORDER_LIST: "/seller/orders",
   ORDER_LIST_OF_MED_AS_AGENCY: "/admin/ordersOfMedAsAgency/all",
   MY_ORDER_LIST_MED: "/admin/ordersOfMedAsMed/all",
   ACCEPT_REJECT_ORDER: "admin/order/acceptRejectOrder",

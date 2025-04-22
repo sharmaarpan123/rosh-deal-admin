@@ -62,12 +62,16 @@ const Settings = () => {
                           {admin?.email}
                         </h6>
                       </li>
-                      <li className="py-3 d-flex align-items-center gap-10">
-                        <p className="m-0 themeBlue fw-sbold w-25">User Name:</p>
-                        <h6 className="m-0 text-muted fw-bold w-75">
-                          {admin?.userName}
-                        </h6>
-                      </li>
+                      {admin?.userName && (
+                        <li className="py-3 d-flex align-items-center gap-10">
+                          <p className="m-0 themeBlue fw-sbold w-25">
+                            User Name:
+                          </p>
+                          <h6 className="m-0 text-muted fw-bold w-75">
+                            {admin?.userName}
+                          </h6>
+                        </li>
+                      )}
                     </ul>
                     <div className="btnWrpper my-3 d-flex align-items-center justify-content-center gap-10 pt-5">
                       <Link
@@ -76,18 +80,6 @@ const Settings = () => {
                       >
                         Manage Password
                       </Link>
-                      {/* <Link
-                        to="/settings/edit-profile"
-                        // to={"#"}
-                        // onClick={(e) => {
-                        //   e.preventDefault();
-                        //   toast.dismiss();
-                        //   toast.warning("This feature is in development");
-                        // }}
-                        className="d-flex btn btn-primary align-items-center justify-content-center commonBtn"
-                      >
-                        Edit Profile
-                      </Link> */}
                     </div>
                   </Col>
                 </Row>

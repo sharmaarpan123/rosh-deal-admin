@@ -11,7 +11,7 @@ import { slotCompletedStatusOptions } from "../../../../../utilities/const";
 import styles from "../Filters/DealFilter.module.scss";
 import { Link, useLocation } from "react-router-dom";
 
-const Filter = ({
+const SellerDealFilter = ({
   statusFilterOptionArr,
   setBody,
   body,
@@ -87,65 +87,6 @@ const Filter = ({
 
   return (
     <div>
-      <div className="d-flex justify-content-between w-100">
-        <ul className="list-unstyled ps-0 mb-0 d-flex align-items-end gap-10 flex-wrap">
-          <li className="d-flex flex-column align-items-center ">
-            <label
-              htmlFor=""
-              className="form-label m-0 fw-sbold text-muted"
-              style={{ whiteSpace: "nowrap" }}
-            >
-              Status
-            </label>
-            <StatusFilter
-              body={body}
-              setBody={setBody}
-              statusKey={"status"}
-              statusFilterOptionArr={statusFilterOptionArr}
-            />
-          </li>
-
-          <li className="d-flex align-items-center flex-column ">
-            <label
-              htmlFor=""
-              className="form-label m-0 fw-sbold text-muted"
-              style={{ whiteSpace: "nowrap" }}
-            >
-              Slot Completed Status
-            </label>
-            <StatusFilter
-              body={body}
-              setBody={setBody}
-              statusKey={"isSlotCompleted"}
-              statusFilterOptionArr={slotCompletedStatusOptions}
-            />
-          </li>
-        </ul>
-
-        {addLinkButtons && (
-          <ul className="list-unstyled ps-0 mb-0 d-flex align-items-end gap-10 flex-wrap">
-            <li className="">
-              <Link
-                to={"/deal/bulk-add"}
-                className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                style={{ height: 40, minWidth: 100, fontSize: 12 }}
-              >
-                Bulk Add
-              </Link>
-            </li>
-            <li className="">
-              <Link
-                to={"/deal/add"}
-                className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                style={{ height: 40, minWidth: 100, fontSize: 12 }}
-              >
-                Add New
-              </Link>
-            </li>
-          </ul>
-        )}
-      </div>
-
       <ul className="list-unstyled ps-0 mb-0 d-flex align-items-end gap-10 flex-wrap">
         <li className="d-flex align-items-center flex-column ">
           <label
@@ -174,33 +115,6 @@ const Filter = ({
           />
         </li>
 
-        {showBrandFilter && (
-          <li className="d-flex align-items-center flex-column ">
-            <label
-              htmlFor=""
-              className="form-label m-0 fw-sbold text-muted"
-              style={{ whiteSpace: "nowrap" }}
-            >
-              Brands
-            </label>
-            <AsyncSelect
-              loadOptions={loadOptions}
-              onChange={handleChange}
-              value={selectedBrandOptions}
-              className={`${styles.select}`}
-              isClearable
-              components={{
-                NoOptionsMessage: (props) => (
-                  <ReactSelectNoOptionMessage
-                    message="Search Brands"
-                    {...props}
-                  />
-                ),
-              }}
-            />
-          </li>
-        )}
-
         <li className="">
           <SearchFilter
             body={body}
@@ -219,4 +133,4 @@ const Filter = ({
   );
 };
 
-export default Filter;
+export default SellerDealFilter;

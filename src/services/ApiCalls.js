@@ -5,13 +5,19 @@ import API_URL from "./URLS";
 export const LOGIN_ADMIN = (data) => Axios.post(API_URL.LOGIN_ADMIN, data);
 export const LOGIN_SELLER = (data) => Axios.post(API_URL.LOGIN_SELLER, data);
 export const ME_QUERY = (data) => Axios.post(API_URL.ME_QUERY, data);
+export const SELLER_ME_QUERY = (data) =>
+  Axios.post(API_URL.SELLER_ME_QUERY, data);
 export const LOG_OUT = (data) => Axios.post(API_URL.LOG_OUT, data);
+export const LOG_OUT_AS_SELLER = (data) => Axios.post(API_URL.LOG_OUT_AS_SELLER, data);
 export const FORGET_PASSWORD_ADMIN = (data) =>
   Axios.post(API_URL.FORGET_PASSWORD_ADMIN, data);
 export const RESET_PASSWORD = (data) =>
   Axios.post(API_URL.RESET_PASSWORD, data);
 export const CHANGE_PASSWORD = (data) =>
   Axios.post(API_URL.CHANGE_PASSWORD, data);
+export const CHANGE_PASSWORD_AS_SELLER = (data) =>
+  Axios.post(API_URL.CHANGE_PASSWORD_AS_SELLER, data);
+
 // upload file
 export const UPLOAD_FILE = (data) => Axios.post(API_URL.UPLOAD_FILE, data);
 
@@ -62,7 +68,12 @@ export const EDIT_DEAL = (data) => Axios.post(API_URL.EDIT_DEAL, data);
 export const CLONE_DEAL = (data) => Axios.post(API_URL.CLONE_DEAL, data);
 
 export const DEALS_LIST = (data) => Axios.post(API_URL.DEALS_LIST, data);
-export const MY_SELLER_DEALS_LIST = (data) => Axios.post(API_URL.MY_SELLER_DEALS_LIST, data);
+export const MY_SELLER_DEALS_LIST = (data) =>
+  Axios.post(API_URL.MY_SELLER_DEALS_LIST, data);
+export const MY_SELLER_DEALS_LIST_AS_AGENCY = (data) =>
+  Axios.post(API_URL.MY_SELLER_DEALS_LIST_AS_AGENCY, data);
+export const REMOVE_DEAL_FROM_SELLER = (data) =>
+  Axios.post(API_URL.REMOVE_DEAL_FROM_SELLER, data);
 export const MY_AGENCY_DEALS_AS_MED = (data) =>
   Axios.post(API_URL.MY_AGENCY_DEALS_AS_MED, data);
 export const MY_MED_DEALS_AS_AGENCY = (data) =>
@@ -84,6 +95,8 @@ export const DEAL_UPDATE_STATUS = (data) =>
 // ORDERS
 
 export const ORDER_LIST = (data) => Axios.post(API_URL.ORDER_LIST, data);
+export const SELLER_ORDER_LIST = (data) =>
+  Axios.post(API_URL.SELLER_ORDER_LIST, data);
 export const ORDER_LIST_OF_MED_AS_AGENCY = (data) =>
   Axios.post(API_URL.ORDER_LIST_OF_MED_AS_AGENCY, data);
 export const MY_ORDER_LIST_MED = (data) =>

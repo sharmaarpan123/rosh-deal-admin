@@ -213,28 +213,11 @@ const DealManagement = () => {
           <Row>
             <Col lg="12" className="px-0 ">
               <div className="tableFilter d-flex flex-column gap-10 mb-1">
-                <div className="">
+                {/* <div className="">
                   <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center justify-content-end gap-10 flex-wrap">
-                    <li className="">
-                      <Link
-                        to={"/deal/bulk-add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Bulk Add
-                      </Link>
-                    </li>
-                    <li className="">
-                      <Link
-                        to={"/deal/add"}
-                        className="d-flex btn btn-primary align-items-center justify-content-center fw-sbold commonBtn"
-                        style={{ height: 40, minWidth: 100, fontSize: 12 }}
-                      >
-                        Add New
-                      </Link>
-                    </li>
+                    
                   </ul>
-                </div>
+                </div> */}
                 <div className="">
                   {/* <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap"> */}
                   <Filter

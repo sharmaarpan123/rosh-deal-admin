@@ -64,8 +64,38 @@ import Sellers from "./SideTabPages/Seller";
 import AddEditSeller from "./SideTabPages/Seller/add";
 import ViewSeller from "./SideTabPages/Seller/viewDetails";
 import LinkedSeller from "./SideTabPages/Seller/LinkedSeller";
+import MyDealsAsSeller from "./SideTabPages/DealManagement/MyDealsAsSeller";
+import MyOrderAsSeller from "./SideTabPages/OrderMangement/MyOrderAsSeller";
+import AddDealToSeller from "./SideTabPages/Seller/AddDealToSeller";
 export const publicRoutes = [
   { path: "privacy-policy", component: <PrivacyPolicy /> },
+];
+
+export const sellerRoutes = [
+  {
+    path: "/seller/deals",
+    element: <MyDealsAsSeller />,
+  },
+  {
+    path: "/seller/deal/details/:id",
+    element: <DealDetails />,
+  },
+  {
+    path: "/seller/orders/:dealId",
+    element: <MyOrderAsSeller />,
+  },
+  {
+    path: "/settings",
+    element: <Settings />,
+  },
+  {
+    path: "/settings/edit-profile",
+    element: <EditProfile />,
+  },
+  {
+    path: "/settings/password",
+    element: <ManagePassword />,
+  },
 ];
 
 export const routes = [
@@ -250,14 +280,14 @@ export const privateRoutes = [
     title: "Add Seller",
   },
   {
-    path: "/seller/edit/:sellerId",
-    component: <AddEditSeller />,
-    title: "Edit Seller",
+    path: "/seller/addDeal/:sellerId",
+    component: <AddDealToSeller />,
+    title: "Add Seller",
   },
   {
     path: "/seller/view/:sellerId",
     component: <ViewSeller />,
-    title: "Edit Seller",
+    title: "Seller Deals",
   },
   {
     path: "/seller/link",

@@ -21,10 +21,15 @@ function makeHyperLink(row, cellKey, text, hyperValue) {
   cell.font = { color: { argb: "FF0000FF" }, underline: true };
 }
 
-const ExportExcel = ({ body, api, exportedKeys = {} }) => {
+const ExportExcel = ({
+  body,
+  api,
+  exportedKeys = {},
+  showTheSelectBrandValidation = true,
+}) => {
   const [loader, setLoader] = useState(false);
   const handleExport = catchAsync(async () => {
-    if (!body?.brandId) {
+    if (!body?.brandId && showTheSelectBrandValidation) {
       return errorToast({ message: "Please select the brand" });
     }
     setLoader(true);
@@ -50,8 +55,17 @@ const ExportExcel = ({ body, api, exportedKeys = {} }) => {
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet("My Sheet");
 
+    const noColumnIsSelected = Object.keys(exportedKeys)?.every(
+      (item) => !exportedKeys[item]
+    );
+
     const exportedColumnsArr = Object.keys(exportedKeys)
-      ?.filter((item) => exportedKeys[item])
+      ?.filter((item) => {
+        if (noColumnIsSelected) {
+          return true;
+        }
+        return exportedKeys[item];
+      })
       ?.map((item) => orderColumnEnum[item]);
 
     sheet.columns = [

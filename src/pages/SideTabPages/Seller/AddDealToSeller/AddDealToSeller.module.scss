@@ -1,0 +1,113 @@
+.addDealToSeller {
+  padding: 2rem 0;
+}
+
+.pageHeader {
+  margin-bottom: 1.5rem;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  color: #1E232C;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #e9ecef;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.formWrapper {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.title {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #1E232C;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.selectWrapper {
+  :global {
+    .select__control {
+      min-height: 45px;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      box-shadow: none;
+
+      &:hover {
+        border-color: #80bdff;
+      }
+    }
+
+    .select__multi-value {
+      background-color: #e9ecef;
+      border-radius: 6px;
+    }
+
+    .select__option {
+      background-color: white;
+      color: #1E232C;
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
+
+      &--is-focused {
+        background-color: #f8f9fa;
+      }
+    }
+  }
+}
+
+.submitButton {
+  padding: 0.5rem 1.5rem;
+  background-color: #0d6efd;
+  border: none;
+  border-radius: 8px;
+  min-width: 150px;
+  transition: all 0.3s ease;
+  color: white;
+
+  &:hover {
+    background-color: #0b5ed7;
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+}
+
+.loadingSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+} 

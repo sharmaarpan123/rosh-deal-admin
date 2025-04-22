@@ -24,6 +24,8 @@ const Filter = ({
   body,
   showMediatorFilter = false,
   dealByBrandIdApiAccessingAs,
+  showDealsFilter = true,
+  showBrandFilter = true,
 }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -267,62 +269,69 @@ const Filter = ({
         </li>
       )}
 
-      <li className="d-flex flex-column align-items-center ">
-        <label
-          htmlFor=""
-          className="form-label m-0 fw-sbold text-muted"
-          style={{ whiteSpace: "nowrap" }}
-        >
-          Brand
-        </label>
-        <AsyncSelect
-          components={{
-            // DropdownIndicator: () => null,
-            // IndicatorSeparator: () => null,
-            NoOptionsMessage: (props) => (
-              <ReactSelectNoOptionMessage message="Search Brands" {...props} />
-            ),
-          }}
-          placeholder="Search Brands"
-          loadOptions={loadOptions}
-          onChange={handleChange}
-          value={selectedOption}
-          className={`${styles.select}`}
-          isClearable
-        />
-      </li>
+      {showBrandFilter && (
+        <li className="d-flex flex-column align-items-center ">
+          <label
+            htmlFor=""
+            className="form-label m-0 fw-sbold text-muted"
+            style={{ whiteSpace: "nowrap" }}
+          >
+            Brand
+          </label>
+          <AsyncSelect
+            components={{
+              // DropdownIndicator: () => null,
+              // IndicatorSeparator: () => null,
+              NoOptionsMessage: (props) => (
+                <ReactSelectNoOptionMessage
+                  message="Search Brands"
+                  {...props}
+                />
+              ),
+            }}
+            placeholder="Search Brands"
+            loadOptions={loadOptions}
+            onChange={handleChange}
+            value={selectedOption}
+            className={`${styles.select}`}
+            isClearable
+          />
+        </li>
+      )}
 
-      <li className="d-flex flex-column align-items-center">
-        <label
-          htmlFor=""
-          className="form-label m-0 fw-sbold text-muted"
-          style={{ whiteSpace: "nowrap" }}
-        >
-          Deals
-        </label>
-        <AsyncSelect
-          components={{
-            DropdownIndicator: () => null,
-            IndicatorSeparator: () => null,
-            NoOptionsMessage: (props) => (
-              <ReactSelectNoOptionMessage message="Search Deals" {...props} />
-            ),
-          }}
-          className={`${styles.select}`}
-          loadOptions={loadDealOptions}
-          value={selectedDealOption}
-          isMulti
-          isClearable
-          placeholder="Search Deal"
-          onChange={(value) => {
-            setSelectedDealOption(value);
-            setBody((p) => ({
-              ...p,
-              dealId: value?.map((i) => i.value),
-            }));
-          }}
-        />
-      </li>
+      {showDealsFilter && (
+        <li className="d-flex flex-column align-items-center">
+          <label
+            htmlFor=""
+            className="form-label m-0 fw-sbold text-muted"
+            style={{ whiteSpace: "nowrap" }}
+          >
+            Deals
+          </label>
+          <AsyncSelect
+            components={{
+              DropdownIndicator: () => null,
+              IndicatorSeparator: () => null,
+              NoOptionsMessage: (props) => (
+                <ReactSelectNoOptionMessage message="Search Deals" {...props} />
+              ),
+            }}
+            className={`${styles.select}`}
+            loadOptions={loadDealOptions}
+            value={selectedDealOption}
+            isMulti
+            isClearable
+            placeholder="Search Deal"
+            onChange={(value) => {
+              setSelectedDealOption(value);
+              setBody((p) => ({
+                ...p,
+                dealId: value?.map((i) => i.value),
+              }));
+            }}
+          />
+        </li>
+      )}
 
       <li>
         <Button

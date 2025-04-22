@@ -4,16 +4,19 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { CHANGE_PASSWORD } from "../../../../services/ApiCalls";
+import {
+  CHANGE_PASSWORD,
+  CHANGE_PASSWORD_AS_SELLER,
+} from "../../../../services/ApiCalls";
 import { catchAsync, checkResponse } from "../../../../utilities/utilities";
+import { useSelector } from "react-redux";
 
 const schema = z
   .object({
     oldPassword: z
       .string()
       .min(1, {
-        message:
-          "Password is required",
+        message: "Password is required",
       })
       .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
       .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
@@ -24,8 +27,7 @@ const schema = z
     newPassword: z
       .string()
       .min(1, {
-        message:
-          "Password is required",
+        message: "Password is required",
       })
       .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
       .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
@@ -36,8 +38,7 @@ const schema = z
     confirmPassword: z
       .string()
       .min(1, {
-        message:
-          "Password is required",
+        message: "Password is required",
       })
       .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
       .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
@@ -54,6 +55,8 @@ const schema = z
 const ManagePassword = () => {
   const navigate = useNavigate();
 
+  const { admin } = useSelector((s) => s.login);
+
   const [showPassWord, setShowPassword] = useState({
     oldPassword: false,
     newPassword: false,
@@ -68,9 +71,9 @@ const ManagePassword = () => {
   };
 
   const submitHandler = catchAsync(async (data) => {
-    const res = await CHANGE_PASSWORD({
-      ...data,
-    });
+    const res = await (admin?.roles?.includes("seller")
+      ? CHANGE_PASSWORD_AS_SELLER(data)
+      : CHANGE_PASSWORD(data));
 
     const success = checkResponse({
       res,

@@ -73,11 +73,18 @@ const Login = () => {
             <h4 className="m-0 fw-sbold themeClr">Log In</h4>
           </div>
           <div className="d-flex justify-content-center mb-3">
-            <div className="bg-light rounded-4 p-2 d-flex gap-2" style={{ width: '100%', maxWidth: '400px' }}>
+            <div
+              className="bg-light rounded-4 p-2 d-flex gap-2"
+              style={{ width: "100%", maxWidth: "400px" }}
+            >
               <button
-                onClick={() => setActiveTab("agency")}
+                onClick={() => {
+                  setActiveTab("agency");
+                }}
                 className={`btn border-0 px-4 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 flex-grow-1 ${
-                  activeTab === "agency" ? "bg-primary text-white" : "text-muted"
+                  activeTab === "agency"
+                    ? "bg-primary text-white"
+                    : "text-muted"
                 }`}
               >
                 <i className="bi bi-building"></i>
@@ -86,7 +93,9 @@ const Login = () => {
               <button
                 onClick={() => setActiveTab("seller")}
                 className={`btn border-0 px-4 py-2 rounded-3 d-flex align-items-center justify-content-center gap-2 flex-grow-1 ${
-                  activeTab === "seller" ? "bg-primary text-white" : "text-muted"
+                  activeTab === "seller"
+                    ? "bg-primary text-white"
+                    : "text-muted"
                 }`}
               >
                 <i className="bi bi-person"></i>

@@ -4,6 +4,8 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import AsyncSelect from "react-select/async";
+import ReactSelectNoOptionMessage from "../../../../components/Common/ReactSelectNoOptionMessage";
 import Toggle from "../../../../components/Common/Toggle";
 import { ADD_SELLER, DEALS_LIST } from "../../../../services/ApiCalls";
 import {
@@ -11,9 +13,28 @@ import {
   checkResponse,
   errorToast,
 } from "../../../../utilities/utilities";
-import { getSellerSchema } from "./Schama";
-import ReactSelectNoOptionMessage from "../../../../components/Common/ReactSelectNoOptionMessage";
-import AsyncSelect from "react-select/async";
+
+import { z } from "zod";
+
+const getSellerSchema = () =>
+  z.object({
+    name: z.string().min(1, { message: "Name is required" }),
+
+    email: z
+      .string()
+      .min(1, { message: "Email is required" })
+      .email("Invalid email address"),
+    password: z.string().optional(),
+    phoneNumber: z
+      .string()
+      .min(12, { message: "Minimum 10 digit mobile number is required" })
+      .max(12, { message: "Maximum 10 digit mobile number is required" }),
+    isActive: z.boolean({
+      message: "This field is required",
+      required_error: "This field is required",
+      invalid_type_error: "This field is required!",
+    }),
+  });
 
 const AddEditSeller = () => {
   const { sellerId } = useParams();

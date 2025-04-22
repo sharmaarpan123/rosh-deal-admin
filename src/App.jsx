@@ -8,15 +8,19 @@ import "./Assets/css/style.css";
 import requestNotificationPermission from "./firebase";
 import AuthLayout from "./layout/Auth/authLayout";
 import MainLayout from "./layout/MainLayout/MainLayout";
-import { privateRoutes, publicRoutes, routes } from "./pages/index";
-import MyDealsAsSeller from "./pages/SideTabPages/DealManagement/MyDealsAsSeller";
-import MyOrderAsSeller from "./pages/SideTabPages/OrderMangement/MyOrderAsSeller";
+
+import {
+  privateRoutes,
+  publicRoutes,
+  routes,
+  sellerRoutes,
+} from "./pages/index";
 import { getPlatforms } from "./store/Platform/actions";
-import DealDetails from "./pages/SideTabPages/DealManagement/MyDealsAsAgency/detail";
+import SellerLayout from "./layout/SellerLayout/SellerLayout";
 
 function App() {
   const isAuthenticated = useSelector((s) => s.login.token);
-  const admin = useSelector((s) => s.login.admin);
+  const isSeller = useSelector((s) => s.login.isSeller);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,7 +29,6 @@ function App() {
       dispatch(getPlatforms());
     }
   }, [isAuthenticated]);
-  const isSeller = admin?.roles?.includes("seller");
 
   return (
     <>
@@ -41,36 +44,41 @@ function App() {
         ))}
         {isAuthenticated ? (
           <>
-           {isSeller && (
+            {isSeller ? (
               <>
                 <Route
-                  path="/seller/deals"
-                  element={<MyDealsAsSeller />}
+                  path="*"
+                  element={<Navigate replace to="/seller/deals" />}
                 />
+                {sellerRoutes?.map((item) => {
+                  return (
+                    <Route element={<SellerLayout title={item?.title} />}>
+                      <Route path={item?.path} element={item?.element} />
+                    </Route>
+                  );
+                })}
+              </>
+            ) : (
+              <>
                 <Route
-                  path="/seller/deal/details/:id"
-                  element={<DealDetails />}
+                  path="*"
+                  element={<Navigate replace to="/dashboard" />}
                 />
-                <Route
-                  path="/seller/orders/:dealId"
-                  element={<MyOrderAsSeller />}
-                />
+
+                {privateRoutes.map((data, index) => (
+                  <Route element={<MainLayout title={data?.title} />}>
+                    <Route
+                      onUpdate={() => window.scrollTo(0, 0)}
+                      exact={true}
+                      path={data.path}
+                      element={data.component}
+                      key={index}
+                      title={data?.title}
+                    />
+                  </Route>
+                ))}
               </>
             )}
-            <Route path="*" element={<Navigate replace to="/dashboard" />} />
-
-            {privateRoutes.map((data, index) => (
-              <Route element={<MainLayout title={data?.title} />}>
-                <Route
-                  onUpdate={() => window.scrollTo(0, 0)}
-                  exact={true}
-                  path={data.path}
-                  element={data.component}
-                  key={index}
-                  title={data?.title}
-                />
-              </Route>
-            ))}
           </>
         ) : (
           <Route element={<AuthLayout />}>

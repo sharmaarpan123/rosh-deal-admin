@@ -90,7 +90,7 @@ const LinkedSeller = () => {
             <Col lg="12">
               <div className="d-flex align-items-center gap-10">
                 <Link
-                  to="/system-access"
+                  to="/seller"
                   className="border d-flex align-items-center p-2 rounded"
                 >
                   <svg

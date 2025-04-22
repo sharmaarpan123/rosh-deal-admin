@@ -11,15 +11,15 @@ import Toggle from "../../../components/Common/Toggle";
 import dataHandler from "../../../hooks/dataHandler";
 import {
   AGENCY_SELLER_LIST,
-  UPDATE_SUB_ADMIN
+  UPDATE_SUB_ADMIN,
 } from "../../../services/ApiCalls";
 import {
   activeInactiveOptions,
-  ADMIN_ROLE_TYPE_ENUM
+  ADMIN_ROLE_TYPE_ENUM,
 } from "../../../utilities/const";
-import {
-  isSuperAdmin
-} from "../../../utilities/utilities";
+import { isSuperAdmin } from "../../../utilities/utilities";
+import { components } from "react-select";
+import TableActions from "../../../components/Common/TableActions";
 
 const roleLabelEnum = {
   subadmin: "Mediator",
@@ -60,35 +60,18 @@ const Sellers = () => {
     },
     { head: "Email", accessor: "email" },
     { head: "Phone Number", accessor: "phoneNumber" },
-    ...(admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)
-      ? [
-          {
-            head: "Status",
-            accessor: "status",
-            component: (item, ind, arr) => (
-              <Toggle
-                disabled={
-                  item?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN) || // abe super admin ko kon deactivate kar sakata be
-                  false
-                }
-                isChecked={item?.isActive}
-                onChange={({ target: { checked } }) => {
-                  statusChangeHandler(
-                    () =>
-                      UPDATE_SUB_ADMIN({
-                        isActive: checked,
-                        adminId: item?._id,
-                      }),
-                    ind,
-                    "isActive",
-                    checked
-                  );
-                }}
-              />
-            ),
-          },
-        ]
-      : []),
+    {
+      head: "Actions",
+      component: (item) => (
+        <TableActions
+          viewLink={"/seller/view/" + item?._id}
+          viewButtonText={"View Linked  Deals"}
+          ActionsButtons={[
+            { text: "Add Deal", link: "/seller/addDeal/" + item?._id },
+          ]}
+        />
+      ),
+    },
   ];
 
   return (

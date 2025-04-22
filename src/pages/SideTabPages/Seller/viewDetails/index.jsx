@@ -1,317 +1,162 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import moment from "moment";
+import React, { useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import PhoneInput from "react-phone-input-2";
-import { useSelector } from "react-redux";
-import Select from "react-select";
-import Toggle from "../../../../components/Common/Toggle";
+import copyIcon from "../../../../Assets/images/copyIcon.png";
+import share from "../../../../Assets/images/share.png";
+import CustomPagination from "../../../../components/Common/CustomPagination";
+import TableActions from "../../../../components/Common/TableActions";
 import TableLayout from "../../../../components/TableLayout";
+import dataHandler from "../../../../hooks/dataHandler";
 import {
-  ADD_SUB_ADMIN,
-  GET_ADMIN_BY_ID,
-  MODULES_LIST,
-  UPDATE_SUB_ADMIN,
+  MY_SELLER_DEALS_LIST_AS_AGENCY,
+  REMOVE_DEAL_FROM_SELLER,
 } from "../../../../services/ApiCalls";
+import { activeInactiveOptions } from "../../../../utilities/const";
 import {
-  ADMIN_ROLE_TYPE_ENUM,
-  adminRoleLabel,
-} from "../../../../utilities/const";
-import { catchAsync, checkResponse } from "../../../../utilities/utilities";
-import { getAdminSchema } from "./Schama";
-import UserNameInput from "./UserNameInput";
+  capitalizedFirstAlphaBet,
+  copyDealClipboard,
+} from "../../../../utilities/utilities";
+import Filter from "../../DealManagement/Components/Filters";
+import ConfirmationPop from "../../../../components/Modals/ConfirmationPop";
+import SellerDealFilter from "../Components/Filters";
 
-const ViewSeller
- = () => {
-  const { adminId } = useParams();
-  const [userDetails, setUserUserDetails] = useState();
-  const [permissions, setPermissions] = useState([]);
-  const [rolesArr, setRolesArr] = useState([
-    {
-      label: adminRoleLabel[ADMIN_ROLE_TYPE_ENUM.SUBADMIN],
-      value: ADMIN_ROLE_TYPE_ENUM.SUBADMIN,
-    },
-  ]);
-
-  const [loader, setLoader] = useState(false);
-
-  const schema = useMemo(() => getAdminSchema(adminId), [adminId]);
-  const [showPassWord, setShowPassword] = useState(false);
-  const navigate = useNavigate();
-  const { admin } = useSelector((s) => s.login);
-  const isSuperAdminAccessing = admin?.roles?.includes(
-    ADMIN_ROLE_TYPE_ENUM.SUPERADMIN
-  );
+const ViewSeller = () => {
+  const { sellerId } = useParams();
 
   const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-    watch,
-  } = useForm({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      isActive: true,
-      passwordToggle: false,
-    },
-    values: {
-      isActive: adminId ? userDetails?.isActive : true,
-      phoneNumber: userDetails?.phoneNumber
-        ? "91" + userDetails?.phoneNumber
-        : "",
-      email: userDetails?.email || "",
-      name: userDetails?.name || "",
-      passwordToggle: false,
-      userName: userDetails?.userName,
-      roles: userDetails?.roles?.length
-        ? userDetails?.roles?.map((item) => {
-            return {
-              label: adminRoleLabel[item],
-              value: item,
-            };
-          })
-        : [],
+    setBody,
+    body,
+    data,
+    loader,
+    paginationHandler,
+    searchHandler,
+    total,
+    statusChangeHandler,
+    setDeleteModel,
+    deleteModel,
+    deleteHandler,
+  } = dataHandler({
+    api: MY_SELLER_DEALS_LIST_AS_AGENCY,
+
+    dependencies: ["selectedPlatformFilter"],
+    extraBody: {
+      selectedPlatformFilter: [],
+      selectedBrandFilter: [],
+      sellerId,
     },
   });
-
-  const submitHandler = catchAsync(async (data) => {
-    setLoader(true);
-    const body = {
-      ...data,
-      ...(adminId && { adminId }),
-      phoneNumber: data.phoneNumber.replace("91", ""),
-      roles: data.roles?.map((i) => i.value),
-      permissions:
-        permissions?.map((item) => ({
-          ...item,
-          moduleId: item?.moduleId?._id,
-        })) || [],
-    };
-
-    delete body.passwordToggle;
-
-    const res = adminId
-      ? await UPDATE_SUB_ADMIN(body)
-      : await ADD_SUB_ADMIN(body);
-
-    const success = checkResponse({ res, showSuccess: true, setLoader });
-
-    if (success) {
-      navigate("/system-access");
-    }
-  }, setLoader);
-
-  const getData = catchAsync(async () => {
-    const apiArr = [];
-
-    if (isSuperAdminAccessing) {
-      apiArr.push(MODULES_LIST());
-    }
-
-    if (adminId) apiArr.push(GET_ADMIN_BY_ID(adminId));
-    const res = await Promise.all(apiArr);
-
-    isSuperAdminAccessing &&
-      checkResponse({
-        res: res[0],
-        setData: (data) => {
-          const AlreadyAddedModules =
-            res[1]?.data?.data?.permissions?.map(
-              (item) => item?.moduleId?._id
-            ) || [];
-
-          const permissionsArr = res[1]?.data?.data?.permissions || [];
-
-          data?.forEach((element) => {
-            if (!AlreadyAddedModules?.includes(element?._id)) {
-              permissionsArr.push({
-                moduleId: {
-                  _id: element?._id,
-                  name: element?.name,
-                  uniqueSlug: element?.uniqueSlug,
-                },
-                allowAccess: false,
-                canEdit: false,
-                canAdd: false,
-                canView: false,
-                canViewList: false,
-              });
-            }
-          });
-
-          setPermissions((p) => permissionsArr);
-        },
-      });
-
-    adminId &&
-      checkResponse({
-        res: isSuperAdminAccessing ? res[1] : res[0],
-        setData: setUserUserDetails,
-      });
-  });
-
-  useEffect(() => {
-    getData();
-  }, [adminId]);
-
-  console.log(
-    // admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN) &&
-    watch("roles"),
-    "admin"
-  );
-
-  const accessChangeHandler = ({ ind, key, isChecked }) => {
-    setPermissions((p) => {
-      const newArr = [...p];
-      newArr[ind][key] = isChecked;
-      return newArr;
-    });
-  };
-
-  const selectDeSelectAllPermissions = (type) => {
-    setPermissions((p) => {
-      let isChecked;
-
-      if (type === "selectAll") {
-        isChecked = true;
-      } else {
-        isChecked = false;
-      }
-      const newArr = p?.map((item) => ({
-        ...item,
-        allowAccess: isChecked,
-        canEdit: isChecked,
-        canAdd: isChecked,
-        canView: isChecked,
-        canViewList: isChecked,
-      }));
-
-      return newArr;
-    });
-  };
 
   const column = [
     {
-      head: "Name",
-      accessor: "Name",
+      head: "#",
+      accessor: "#",
+      component: (item, key) => {
+        return <>{body.limit * (body.page - 1) + key + 1}</>;
+      },
+    },
+
+    {
+      head: "Date || Time ",
+      accessor: "createdAt",
       component: (item, key, arr) => (
-        <p className="m-0 fw-sbold">{item?.moduleId?.name}</p>
+        <>{moment(item.createdAt).format("DD-MM-YYYY  hh:mm:ss A")}</>
       ),
     },
     {
-      head: "Allow Access",
-      accessor: "",
-      component: (item, ind, arr) => (
-        <Toggle
-          isChecked={item?.allowAccess}
-          onChange={({ target: { checked } }) => {
-            accessChangeHandler({
-              ind,
-              key: "allowAccess",
-              isChecked: checked,
-            });
-          }}
-        />
+      head: "Name",
+      accessor: "productName",
+      component: (item, key, arr) => (
+        <div style={{ display: "flex", alignItems: "center", minWidth: 200 }}>
+          <p className="m-0 themeBlue fw-sbold">
+            {capitalizedFirstAlphaBet(item.productName)}
+          </p>
+          <button
+            className="share-button"
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              marginLeft: "5px",
+            }}
+            onClick={() => handleShare(item?._id)}
+          >
+            <img src={share} alt="Share" style={{ width: 15, height: 15 }} />
+          </button>
+          <button
+            className="share-button"
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => copyDealClipboard(item?._id)}
+          >
+            <img src={copyIcon} alt="Share" style={{ width: 15, height: 15 }} />
+          </button>
+        </div>
+      ),
+    },
+
+    {
+      head: "Brand",
+      accessor: "brand",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(item?.brand?.name)}
+        </p>
       ),
     },
     {
-      head: "Can Edit",
-      accessor: "",
-      component: (item, ind, arr) => (
-        <Toggle
-          isChecked={item?.canEdit}
-          onChange={({ target: { checked } }) => {
-            accessChangeHandler({
-              ind,
-              key: "canEdit",
-              isChecked: checked,
-            });
-          }}
-        />
+      head: "Platform",
+      accessor: "platForm",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(item?.platForm?.name)}
+        </p>
       ),
     },
     {
-      head: "Can Add",
-      accessor: "",
-      component: (item, ind, arr) => (
-        <Toggle
-          isChecked={item?.canAdd}
-          onChange={({ target: { checked } }) => {
-            accessChangeHandler({
-              ind,
-              key: "canAdd",
-              isChecked: checked,
-            });
-          }}
-        />
+      head: "Deal Type",
+      accessor: "dealCategory",
+      component: (item, key, arr) => (
+        <p className="m-0 themeBlue fw-sbold">
+          {capitalizedFirstAlphaBet(item?.dealCategory?.name)}
+        </p>
       ),
     },
     {
-      head: "Can View",
-      accessor: "",
-      component: (item, ind, arr) => (
-        <Toggle
-          isChecked={item?.canView}
-          onChange={({ target: { checked } }) => {
-            accessChangeHandler({
-              ind,
-              key: "canView",
-              isChecked: checked,
-            });
-          }}
-        />
-      ),
+      head: "Price",
+      accessor: "actualPrice",
     },
+
     {
-      head: "Can View List",
-      accessor: "",
-      component: (item, ind, arr) => (
-        <Toggle
-          isChecked={item?.canViewList}
-          onChange={({ target: { checked } }) => {
-            accessChangeHandler({
-              ind,
-              key: "canViewList",
-              isChecked: checked,
-            });
-          }}
+      head: "Action",
+      accessor: "Action",
+      component: (item) => (
+        <TableActions
+          setDeleteModel={() =>
+            setDeleteModel((p) => ({ show: true, dumpId: item?._id }))
+          }
         />
       ),
     },
   ];
 
-  useEffect(() => {
-    if (!admin) {
-      return;
-    }
-
-    const arrToUpdateRoles = [];
-
-    const superSubAdminObj = {
-      label: adminRoleLabel[ADMIN_ROLE_TYPE_ENUM.SUPERSUBADMIN],
-      value: ADMIN_ROLE_TYPE_ENUM.SUPERSUBADMIN,
-    };
-    const adminObj = {
-      label: adminRoleLabel[ADMIN_ROLE_TYPE_ENUM.ADMIN],
-      value: ADMIN_ROLE_TYPE_ENUM.ADMIN,
-    };
-
-    if (admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN)) {
-      // arrToUpdateRoles.push(superSubAdminObj);
-      arrToUpdateRoles.push(adminObj);
-      return setRolesArr((p) => [...p, ...arrToUpdateRoles]);
-    }
-    if (admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERSUBADMIN)) {
-      arrToUpdateRoles.push(adminObj);
-      return setRolesArr((p) => [...p, ...arrToUpdateRoles]);
-    }
-  }, [admin]);
-
   return (
     <>
+      <ConfirmationPop
+        type={"delete"}
+        confirmHandler={() => {
+          deleteHandler(() =>
+            REMOVE_DEAL_FROM_SELLER({ dealId: deleteModel.dumpId, sellerId })
+          );
+        }}
+        confirmation={deleteModel.show}
+        setConfirmation={(value) =>
+          setDeleteModel((p) => ({ show: false, dumpId: "" }))
+        }
+      />
       <section className="editUser position-relative py-3">
         <Container>
           <Row>
@@ -338,254 +183,27 @@ const ViewSeller
                 </Link>
               </div>
             </Col>
+
             <Col lg="12" className="my-2">
-              <div
-                className="formWrpper px-lg-5 p-md-4 p-3 rounded"
-                style={{ background: "#EEEEEE" }}
-              >
-                <Form onSubmit={handleSubmit(submitHandler)}>
-                  <Row className="justify-content-between">
-                    <Col lg="5" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Enter Full Name"
-                          className="form-control"
-                          {...register("name")}
-                        />
-                        {errors?.name && (
-                          <p className="text-danger m-0">
-                            {errors?.name?.message}
-                          </p>
-                        )}
-                      </div>
-                      <UserNameInput
-                        errors={errors}
-                        register={register}
-                        watch={watch}
-                      />
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Email
-                        </label>
-                        <input
-                          type="email"
-                          placeholder="Enter Email Address"
-                          className="form-control"
-                          {...register("email")}
-                        />
-
-                        {errors?.email && (
-                          <p className="text-danger m-0">
-                            {errors?.email?.message}
-                          </p>
-                        )}
-                      </div>
-                      {adminId && (
-                        <div className="py-2">
-                          <label
-                            htmlFor=""
-                            className="form-label fw-sbold text-muted ps-2 m-0"
-                          >
-                            Change Password
-                          </label>
-                          <div className="iconWithText position-relative">
-                            <Toggle
-                              isChecked={watch("passwordToggle")}
-                              onChange={(e) =>
-                                setValue("passwordToggle", e.target.checked)
-                              }
-                            />
-                          </div>
-                        </div>
-                      )}
-                      {(!adminId || watch("passwordToggle")) && (
-                        <div className="py-2">
-                          <label
-                            htmlFor=""
-                            className="form-label fw-sbold text-muted ps-2 m-0"
-                          >
-                            Password
-                          </label>
-                          <div className="iconWithText position-relative">
-                            <input
-                              type={!showPassWord && "password"}
-                              placeholder="Enter Password"
-                              className="form-control pe-5"
-                              {...register("password")}
-                            />
-                            {errors?.password && (
-                              <p className="text-danger m-0">
-                                {errors?.password?.message}
-                              </p>
-                            )}
-                            <Button
-                              variant="transparent"
-                              style={{ right: 10 }}
-                              onClick={() => setShowPassword((p) => !p)}
-                              className="border-0 p-0 position-absolute icn"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="15"
-                                height="11"
-                                viewBox="0 0 15 11"
-                                fill="none"
-                              >
-                                <path
-                                  d="M9.23727 5.82515C9.23727 6.197 9.127 6.5605 8.92041 6.86968C8.71382 7.17886 8.42019 7.41984 8.07664 7.56214C7.7331 7.70444 7.35507 7.74167 6.99037 7.66913C6.62566 7.59658 6.29066 7.41752 6.02772 7.15458C5.76478 6.89164 5.58572 6.55664 5.51318 6.19194C5.44063 5.82723 5.47786 5.4492 5.62016 5.10566C5.76247 4.76211 6.00344 4.46848 6.31263 4.26189C6.62181 4.0553 6.98531 3.94504 7.35716 3.94504C7.85579 3.94504 8.33401 4.14312 8.68659 4.49571C9.03918 4.8483 9.23727 5.32651 9.23727 5.82515ZM14.1694 6.1385C14.0566 6.32651 11.437 10.8388 7.35716 10.8388C3.27732 10.8388 0.657706 6.32651 0.5449 6.1385C0.489895 6.04323 0.460938 5.93515 0.460938 5.82515C0.460937 5.71514 0.489895 5.60706 0.5449 5.51179C0.657706 5.32378 3.27732 0.811523 7.35716 0.811523C11.437 0.811523 14.0566 5.32378 14.1694 5.51179C14.2244 5.60706 14.2534 5.71514 14.2534 5.82515C14.2534 5.93515 14.2244 6.04323 14.1694 6.1385ZM10.4907 5.82515C10.4907 5.20539 10.3069 4.59956 9.96258 4.08426C9.61826 3.56895 9.12888 3.16732 8.5563 2.93016C7.98373 2.69299 7.35368 2.63093 6.74584 2.75184C6.138 2.87275 5.57966 3.17119 5.14143 3.60942C4.7032 4.04765 4.40476 4.60598 4.28385 5.21383C4.16295 5.82167 4.225 6.45171 4.46217 7.02429C4.69934 7.59686 5.10097 8.08625 5.61627 8.43057C6.13157 8.77488 6.73741 8.95866 7.35716 8.95866C8.18822 8.95866 8.98524 8.62852 9.57289 8.04087C10.1605 7.45323 10.4907 6.6562 10.4907 5.82515Z"
-                                  fill="#B1B1B1"
-                                />
-                              </svg>
-                            </Button>
-                          </div>
-                        </div>
-                      )}
-                    </Col>
-
-                    <Col lg="5" md="6" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Phone Number
-                        </label>
-                        <Controller
-                          control={control}
-                          name="phoneNumber"
-                          render={({ field }) => {
-                            return (
-                              <PhoneInput
-                                {...field}
-                                country={"in"}
-                                countryCodeEditable={false}
-                                disableDropdown={true}
-                                onChange={(value, { dialCode }) => {
-                                  field.onChange(value);
-                                }}
-                              />
-                            );
-                          }}
-                        />{" "}
-                        {errors.countryCode ? (
-                          <p className="text-danger m-0">
-                            {errors?.countryCode?.message}
-                          </p>
-                        ) : (
-                          errors?.phoneNumber && (
-                            <p className="text-danger m-0">
-                              {errors?.phoneNumber?.message}
-                            </p>
-                          )
-                        )}
-                      </div>
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Roles
-                        </label>
-                        <div className="iconWithText position-relative">
-                          <Controller
-                            name="roles"
-                            control={control}
-                            render={({ field }) => {
-                              return (
-                                <Select
-                                  className="select text-muted"
-                                  aria-label="Default select example"
-                                  isMulti
-                                  {...field}
-                                  placeholder="Select Role"
-                                  options={rolesArr}
-                                />
-                              );
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Status
-                        </label>
-                        <div className="iconWithText position-relative">
-                          <Toggle
-                            disabled={!adminId}
-                            isChecked={watch("isActive")}
-                            onChange={(e) =>
-                              setValue("isActive", e.target.checked)
-                            }
-                          />
-                        </div>
-                      </div>
-                    </Col>
-
-                    {admin?.roles?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERADMIN) &&
-                      watch("roles")
-                        ?.map((item) => item.value)
-                        ?.includes(ADMIN_ROLE_TYPE_ENUM.SUPERSUBADMIN) && (
-                        <>
-                          <Col
-                            className="d-flex justify-content-end gap-10"
-                            lg="12"
-                          >
-                            <Button
-                              onClick={() =>
-                                selectDeSelectAllPermissions("selectAll")
-                              }
-                            >
-                              Select All
-                            </Button>
-
-                            <Button
-                              onClick={() =>
-                                selectDeSelectAllPermissions("deSelectAll")
-                              }
-                            >
-                              DeSelect All
-                            </Button>
-                          </Col>
-                          <Col lg="12" className="my-2">
-                            <TableLayout data={permissions} column={column} />
-                          </Col>
-                        </>
-                      )}
-
-                    <Col lg="12" className="my-2">
-                      <div className="d-flex align-items-center justify-content-center gap-10">
-                        <Button
-                          onClick={() => navigate(-1)}
-                          className="d-flex align-items-center justify-content-center commonBtn GreyBtn"
-                          type="button"
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          className="d-flex align-items-center justify-content-center commonBtn "
-                          type="submit"
-                          disabled={loader}
-                        >
-                          {loader ? "Loading..." : "Submit"}
-                        </Button>
-                      </div>
-                    </Col>
-                  </Row>
-                </Form>
+              <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
+                <div className="left">
+                  <SellerDealFilter
+                    body={body}
+                    setBody={setBody}
+                    searchHandler={searchHandler}
+                  />
+                </div>
               </div>
+            </Col>
+
+            <Col lg="12" className="my-2">
+              <TableLayout column={column} data={data} loader={loader} />
+              <CustomPagination
+                body={body}
+                pageChangeHandler={paginationHandler}
+                setBody={setBody}
+                total={total}
+              />
             </Col>
           </Row>
         </Container>

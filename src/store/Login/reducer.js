@@ -7,6 +7,7 @@ const intialState = {
   loading: false,
   meQueryLoading: false,
   admin: null,
+  isSeller: localStorage.getItem("isSeller") === "true",
   token: (localStorage && localStorage.getItem("token")) || null,
   _id: (localStorage && localStorage.getItem("_id")) || null,
   profileImage: (localStorage && localStorage.getItem("profileImage")) || null,
@@ -24,8 +25,9 @@ const LoginReducer = (state = intialState, { type, payload }) => {
         ...state,
         isLogin: true,
         loading: false,
+        isSeller: payload?.userType === "seller",
         token: payload.token,
-        admin: payload,
+        admin: payload?.user,
         _id: payload?.data?._id,
         profileImage: payload?.data?.profileImage,
       };
@@ -57,9 +59,27 @@ const LoginReducer = (state = intialState, { type, payload }) => {
         ...state,
         meQueryLoading: false,
         admin: payload,
-        
       };
     case CONST.GET_ADMIN_DETAILS_FAIL:
+      return {
+        ...state,
+        meQueryLoading: false,
+        admin: null,
+        error: payload,
+      };
+
+    case CONST.GET_SELLER_DETAILS:
+      return {
+        ...state,
+        meQueryLoading: true,
+      };
+    case CONST.GET_SELLER_DETAILS_SUCCESS:
+      return {
+        ...state,
+        meQueryLoading: false,
+        admin: payload,
+      };
+    case CONST.GET_SELLER_DETAILS_FAIL:
       return {
         ...state,
         meQueryLoading: false,

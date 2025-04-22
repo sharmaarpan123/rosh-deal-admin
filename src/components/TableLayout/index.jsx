@@ -15,6 +15,9 @@ const TableLayout = ({ column, data, loader }) => {
     }
   }); // this is to avoid duplicated _id id on development mode , if_id is already showing in the table
 
+
+  console.log(column , "Column" , data)
+
   return (
     <>
       <div className="table-responsive">

@@ -2,7 +2,8 @@ import * as CONST from "./actionTypes";
 
 export const loginAdmin = (payload, callBack) => {
   return {
-    type: payload?.userType === "agency" ? CONST.LOGIN_ADMIN : CONST.LOGIN_SELLER,
+    type:
+      payload?.userType === "agency" ? CONST.LOGIN_ADMIN : CONST.LOGIN_SELLER,
     payload,
     callBack,
   };
@@ -43,5 +44,23 @@ export const logoutAdmin = (payload) => ({
 
 export const profileImageChange = (payload) => ({
   type: CONST.CHANGE_PROFILE_IMAGE,
+  payload,
+});
+
+export const getSellerDetails = (payload, callBack) => {
+  return {
+    type: CONST.GET_SELLER_DETAILS,
+    payload,
+    callBack,
+  };
+};
+
+export const getSellerDetails_Success = (payload) => ({
+  type: CONST.GET_SELLER_DETAILS_SUCCESS,
+  payload,
+});
+
+export const getSellerDetails_Fail = (payload) => ({
+  type: CONST.GET_SELLER_DETAILS_FAIL,
   payload,
 });

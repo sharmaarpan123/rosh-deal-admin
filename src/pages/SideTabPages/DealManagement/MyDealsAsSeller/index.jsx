@@ -1,26 +1,24 @@
-import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import TableLayout from "../../../../components/TableLayout";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import copyIcon from "../../../../Assets/images/copyIcon.png";
 import share from "../../../../Assets/images/share.png";
-import CustomPagination from "../../../../components/Common/CustomPagination";
 import TableActions from "../../../../components/Common/TableActions";
-import Toggle from "../../../../components/Common/Toggle";
+import TableLayout from "../../../../components/TableLayout";
 import dataHandler from "../../../../hooks/dataHandler";
-import { DEAL_UPDATE_STATUS, DEALS_LIST, MY_SELLER_DEALS_LIST } from "../../../../services/ApiCalls";
+import {
+  MY_SELLER_DEALS_LIST
+} from "../../../../services/ApiCalls";
 import { activeInactiveOptions } from "../../../../utilities/const";
 import {
   capitalizedFirstAlphaBet,
   copyDealClipboard,
   handleShare,
 } from "../../../../utilities/utilities";
-import Filter from "../Components/Filters";
-import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import DealsAsSellerFilter from "./Components/Filters";
 
-const DealManagement = () => {
+const MyDealsAsSeller = () => {
   const {
     setBody,
     body,
@@ -90,15 +88,7 @@ const DealManagement = () => {
         </div>
       ),
     },
-    {
-      head: "Brand",
-      accessor: "brand",
-      component: (item, key, arr) => (
-        <p className="m-0 themeBlue fw-sbold">
-          {capitalizedFirstAlphaBet(item?.brand?.name)}
-        </p>
-      ),
-    },
+
     {
       head: "Platform",
       accessor: "platForm",
@@ -122,24 +112,6 @@ const DealManagement = () => {
       accessor: "actualPrice",
     },
     {
-      head: "Less",
-      accessor: "lessAmount",
-      component: (item) => (
-        <>{item?.isCommissionDeal ? "-" : item?.lessAmount}</>
-      ),
-    },
-    {
-      head: "Commission",
-      accessor: "commissionValue",
-      component: (item) => (
-        <>{item?.isCommissionDeal ? item.commissionValue : "-"}</>
-      ),
-    },
-    {
-      head: "Platform Fee",
-      accessor: "adminCommission",
-    },
-    {
       head: "Slot",
       accessor: "isSlotCompleted",
       component: (item) => (
@@ -161,21 +133,16 @@ const DealManagement = () => {
       head: "Status",
       accessor: "",
       component: (item, index) => (
-        <Toggle
-          isChecked={item?.isActive}
-          onChange={(e) =>
-            statusChangeHandler(
-              () =>
-                DEAL_UPDATE_STATUS({
-                  dealId: item._id,
-                  status: e.target.checked,
-                }),
-              index,
-              "isActive",
-              !item.isActive
-            )
-          }
-        />
+        <p
+          className={`mb-0 ${
+            !item.isActive ? "bg-danger text-white" : "bg-success text-white"
+          } d-flex justify-content-start pb-0 rounded px-2 `}
+          style={{
+            width: "fit-content",
+          }}
+        >
+          {item.isActive ? "Active" : "InActive"}
+        </p>
       ),
     },
     {
@@ -183,9 +150,7 @@ const DealManagement = () => {
       accessor: "Action",
       component: (item) => (
         <div className="d-flex gap-2">
-          <TableActions
-            viewLink={`/seller/deal/details/${item._id}`}
-          />
+          <TableActions viewLink={`/seller/deal/details/${item._id}`} />
           <Button
             variant="primary"
             size="sm"
@@ -204,7 +169,7 @@ const DealManagement = () => {
         <Col lg="12" className="px-0">
           <div className="tableFilter d-flex flex-column gap-10 mb-1">
             <div className="">
-              <Filter
+              <DealsAsSellerFilter
                 body={body}
                 searchHandler={searchHandler}
                 setBody={setBody}
@@ -215,7 +180,7 @@ const DealManagement = () => {
             </div>
           </div>
           <TableLayout
-            columns={column}
+            column={column}
             data={data}
             loader={loader}
             paginationHandler={paginationHandler}
@@ -228,4 +193,4 @@ const DealManagement = () => {
   );
 };
 
-export default DealManagement; 
+export default MyDealsAsSeller;

@@ -5,7 +5,11 @@ import CustomPagination from "../../../../components/Common/CustomPagination";
 import ImagePopUp from "../../../../components/Modals/ImagePopUp";
 import SetReasonModel from "../../../../components/Modals/SetReasonModel";
 import dataHandler from "../../../../hooks/dataHandler";
-import { ACCEPT_REJECT_ORDER, ORDER_LIST } from "../../../../services/ApiCalls";
+import {
+  ACCEPT_REJECT_ORDER,
+  ORDER_LIST,
+  SELLER_ORDER_LIST,
+} from "../../../../services/ApiCalls";
 import {
   DealByBrandIdApiAccessingAsEnum,
   defaultDeleteModelState,
@@ -13,7 +17,7 @@ import {
 } from "../../../../utilities/const";
 import BulkPaymentStatusChange from "../BulkPaymentStatusChange";
 import Filter from "../Filter/Filter";
-import { getColumn } from "../MyOrderAsAgency/column";
+import { getColumn } from "./column";
 import ExportExcel from "../exportExcel/ExportExcel";
 import { useParams } from "react-router-dom";
 
@@ -32,10 +36,10 @@ const MyOrderAsSeller = () => {
     refetch,
     statusChangeHandler,
   } = dataHandler({
-    api: ORDER_LIST,
+    api: SELLER_ORDER_LIST,
     extraBody: {
       brandId: "",
-      dealId: dealId ? [dealId] : [],
+      dealId: dealId,
       orderFormStatus: "",
       selectedPlatformFilter: [],
     },
@@ -45,7 +49,7 @@ const MyOrderAsSeller = () => {
       "orderFormStatus",
       "selectedPlatformFilter",
       "startDate",
-      "endDate"
+      "endDate",
     ],
   });
 
@@ -112,51 +116,51 @@ const MyOrderAsSeller = () => {
           )
         }
       />
-      <section className="systemAcess py-3 position-relative">
-        <Container>
-          <Row>
-            <Col lg="12" className="my-2">
-              <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
-                <div className="left">
-                  <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
-                    <Filter
-                      statusFilterOptionArr={OrderFromStatusOptionArr}
+      <section className="systemAcess py-3 position-relative px-4">
+        <Row>
+          <Col lg="12" className="my-2">
+            <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
+              <div className="left">
+                <ul className="list-unstyled ps-0 mb-0 d-flex align-items-center gap-10 flex-wrap">
+                  <Filter
+                    statusFilterOptionArr={OrderFromStatusOptionArr}
+                    body={body}
+                    setBody={setBody}
+                    dealByBrandIdApiAccessingAs={
+                      DealByBrandIdApiAccessingAsEnum.dealsAsAgency
+                    }
+                    showDealsFilter={false}
+                    showBrandFilter={false}
+                  />
+                </ul>
+              </div>
+              <div className="right">
+                <div className="d-flex gap-10">
+                  {!!data?.length && (
+                    <ExportExcel
                       body={body}
-                      setBody={setBody}
-                      dealByBrandIdApiAccessingAs={
-                        DealByBrandIdApiAccessingAsEnum.dealsAsAgency
-                      }
+                      api={SELLER_ORDER_LIST}
+                      exportedKeys={exportedKeys}
+                      showTheSelectBrandValidation={false}
                     />
-                  </ul>
-                </div>
-                <div className="right">
-                  <div className="d-flex gap-10">
-                    {!!data?.length && (
-                      <ExportExcel
-                        body={body}
-                        api={ORDER_LIST}
-                        exportedKeys={exportedKeys}
-                      />
-                    )}
-                    <BulkPaymentStatusChange refetch={refetch} />
-                  </div>
+                  )}
                 </div>
               </div>
-            </Col>
-            <Col lg="12" className="my-2">
-              <TableLayout column={column} data={data} loader={loader} />
-              <CustomPagination
-                body={body}
-                pageChangeHandler={paginationHandler}
-                setBody={setBody}
-                total={total}
-              />
-            </Col>
-          </Row>
-        </Container>
+            </div>
+          </Col>
+          <Col lg="12" className="my-2">
+            <TableLayout column={column} data={data} loader={loader} />
+            <CustomPagination
+              body={body}
+              pageChangeHandler={paginationHandler}
+              setBody={setBody}
+              total={total}
+            />
+          </Col>
+        </Row>
       </section>
     </>
   );
 };
 
-export default MyOrderAsSeller; 
+export default MyOrderAsSeller;
