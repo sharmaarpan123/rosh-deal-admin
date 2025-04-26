@@ -23,6 +23,7 @@ const getSchema = (editMode) =>
       email: z
         .string()
         .min(1, { message: "Email is required" })
+        .trim()
         .email("Invalid email address"),
       password: z.string().optional(),
       phoneNumber: z.string().min(1, { message: "Phone number is required" }),

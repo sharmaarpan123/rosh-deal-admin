@@ -23,6 +23,7 @@ const getSellerSchema = () =>
     email: z
       .string()
       .min(1, { message: "Email is required" })
+      .trim()
       .email("Invalid email address"),
     password: z.string().optional(),
     phoneNumber: z

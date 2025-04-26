@@ -65,10 +65,12 @@ export default {
   ALL_DEALS: "/admin/deal/all/allDeals",
   My_DEAL_AS_MED: "subAdmin/myDealsAsMed/getWithFilters",
 
-  // orders
-
-  ORDER_LIST: "/admin/orders/all", // as agency
+  // seller
   SELLER_ORDER_LIST: "/seller/orders",
+  SELLER_AGENCIES_LIST : "/seller/agenciesList", 
+
+  // orders // 
+  ORDER_LIST: "/admin/orders/all", // as agency
   ORDER_LIST_OF_MED_AS_AGENCY: "/admin/ordersOfMedAsAgency/all",
   MY_ORDER_LIST_MED: "/admin/ordersOfMedAsMed/all",
   ACCEPT_REJECT_ORDER: "admin/order/acceptRejectOrder",
@@ -102,6 +104,7 @@ export default {
   ADD_SELLER: "/admin/seller/add",
   UPDATE_SELLER: "/admin/add/subAdmin",
   LINKED_SELLER_TO_ADMIN: "/admin/seller/link",
+
 
   //  subAdmin
 

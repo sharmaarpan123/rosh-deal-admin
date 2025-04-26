@@ -7,9 +7,7 @@ import share from "../../../../Assets/images/share.png";
 import TableActions from "../../../../components/Common/TableActions";
 import TableLayout from "../../../../components/TableLayout";
 import dataHandler from "../../../../hooks/dataHandler";
-import {
-  MY_SELLER_DEALS_LIST
-} from "../../../../services/ApiCalls";
+import { MY_SELLER_DEALS_LIST } from "../../../../services/ApiCalls";
 import { activeInactiveOptions } from "../../../../utilities/const";
 import {
   capitalizedFirstAlphaBet,
@@ -30,10 +28,11 @@ const MyDealsAsSeller = () => {
     statusChangeHandler,
   } = dataHandler({
     api: MY_SELLER_DEALS_LIST,
-    dependencies: ["selectedPlatformFilter", "selectedBrandFilter"],
+    dependencies: ["selectedPlatformFilter", "selectedBrandFilter", "agencyId"],
     extraBody: {
       selectedPlatformFilter: [],
       selectedBrandFilter: [],
+      agencyId: "",
     },
   });
 
@@ -62,29 +61,6 @@ const MyDealsAsSeller = () => {
           <p className="m-0 themeBlue fw-sbold">
             {capitalizedFirstAlphaBet(item.productName)}
           </p>
-          <button
-            className="share-button"
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              marginLeft: "5px",
-            }}
-            onClick={() => handleShare(item?._id)}
-          >
-            <img src={share} alt="Share" style={{ width: 15, height: 15 }} />
-          </button>
-          <button
-            className="share-button"
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-            }}
-            onClick={() => copyDealClipboard(item?._id)}
-          >
-            <img src={copyIcon} alt="Share" style={{ width: 15, height: 15 }} />
-          </button>
         </div>
       ),
     },
@@ -144,6 +120,10 @@ const MyDealsAsSeller = () => {
           {item.isActive ? "Active" : "InActive"}
         </p>
       ),
+    },
+    {
+      head: "Total Orders",
+      accessor: "slotCompletedCount",
     },
     {
       head: "Action",

@@ -8,7 +8,8 @@ export const ME_QUERY = (data) => Axios.post(API_URL.ME_QUERY, data);
 export const SELLER_ME_QUERY = (data) =>
   Axios.post(API_URL.SELLER_ME_QUERY, data);
 export const LOG_OUT = (data) => Axios.post(API_URL.LOG_OUT, data);
-export const LOG_OUT_AS_SELLER = (data) => Axios.post(API_URL.LOG_OUT_AS_SELLER, data);
+export const LOG_OUT_AS_SELLER = (data) =>
+  Axios.post(API_URL.LOG_OUT_AS_SELLER, data);
 export const FORGET_PASSWORD_ADMIN = (data) =>
   Axios.post(API_URL.FORGET_PASSWORD_ADMIN, data);
 export const RESET_PASSWORD = (data) =>
@@ -148,6 +149,9 @@ export const LINKED_SELLER_TO_ADMIN = (data) =>
 export const SELLER_LIST = (data) => Axios.post(API_URL.SELLER_LIST, data);
 export const AGENCY_SELLER_LIST = (data) =>
   Axios.post(API_URL.AGENCY_SELLER_LIST, data);
+
+export const SELLER_AGENCIES_LIST = (data) =>
+  Axios.post(API_URL.SELLER_AGENCIES_LIST, data);
 
 // SUB_ADMINS
 

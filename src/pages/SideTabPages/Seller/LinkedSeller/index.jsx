@@ -21,6 +21,7 @@ export const getSchema = () =>
     email: z
       .string()
       .min(1, { message: "Email is required" })
+      .trim()
       .email("Invalid email address"),
   });
 
@@ -162,6 +163,8 @@ const LinkedSeller = () => {
                             onChange={(value) => {
                               setSelectedDealOption(value);
                             }}
+                            cacheOptions // ✅ important to avoid clearing options unnecessarily
+                            defaultOptions // ✅ shows some results initially or from cache
                             loadOptions={loadDealOptions}
                             value={selectedDealOption}
                             isMulti
