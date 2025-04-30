@@ -147,6 +147,11 @@ export const adminItems = [
     icon: CommonNavIcon,
   },
   {
+    path: "/poster",
+    name: "Banners",
+    icon: CommonNavIcon,
+  },
+  {
     path: "/system-access",
     name: "Mediators",
     icon: CommonNavIcon,
@@ -253,6 +258,11 @@ export const adminSubAdminItems = [
   {
     path: "/notification-management",
     name: "Notification Management",
+    icon: CommonNavIcon,
+  },
+  {
+    path: "/poster",
+    name: "Banners",
     icon: CommonNavIcon,
   },
   {

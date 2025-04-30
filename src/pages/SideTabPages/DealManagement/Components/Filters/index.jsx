@@ -6,7 +6,7 @@ import AsyncSelect from "react-select/async";
 import ReactSelectNoOptionMessage from "../../../../../components/Common/ReactSelectNoOptionMessage";
 import SearchFilter from "../../../../../components/Common/SearchFilter";
 import StatusFilter from "../../../../../components/Common/StatusFilter";
-import { BRAND_LIST } from "../../../../../services/ApiCalls";
+import { BRAND_LIST, SUB_ADMIN_LIST } from "../../../../../services/ApiCalls";
 import { slotCompletedStatusOptions } from "../../../../../utilities/const";
 import styles from "../Filters/DealFilter.module.scss";
 import { Link, useLocation } from "react-router-dom";
@@ -17,11 +17,16 @@ const Filter = ({
   body,
   searchHandler,
   showBrandFilter = true,
+  showMediatorFilter = false,
 }) => {
   const platforms = useSelector((s) => s?.platform?.data);
   const [selectedBrandOptions, setSelectedBrandOptions] = useState([]);
   const [platformsOptions, setPlatFormsOptions] = useState([]);
   const location = useLocation();
+  const [selectedMediator, setSelectedMediator] = useState({
+    label: "",
+    value: "",
+  });
 
   const addLinkButtons = location.pathname === "/myDealsAsAgency";
 
@@ -39,6 +44,7 @@ const Filter = ({
       selectedPlatformFilter: [],
     }));
     setSelectedBrandOptions([]);
+    setSelectedMediator({ label: "", value: "" });
   };
 
   const loadOptions = async (inputValue, callback) => {
@@ -70,6 +76,31 @@ const Filter = ({
     }
   };
 
+  const loadMediatorsOptions = async (inputValue, callback) => {
+    const response = await SUB_ADMIN_LIST({ search: inputValue });
+    if (response) {
+      const options = response?.data?.data?.map((item) => ({
+        value: item._id,
+        label: item.name,
+      }));
+      callback(options);
+      if (!!!options.length) {
+        setBody((p) => ({
+          ...p,
+          mediatorId: "",
+        }));
+        setSelectedMediator({ label: "", value: "" });
+      }
+    } else {
+      callback([]);
+      setBody((p) => ({
+        ...p,
+        mediatorId: "",
+      }));
+      setSelectedMediator({});
+    }
+  };
+
   const handleChange = (option) => {
     setSelectedBrandOptions(option);
     setBody((p) => ({
@@ -84,6 +115,14 @@ const Filter = ({
 
     setPlatFormsOptions(options);
   }, [platforms]);
+
+  const handleMediatorChange = (option) => {
+    setSelectedMediator(option);
+    setBody((p) => ({
+      ...p,
+      mediatorId: option?.value,
+    }));
+  };
 
   return (
     <div>
@@ -197,6 +236,36 @@ const Filter = ({
                   />
                 ),
               }}
+            />
+          </li>
+        )}
+
+        {showMediatorFilter && (
+          <li className="d-flex flex-column align-items-center ">
+            <label
+              htmlFor=""
+              className="form-label m-0 fw-sbold text-muted"
+              style={{ whiteSpace: "nowrap" }}
+            >
+              Mediator
+            </label>
+            <AsyncSelect
+              components={{
+                DropdownIndicator: () => null,
+                IndicatorSeparator: () => null,
+                NoOptionsMessage: (props) => (
+                  <ReactSelectNoOptionMessage
+                    message="search your Mediator name"
+                    {...props}
+                  />
+                ),
+              }}
+              placeholder="Search Mediator"
+              loadOptions={loadMediatorsOptions}
+              onChange={handleMediatorChange}
+              value={selectedMediator}
+              className={`${styles.select}`}
+              isClearable
             />
           </li>
         )}

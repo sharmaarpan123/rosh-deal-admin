@@ -13,6 +13,7 @@ import {
   errorToast,
 } from "../../../../utilities/utilities";
 import styles from "./AddDealToSeller.module.scss";
+import { useToast } from "react-toastify";
 
 const AddDealToSeller = () => {
   const { sellerId } = useParams();
@@ -67,10 +68,7 @@ const AddDealToSeller = () => {
         <Row className="justify-content-center">
           <Col lg={8} md={10}>
             <div className={styles.pageHeader}>
-              <Link
-                to="/seller"
-                className={styles.backButton}
-              >
+              <Link to="/seller" className={styles.backButton}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -90,16 +88,11 @@ const AddDealToSeller = () => {
             </div>
 
             <div className={styles.formWrapper}>
-              <h4 className={styles.title}>
-                Add Deals to Seller
-              </h4>
+              <h4 className={styles.title}>Add Deals to Seller</h4>
 
               <Form onSubmit={submitHandler}>
                 <div className={styles.formGroup}>
-                  <label
-                    htmlFor="deals"
-                    className={styles.label}
-                  >
+                  <label htmlFor="deals" className={styles.label}>
                     Select Deals
                   </label>
                   <div className={styles.selectWrapper}>

@@ -28,7 +28,11 @@ const MyMedDealsAsAgency = () => {
     total,
   } = dataHandler({
     api: MY_MED_DEALS_AS_AGENCY,
-    dependencies: ["selectedPlatformFilter", "selectedBrandFilter"],
+    dependencies: [
+      "selectedPlatformFilter",
+      "selectedBrandFilter",
+      "mediatorId",
+    ],
     extraBody: {
       selectedPlatformFilter: [],
       selectedBrandFilter: [],
@@ -157,6 +161,12 @@ const MyMedDealsAsAgency = () => {
     {
       head: "Refund",
       accessor: "finalCashBackForUser",
+      component: (item) =>
+        item?.parentDealId?.isCommissionDeal
+          ? Number(item?.parentDealId?.actualPrice) +
+            Number(item?.parentDealId?.commissionValueToSubAdmin)
+          : item?.parentDealId?.actualPrice -
+            item?.parentDealId?.lessAmountToSubAdmin,
     },
     // {
     //   head: "Platform Fee",
@@ -220,6 +230,7 @@ const MyMedDealsAsAgency = () => {
                       statusFilterOptionArr={activeInactiveOptions}
                       ShowPaymentStatus={true}
                       ShowSlotStatus={true}
+                      showMediatorFilter={true}
                     />
                   </ul>
                 </div>

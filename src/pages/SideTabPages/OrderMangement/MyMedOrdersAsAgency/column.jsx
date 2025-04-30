@@ -223,8 +223,30 @@ export const getColumn = (
     ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
-        {Number(item?.dealId?.parentDealId?.actualPrice) +
-          (Number(item?.deliveryFee) || 0)}
+        <p
+          className="m-0 themeBlue fw-sbold d-flex gap-10"
+          style={{
+            width: 80,
+          }}
+        >
+          <span className="text-muted"> Price :</span>
+          {Number(item?.dealId?.parentDealId?.actualPrice)}
+        </p>
+        <p
+          className="m-0 themeBlue fw-sbold"
+          style={{
+            width: 120,
+          }}
+        >
+          <span className="text-muted"> Delivery Fee: </span>
+          {Number(item?.deliveryFee) || 0}
+        </p>
+
+        <p className="m-0 themeBlue fw-sbold">
+          <span className="text-muted"> Total: </span>
+          {Number(item?.dealId?.parentDealId?.actualPrice) +
+            (Number(item?.deliveryFee) || 0)}
+        </p>
       </p>
     ),
   },

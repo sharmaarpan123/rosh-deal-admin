@@ -20,8 +20,10 @@ import { activeInactiveOptions } from "../../../utilities/const";
 import {
   activeInActiveOptions,
   capitalizedFirstAlphaBet,
+  isSuperAdmin,
 } from "../../../utilities/utilities";
 import TableToggle from "../../../components/Common/TableToggle";
+import { useSelector } from "react-redux";
 
 const Poster = () => {
   const {
@@ -39,6 +41,8 @@ const Poster = () => {
   } = dataHandler({
     api: POSTER_LIST,
   });
+
+  const { admin } = useSelector((s) => s.login);
 
   const column = [
     {
@@ -146,6 +150,19 @@ const Poster = () => {
         />
       ),
     },
+    ...(isSuperAdmin(admin)
+      ? [
+          {
+            head: "Added By",
+            component: (item) => {
+              if (isSuperAdmin(item?.adminId)) {
+                return "Super Admin";
+              }
+              return item?.adminId?.name;
+            },
+          },
+        ]
+      : []),
     {
       head: "Action",
       accessor: "Action",
@@ -168,7 +185,6 @@ const Poster = () => {
       <section className="systemAcess py-3 position-relative">
         <Container>
           <Row>
-            
             <Col lg="12" className="my-2">
               <div className="tableFilter d-flex align-items-center justify-content-between flex-wrap gap-10 mb-3">
                 <div className="left">

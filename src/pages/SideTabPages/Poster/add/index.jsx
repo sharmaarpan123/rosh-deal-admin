@@ -17,6 +17,7 @@ import {
   ALL_DEALS,
   BRAND_LIST,
   DEAL_CATEGORY_LIST,
+  DEALS_LIST,
   POSTER_ADD,
   POSTER_EDIT,
   POSTER_GET_BY_ID,
@@ -29,6 +30,8 @@ import {
   isUrlValid,
   posterEnumOptions,
 } from "../../../../utilities/utilities";
+import AsyncSelect from "react-select/async";
+import ReactSelectNoOptionMessage from "../../../../components/Common/ReactSelectNoOptionMessage";
 
 const makeOptions = (data, keyName) => {
   return data?.map((item) => ({ label: item[keyName], value: item._id }));
@@ -199,7 +202,7 @@ const AddEditPoster = () => {
   });
 
   const getData = catchAsync(async () => {
-    const apis = [BRAND_LIST(), ALL_DEALS(), DEAL_CATEGORY_LIST()];
+    const apis = [BRAND_LIST(), DEALS_LIST(), DEAL_CATEGORY_LIST()];
 
     if (id) {
       apis.push(POSTER_GET_BY_ID(id));
@@ -248,6 +251,24 @@ const AddEditPoster = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const loadDealOptions = async (inputValue, callback) => {
+    // if (inputValue?.trim()?.length) return;
+
+    const response = await DEALS_LIST({
+      search: inputValue?.trim(),
+    });
+    if (response) {
+      const options =
+        response?.data?.data?.map((item) => ({
+          value: item._id,
+          label: item?.productName,
+        })) || [];
+      callback(options);
+    } else {
+      callback([]);
+    }
+  };
 
   return (
     <>
@@ -376,27 +397,7 @@ const AddEditPoster = () => {
                         )}
                       </div>
                     </Col>
-                    <Col lg="6" md="12" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Redirect Url
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Enter Redirect Url"
-                          className="form-control"
-                          {...register("redirectUrl")}
-                        />
-                        {errors?.redirectUrl && (
-                          <p className="text-danger m-0">
-                            {errors.redirectUrl.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
+
                     <Col lg="6" md="12" className="my-2">
                       <div className="py-2">
                         <label
@@ -420,79 +421,137 @@ const AddEditPoster = () => {
                         )}
                       </div>
                     </Col>
-                    <Col lg="6" md="12" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Deal
-                        </label>
-                        <Controller
-                          control={control}
-                          name="deal"
-                          render={({ field }) => (
-                            <Select {...field} options={dealsOptions} />
+                    {watch("posterType")?.value === POSTER_ENUM.REDIRECT && (
+                      <Col lg="6" md="12" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Redirect Url
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Enter Redirect Url"
+                            className="form-control"
+                            {...register("redirectUrl")}
+                          />
+                          {errors?.redirectUrl && (
+                            <p className="text-danger m-0">
+                              {errors.redirectUrl.message}
+                            </p>
                           )}
-                        />
-                        {errors?.deal && (
-                          <p className="text-danger m-0">
-                            {errors.deal.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-                    <Col lg="6" md="12" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Deal category
-                        </label>
-                        <Controller
-                          control={control}
-                          name="dealCategory"
-                          render={({ field }) => (
-                            <Select {...field} options={dealCategoryOptions} />
+                        </div>
+                      </Col>
+                    )}
+                    {watch("posterType")?.value === POSTER_ENUM.DEAL && (
+                      <Col lg="6" md="12" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Deal
+                          </label>
+                          <Controller
+                            control={control}
+                            name="deal"
+                            render={({ field }) => (
+                              <AsyncSelect
+                                {...field}
+                                components={{
+                                  DropdownIndicator: () => null,
+                                  IndicatorSeparator: () => null,
+                                  NoOptionsMessage: (props) => (
+                                    <ReactSelectNoOptionMessage
+                                      message="Search Deals"
+                                      {...props}
+                                    />
+                                  ),
+                                }}
+                                // className={`${styles.select}`}
+                                loadOptions={loadDealOptions}
+                                // value={selectedDealOption}
+                                isClearable
+                                placeholder="Search Deal"
+                                // onChange={(value) => {
+                                //   setSelectedDealOption(value);
+                                //   setBody((p) => ({
+                                //     ...p,
+                                //     dealId: value?.map((i) => i.value),
+                                //   }));
+                                // }}
+                              />
+                            )}
+                          />
+
+                          {errors?.deal && (
+                            <p className="text-danger m-0">
+                              {errors.deal.message}
+                            </p>
                           )}
-                        />
-                        {errors?.dealCategory && (
-                          <p className="text-danger m-0">
-                            {errors.dealCategory.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
-
-                    <Col lg="6" md="12" className="my-2">
-                      <div className="py-2">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-sbold text-muted ps-2 m-0"
-                        >
-                          Brand
-                        </label>
-
-                        <Controller
-                          control={control}
-                          name="brand"
-                          render={({ field }) => (
-                            <Select {...field} options={brandOptions} />
+                        </div>
+                      </Col>
+                    )}
+                    {watch("posterType")?.value ===
+                      POSTER_ENUM.DEALCATEGORY && (
+                      <Col lg="6" md="12" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Deal category
+                          </label>
+                          <Controller
+                            control={control}
+                            name="dealCategory"
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                options={dealCategoryOptions}
+                              />
+                            )}
+                          />
+                          {errors?.dealCategory && (
+                            <p className="text-danger m-0">
+                              {errors.dealCategory.message}
+                            </p>
                           )}
-                        />
-
-                        {errors?.brand && (
-                          <p className="text-danger m-0">
-                            {errors.brand.message}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
+                        </div>
+                      </Col>
+                    )}
+                    {watch("posterType")?.value === POSTER_ENUM.BRAND && (
+                      <Col lg="6" md="12" className="my-2">
+                        <div className="py-2">
+                          <label
+                            htmlFor=""
+                            className="form-label fw-sbold text-muted ps-2 m-0"
+                          >
+                            Brand
+                          </label>
+                          <Controller
+                            control={control}
+                            name="brand"
+                            render={({ field }) => (
+                              <Select {...field} options={brandOptions} />
+                            )}
+                          />
+                          {errors?.brand && (
+                            <p className="text-danger m-0">
+                              {errors.brand.message}
+                            </p>
+                          )}
+                        </div>
+                      </Col>
+                    )}
 
                     <Col lg="12" className="my-2">
                       <div className="d-flex align-items-center justify-content-center gap-10">
-                        <Button onClick={()=>navigate(-1)} className="d-flex align-items-center justify-content-center commonBtn GreyBtn">
+                        <Button
+                          onClick={() => navigate(-1)}
+                          className="d-flex align-items-center justify-content-center commonBtn GreyBtn"
+                        >
                           Cancel
                         </Button>
                         <Button

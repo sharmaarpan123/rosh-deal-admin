@@ -1,25 +1,23 @@
 import React, { useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import TableLayout from "../../../../components/TableLayout";
+import { Col, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import CustomPagination from "../../../../components/Common/CustomPagination";
 import ImagePopUp from "../../../../components/Modals/ImagePopUp";
 import SetReasonModel from "../../../../components/Modals/SetReasonModel";
+import TableLayout from "../../../../components/TableLayout";
 import dataHandler from "../../../../hooks/dataHandler";
 import {
   ACCEPT_REJECT_ORDER,
-  ORDER_LIST,
-  SELLER_ORDER_LIST,
+  SELLER_ORDER_LIST
 } from "../../../../services/ApiCalls";
 import {
   DealByBrandIdApiAccessingAsEnum,
   defaultDeleteModelState,
   OrderFromStatusOptionArr,
 } from "../../../../utilities/const";
-import BulkPaymentStatusChange from "../BulkPaymentStatusChange";
+import ExportExcel from "../exportExcel/ExportExcel";
 import Filter from "../Filter/Filter";
 import { getColumn } from "./column";
-import ExportExcel from "../exportExcel/ExportExcel";
-import { useParams } from "react-router-dom";
 
 const MyOrderAsSeller = () => {
   const { dealId } = useParams();

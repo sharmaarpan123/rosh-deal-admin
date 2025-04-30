@@ -112,7 +112,7 @@ export const BULK_PAYMENT_STATUS_CHANGE = (data) =>
 
 // poster /////////
 
-export const POSTER_LIST = (data) => Axios.get(API_URL.POSTER_LIST, data);
+export const POSTER_LIST = (data) => Axios.post(API_URL.POSTER_LIST, data);
 export const POSTER_ADD = (data) => Axios.post(API_URL.POSTER_ADD, data);
 export const POSTER_EDIT = (data) => Axios.post(API_URL.POSTER_EDIT, data);
 export const POSTER_STATUS_CHANGE = (data) =>

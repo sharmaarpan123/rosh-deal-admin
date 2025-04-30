@@ -602,6 +602,13 @@ const AddEditDeal = () => {
                                   <input
                                     {...field}
                                     onChange={(e) => {
+                                      if (!watch("actualPrice")) {
+                                        return errorToast({
+                                          message:
+                                            "Please enter Product Price first",
+                                        });
+                                      }
+
                                       if (
                                         e?.target?.value[0] === "0" &&
                                         e?.target?.value?.length > 1
@@ -610,6 +617,24 @@ const AddEditDeal = () => {
                                           message: "INVALID LESS AMOUNT",
                                         });
                                         return;
+                                      }
+
+                                      const adminCommission = Math.ceil(
+                                        (superAdminCommission *
+                                          Number(e?.target?.value)) /
+                                          100
+                                      );
+
+                                      if (
+                                        Number(e?.target?.value) >=
+                                        Number(watch("actualPrice")) -
+                                          adminCommission
+                                      ) {
+                                        console.log(e?.target?.value, "value");
+                                        return errorToast({
+                                          message:
+                                            "The sum of the less amount and platform fees must not be greater than the product price",
+                                        });
                                       }
 
                                       if (getValues("commissionValue")) {
@@ -662,6 +687,7 @@ const AddEditDeal = () => {
                                         });
                                         return;
                                       }
+
                                       if (getValues("lessAmount")) {
                                         toast.dismiss();
                                         toast.error(
@@ -669,6 +695,7 @@ const AddEditDeal = () => {
                                         );
                                         return;
                                       }
+
                                       field.onChange(e.target.value);
                                     }}
                                     type="text"
