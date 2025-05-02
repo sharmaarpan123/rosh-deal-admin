@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import TableLayout from "../../../../components/TableLayout";
 
@@ -10,7 +10,6 @@ import SetReasonModel from "../../../../components/Modals/SetReasonModel";
 import dataHandler from "../../../../hooks/dataHandler";
 import {
   ACCEPT_REJECT_ORDER,
-  ORDER_LIST,
   ORDER_LIST_OF_MED_AS_AGENCY,
 } from "../../../../services/ApiCalls";
 import {
@@ -19,10 +18,34 @@ import {
   OrderFromStatusOptionArr,
 } from "../../../../utilities/const";
 import BulkPaymentStatusChange from "../BulkPaymentStatusChange";
+import ExportExcel from "../exportExcel/ExportExcel";
 import Filter from "../Filter/Filter";
 import { getColumn } from "./column";
-import ExportExcel from "../exportExcel/ExportExcel";
-import { useSearchParams } from "react-router-dom";
+import { exportedFromComponentEnum } from "../utils/const";
+
+const initialExportedKeysState = {
+  mediator: false,
+  orderDateTime: false,
+  orderFormStatus: false,
+  reviewerName: false,
+  brand: false,
+  platform: false,
+  productName: false,
+  link: false,
+  orderIdOfPlatForm: false,
+  productPrice: false,
+  lessAmount: false,
+  commission: false,
+  dealType: false,
+  platformFee: false,
+  exchangeDealProducts: false,
+  orderSs: false,
+  deliveredScreenShot: false,
+  reviewSs: false,
+  sellerFeedback: false,
+  reviewLink: false,
+  paymentStatus: false,
+};
 
 const MyMedOrdersAsAgency = () => {
   const {
@@ -51,7 +74,7 @@ const MyMedOrdersAsAgency = () => {
       "selectedPlatformFilter",
       "mediatorId",
       "startDate",
-      "endDate"
+      "endDate",
     ],
   });
   const [rejectReason, setRejectedReason] = useState("");
@@ -59,7 +82,7 @@ const MyMedOrdersAsAgency = () => {
     ...defaultDeleteModelState,
     status: "",
   });
-  const [exportedKeys, setExportedKeys] = useState({});
+  const [exportedKeys, setExportedKeys] = useState(initialExportedKeysState);
 
   const [popUpImage, SetPopUpImage] = useState("");
 
@@ -140,6 +163,9 @@ const MyMedOrdersAsAgency = () => {
                     {!!data?.length && (
                       <ExportExcel
                         body={body}
+                        exportedFromComponent={
+                          exportedFromComponentEnum.myMedOrderAsAgency
+                        }
                         api={ORDER_LIST_OF_MED_AS_AGENCY}
                         exportedKeys={exportedKeys}
                       />

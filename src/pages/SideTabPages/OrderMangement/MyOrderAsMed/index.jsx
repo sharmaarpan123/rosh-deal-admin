@@ -23,6 +23,30 @@ import Filter from "../Filter/Filter";
 
 import ExportExcel from "../exportExcel/ExportExcel";
 import { getColumn } from "./column";
+import { exportedFromComponentEnum } from "../utils/const";
+
+const initialExportedKeysState = {
+  orderDateTime: false,
+  orderFormStatus: false,
+  reviewerName: false,
+  brand: false,
+  platform: false,
+  productName: false,
+  link: false,
+  orderIdOfPlatForm: false,
+  productPrice: false,
+  lessAmount: false,
+  commission: false,
+  exchangeDealProducts: false,
+  dealType: false,
+  platformFee: false,
+  orderSs: false,
+  deliveredScreenShot: false,
+  reviewSs: false,
+  sellerFeedback: false,
+  reviewLink: false,
+  paymentStatus: false,
+};
 
 const MyOrderAsMed = () => {
   const {
@@ -58,7 +82,7 @@ const MyOrderAsMed = () => {
     status: "",
   });
   const [popUpImage, SetPopUpImage] = useState("");
-  const [exportedKeys, setExportedKeys] = useState({});
+  const [exportedKeys, setExportedKeys] = useState(initialExportedKeysState);
 
   const acceptRejectHandler = (_id, ind, status) => {
     statusChangeHandler(
@@ -138,6 +162,9 @@ const MyOrderAsMed = () => {
                       body={body}
                       api={MY_ORDER_LIST_MED}
                       exportedKeys={exportedKeys}
+                      exportedFromComponent={
+                        exportedFromComponentEnum.myMedOrderAsMed
+                      }
                     />
                     <BulkPaymentStatusChange refetch={refetch} />
                   </div>

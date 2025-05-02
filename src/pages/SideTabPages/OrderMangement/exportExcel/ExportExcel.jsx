@@ -6,10 +6,12 @@ import {
   catchAsync,
   checkResponse,
   errorToast,
+  isSuperAdmin,
 } from "../../../../utilities/utilities";
 import { orderStatusObj } from "../../../../utilities/const";
 import moment from "moment/moment";
-import { orderColumnEnum } from "../utils/const";
+import { exportedFromComponentEnum, orderColumnEnum } from "../utils/const";
+import { useSelector } from "react-redux";
 
 function makeHyperLink(row, cellKey, text, hyperValue) {
   const cell = row.getCell(cellKey);
@@ -26,8 +28,10 @@ const ExportExcel = ({
   api,
   exportedKeys = {},
   showTheSelectBrandValidation = true,
+  exportedFromComponent,
 }) => {
   const [loader, setLoader] = useState(false);
+  const { admin } = useSelector((s) => s.login);
   const handleExport = catchAsync(async () => {
     if (!body?.brandId && showTheSelectBrandValidation) {
       return errorToast({ message: "Please select the brand" });
@@ -92,14 +96,6 @@ const ExportExcel = ({
           item?.dealId?.dealCategory?.name,
         productPrice:
           item?.dealId?.parentDealId?.actualPrice || item?.dealId.actualPrice,
-        lessAmount:
-          item?.dealId?.parentDealId?.lessAmount ||
-          item?.dealId?.lessAmount ||
-          "-",
-        commission:
-          item?.dealId?.parentDealId?.commissionValue ||
-          item?.dealId?.commissionValue ||
-          "-",
         link: item?.dealId?.parentDealId?.postUrl || item?.dealId?.postUrl,
         reviewerName: item?.reviewerName,
         sellerFeedback: item?.sellerFeedback,
@@ -113,6 +109,39 @@ const ExportExcel = ({
             : "",
         paymentStatus: item?.paymentStatus,
         orderFormStatus: orderStatusObj[item?.orderFormStatus],
+        //agency order keys
+        ...(exportedFromComponent === exportedFromComponentEnum.agencyOrder && {
+          platformFee: item?.dealId?.adminCommission,
+          lessAmount: item?.dealId?.lessAmount || "-",
+          commission: item?.dealId?.commissionValue || "-",
+        }),
+        // med order as agency
+        ...(exportedFromComponent ===
+          exportedFromComponentEnum.myMedOrderAsAgency && {
+          platformFee: isSuperAdmin(admin)
+            ? item?.dealId?.adminCommission
+            : item?.dealId?.parentDealId?.adminCommission,
+          lessAmount: isSuperAdmin(admin)
+            ? item?.dealId?.lessAmount
+            : item?.dealId?.parentDealId?.lessAmountToSubAdmin || "-",
+          commission: isSuperAdmin(admin)
+            ? item?.dealId?.commissionValue
+            : item?.dealId?.parentDealId?.commissionValueToSubAdmin || "-",
+        }),
+        // mediator order as mediator
+        ...(exportedFromComponent ===
+          exportedFromComponentEnum.myMedOrderAsMed && {
+          platformFee: item?.dealId?.adminCommission,
+          lessAmount: item?.dealId?.lessAmount || "-",
+          commission: item?.dealId?.commissionValue || "-",
+        }),
+        // seller orders
+        ...(exportedFromComponent ===
+          exportedFromComponentEnum.sellerOrders && {
+          platformFee: "",
+          lessAmount: "",
+          commission: "-",
+        }),
       });
 
       if (item?.orderScreenShot) {

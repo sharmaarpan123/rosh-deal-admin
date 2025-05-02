@@ -34,6 +34,11 @@ export const orderColumnEnum = {
     key: "dealType",
     width: 32,
   },
+  platformFee: {
+    header: "Platform fee",
+    key: "platformFee",
+    width: 32,
+  },
   productPrice: {
     header: "Product price",
     key: "productPrice",
@@ -99,4 +104,11 @@ export const orderColumnEnum = {
     key: "orderFormStatus",
     width: 32,
   },
+};
+
+export const exportedFromComponentEnum = {
+  agencyOrder: "agencyOrder",
+  myMedOrderAsMed: "myMedOrderAsMed",
+  myMedOrderAsAgency: "myMedOrderAsAgency",
+  sellerOrders: "sellerOrders",
 };

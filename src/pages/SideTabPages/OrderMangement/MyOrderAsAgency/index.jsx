@@ -15,10 +15,32 @@ import {
   OrderFromStatusOptionArr,
 } from "../../../../utilities/const";
 import BulkPaymentStatusChange from "../BulkPaymentStatusChange";
+import ExportExcel from "../exportExcel/ExportExcel";
 import Filter from "../Filter/Filter";
 import { getColumn } from "./column";
-import ExportExcel from "../exportExcel/ExportExcel";
-import moment from "moment";
+import { exportedFromComponentEnum } from "../utils/const";
+
+const initialExportedKeysState = {
+  orderDateTime: false,
+  orderFormStatus: false,
+  reviewerName: false,
+  brand: false,
+  platform: false,
+  productName: false,
+  link: false,
+  orderIdOfPlatForm: false,
+  productPrice: false,
+  lessAmount: false,
+  commission: false,
+  exchangeDealProducts: false,
+  dealType: false,
+  orderSs: false,
+  deliveredScreenShot: false,
+  reviewSs: false,
+  sellerFeedback: false,
+  reviewLink: false,
+  paymentStatus: false,
+};
 
 const MyOrderAsAgency = () => {
   const {
@@ -46,12 +68,12 @@ const MyOrderAsAgency = () => {
       "dealId",
       "orderFormStatus",
       "selectedPlatformFilter",
-       "startDate",
-      "endDate"
+      "startDate",
+      "endDate",
     ],
   });
 
-  const [exportedKeys, setExportedKeys] = useState({});
+  const [exportedKeys, setExportedKeys] = useState(initialExportedKeysState);
 
   const [rejectReason, setRejectedReason] = useState("");
   const [rejectedModel, setRejectedModel] = useState({
@@ -137,6 +159,9 @@ const MyOrderAsAgency = () => {
                     {!!data?.length && (
                       <ExportExcel
                         body={body}
+                        exportedFromComponent={
+                          exportedFromComponentEnum.agencyOrder
+                        }
                         api={ORDER_LIST}
                         exportedKeys={exportedKeys}
                       />

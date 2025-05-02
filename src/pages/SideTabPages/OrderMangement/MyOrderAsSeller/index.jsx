@@ -8,7 +8,7 @@ import TableLayout from "../../../../components/TableLayout";
 import dataHandler from "../../../../hooks/dataHandler";
 import {
   ACCEPT_REJECT_ORDER,
-  SELLER_ORDER_LIST
+  SELLER_ORDER_LIST,
 } from "../../../../services/ApiCalls";
 import {
   DealByBrandIdApiAccessingAsEnum,
@@ -18,6 +18,25 @@ import {
 import ExportExcel from "../exportExcel/ExportExcel";
 import Filter from "../Filter/Filter";
 import { getColumn } from "./column";
+import { exportedFromComponentEnum } from "../utils/const";
+
+const initialExportedKeysState = {
+  orderDateTime: false,
+  orderFormStatus: false,
+  reviewerName: false,
+  platform: false,
+  productName: false,
+  link: false,
+  orderIdOfPlatForm: false,
+  productPrice: false,
+  exchangeDealProducts: false,
+  dealType: false,
+  orderSs: false,
+  deliveredScreenShot: false,
+  reviewSs: false,
+  sellerFeedback: false,
+  reviewLink: false,
+};
 
 const MyOrderAsSeller = () => {
   const { dealId } = useParams();
@@ -51,7 +70,7 @@ const MyOrderAsSeller = () => {
     ],
   });
 
-  const [exportedKeys, setExportedKeys] = useState({});
+  const [exportedKeys, setExportedKeys] = useState(initialExportedKeysState);
   const [rejectReason, setRejectedReason] = useState("");
   const [rejectedModel, setRejectedModel] = useState({
     ...defaultDeleteModelState,
@@ -139,6 +158,9 @@ const MyOrderAsSeller = () => {
                       body={body}
                       api={SELLER_ORDER_LIST}
                       exportedKeys={exportedKeys}
+                      exportedFromComponent={
+                        exportedFromComponentEnum.sellerOrders
+                      }
                       showTheSelectBrandValidation={false}
                     />
                   )}
