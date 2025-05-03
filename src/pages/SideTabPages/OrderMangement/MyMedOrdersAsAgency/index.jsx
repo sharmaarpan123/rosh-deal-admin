@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import TableLayout from "../../../../components/TableLayout";
 
@@ -22,6 +22,8 @@ import ExportExcel from "../exportExcel/ExportExcel";
 import Filter from "../Filter/Filter";
 import { getColumn } from "./column";
 import { exportedFromComponentEnum } from "../utils/const";
+import { isSuperAdmin } from "../../../../utilities/utilities";
+import { useSelector } from "react-redux";
 
 const initialExportedKeysState = {
   mediator: false,
@@ -37,7 +39,6 @@ const initialExportedKeysState = {
   lessAmount: false,
   commission: false,
   dealType: false,
-  platformFee: false,
   exchangeDealProducts: false,
   orderSs: false,
   deliveredScreenShot: false,
@@ -77,6 +78,9 @@ const MyMedOrdersAsAgency = () => {
       "endDate",
     ],
   });
+
+  const { admin } = useSelector((s) => s.login);
+
   const [rejectReason, setRejectedReason] = useState("");
   const [rejectedModel, setRejectedModel] = useState({
     ...defaultDeleteModelState,
@@ -121,8 +125,14 @@ const MyMedOrdersAsAgency = () => {
     SetPopUpImage,
     acceptRejectHandler,
     setRejectedModel,
-    setExportedKeysHandler
+    setExportedKeysHandler,
+    isSuperAdmin(admin)
   );
+
+  useEffect(() => {
+    if (isSuperAdmin(admin))
+      setExportedKeys((p) => ({ ...p, platformFee: false }));
+  }, [admin]);
 
   return (
     <>

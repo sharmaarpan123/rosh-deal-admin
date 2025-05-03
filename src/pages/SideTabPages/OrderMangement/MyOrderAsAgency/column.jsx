@@ -20,7 +20,8 @@ export const getColumn = (
   SetPopUpImage,
   acceptRejectHandler,
   setRejectedModel,
-  setExportedKeysHandler
+  setExportedKeysHandler,
+  isSuperAdmin
 ) => [
   {
     head: "#",
@@ -40,7 +41,7 @@ export const getColumn = (
         }
       />
     ),
-    
+
     component: (item, key, arr) => (
       <>{moment(item.orderDate).format("DD-MM-YYYY")}</>
     ),
@@ -290,6 +291,15 @@ export const getColumn = (
   {
     head: "Platform Fee",
     accessor: "",
+    ...(isSuperAdmin && {
+      headComponent: (item, key, index) => (
+        <TableHeaderCheckbox
+          label="Platform Fee"
+          id={key}
+          onChange={(e) => setExportedKeysHandler("platformFee", e.target.checked)}
+        />
+      ),
+    }),
 
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">

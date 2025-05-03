@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import TableLayout from "../../../../components/TableLayout";
 
@@ -19,6 +19,8 @@ import ExportExcel from "../exportExcel/ExportExcel";
 import Filter from "../Filter/Filter";
 import { getColumn } from "./column";
 import { exportedFromComponentEnum } from "../utils/const";
+import { isSuperAdmin } from "../../../../utilities/utilities";
+import { useSelector } from "react-redux";
 
 const initialExportedKeysState = {
   orderDateTime: false,
@@ -73,6 +75,8 @@ const MyOrderAsAgency = () => {
     ],
   });
 
+  const { admin } = useSelector((s) => s.login);
+
   const [exportedKeys, setExportedKeys] = useState(initialExportedKeysState);
 
   const [rejectReason, setRejectedReason] = useState("");
@@ -118,8 +122,14 @@ const MyOrderAsAgency = () => {
     SetPopUpImage,
     acceptRejectHandler,
     setRejectedModel,
-    setExportedKeysHandler
+    setExportedKeysHandler,
+    isSuperAdmin(admin)
   );
+
+  useEffect(() => {
+    if (isSuperAdmin(admin))
+      setExportedKeys((p) => ({ ...p, platformFee: false }));
+  }, [admin]);
 
   return (
     <>

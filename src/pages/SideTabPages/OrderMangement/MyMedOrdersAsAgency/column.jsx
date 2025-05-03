@@ -20,7 +20,8 @@ export const getColumn = (
   SetPopUpImage,
   acceptRejectHandler,
   setRejectedModel,
-  setExportedKeysHandler
+  setExportedKeysHandler,
+  isSuperAdmin
 ) => [
   {
     head: "#",
@@ -130,6 +131,7 @@ export const getColumn = (
   {
     head: "Platform",
     accessor: "platForm",
+
     headComponent: (item, key, index) => (
       <TableHeaderCheckbox
         label="Platform"
@@ -137,6 +139,7 @@ export const getColumn = (
         onChange={(e) => setExportedKeysHandler("platform", e.target.checked)}
       />
     ),
+
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {capitalizedFirstAlphaBet(item?.dealId?.parentDealId?.platForm?.name)}
@@ -304,15 +307,17 @@ export const getColumn = (
   {
     head: "Platform Fee",
     accessor: "",
-    headComponent: (item, key, index) => (
-      <TableHeaderCheckbox
-        label="Platform Fee"
-        id={key}
-        onChange={(e) =>
-          setExportedKeysHandler("platformFee", e.target.checked)
-        }
-      />
-    ),
+    ...(isSuperAdmin && {
+      headComponent: (item, key, index) => (
+        <TableHeaderCheckbox
+          label="Platform Fee"
+          id={key}
+          onChange={(e) =>
+            setExportedKeysHandler("platformFee", e.target.checked)
+          }
+        />
+      ),
+    }),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
         {capitalizedFirstAlphaBet(item?.dealId?.adminCommission)}
