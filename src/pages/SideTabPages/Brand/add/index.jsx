@@ -20,7 +20,11 @@ import {
   UPDATE_BRAND,
   UPDATE_PLATFORM,
 } from "../../../../services/ApiCalls";
-import { catchAsync, checkResponse } from "../../../../utilities/utilities";
+import {
+  catchAsync,
+  checkResponse,
+  errorToast,
+} from "../../../../utilities/utilities";
 import fileUploader from "../../../../utilities/fileUploader";
 import Loading from "../../../../components/Common/Loading";
 
@@ -50,6 +54,11 @@ const AddEditBrand = () => {
   const submitHandler = catchAsync(async (data) => {
     let res;
     setLoader(true);
+
+    if (!image) {
+      setLoader(false);
+      return errorToast({ message: "Please upload the image" });
+    }
     if (id) {
       res = await UPDATE_BRAND({
         ...data,
