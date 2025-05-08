@@ -196,7 +196,7 @@ export const handleShare = (productId) => {
     return;
   }
 
-  const shareUrl = `https://buyrapp.in?product_id=${productId}`;
+  const shareUrl = `${import.meta.env.VITE_APP_API_URL}?product_id=${productId}`;  
   const shareData = {
     title: "Share this deal now",
     text: shareUrl,
