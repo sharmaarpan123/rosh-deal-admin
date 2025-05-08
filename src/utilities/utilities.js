@@ -202,17 +202,24 @@ export const handleShare = (productId) => {
     text: shareUrl,
   };
 
-  // Share using navigator.share if supported
-  if (navigator.share) {
+  // 👇 Send to React Native WebView if available
+  if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({ event: "share", payload: shareData })
+    );
+  } 
+  // 👇 Otherwise try browser-native share
+  else if (navigator.share) {
     navigator
       .share(shareData)
       .then(() => console.log("Successful share"))
       .catch((error) => console.error("Error sharing", error));
-  } else {
+  } 
+  // 👇 Final fallback
+  else {
     alert("Share functionality is not supported on this browser.");
   }
 };
-
 export const copyDealClipboard = (productId) => {
   const shareUrl = `${
     import.meta.env.VITE_APP_API_URL
