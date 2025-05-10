@@ -55,10 +55,10 @@ const AddEditBrand = () => {
     let res;
     setLoader(true);
 
-    if (!image) {
-      setLoader(false);
-      return errorToast({ message: "Please upload the image" });
-    }
+    // if (!image) {
+    //   setLoader(false);
+    //   return errorToast({ message: "Please upload the image" });
+    // }
     if (id) {
       res = await UPDATE_BRAND({
         ...data,
