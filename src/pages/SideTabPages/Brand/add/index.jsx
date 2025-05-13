@@ -65,7 +65,7 @@ const AddEditBrand = () => {
         ...(image && { image }),
         brandId: id,
       });
-    } else {
+    } else { 
       res = await ADD_BRAND({ ...data, ...(image && { image }) });
     }
     checkResponse({
