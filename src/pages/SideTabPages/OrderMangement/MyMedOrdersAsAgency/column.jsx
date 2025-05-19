@@ -233,7 +233,7 @@ export const getColumn = (
           }}
         >
           <span className="text-muted"> Price :</span>
-          {Number(item?.dealId?.parentDealId?.actualPrice)}
+          {Number(item?.orderPrice)}
         </p>
         <p
           className="m-0 themeBlue fw-sbold"
@@ -247,8 +247,7 @@ export const getColumn = (
 
         <p className="m-0 themeBlue fw-sbold">
           <span className="text-muted"> Total: </span>
-          {Number(item?.dealId?.parentDealId?.actualPrice) +
-            (Number(item?.deliveryFee) || 0)}
+          {Number(item?.orderPrice) + (Number(item?.deliveryFee) || 0)}
         </p>
       </p>
     ),
@@ -264,9 +263,7 @@ export const getColumn = (
       />
     ),
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">
-        {item?.dealId?.lessAmount || "-"}
-      </p>
+      <p className="m-0 themeBlue fw-sbold">{item?.lessAmount || "-"}</p>
     ),
   },
   {
@@ -280,9 +277,7 @@ export const getColumn = (
       />
     ),
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">
-        {item?.dealId?.commissionValue || "-"}
-      </p>
+      <p className="m-0 themeBlue fw-sbold">{item?.commissionValue || "-"}</p>
     ),
   },
 
