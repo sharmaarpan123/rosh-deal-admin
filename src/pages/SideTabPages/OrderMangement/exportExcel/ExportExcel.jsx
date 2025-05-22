@@ -112,8 +112,8 @@ const ExportExcel = ({
         //agency order keys
         ...(exportedFromComponent === exportedFromComponentEnum.agencyOrder && {
           platformFee: item?.dealId?.adminCommission,
-          lessAmount: item?.dealId?.lessAmount || "-",
-          commission: item?.dealId?.commissionValue || "-",
+          lessAmount: item?.lessAmount || "-",
+          commission: item?.commissionValue || "-",
         }),
         // med order as agency
         ...(exportedFromComponent ===
@@ -122,18 +122,18 @@ const ExportExcel = ({
             ? item?.dealId?.adminCommission
             : item?.dealId?.parentDealId?.adminCommission,
           lessAmount: isSuperAdmin(admin)
-            ? item?.dealId?.lessAmount
+            ? item?.lessAmount
             : item?.dealId?.parentDealId?.lessAmountToSubAdmin || "-",
           commission: isSuperAdmin(admin)
-            ? item?.dealId?.commissionValue
+            ? item?.commissionValue
             : item?.dealId?.parentDealId?.commissionValueToSubAdmin || "-",
         }),
         // mediator order as mediator
         ...(exportedFromComponent ===
           exportedFromComponentEnum.myMedOrderAsMed && {
           platformFee: item?.dealId?.adminCommission,
-          lessAmount: item?.dealId?.lessAmount || "-",
-          commission: item?.dealId?.commissionValue || "-",
+          lessAmount: item?.lessAmount || "-",
+          commission: item?.commissionValue || "-",
         }),
         // seller orders
         ...(exportedFromComponent ===
