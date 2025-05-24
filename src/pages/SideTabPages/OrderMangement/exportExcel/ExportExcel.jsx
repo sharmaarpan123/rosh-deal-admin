@@ -94,7 +94,9 @@ const ExportExcel = ({
         dealType:
           item?.dealId?.parentDealId?.dealCategory?.name ||
           item?.dealId?.dealCategory?.name,
-        productPrice: item?.orderPrice || "-",
+        productPrice: item?.deliveryFee
+          ? `${Number(item?.orderPrice) + Number(item?.deliveryFee)} (Incl. ${item?.deliveryFee} Delivery Fee)`
+          : item?.orderPrice,
         link: item?.dealId?.parentDealId?.postUrl || item?.dealId?.postUrl,
         reviewerName: item?.reviewerName,
         sellerFeedback: item?.sellerFeedback,

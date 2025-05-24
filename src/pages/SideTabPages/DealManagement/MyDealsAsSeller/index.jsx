@@ -15,6 +15,7 @@ import {
   handleShare,
 } from "../../../../utilities/utilities";
 import DealsAsSellerFilter from "./Components/Filters";
+import CustomPagination from "../../../../components/Common/CustomPagination";
 
 const MyDealsAsSeller = () => {
   const {
@@ -92,11 +93,10 @@ const MyDealsAsSeller = () => {
       accessor: "isSlotCompleted",
       component: (item) => (
         <p
-          className={`mb-0 ${
-            !item.isSlotCompleted
+          className={`mb-0 ${!item.isSlotCompleted
               ? "bg-danger text-white"
               : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
+            } d-flex justify-content-start pb-0 rounded px-2 `}
           style={{
             width: "fit-content",
           }}
@@ -110,9 +110,8 @@ const MyDealsAsSeller = () => {
       accessor: "",
       component: (item, index) => (
         <p
-          className={`mb-0 ${
-            !item.isActive ? "bg-danger text-white" : "bg-success text-white"
-          } d-flex justify-content-start pb-0 rounded px-2 `}
+          className={`mb-0 ${!item.isActive ? "bg-danger text-white" : "bg-success text-white"
+            } d-flex justify-content-start pb-0 rounded px-2 `}
           style={{
             width: "fit-content",
           }}
@@ -166,6 +165,12 @@ const MyDealsAsSeller = () => {
             paginationHandler={paginationHandler}
             total={total}
             body={body}
+          />
+          <CustomPagination
+            body={body}
+            pageChangeHandler={paginationHandler}
+            setBody={setBody}
+            total={total}
           />
         </Col>
       </Row>
