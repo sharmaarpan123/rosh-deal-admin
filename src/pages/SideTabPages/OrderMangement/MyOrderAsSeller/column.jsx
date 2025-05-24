@@ -204,9 +204,7 @@ export const getColumn = (
           }}
         >
           <span className="text-muted"> Price :</span>
-          {Number(
-            item?.dealId?.parentDealId?.actualPrice || item?.dealId?.actualPrice
-          )}
+          {Number(item?.orderPrice)}
         </p>
         <p
           className="m-0 themeBlue fw-sbold"
@@ -220,9 +218,7 @@ export const getColumn = (
 
         <p className="m-0 themeBlue fw-sbold">
           <span className="text-muted"> Total: </span>
-          {Number(
-            item?.dealId?.parentDealId?.actualPrice || item?.dealId?.actualPrice
-          ) + (Number(item?.deliveryFee) || 0)}
+          {Number(item?.orderPrice) + (Number(item?.deliveryFee) || 0)}
         </p>
       </p>
     ),

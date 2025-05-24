@@ -94,8 +94,7 @@ const ExportExcel = ({
         dealType:
           item?.dealId?.parentDealId?.dealCategory?.name ||
           item?.dealId?.dealCategory?.name,
-        productPrice:
-          item?.dealId?.parentDealId?.actualPrice || item?.dealId.actualPrice,
+        productPrice: item?.orderPrice || "-",
         link: item?.dealId?.parentDealId?.postUrl || item?.dealId?.postUrl,
         reviewerName: item?.reviewerName,
         sellerFeedback: item?.sellerFeedback,
@@ -111,9 +110,11 @@ const ExportExcel = ({
         orderFormStatus: orderStatusObj[item?.orderFormStatus],
         //agency order keys
         ...(exportedFromComponent === exportedFromComponentEnum.agencyOrder && {
-          platformFee: item?.dealId?.adminCommission,
-          lessAmount: item?.lessAmount || "-",
-          commission: item?.commissionValue || "-",
+          platformFee: Number(item?.dealId?.adminCommission) || "-",
+          lessAmount: Number(item?.lessAmount) + Number(item?.adminCommission) || "-",
+          commission: Number(item?.commissionValue) -
+              Number(item?.dealId?.adminCommission) ||
+            "-",
         }),
         // med order as agency
         ...(exportedFromComponent ===
@@ -122,18 +123,22 @@ const ExportExcel = ({
             ? item?.dealId?.adminCommission
             : item?.dealId?.parentDealId?.adminCommission,
           lessAmount: isSuperAdmin(admin)
-            ? item?.lessAmount
+            ? Number(item?.lessAmount) + Number(item?.adminCommission)
             : item?.dealId?.parentDealId?.lessAmountToSubAdmin || "-",
           commission: isSuperAdmin(admin)
-            ? item?.commissionValue
+            ? Number(item?.commissionValue) -
+              Number(item?.dealId?.adminCommission)
             : item?.dealId?.parentDealId?.commissionValueToSubAdmin || "-",
         }),
         // mediator order as mediator
         ...(exportedFromComponent ===
           exportedFromComponentEnum.myMedOrderAsMed && {
           platformFee: item?.dealId?.adminCommission,
-          lessAmount: item?.lessAmount || "-",
-          commission: item?.commissionValue || "-",
+          lessAmount:
+            Number(item?.lessAmount) + Number(item?.adminCommission) || "-",
+          commission:
+            Number(item?.commissionValue) -
+            Number(item?.dealId?.adminCommission) || "-",
         }),
         // seller orders
         ...(exportedFromComponent ===

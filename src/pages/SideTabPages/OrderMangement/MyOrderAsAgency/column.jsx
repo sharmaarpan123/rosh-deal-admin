@@ -245,7 +245,7 @@ export const getColumn = (
     ),
     component: (item, key, arr) => (
       <p className="m-0 themeBlue fw-sbold">
-        {item?.lessAmount || "-"}
+        {Number(item?.lessAmount) + Number(item?.adminCommission) || "-"}
       </p>
     ),
   },
@@ -260,7 +260,11 @@ export const getColumn = (
       />
     ),
     component: (item, key, arr) => (
-      <p className="m-0 themeBlue fw-sbold">{item?.commissionValue || "-"}</p>
+      <p className="m-0 themeBlue fw-sbold">
+        {Number(item?.commissionValue) -
+          Number(item?.dealId?.adminCommission) ||
+          "-"}
+      </p>
     ),
   },
   {
